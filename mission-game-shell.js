@@ -2126,7 +2126,7 @@
       updateHud();
       if (shotClock <= 0) {
         clearInterval(shotTimer);
-        finishRound(false, "", "Time breach: no decision submitted. " + round.explain);
+        finishRound(false, "", "Time's up! " + round.explain);
       }
     }, 1000);
   }
@@ -2199,8 +2199,8 @@
       btn.addEventListener("click", function () {
         finishRound(
           item.idx === round.answer,
-          "Repair secured: strongest correction chosen. " + round.explain,
-          "Repair missed: correct line is \"" + rightLine + "\". " + round.explain,
+          "Nice! You picked the strongest correction. " + round.explain,
+          "Not quite — the best fix is \"" + rightLine + "\". " + round.explain,
           btn
         );
       });
@@ -2549,11 +2549,11 @@
     finishRound(
       userCorrect,
       activeMode === "smash"
-        ? "Hit confirmed: you smashed an incorrect line. " + round.explain
-        : "Secure: " + round.explain,
+        ? "Nice catch! You found the error. " + round.explain
+        : "Correct! " + round.explain,
       activeMode === "smash"
         ? "That line is already correct. Smash an error line instead. " + round.explain
-        : "Needs repair: correct line is \"" + round.options[round.answer] + "\". " + round.explain,
+        : "Not quite — the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
       btn
     );
   }
@@ -2562,8 +2562,8 @@
     var userCorrect = markSecure ? candidateCorrect : !candidateCorrect;
     finishRound(
       userCorrect,
-      "Verdict confirmed: " + (candidateCorrect ? "this line is secure. " : "this line needs repair. ") + round.explain,
-      "Verdict mismatch: this line is " + (candidateCorrect ? "secure. " : "not secure. ") + round.explain,
+      "Correct! " + (candidateCorrect ? "This line is grammatically correct. " : "Good eye — this line has an error. ") + round.explain,
+      "Not quite — this line is actually " + (candidateCorrect ? "correct. " : "incorrect. ") + round.explain,
       btn
     );
   }
@@ -2589,7 +2589,7 @@
       if (used) html("feedback", "<span class=\"ok\">Hint applied: one line was auto-classified.</span>");
     } else if (currentRoundState.mode === "binary") {
       used = true;
-      html("feedback", "<span class=\"ok\">Hint: the highlighted line is " + (currentRoundState.candidateCorrect ? "Secure" : "Needs Repair") + ".</span>");
+      html("feedback", "<span class=\"ok\">Hint: the highlighted line is " + (currentRoundState.candidateCorrect ? "correct" : "incorrect") + ".</span>");
     } else {
       var decoys = Array.prototype.slice.call(optionsEl.querySelectorAll(".opt")).filter(function (btn) {
         return btn.dataset.target === "0" && !btn.classList.contains("eliminated");
@@ -2622,7 +2622,7 @@
     streak = 0;
     combo = 1;
     score = Math.max(0, score - 15);
-    html("feedback", "<span class=\"bad\"><b>SKIPPED.</b> Click Next to continue. -15 pts</span>");
+    html("feedback", "<span class=\"bad\"><b>Skipped.</b> No worries — moving on. -15 pts</span>");
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
   }
