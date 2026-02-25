@@ -5,7 +5,7 @@
     sidebar: 'components/sidebar.html'
   };
 
-  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 auto 16px;max-width:1120px;padding:8px 2px 12px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
+  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 auto 16px;max-width:1320px;padding:12px 32px 14px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
     '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:88px;width:auto;display:block;background:transparent;border:none"></a>' +
     '<span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">' +
     '<a href="index.html" data-i18n="nav_home" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Home</a>' +
@@ -23,7 +23,7 @@
     '<span style="display:inline-flex;gap:6px"><a href="auth.html?mode=create" data-i18n="nav_createAccount" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">Create account</a><a href="auth.html?mode=signin" data-i18n="nav_signIn" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign In</a></span>' +
     '</nav>';
 
-  var footerFallback = '<footer class="site-footer" style="margin:24px auto 0;max-width:1120px;padding:20px 14px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Arial,sans-serif;font-size:13px;">' +
+  var footerFallback = '<footer class="site-footer" style="margin:24px auto 0;max-width:1320px;padding:24px 32px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Arial,sans-serif;font-size:13px;">' +
     '<div style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;"><div>' +
     '<a href="index.html" style="color:#16223a;text-decoration:none;font-weight:700;font-size:14px;">Grammar Spy™</a>' +
     '<p style="margin:6px 0 0;color:#5c6677;font-size:12px;line-height:1.4;max-width:32ch;">Mission-based grammar training for ELD and ELA classrooms.</p></div>' +

@@ -17,11 +17,11 @@
     /* Grammar Spy palette (locked): Navy + Teal primary, Gold accent only. No yellow/other accent. */
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--gold:#c9a227;--shadow:0 8px 16px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:#ffffff;color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 52px}
-    .wrap{max-width:1120px;margin:0 auto;display:grid;gap:56px}
+    body{margin:0;background:#ffffff;color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 52px}
+    .wrap{max-width:1320px;margin:0 auto;display:grid;gap:48px;padding:0 32px}
     .section{padding:8px 0}
     .section-flat{padding:8px 4px}
-    .section-band-dark{background:linear-gradient(170deg,#0b1020,#16223a);padding:34px 20px;color:#eaf0ff}
+    .section-band-dark{background:linear-gradient(170deg,#0b1020,#16223a);padding:40px 32px;color:#eaf0ff;margin:0 -32px;border-radius:0}
     .section-band-dark h2,.section-band-dark p,.section-band-dark li{color:#eaf0ff}
     .section-band-dark .link-action{color:#b9dfe2}
     .k{margin:0 0 10px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
@@ -42,14 +42,16 @@
     .mission-label{margin:0 0 8px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
     .mission-label::before{content:"";display:block;width:16px;height:2px;border-radius:2px;background:var(--gold);margin-bottom:8px}
     .hero-accent{width:36px;height:2px;background:var(--gold);border-radius:2px;margin:14px 0 0}
-    .hero-shell{margin:0 calc(50% - 50vw);padding:0 14px}
+    .hero-shell{margin:0 -32px;padding:0 32px;background:linear-gradient(180deg,#f8fbfd 0%,#ffffff 100%)}
     .hero{
       position:relative;
       overflow:hidden;
-      background:#ffffff;
+      background:transparent;
       color:var(--mid);
       border-radius:0;
-      padding:34px 0;
+      padding:48px 0 40px;
+      max-width:1320px;
+      margin:0 auto;
     }
     .hero h1{color:var(--navy)}
     .hero .k{color:var(--teal)}
