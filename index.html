@@ -103,10 +103,6 @@
     }
 
     .pill-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
       border-radius: 999px;
       padding: 10px 20px;
       font-size: 12px;
@@ -117,7 +113,6 @@
       background: #fff;
       color: #2e3b54;
       cursor: pointer;
-      text-decoration: none;
     }
 
     .pill-btn.primary {
@@ -214,18 +209,9 @@
       cursor: pointer;
     }
 
-    .choice-group button[aria-pressed="true"] {
-      background: #fff;
-      color: #0f2440;
-    }
-
     .choice-group button:first-child {
       background: #f8fbfd;
       border-right: 1px solid #d7dfe7;
-    }
-
-    .choice-group button[aria-pressed="true"]:first-child {
-      border-right-color: #d7dfe7;
     }
 
     .promo {
@@ -253,35 +239,6 @@
       background: #fff;
       font-size: 18px;
       color: #243652;
-    }
-
-    .cta-row {
-      margin-top: 14px;
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .link-inline {
-      color: var(--teal-strong);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-decoration: none;
-      background: transparent;
-      border: 0;
-      padding: 0;
-      cursor: pointer;
-    }
-
-    .mode-note {
-      margin-top: 12px;
-      margin-bottom: 0;
-      color: #51617c;
-      font-size: 14px;
-      line-height: 1.45;
     }
 
     .hero-image-wrap {
@@ -356,10 +313,6 @@
         font-size: 18px;
       }
 
-      .cta-row {
-        gap: 10px;
-      }
-
       .start-title {
         font-size: 24px;
       }
@@ -388,9 +341,9 @@
 
       <nav class="main-nav" aria-label="Primary">
         <a href="/">Home</a>
-        <a href="#start-card">Missions</a>
-        <a href="#blog">Blog</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#missions">Missions</a>
+        <a href="/blog">Blog</a>
+        <a href="/pricing">Pricing</a>
       </nav>
 
       <div class="nav-actions">
@@ -399,37 +352,31 @@
           <span>ES</span>
           <span>FR</span>
         </div>
-        <a class="pill-btn primary" href="#start-card">Create Account</a>
-        <a class="pill-btn" href="#start-card">Sign In</a>
+        <button class="pill-btn primary" type="button">Create Account</button>
+        <button class="pill-btn" type="button">Sign In</button>
       </div>
     </header>
 
-    <section id="missions" class="hero" aria-labelledby="hero-title">
+    <section class="hero" aria-labelledby="hero-title">
       <div>
         <p class="eyebrow">Grammar Spy&trade;</p>
         <h1 id="hero-title">Structured grammar. Clear results. Zero chaos.</h1>
         <div class="gold-line" aria-hidden="true"></div>
         <p class="lead">Created by an ELD teacher for real classrooms.</p>
 
-        <article id="start-card" class="start-card">
+        <article class="start-card">
           <h2 class="start-title">Start Here</h2>
           <p class="start-copy">Choose one (Teacher or Student), then click Continue. Sign up for a free account to get Mission 01 at no cost; pay to unlock all missions.</p>
 
           <div class="choice-group" role="group" aria-label="Profile type">
-            <button id="mode-teacher" type="button" aria-pressed="true">Teacher</button>
-            <button id="mode-student" type="button" aria-pressed="false">Student</button>
+            <button type="button">Teacher</button>
+            <button type="button">Student</button>
           </div>
 
-          <form id="promo-form" class="promo" action="#" method="get">
+          <form class="promo" action="#" method="get">
             <label for="promo-code">Promo Code</label>
-            <input id="promo-code" name="promo" type="text" placeholder="Enter code (e.g. FEEDBACK20)" autocomplete="off">
+            <input id="promo-code" name="promo" type="text" placeholder="Enter code (e.g. FEEDBACK20)">
           </form>
-
-          <div class="cta-row">
-            <a id="continue-link" class="pill-btn primary" href="#promo-code">Continue as Teacher</a>
-            <button id="apply-promo" class="link-inline" type="button">Apply Promo</button>
-          </div>
-          <p id="mode-note" class="mode-note">Teacher mode selected. Continue to set up your class account.</p>
         </article>
       </div>
 
@@ -495,102 +442,8 @@
         </figure>
       </div>
     </section>
-
-    <section id="blog" class="hero" aria-labelledby="blog-title">
-      <div>
-        <p class="eyebrow">Blog</p>
-        <h2 id="blog-title" style="margin:0;font-size:clamp(32px,3.5vw,48px);line-height:1.08;letter-spacing:-0.02em;">Teaching tips and mission updates.</h2>
-        <div class="gold-line" aria-hidden="true"></div>
-        <p class="lead" style="max-width:720px;">This page is currently a single-file build, so blog articles open here for now. We can add full blog pages next.</p>
-      </div>
-      <div></div>
-    </section>
-
-    <section id="pricing" class="hero" aria-labelledby="pricing-title" style="padding-top:0;">
-      <div>
-        <p class="eyebrow">Pricing</p>
-        <h2 id="pricing-title" style="margin:0;font-size:clamp(32px,3.5vw,48px);line-height:1.08;letter-spacing:-0.02em;">Mission 01 is free. Upgrade unlocks all missions.</h2>
-        <div class="gold-line" aria-hidden="true"></div>
-        <p class="lead" style="max-width:720px;">If you want, I can add a full pricing page next so this links to a dedicated route instead of this section.</p>
-      </div>
-      <div></div>
-    </section>
   </main>
 
   <button class="chat-bubble" type="button" aria-label="Open support chat">?</button>
-  <script>
-    (function () {
-      const teacherBtn = document.getElementById("mode-teacher");
-      const studentBtn = document.getElementById("mode-student");
-      const continueLink = document.getElementById("continue-link");
-      const modeNote = document.getElementById("mode-note");
-      const promoForm = document.getElementById("promo-form");
-      const promoInput = document.getElementById("promo-code");
-      const applyPromoBtn = document.getElementById("apply-promo");
-
-      if (!teacherBtn || !studentBtn || !continueLink || !modeNote || !promoForm || !promoInput || !applyPromoBtn) {
-        return;
-      }
-
-      let mode = "teacher";
-
-      function applyMode(nextMode) {
-        mode = nextMode;
-        const teacher = mode === "teacher";
-        teacherBtn.setAttribute("aria-pressed", teacher ? "true" : "false");
-        studentBtn.setAttribute("aria-pressed", teacher ? "false" : "true");
-        continueLink.textContent = teacher ? "Continue as Teacher" : "Continue as Student";
-        continueLink.href = "#promo-code";
-        modeNote.textContent = teacher
-          ? "Teacher mode selected. Add promo code or continue below."
-          : "Student mode selected. Add promo code or continue below.";
-      }
-
-      teacherBtn.addEventListener("click", function () {
-        applyMode("teacher");
-      });
-
-      studentBtn.addEventListener("click", function () {
-        applyMode("student");
-      });
-
-      continueLink.addEventListener("click", function () {
-        try {
-          window.localStorage.setItem("gs_home_mode", mode);
-        } catch (err) {
-          /* no-op */
-        }
-      });
-
-      promoForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-      });
-
-      function savePromoCode() {
-        const code = promoInput.value.trim();
-        if (!code) {
-          modeNote.textContent = "Enter a promo code first, then click Apply Promo.";
-          return;
-        }
-        try {
-          window.localStorage.setItem("gs_promo_code", code);
-        } catch (err) {
-          /* no-op */
-        }
-        modeNote.textContent = "Promo saved. Click Continue to keep going.";
-      }
-
-      promoInput.addEventListener("input", function () {
-        if (!promoInput.value.trim()) {
-          return;
-        }
-        modeNote.textContent = "Promo code entered. Click Apply Promo.";
-      });
-
-      applyPromoBtn.addEventListener("click", savePromoCode);
-
-      applyMode(mode);
-    })();
-  </script>
 </body>
 </html>
