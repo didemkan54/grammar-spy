@@ -78,10 +78,10 @@
 
   var gameUx = {
     "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Smash Wrong Line", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash", playMode: "smash" },
-    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Secure or Repair", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "binary" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Eliminate Weak Lines", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "eliminate" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Eliminate Weak Repairs", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "eliminate" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Eliminate Weak Rewrites", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "eliminate" },
+    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Classify Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Sequence Choice", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "sequence" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Repair Line", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "repair" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Rewrite Duel", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
     "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Smash Rule Breach", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
     "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Signal Verdict", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
     "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Verdict", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
@@ -1871,6 +1871,16 @@
       + ".sweep-pick.active-breach{background:#fff0f0;border-color:#d47f7f;color:#8b2f2f;}"
       + ".sweep-submit{margin-top:2px;}"
       + ".opt.eliminated{opacity:.6;pointer-events:none;}"
+      + ".duel-wrap{display:grid;gap:10px;}"
+      + ".duel-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
+      + ".duel-actions .opt{min-height:72px;}"
+      + ".classify-board{display:grid;gap:10px;}"
+      + ".classify-row{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:10px;display:grid;gap:8px;}"
+      + ".classify-row p{margin:0;font-size:14px;line-height:1.45;color:#16223a;}"
+      + ".classify-actions{display:flex;gap:8px;flex-wrap:wrap;}"
+      + ".classify-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 10px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;}"
+      + ".classify-pick.active-completed{background:#eaf2ff;border-color:#6a8fdf;color:#23427f;}"
+      + ".classify-pick.active-ongoing{background:#efeafe;border-color:#9a78df;color:#4b2c84;}"
       + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}";
     document.head.appendChild(style);
   }
@@ -1878,6 +1888,10 @@
   function modeHelperText(mode) {
     if (mode === "smash") return "Mode rule: tap the line that contains the error.";
     if (mode === "binary") return "Mode rule: judge one highlighted line as Secure or Needs Repair.";
+    if (mode === "classify") return "Mode rule: classify one sentence as Completed action or Ongoing background.";
+    if (mode === "repair") return "Mode rule: read the broken line and choose the strongest repair.";
+    if (mode === "duel") return "Mode rule: compare two rewrites and pick the stronger one.";
+    if (mode === "sequence") return "Mode rule: choose the strongest next line for story flow.";
     if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
     if (mode === "sweep") return "Mode rule: mark each line Secure or Needs Repair, then submit the board.";
     return "Mode rule: choose the single strongest line.";
@@ -1948,6 +1962,25 @@
     return btn;
   }
 
+  function finishRound(userCorrect, successMsg, failMsg, btn) {
+    if (locked) return;
+    locked = true;
+    idx += 1;
+    if (userCorrect) {
+      correct += 1;
+      streak += 1;
+      if (btn) btn.classList.add("good");
+      html("feedback", "<span class=\"ok\">" + successMsg + "</span>");
+      if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+    } else {
+      streak = 0;
+      if (btn) btn.classList.add("bad");
+      html("feedback", "<span class=\"bad\">" + failMsg + "</span>");
+    }
+    updateHud();
+    setTimeout(showRound, 900);
+  }
+
   function showChoiceOptions(round) {
     optionsEl.style.gridTemplateColumns = ux.columns === 1 ? "1fr" : "1fr 1fr";
     optionsEl.innerHTML = "";
@@ -1963,6 +1996,183 @@
       });
       optionsEl.appendChild(btn);
     });
+  }
+
+  function pickWrongIndex(round, excludeIdx) {
+    var wrong = [];
+    for (var i = 0; i < round.options.length; i++) {
+      if (i !== round.answer && i !== excludeIdx) wrong.push(i);
+    }
+    return wrong[Math.floor(Math.random() * wrong.length)];
+  }
+
+  function showRepairOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    var brokenIdx = pickWrongIndex(round);
+    var brokenLine = round.options[brokenIdx];
+    var rightLine = round.options[round.answer];
+
+    var card = document.createElement("div");
+    card.className = "binary-card";
+    var cardK = document.createElement("b");
+    cardK.textContent = "Broken line";
+    var cardText = document.createElement("p");
+    cardText.textContent = brokenLine;
+    card.appendChild(cardK);
+    card.appendChild(cardText);
+    optionsEl.appendChild(card);
+
+    var choices = [round.answer];
+    while (choices.length < Math.min(3, round.options.length)) {
+      var candidate = pickWrongIndex(round, brokenIdx);
+      if (choices.indexOf(candidate) === -1) choices.push(candidate);
+    }
+    choices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
+
+    var choicesWrap = document.createElement("div");
+    choicesWrap.className = "duel-actions";
+    choices.forEach(function (item, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt";
+      btn.innerHTML = "<b>Repair " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.addEventListener("click", function () {
+        finishRound(
+          item.idx === round.answer,
+          "Repair secured: strongest correction chosen. " + round.explain,
+          "Repair missed: correct line is \"" + rightLine + "\". " + round.explain,
+          btn
+        );
+      });
+      choicesWrap.appendChild(btn);
+    });
+    optionsEl.appendChild(choicesWrap);
+  }
+
+  function showDuelOptions(round, duelLabel) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    var wrongIdx = pickWrongIndex(round);
+    var duel = shuffle([
+      { idx: round.answer, text: round.options[round.answer] },
+      { idx: wrongIdx, text: round.options[wrongIdx] }
+    ]);
+
+    var wrap = document.createElement("div");
+    wrap.className = "duel-wrap";
+    var card = document.createElement("div");
+    card.className = "binary-card";
+    var cardK = document.createElement("b");
+    cardK.textContent = duelLabel;
+    var cardText = document.createElement("p");
+    cardText.textContent = "Choose the stronger sentence.";
+    card.appendChild(cardK);
+    card.appendChild(cardText);
+    wrap.appendChild(card);
+
+    var actions = document.createElement("div");
+    actions.className = "duel-actions";
+    duel.forEach(function (item, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt";
+      btn.innerHTML = "<b>Option " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.addEventListener("click", function () {
+        finishRound(
+          item.idx === round.answer,
+          "Strong choice secured. " + round.explain,
+          "Weaker option selected. " + round.explain,
+          btn
+        );
+      });
+      actions.appendChild(btn);
+    });
+    wrap.appendChild(actions);
+    optionsEl.appendChild(wrap);
+  }
+
+  function sentenceClass(lineText) {
+    return /\b(was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
+  }
+
+  function showClassifyOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    var assignments = {};
+
+    var board = document.createElement("div");
+    board.className = "classify-board";
+
+    shuffle(round.options.map(function (lineText, optionIdx) {
+      return { lineText: lineText, optionIdx: optionIdx };
+    })).forEach(function (item) {
+      var row = document.createElement("div");
+      row.className = "classify-row";
+      var line = document.createElement("p");
+      line.textContent = item.lineText;
+
+      var actions = document.createElement("div");
+      actions.className = "classify-actions";
+      var completedBtn = document.createElement("button");
+      completedBtn.type = "button";
+      completedBtn.className = "classify-pick";
+      completedBtn.textContent = "Completed Event";
+
+      var ongoingBtn = document.createElement("button");
+      ongoingBtn.type = "button";
+      ongoingBtn.className = "classify-pick";
+      ongoingBtn.textContent = "Ongoing Background";
+
+      function setPick(kind) {
+        assignments[item.optionIdx] = kind;
+        completedBtn.classList.toggle("active-completed", kind === "completed");
+        ongoingBtn.classList.toggle("active-ongoing", kind === "ongoing");
+      }
+
+      completedBtn.addEventListener("click", function () {
+        if (locked) return;
+        setPick("completed");
+      });
+      ongoingBtn.addEventListener("click", function () {
+        if (locked) return;
+        setPick("ongoing");
+      });
+
+      actions.appendChild(completedBtn);
+      actions.appendChild(ongoingBtn);
+      row.appendChild(line);
+      row.appendChild(actions);
+      board.appendChild(row);
+    });
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary sweep-submit";
+    submitBtn.textContent = "Submit Classification";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      if (Object.keys(assignments).length < round.options.length) {
+        html("feedback", "<span class=\"bad\">Classify every line first, then submit.</span>");
+        return;
+      }
+      var allCorrect = true;
+      for (var i = 0; i < round.options.length; i++) {
+        if (assignments[i] !== sentenceClass(round.options[i])) {
+          allCorrect = false;
+          break;
+        }
+      }
+      finishRound(
+        allCorrect,
+        "Timeline classification secured. " + round.explain,
+        "Timeline classification mismatch. " + round.explain,
+        submitBtn
+      );
+    });
+
+    optionsEl.appendChild(board);
+    optionsEl.appendChild(submitBtn);
   }
 
   function showBinaryOptions(round) {
@@ -2147,6 +2357,18 @@
     } else if (activeMode === "binary") {
       text("prompt", round.prompt + " Evaluate the highlighted line.");
       showBinaryOptions(round);
+    } else if (activeMode === "classify") {
+      text("prompt", round.prompt + " Classify each line by timeline role.");
+      showClassifyOptions(round);
+    } else if (activeMode === "repair") {
+      text("prompt", round.prompt + " Repair the broken line.");
+      showRepairOptions(round);
+    } else if (activeMode === "duel") {
+      text("prompt", round.prompt + " Compare two rewrites.");
+      showDuelOptions(round, "Rewrite Duel");
+    } else if (activeMode === "sequence") {
+      text("prompt", round.prompt + " Choose the stronger next line.");
+      showDuelOptions(round, "Next-line Duel");
     } else if (activeMode === "eliminate") {
       text("prompt", round.prompt + " Eliminate 3 weak lines and keep the strongest one.");
       showEliminateOptions(round);
