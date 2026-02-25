@@ -5,35 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Grammar Spy™ — Clue Trail</title>
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
-  <style>
-    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--line:#d9dee6;--slate:#4a5568;--ok:#1f8f63;--bad:#b04444}
-    *{box-sizing:border-box}body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Segoe UI,sans-serif;padding:22px 14px}
-    .wrap{max-width:980px;margin:0 auto;display:grid;gap:12px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
-    .k{margin:0;font:800 11px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}h1{margin:4px 0 0;font-size:30px}
-    .sub{margin:6px 0 0;color:var(--slate)}.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.chip{border:1px solid var(--line);border-radius:10px;padding:8px;background:#f8fafc}
-    .chip b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--slate)}.chip span{font-weight:800}
-    .q{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff;display:grid;gap:6px}.scene{font-size:13px;color:var(--teal);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
-    .prompt{font-size:18px;font-weight:800;color:var(--navy)}.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .opt{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;cursor:pointer;text-align:left;font-weight:700}.opt.good{border-color:#4fb28c;background:#f2fbf7}.opt.bad{border-color:#d47f7f;background:#fff7f7}
-    .feedback{min-height:24px;font-weight:700}.ok{color:var(--ok)}.bad{color:var(--bad)}.row{display:flex;gap:8px;flex-wrap:wrap}
-    .btn{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--mid);font:700 12px Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;cursor:pointer}
-    .btn.primary{background:var(--teal);border-color:#194f53;color:#fff}.overlay{position:fixed;inset:0;background:rgba(11,16,32,.34);display:none;place-items:center;padding:12px}.overlay.show{display:grid}
-    .modal{width:min(620px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:8px}
-    @media (max-width:860px){.hud,.opts{grid-template-columns:1fr}}
-    /* Teams split */
-    .teamsSplit{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1200px;margin:0 auto;padding:16px}
-    @media (max-width:880px){.teamsSplit{grid-template-columns:1fr}}
-    .teamColumn{border:2px solid var(--line);border-radius:16px;padding:14px;background:#fff}
-    .teamColumn h3{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal)}
-    .teamColumn .teamQ{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff;margin:8px 0}
-    .teamColumn .teamOpts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
-    .teamColumn .teamOpt{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;cursor:pointer;text-align:left;font-weight:700}
-    .teamColumn .teamOpt.good{border-color:#4fb28c;background:#f2fbf7}.teamColumn .teamOpt.bad{border-color:#d47f7f;background:#fff7f7}
-    .teamColumn .teamFeedback{min-height:24px;font-weight:700;margin:8px 0}.teamColumn .teamFeedback.ok{color:var(--ok)}.teamColumn .teamFeedback.bad{color:var(--bad)}
-    .teamColumn .teamHud{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
-    .teamColumn .teamChip{border:1px solid var(--line);border-radius:8px;padding:6px;background:#f8fafc;font-size:12px}
-    #finalTeamsScoresWrap{font-size:18px;font-weight:800;margin-top:10px}#winnerLine{font-size:16px;color:var(--teal);margin-top:6px}
-  </style>
+  <link rel="stylesheet" href="game-ui.css" />
 </head>
 <body>
 <div data-include="header"></div>
