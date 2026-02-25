@@ -79,17 +79,17 @@
   var gameUx = {
     "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Smash Wrong Line", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash", playMode: "smash" },
     "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Secure or Repair", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "binary" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Pick Best Line", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "best" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Pick Best Repair", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "best" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick Best Rewrite", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "best" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Eliminate Weak Lines", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "eliminate" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Eliminate Weak Repairs", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "eliminate" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Eliminate Weak Rewrites", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "eliminate" },
     "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Smash Rule Breach", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
     "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Signal Verdict", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
     "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Verdict", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
     "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Smash Agreement Error", sceneLabel: "Rule Check", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
-    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 2, modeLabel: "Smash Agreement Error", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep", playMode: "smash" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Board Sweep", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep", playMode: "sweep" },
     "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Case Verdict", sceneLabel: "Case File", startText: "Open Case", replayText: "Open New Case", endText: "Close Case", playMode: "binary" },
     "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Sequence Verdict", sceneLabel: "Sequence Step", startText: "Run Lab", replayText: "Run Lab Again", endText: "End Lab", playMode: "binary" },
-    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Verdict", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "binary" }
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Board Sweep", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "sweep" }
   };
 
   var fallbackRounds = [
@@ -1862,6 +1862,15 @@
       + ".binary-card p{margin:0;font-size:15px;line-height:1.45;color:#16223a;font-weight:700;}"
       + ".binary-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
       + ".binary-actions .opt{min-height:56px;}"
+      + ".sweep-board{display:grid;gap:10px;}"
+      + ".sweep-row{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:10px;display:grid;gap:8px;}"
+      + ".sweep-row p{margin:0;font-size:14px;line-height:1.45;color:#16223a;}"
+      + ".sweep-actions{display:flex;gap:8px;flex-wrap:wrap;}"
+      + ".sweep-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 10px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;}"
+      + ".sweep-pick.active-secure{background:#eaf8ef;border-color:#4fb28c;color:#176a49;}"
+      + ".sweep-pick.active-breach{background:#fff0f0;border-color:#d47f7f;color:#8b2f2f;}"
+      + ".sweep-submit{margin-top:2px;}"
+      + ".opt.eliminated{opacity:.6;pointer-events:none;}"
       + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}";
     document.head.appendChild(style);
   }
@@ -1869,6 +1878,8 @@
   function modeHelperText(mode) {
     if (mode === "smash") return "Mode rule: tap the line that contains the error.";
     if (mode === "binary") return "Mode rule: judge one highlighted line as Secure or Needs Repair.";
+    if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
+    if (mode === "sweep") return "Mode rule: mark each line Secure or Needs Repair, then submit the board.";
     return "Mode rule: choose the single strongest line.";
   }
 
@@ -1988,6 +1999,139 @@
     optionsEl.appendChild(actions);
   }
 
+  function showEliminateOptions(round) {
+    optionsEl.style.gridTemplateColumns = ux.columns === 1 ? "1fr" : "1fr 1fr";
+    optionsEl.innerHTML = "";
+    var removedWrong = 0;
+    var totalWrong = Math.max(0, round.options.length - 1);
+
+    shuffle(round.options.map(function (lineText, optionIdx) {
+      return { lineText: lineText, optionIdx: optionIdx };
+    })).forEach(function (item, displayIdx) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt";
+      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      btn.addEventListener("click", function () {
+        if (locked || btn.classList.contains("eliminated")) return;
+        if (item.optionIdx === round.answer) {
+          locked = true;
+          idx += 1;
+          streak = 0;
+          btn.classList.add("bad");
+          html("feedback", "<span class=\"bad\">You eliminated the strongest line. Keep one strong line and remove weak ones. " + round.explain + "</span>");
+          updateHud();
+          setTimeout(showRound, 900);
+          return;
+        }
+        btn.classList.add("bad", "eliminated");
+        removedWrong += 1;
+        if (removedWrong >= totalWrong) {
+          locked = true;
+          idx += 1;
+          correct += 1;
+          streak += 1;
+          html("feedback", "<span class=\"ok\">All weak lines eliminated. Strongest line secured. " + round.explain + "</span>");
+          if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+          updateHud();
+          setTimeout(showRound, 900);
+        } else {
+          html("feedback", "<span class=\"ok\">Weak line removed. " + (totalWrong - removedWrong) + " weak lines left.</span>");
+        }
+      });
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function showSweepOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    var selections = {};
+
+    var board = document.createElement("div");
+    board.className = "sweep-board";
+
+    shuffle(round.options.map(function (lineText, optionIdx) {
+      return { lineText: lineText, optionIdx: optionIdx };
+    })).forEach(function (item) {
+      var row = document.createElement("div");
+      row.className = "sweep-row";
+
+      var line = document.createElement("p");
+      line.textContent = item.lineText;
+
+      var actions = document.createElement("div");
+      actions.className = "sweep-actions";
+
+      var secureBtn = document.createElement("button");
+      secureBtn.type = "button";
+      secureBtn.className = "sweep-pick";
+      secureBtn.textContent = "Secure";
+
+      var repairBtn = document.createElement("button");
+      repairBtn.type = "button";
+      repairBtn.className = "sweep-pick";
+      repairBtn.textContent = "Needs Repair";
+
+      function setChoice(isSecure) {
+        selections[item.optionIdx] = isSecure;
+        secureBtn.classList.toggle("active-secure", isSecure);
+        repairBtn.classList.toggle("active-breach", !isSecure);
+      }
+
+      secureBtn.addEventListener("click", function () {
+        if (locked) return;
+        setChoice(true);
+      });
+      repairBtn.addEventListener("click", function () {
+        if (locked) return;
+        setChoice(false);
+      });
+
+      actions.appendChild(secureBtn);
+      actions.appendChild(repairBtn);
+      row.appendChild(line);
+      row.appendChild(actions);
+      board.appendChild(row);
+    });
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary sweep-submit";
+    submitBtn.textContent = "Submit Board Verdict";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      if (Object.keys(selections).length < round.options.length) {
+        html("feedback", "<span class=\"bad\">Mark every line first, then submit your verdict.</span>");
+        return;
+      }
+      locked = true;
+      idx += 1;
+      var allCorrect = true;
+      for (var i = 0; i < round.options.length; i++) {
+        var shouldSecure = i === round.answer;
+        if (selections[i] !== shouldSecure) {
+          allCorrect = false;
+          break;
+        }
+      }
+      if (allCorrect) {
+        correct += 1;
+        streak += 1;
+        html("feedback", "<span class=\"ok\">Board verified: only the strongest line is marked secure. " + round.explain + "</span>");
+        if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+      } else {
+        streak = 0;
+        html("feedback", "<span class=\"bad\">Board mismatch: one or more verdicts are incorrect. " + round.explain + "</span>");
+      }
+      updateHud();
+      setTimeout(showRound, 900);
+    });
+
+    optionsEl.appendChild(board);
+    optionsEl.appendChild(submitBtn);
+  }
+
   function showRound() {
     if (idx >= rounds.length) {
       endGame();
@@ -2003,6 +2147,12 @@
     } else if (activeMode === "binary") {
       text("prompt", round.prompt + " Evaluate the highlighted line.");
       showBinaryOptions(round);
+    } else if (activeMode === "eliminate") {
+      text("prompt", round.prompt + " Eliminate 3 weak lines and keep the strongest one.");
+      showEliminateOptions(round);
+    } else if (activeMode === "sweep") {
+      text("prompt", round.prompt + " Mark each line Secure or Needs Repair, then submit.");
+      showSweepOptions(round);
     } else {
       text("prompt", round.prompt);
       showChoiceOptions(round);
