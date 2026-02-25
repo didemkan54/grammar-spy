@@ -1,12 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="340" height="88" viewBox="0 0 340 88" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="96" viewBox="0 0 360 96" role="img" aria-labelledby="title desc">
   <title id="title">Grammar Spy logo</title>
-  <desc id="desc">Shield with magnifier mark and Grammar Spy wordmark.</desc>
-  <g transform="translate(4 4)">
-    <path d="M32 4L52 11V28c0 14-8.6 24.8-20 29.8C20.6 52.8 12 42 12 28V11L32 4z" fill="#0B1020"/>
-    <circle cx="30.2" cy="24.2" r="9.2" fill="none" stroke="#C9A227" stroke-width="3.2"/>
-    <path d="M36 30.1l6.2 6.2" fill="none" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round"/>
-    <path d="M26.4 24.5l2.3 2.2 5-5.2" fill="none" stroke="#C9A227" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <desc id="desc">Open book with a magnifying glass and Grammar Spy wordmark.</desc>
+  <g transform="translate(6 8)">
+    <rect x="0" y="0" width="76" height="76" rx="16" fill="#f8fbff" stroke="#d9e4f0"/>
+    <path d="M13 58V19c8.8 0 16.9 2.5 24 7.5V66c-7.1-5-15.2-8-24-8z" fill="#ffffff" stroke="#16223a" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M61 58V19c-8.8 0-16.9 2.5-24 7.5V66c7.1-5 15.2-8 24-8z" fill="#ffffff" stroke="#16223a" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M37 26v40" stroke="#1f5f63" stroke-width="2" stroke-linecap="round"/>
+    <path d="M21 31c5.7 0 11 1.6 16 4.8M53 31c-5.7 0-11 1.6-16 4.8" stroke="#d7e3f3" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="52.5" cy="32.5" r="11" fill="none" stroke="#c9a227" stroke-width="3"/>
+    <path d="M59.6 39.6l8.2 8.2" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+    <path d="M47.8 32.8l2.3 2.3 4.3-4.4" fill="none" stroke="#c9a227" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="72" y="35" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="37" fill="#16223A">Grammar</text>
-  <text x="72" y="68" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="37" fill="#1F5F63">Spy</text>
+  <text x="92" y="40" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="41" fill="#16223a">Grammar</text>
+  <text x="92" y="74" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="41" fill="#1f5f63">Spy</text>
 </svg>
