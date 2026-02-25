@@ -301,6 +301,7 @@
               <a class="link-action" href="auth.html" id="signUpLink" data-i18n="hero_signUpFree">Sign up free</a>
               <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=6&timer=off" data-i18n="hero_trySample">Try a sample mission</a>
               <a class="link-action" href="teacher-welcome.html">Teacher welcome video</a>
+              <a class="link-action" href="student-welcome.html">Student welcome video</a>
             </div>
             <div class="passive" data-i18n="hero_passive">Teacher path requires sign-in. Mission 01 free; upgrade for all missions.</div>
           </div>
@@ -417,7 +418,10 @@
     }
 
     teacherBtn.addEventListener('click', () => applyMode('class'));
-    studentBtn.addEventListener('click', () => applyMode('individual'));
+    studentBtn.addEventListener('click', () => {
+      applyMode('individual');
+      location.href = 'individual-home.html';
+    });
 
     const saved = localStorage.getItem(useKey);
     applyMode(saved === 'individual' ? 'individual' : 'class');

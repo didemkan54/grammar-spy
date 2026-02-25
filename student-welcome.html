@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Student Welcome Video</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 10px 22px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 40px}
+    .wrap{max-width:1100px;margin:0 auto;display:grid;gap:18px}
+    .panel{background:#fff;border:1px solid var(--cool);border-radius:16px;box-shadow:var(--shadow);padding:22px}
+    .k{margin:0 0 8px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
+    h1,h2{margin:0;color:#0b1020;line-height:1.1}
+    h1{font-size:34px}
+    h2{font-size:22px}
+    p{margin:10px 0 0;color:#4a5568;line-height:1.62}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .video-shell{border:1px solid var(--cool);border-radius:12px;background:#0b1020;padding:8px}
+    video{display:block;width:100%;height:auto;border-radius:10px;background:#000}
+    .notice{margin-top:10px;padding:10px 12px;border-radius:10px;background:#fff8e8;border:1px solid #edd9a7;color:#5c4a1f;font-size:13px;display:none}
+    .notice.show{display:block}
+    .btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif}
+    .btn-primary{border:1px solid #194f53;background:#1f5f63;color:#fff}
+    .btn-secondary{border:1px solid var(--cool);background:#fff;color:#16223a}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .steps{margin:12px 0 0;padding-left:18px;color:#4a5568;display:grid;gap:8px;line-height:1.58}
+    .quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .quick-nav a{display:block;padding:10px 12px;border:1px solid #d9dee6;border-radius:10px;background:#f8fafc;color:#16223a;text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em}
+    .quick-nav a:hover{border-color:#b9c7d8}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+
+  <main class="wrap" id="main">
+    <section class="panel">
+      <p class="k">Student onboarding</p>
+      <h1>Welcome video: how students use Grammar Spy</h1>
+      <p>This short tour shows students exactly where to click, how to start missions, and how to read instant feedback.</p>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Student welcome video</h2>
+        <p>Press play to start the walkthrough.</p>
+        <div class="video-shell">
+          <video id="studentWelcomeVideo" controls preload="metadata" poster="assets/branding-images/hero/hero-classroom-feb23.png">
+            <source src="assets/videos/student-welcome.mp4" type="video/mp4" />
+            Your browser does not support HTML5 video.
+          </video>
+        </div>
+        <p id="videoNotice" class="notice">Video file not found yet. Upload <b>assets/videos/student-welcome.mp4</b> to show your custom student walkthrough.</p>
+        <div class="actions">
+          <a class="btn-primary" href="individual-home.html">Open student dashboard</a>
+          <a class="btn-secondary" href="packs.html">Open mission library</a>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>What students learn in this video</h2>
+        <ol class="steps">
+          <li>Choose Student mode from the homepage and continue.</li>
+          <li>Open a mission pack and pick a game.</li>
+          <li>Read the “How to play” screen before starting.</li>
+          <li>Answer rounds and check instant feedback.</li>
+          <li>Read the mission report, then continue to the next mission.</li>
+        </ol>
+        <h2 style="margin-top:18px">Quick navigation links</h2>
+        <div class="quick-nav">
+          <a href="index.html">Home</a>
+          <a href="individual-home.html">Student Dashboard</a>
+          <a href="packs.html">Mission Library</a>
+          <a href="individual-mode.html?pack=pack01">Student Mode</a>
+          <a href="clue-trail.html?pack=pack01&mode=individual">Sample Mission</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    (function () {
+      var video = document.getElementById('studentWelcomeVideo');
+      var notice = document.getElementById('videoNotice');
+      if (!video || !notice) return;
+
+      function showNotice() {
+        notice.classList.add('show');
+      }
+
+      video.addEventListener('error', showNotice);
+      video.addEventListener('loadeddata', function () {
+        notice.classList.remove('show');
+      });
+
+      setTimeout(function () {
+        if (video.readyState === 0) showNotice();
+      }, 1400);
+    })();
+  </script>
+</body>
+</html>

@@ -1,26 +1,110 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0;url=index.html">
-  <script>
-    (function () {
-      var target = 'index.html';
-      var q = window.location.search || '';
-      var h = window.location.hash || '';
-      var hasQ = target.indexOf('?') !== -1;
-      var next = target + (q ? (hasQ ? '&' : '?') + q.slice(1) : '') + h;
-      window.location.replace(next);
-    })();
-  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Student Home</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; color: #16223a; }
-    a { color: #1f5f63; }
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 8px 18px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 40px}
+    .wrap{max-width:960px;margin:0 auto;display:grid;gap:24px}
+    .section{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow);padding:24px}
+    .k{margin:0 0 10px;font:800 11px Inter,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1f5f63}
+    h1,h2{margin:0;color:#0b1020;line-height:1.12}
+    h1{font-size:34px} h2{font-size:20px}
+    p{margin:10px 0 0;color:#4a5568;line-height:1.65;font-weight:450}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+    .card{border-radius:12px;background:#f8fbfd;padding:14px;display:grid;gap:8px}
+    .segmented{display:inline-flex;gap:6px;padding:4px;border:1px solid var(--cool);border-radius:999px;background:#f8fafc;margin-top:12px}
+    .seg{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;color:#4a5568;border-radius:999px;padding:7px 11px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+    .seg.active{background:#ffffff;color:#16223a;box-shadow:0 1px 3px rgba(11,16,32,.08)}
+    .btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid #194f53;background:#1f5f63;color:#fff;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif;width:fit-content}
+    .btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid var(--cool);background:#fff;color:#16223a;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif;width:fit-content}
+    .link-action{display:inline-block;color:#1f5f63;text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em}
+    .link-action:hover{text-decoration:underline}
+    .pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+    .pack-tile{display:block;text-decoration:none}
+    .pack-card-caption{margin-top:6px;font:700 11px Inter,Arial,sans-serif;color:#16223a;line-height:1.25}
+    .pack-card img,.pack-tile img{width:100%;max-height:96px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(11,16,32,.1);transition:transform .2s ease, box-shadow .2s ease}
+    .pack-tile:hover img{transform:translateY(-2px);box-shadow:0 12px 24px rgba(11,16,32,.14)}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.section{padding:20px}}
+    @media (max-width:900px){.pack-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
   </style>
 </head>
 <body>
-  <p>Redirecting... If this does not happen automatically, <a href="index.html">continue here</a>.</p>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+  <main class="wrap">
+    <section class="section">
+      <p class="k">Student Home</p>
+      <h1>Your mission start dashboard</h1>
+      <p>Pick a mission, play, and review your progress one step at a time.</p>
+      <div class="segmented" role="tablist" aria-label="Mode selection">
+        <a class="seg" aria-selected="false" href="teacher-home.html">Teacher</a>
+        <a class="seg active" aria-selected="true" href="individual-home.html">Student</a>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Student welcome video">
+      <p class="k">Welcome Video</p>
+      <h2>Start with the student tour</h2>
+      <p>This quick video shows students where to click, how to launch a mission, and how to read feedback.</p>
+      <a class="btn-primary" href="student-welcome.html">Watch student welcome video</a>
+    </section>
+
+    <section class="section" aria-label="Primary student actions">
+      <div class="grid">
+        <article class="card">
+          <h2>Continue Last Mission</h2>
+          <p>Jump back into your most recent activity.</p>
+          <a class="btn-primary" href="individual-mode.html?pack=pack01">Continue</a>
+        </article>
+        <article class="card">
+          <h2>Start New Mission</h2>
+          <p>Choose a pack and begin a fresh round.</p>
+          <a class="btn-secondary" href="packs.html">Choose mission</a>
+        </article>
+        <article class="card">
+          <h2>Try Sample Mission</h2>
+          <p>Quick practice with no setup required.</p>
+          <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=8&timer=off">Open sample</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Pack tiles">
+      <h2>Mission selection</h2>
+      <p>Open one mission set, then choose a game and difficulty.</p>
+      <div class="pack-grid" style="margin-top:14px" id="featuredStudentPacks"></div>
+    </section>
+  </main>
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    (function(){
+      try { localStorage.setItem('gs_use_context_v3', 'individual'); } catch(e) {}
+      var FEATURED = [
+        { id: 'pack01', num: '01', name: 'Retell What Happened', cover: 'assets/branding-images/packs/pack01-retell-what-happened.png' },
+        { id: 'pack02', num: '02', name: 'Speak In The Moment', cover: 'assets/branding-images/packs/pack02-speak-in-the-moment.png' },
+        { id: 'pack03', num: '03', name: 'Sentence Confidence Missions', cover: 'assets/branding-images/packs/pack03-sentence-confidence-missions.png' },
+        { id: 'pack04', num: '04', name: 'Link Ideas Clearly', cover: 'assets/branding-images/packs/pack04-link-ideas-clearly.png' }
+      ];
+      var el = document.getElementById('featuredStudentPacks');
+      if (!el) return;
+      FEATURED.forEach(function(p){
+        var a = document.createElement('a');
+        a.href = 'pack.html?pack=' + p.id;
+        a.className = 'pack-tile';
+        a.innerHTML = '<img src="' + p.cover + '" alt="Pack ' + p.num + ' ' + p.name + ' cover">' +
+          '<div class="pack-card-caption">Pack ' + p.num + ' · ' + p.name + '</div>';
+        el.appendChild(a);
+      });
+    })();
+  </script>
 </body>
 </html>
