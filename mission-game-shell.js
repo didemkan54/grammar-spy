@@ -76,6 +76,22 @@
     }
   };
 
+  var gameUx = {
+    "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Rapid Correction", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash" },
+    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Timeline Sort", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Story Flow", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Dialogue Repair", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Rewrite Challenge", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite" },
+    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Rule Sprint", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint" },
+    "signal-decoder-present": { accent: "#0a7fa5", columns: 2, modeLabel: "Signal Decoder", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode" },
+    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Mode", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview" },
+    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Agreement Sprint", sceneLabel: "Rule Check", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Agreement Sweep", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep" },
+    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Case Interview", sceneLabel: "Case File", startText: "Open Case", replayText: "Open New Case", endText: "Close Case" },
+    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Sequence Lab", sceneLabel: "Sequence Step", startText: "Run Lab", replayText: "Run Lab Again", endText: "End Lab" },
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Sorting", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board" }
+  };
+
   var fallbackRounds = [
     {
       scene: "Mission Warmup",
@@ -1828,20 +1844,26 @@
     return next;
   }
 
+  function applyGameUx(ux) {
+    var accent = ux && ux.accent ? ux.accent : "#1f5f63";
+    var columns = ux && ux.columns === 1 ? "1fr" : "1fr 1fr";
+    var style = document.createElement("style");
+    style.textContent = ""
+      + ".k{color:" + accent + " !important;}"
+      + ".chip b{color:" + accent + " !important;}"
+      + ".opt b{color:" + accent + " !important;}"
+      + ".opt:hover{border-color:" + accent + " !important;}"
+      + ".btn.primary{background:" + accent + " !important;border-color:" + accent + " !important;}"
+      + ".scene .label{color:" + accent + " !important;}"
+      + ".modal h2{color:" + accent + " !important;}"
+      + "#options{grid-template-columns:" + columns + " !important;}";
+    document.head.appendChild(style);
+  }
+
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
-    var target = Math.max(1, Math.min(20, desiredCount));
-    if (source.length >= target) {
-      return shuffle(cloneRounds(source)).slice(0, target);
-    }
-    var result = [];
-    while (result.length < target) {
-      var chunk = shuffle(cloneRounds(source));
-      for (var i = 0; i < chunk.length && result.length < target; i++) {
-        result.push(chunk[i]);
-      }
-    }
-    return result;
+    var target = Math.max(1, Math.min(20, desiredCount, source.length));
+    return shuffle(cloneRounds(source)).slice(0, target);
   }
 
   function text(id, value) {
@@ -1855,6 +1877,8 @@
   }
 
   var cfg = resolveGameConfig(gameKey, pack, games[gameKey] || games["error-smash"]);
+  var ux = gameUx[gameKey] || gameUx["error-smash"];
+  applyGameUx(ux);
   var packTitle = (window.GSPacks && window.GSPacks.meta && window.GSPacks.meta[pack] && window.GSPacks.meta[pack].short) || pack.toUpperCase();
   var teacherBtn = document.getElementById("btnTeacher");
   var homeBtn = document.getElementById("btnHome");
@@ -1863,9 +1887,12 @@
 
   text("gameTitle", cfg.title);
   text("gameSub", cfg.subtitle);
-  text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty);
+  text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Mode: " + (ux.modeLabel || "Standard"));
   text("howToText", cfg.howTo + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
+  text("howToTitle", "How to play: " + cfg.title);
   text("hudTimer", timerOn ? "--" : "Off");
+  var sceneLabelEl = document.querySelector(".scene .label");
+  if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
 
   var rounds = buildRounds(resolveRoundBank(gameKey, pack), count);
   var idx = 0;
@@ -1951,6 +1978,7 @@
 
   var startOverlay = document.getElementById("startOverlay");
   var startBtn = document.getElementById("startBtn");
+  if (startBtn && ux.startText) startBtn.textContent = ux.startText;
   if (startBtn) {
     startBtn.addEventListener("click", function () {
       if (startOverlay) startOverlay.classList.remove("show");
@@ -1960,9 +1988,11 @@
   }
 
   var endBtn = document.getElementById("endBtn");
+  if (endBtn && ux.endText) endBtn.textContent = ux.endText;
   if (endBtn) endBtn.addEventListener("click", endGame);
 
   var replayBtn = document.getElementById("replayBtn");
+  if (replayBtn && ux.replayText) replayBtn.textContent = ux.replayText;
   if (replayBtn) {
     replayBtn.addEventListener("click", function () {
       var report = document.getElementById("reportOverlay");

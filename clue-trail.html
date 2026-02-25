@@ -57,6 +57,19 @@
 const q=new URLSearchParams(location.search),pack=(q.get('pack')||'pack01'),count=Math.max(6,Math.min(20,Number(q.get('count')||10)||10)),timerOn=(q.get('timer')||'on')!=='off',difficulty=q.get('difficulty')||'field';
 const meta=(window.GSPacks&&GSPacks.meta[pack])||GSPacks.meta.pack01,bank=(GSPacks.clueTrail[pack]||GSPacks.clueTrail.pack01||[]).slice();
 document.getElementById('packK').textContent=meta.title+' · '+meta.short;
+const packProfiles={
+  pack01:{accent:'#2f6fd8',sub:'Retell timeline clues and choose the strongest past-form sentence.'},
+  pack02:{accent:'#d84f7f',sub:'Decode present-time signals and choose the strongest live-action sentence.'},
+  pack03:{accent:'#1f8f63',sub:'Sweep be-verb agreement evidence and secure subject matching.'},
+  pack04:{accent:'#8c5dd7',sub:'Sort connector evidence and lock clear logic flow.'},
+  pack05:{accent:'#0f8b7f',sub:'Sort reference evidence and fix unclear pronouns.'},
+  pack06:{accent:'#a66a1d',sub:'Sort question evidence and secure yes/no + Wh forms.'}
+};
+const profile=packProfiles[pack]||packProfiles.pack01;
+const style=document.createElement('style');
+style.textContent='.k,.scene{color:'+profile.accent+' !important;}.btn.primary{background:'+profile.accent+' !important;border-color:'+profile.accent+' !important;}';
+document.head.appendChild(style);
+const subEl=document.querySelector('.sub');if(subEl)subEl.textContent=profile.sub;
 const teacherLink=document.getElementById('teacherLink');teacherLink.href=(teacherLink.getAttribute('href')||'teacher-home.html').split('?')[0]+'?pack='+pack;
 const scene=document.getElementById('scene'),prompt=document.getElementById('prompt'),opts=document.getElementById('opts'),fb=document.getElementById('fb');
 const hudCase=document.getElementById('hudCase'),hudAcc=document.getElementById('hudAcc'),hudStreak=document.getElementById('hudStreak'),hudTimer=document.getElementById('hudTimer');
@@ -71,12 +84,8 @@ function cloneRound(r){return {scene:r.scene,prompt:r.prompt,options:r.options.s
 function shuffle(list){const a=list.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));const t=a[k];a[k]=a[j];a[j]=t;}return a;}
 function buildRounds(source,target){
   const src=(source&&source.length)?source:[{scene:'Mission Warmup',prompt:'Choose the strongest line.',options:['The team checked the script before class.','The team check the script before class.','The team is checked the script before class.','The team were checking the script before class yesterday.'],answer:0,explain:'Simple past is best for completed action.'}];
-  const out=[];
-  while(out.length<target){
-    const chunk=shuffle(src).map(cloneRound);
-    for(let n=0;n<chunk.length&&out.length<target;n++){out.push(chunk[n]);}
-  }
-  return out;
+  const safeTarget=Math.max(1,Math.min(target,src.length));
+  return shuffle(src).slice(0,safeTarget).map(cloneRound);
 }
 
 function track(n,d){window.GSAnalytics&&GSAnalytics.track&&GSAnalytics.track(n,d||{});}
