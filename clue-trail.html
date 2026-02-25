@@ -55,6 +55,7 @@
 <script>
 (()=>{
 const q=new URLSearchParams(location.search),pack=(q.get('pack')||'pack01'),count=Math.max(6,Math.min(20,Number(q.get('count')||10)||10)),timerOn=(q.get('timer')||'on')!=='off',difficulty=q.get('difficulty')||'field';
+const secondsPerRound=difficulty==='rookie'?36:(difficulty==='field'?30:24);
 const meta=(window.GSPacks&&GSPacks.meta[pack])||GSPacks.meta.pack01,bank=(GSPacks.clueTrail[pack]||GSPacks.clueTrail.pack01||[]).slice();
 document.getElementById('packK').textContent=meta.title+' · '+meta.short;
 const packProfiles={
@@ -73,7 +74,7 @@ const subEl=document.querySelector('.sub');if(subEl)subEl.textContent=profile.su
 const teacherLink=document.getElementById('teacherLink');teacherLink.href=(teacherLink.getAttribute('href')||'teacher-home.html').split('?')[0]+'?pack='+pack;
 const scene=document.getElementById('scene'),prompt=document.getElementById('prompt'),opts=document.getElementById('opts'),fb=document.getElementById('fb');
 const hudCase=document.getElementById('hudCase'),hudAcc=document.getElementById('hudAcc'),hudStreak=document.getElementById('hudStreak'),hudTimer=document.getElementById('hudTimer');
-let rounds=[],i=0,ok=0,streak=0,locked=false,sec=timerOn?count*10:null,timer=null;
+let rounds=[],i=0,ok=0,streak=0,locked=false,sec=timerOn?count*secondsPerRound:null,timer=null;
 
 let teamsMode=false,teamNames=[];
 try{if(q.get('play_format')==='teams'){const raw=localStorage.getItem('gs_teams_session');const data=raw?JSON.parse(raw):null;if(data&&data.teams&&data.teams.length===2){teamsMode=true;teamNames=[data.teams[0].name,data.teams[1].name];}}}catch(e){}
@@ -100,7 +101,7 @@ function pick(){
     showTeamsSide('A');showTeamsSide('B');
     return;
   }
-  rounds=buildRounds(bank,nRounds);i=0;ok=0;streak=0;if(!timerOn)hudTimer.textContent='Off';sec=timerOn?rounds.length*10:null;
+  rounds=buildRounds(bank,nRounds);i=0;ok=0;streak=0;if(!timerOn)hudTimer.textContent='Off';sec=timerOn?rounds.length*secondsPerRound:null;
 }
 function hud(){hudCase.textContent=`${Math.min(i+1,rounds.length)}/${rounds.length}`;hudAcc.textContent=`${Math.round((ok/Math.max(1,i))*100)}%`;hudStreak.textContent=String(streak);if(timerOn)hudTimer.textContent=`${Math.max(0,sec)}s`;}
 function show(){if(i>=rounds.length){end();return;}locked=false;fb.textContent='';fb.className='feedback';const r=rounds[i];scene.textContent=r.scene;prompt.textContent=r.prompt;opts.innerHTML='';r.options.map((t,ix)=>({t,ix})).sort(()=>Math.random()-.5).forEach(o=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=o.t;b.addEventListener('click',()=>choose(o,b,r));opts.appendChild(b)});hud();}
