@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Clue Trail</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--line:#d9dee6;--slate:#4a5568;--ok:#1f8f63;--bad:#b04444}
+    *{box-sizing:border-box}body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Segoe UI,sans-serif;padding:22px 14px}
+    .wrap{max-width:980px;margin:0 auto;display:grid;gap:12px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+    .k{margin:0;font:800 11px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}h1{margin:4px 0 0;font-size:30px}
+    .sub{margin:6px 0 0;color:var(--slate)}.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.chip{border:1px solid var(--line);border-radius:10px;padding:8px;background:#f8fafc}
+    .chip b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--slate)}.chip span{font-weight:800}
+    .q{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff;display:grid;gap:6px}.scene{font-size:13px;color:var(--teal);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+    .prompt{font-size:18px;font-weight:800;color:var(--navy)}.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .opt{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;cursor:pointer;text-align:left;font-weight:700}.opt.good{border-color:#4fb28c;background:#f2fbf7}.opt.bad{border-color:#d47f7f;background:#fff7f7}
+    .feedback{min-height:24px;font-weight:700}.ok{color:var(--ok)}.bad{color:var(--bad)}.row{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--mid);font:700 12px Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;cursor:pointer}
+    .btn.primary{background:var(--teal);border-color:#194f53;color:#fff}.overlay{position:fixed;inset:0;background:rgba(11,16,32,.34);display:none;place-items:center;padding:12px}.overlay.show{display:grid}
+    .modal{width:min(620px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:8px}
+    @media (max-width:860px){.hud,.opts{grid-template-columns:1fr}}
+    /* Teams split */
+    .teamsSplit{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1200px;margin:0 auto;padding:16px}
+    @media (max-width:880px){.teamsSplit{grid-template-columns:1fr}}
+    .teamColumn{border:2px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+    .teamColumn h3{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal)}
+    .teamColumn .teamQ{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff;margin:8px 0}
+    .teamColumn .teamOpts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+    .teamColumn .teamOpt{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;cursor:pointer;text-align:left;font-weight:700}
+    .teamColumn .teamOpt.good{border-color:#4fb28c;background:#f2fbf7}.teamColumn .teamOpt.bad{border-color:#d47f7f;background:#fff7f7}
+    .teamColumn .teamFeedback{min-height:24px;font-weight:700;margin:8px 0}.teamColumn .teamFeedback.ok{color:var(--ok)}.teamColumn .teamFeedback.bad{color:var(--bad)}
+    .teamColumn .teamHud{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+    .teamColumn .teamChip{border:1px solid var(--line);border-radius:8px;padding:6px;background:#f8fafc;font-size:12px}
+    #finalTeamsScoresWrap{font-size:18px;font-weight:800;margin-top:10px}#winnerLine{font-size:16px;color:var(--teal);margin-top:6px}
+  </style>
+</head>
+<body>
+<div data-include="header"></div>
+<main class="wrap">
+  <section class="panel">
+    <p class="k" id="packK">Mission Pack</p><h1>Clue Trail</h1><p class="sub">Read classroom context and choose the line that best secures meaning.</p>
+    <div class="hud"><div class="chip"><b>Case</b><span id="hudCase">1/1</span></div><div class="chip"><b>Accuracy</b><span id="hudAcc">0%</span></div><div class="chip"><b>Streak</b><span id="hudStreak">0</span></div><div class="chip"><b>Timer</b><span id="hudTimer">Off</span></div></div>
+    <div class="q"><div class="scene" id="scene"></div><div class="prompt" id="prompt"></div></div>
+    <div class="opts" id="opts"></div><p class="feedback" id="fb"></p>
+    <div class="row"><button class="btn" id="endBtn" type="button">End Mission</button><button class="btn" id="btnSound" type="button">Sound: ON</button><a class="btn" href="index.html">Home</a></div>
+  </section>
+</main>
+<div id="onboardOverlay" class="overlay" role="dialog" aria-modal="true"><section class="modal"><h3>How to play: Clue Trail</h3><p>Read the classroom scene and prompt, then choose the line that best completes or secures the meaning. You get instant feedback and can build a streak.</p><button class="btn primary" id="btnOnboardClose">Start Mission</button></section></div>
+<div id="teamsWrap" class="teamsSplit" style="display:none" aria-label="Teams mode"></div>
+<div class="overlay" id="ov"><section class="modal"><h2 style="margin:0">Mission Report</h2><p id="r1"></p><p id="r2"></p><p id="r3"></p><div class="box" id="finalTeamsScoresWrap" style="margin-top:10px;display:none"><div id="finalTeamAScore"></div><div id="finalTeamBScore"></div><div id="winnerLine"></div></div><div class="box" id="endTeamsWrap" style="margin-top:10px;display:none"><div class="label" style="font-size:11px;text-transform:uppercase;color:var(--slate)">Teams (share scores with)</div><div id="endTeamsList" style="margin-top:6px;font-size:13px;line-height:1.5"></div></div><div class="row"><button class="btn primary" id="again">Play Again</button><a class="btn" id="teacherLink" href="teacher-home.html">Close</a></div></section></div>
+<div data-include="footer"></div>
+<script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script><script src="layout-loader.js"></script><script src="app-shell.js"></script><script src="game-sound.js"></script><script src="grammar-context-bank.js"></script>
+<script>
+(()=>{
+const q=new URLSearchParams(location.search),pack=(q.get('pack')||'pack01'),count=Math.max(20,Math.min(40,Number(q.get('count')||20)||20)),timerOn=(q.get('timer')||'on')!=='off',difficulty=q.get('difficulty')||'field';
+const meta=(window.GSPacks&&GSPacks.meta[pack])||GSPacks.meta.pack01,bank=(GSPacks.clueTrail[pack]||GSPacks.clueTrail.pack01).slice();
+document.getElementById('packK').textContent=meta.title+' · '+meta.short;
+const teacherLink=document.getElementById('teacherLink');teacherLink.href=(teacherLink.getAttribute('href')||'teacher-home.html').split('?')[0]+'?pack='+pack;
+const scene=document.getElementById('scene'),prompt=document.getElementById('prompt'),opts=document.getElementById('opts'),fb=document.getElementById('fb');
+const hudCase=document.getElementById('hudCase'),hudAcc=document.getElementById('hudAcc'),hudStreak=document.getElementById('hudStreak'),hudTimer=document.getElementById('hudTimer');
+let rounds=[],i=0,ok=0,streak=0,locked=false,sec=timerOn?count*10:null,timer=null;
+
+let teamsMode=false,teamNames=[];
+try{if(q.get('play_format')==='teams'){const raw=localStorage.getItem('gs_teams_session');const data=raw?JSON.parse(raw):null;if(data&&data.teams&&data.teams.length===2){teamsMode=true;teamNames=[data.teams[0].name,data.teams[1].name];}}}catch(e){}
+let roundsA=[],roundsB=[],iA=0,iB=0,okA=0,okB=0,streakA=0,streakB=0,lockedA=false,lockedB=false;
+const nRounds=Math.min(count,bank.length);
+
+function track(n,d){window.GSAnalytics&&GSAnalytics.track&&GSAnalytics.track(n,d||{});}
+function pick(){
+  if(teamsMode){
+    document.querySelector('.wrap').style.display='none';
+    document.getElementById('teamsWrap').style.display='grid';
+    roundsA=bank.slice().sort(()=>Math.random()-.5).slice(0,nRounds);
+    roundsB=bank.slice().sort(()=>Math.random()-.5).slice(0,nRounds);
+    iA=0;iB=0;okA=0;okB=0;streakA=0;streakB=0;lockedA=false;lockedB=false;
+    initTeamsMode();
+    showTeamsSide('A');showTeamsSide('B');
+    return;
+  }
+  rounds=bank.sort(()=>Math.random()-.5).slice(0,nRounds);i=0;ok=0;streak=0;if(!timerOn)hudTimer.textContent='Off';sec=timerOn?rounds.length*10:null;
+}
+function hud(){hudCase.textContent=`${Math.min(i+1,rounds.length)}/${rounds.length}`;hudAcc.textContent=`${Math.round((ok/Math.max(1,i))*100)}%`;hudStreak.textContent=String(streak);if(timerOn)hudTimer.textContent=`${Math.max(0,sec)}s`;}
+function show(){if(i>=rounds.length){end();return;}locked=false;fb.textContent='';fb.className='feedback';const r=rounds[i];scene.textContent=r.scene;prompt.textContent=r.prompt;opts.innerHTML='';r.options.map((t,ix)=>({t,ix})).sort(()=>Math.random()-.5).forEach(o=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=o.t;b.addEventListener('click',()=>choose(o,b,r));opts.appendChild(b)});hud();}
+function choose(o,btn,r){if(locked)return;locked=true;i++;if(o.ix===r.answer){ok++;streak++;btn.classList.add('good');fb.textContent='Mission secure: '+r.explain;fb.className='feedback ok';}else{streak=0;btn.classList.add('bad');fb.textContent='Breach detected: '+r.explain;fb.className='feedback bad';}hud();setTimeout(show,850);}
+function end(){clearInterval(timer);const acc=Math.round((ok/Math.max(1,i))*100);document.getElementById('r1').textContent=`Accuracy: ${acc}% (${ok}/${Math.max(1,i)})`;document.getElementById('r2').textContent=`Pack: ${meta.title}`;document.getElementById('r3').textContent=`Recommendation: ${acc>=80?'Advance to next module':'Replay for retrieval strength'}`;track('mission_complete',{pack,game:'clue-trail',difficulty,accuracy:acc,count:rounds.length});document.getElementById('ov').classList.add('show');}
+function startTimer(){if(!timerOn)return;clearInterval(timer);timer=setInterval(()=>{sec--;hudTimer.textContent=`${Math.max(0,sec)}s`;if(sec<=0)end();},1000)}
+
+function showTeamsSide(side){
+  const col=document.getElementById('teamCol'+side);
+  if(!col)return;
+  const rnd=side==='A'?roundsA:roundsB,idx=side==='A'?iA:iB,correct=side==='A'?okA:okB,str=side==='A'?streakA:streakB;
+  col.querySelector('.teamCase').textContent=`${Math.min(idx+1,rnd.length)}/${rnd.length}`;
+  col.querySelector('.teamAcc').textContent=`${Math.round((correct/Math.max(1,idx))*100)}%`;
+  col.querySelector('.teamStr').textContent=String(str);
+  if(idx>=rnd.length){col.querySelector('.teamQ').innerHTML='<p class="scene">Done</p><p class="prompt" style="font-size:14px">Waiting for both teams…</p>';col.querySelector('.teamOpts').innerHTML='';col.querySelector('.teamFeedback').textContent='';if(iA>=roundsA.length&&iB>=roundsB.length)endGameTeams();return;}
+  const r=rnd[idx];
+  col.querySelector('.teamScene').textContent=r.scene;
+  col.querySelector('.teamPrompt').textContent=r.prompt;
+  col.querySelector('.teamFeedback').textContent='';col.querySelector('.teamFeedback').className='teamFeedback';
+  const optsEl=col.querySelector('.teamOpts');optsEl.innerHTML='';
+  r.options.map((t,ix)=>({t,ix})).sort(()=>Math.random()-.5).forEach(o=>{const b=document.createElement('button');b.className='teamOpt';b.type='button';b.textContent=o.t;b.addEventListener('click',()=>chooseTeamsSide(side,o,b,r));optsEl.appendChild(b);});
+}
+function chooseTeamsSide(side,o,btn,r){
+  const col=document.getElementById('teamCol'+side);
+  if(!col)return;
+  if(side==='A'){if(lockedA)return;lockedA=true;}else{if(lockedB)return;lockedB=true;}
+  const correct=side==='A'?okA:okB,str=side==='A'?streakA:streakB;
+  if(o.ix===r.answer){
+    if(side==='A'){okA++;streakA++;}else{okB++;streakB++;}
+    btn.classList.add('good');
+    col.querySelector('.teamFeedback').textContent='Mission secure: '+r.explain;col.querySelector('.teamFeedback').className='teamFeedback ok';
+  }else{
+    if(side==='A'){streakA=0;}else{streakB=0;}
+    btn.classList.add('bad');
+    col.querySelector('.teamFeedback').textContent='Breach detected: '+r.explain;col.querySelector('.teamFeedback').className='teamFeedback bad';
+  }
+  if(side==='A'){iA++;}else{iB++;}
+  showTeamsSide(side);
+  setTimeout(()=>{if(side==='A')lockedA=false;else lockedB=false;showTeamsSide(side);if(iA>=roundsA.length&&iB>=roundsB.length)endGameTeams();},900);
+}
+function endGameTeams(){
+  const totalA=Math.max(1,roundsA.length),totalB=Math.max(1,roundsB.length);
+  const accA=Math.round((okA/totalA)*100),accB=Math.round((okB/totalB)*100);
+  document.getElementById('r1').textContent=`Accuracy: ${okA}/${totalA} (${accA}%) · ${okB}/${totalB} (${accB}%)`;
+  document.getElementById('r2').textContent=`Pack: ${meta.title}`;
+  document.getElementById('r3').textContent=accA>=80&&accB>=80?'Both teams: advance to next module.':(accA>=80||accB>=80?'One team strong. Replay for retrieval.':'Replay for retrieval strength.');
+  const wrap=document.getElementById('finalTeamsScoresWrap');if(wrap){wrap.style.display='block';}
+  const aEl=document.getElementById('finalTeamAScore');if(aEl)aEl.textContent=(teamNames[0]||'Team A')+': '+accA+'%';
+  const bEl=document.getElementById('finalTeamBScore');if(bEl)bEl.textContent=(teamNames[1]||'Team B')+': '+accB+'%';
+  const wEl=document.getElementById('winnerLine');if(wEl){if(accA>accB)wEl.textContent='Winner: '+(teamNames[0]||'Team A');else if(accB>accA)wEl.textContent='Winner: '+(teamNames[1]||'Team B');else wEl.textContent='Tie!';}
+  try{const raw=localStorage.getItem('gs_teams_session');const data=raw?JSON.parse(raw):null;const tw=document.getElementById('endTeamsWrap');const tl=document.getElementById('endTeamsList');if(tw&&tl&&data&&data.teams&&data.teams.length){tl.innerHTML=data.teams.map(t=>'<div><strong>'+t.name+'</strong>'+(t.members&&t.members.length?' — '+t.members.join(', '):'')+'</div>').join('');tw.style.display='block';}}catch(e){}
+  track('mission_complete',{pack,game:'clue-trail',difficulty,accuracy:Math.round((accA+accB)/2),count:roundsA.length,teams:true});
+  document.getElementById('ov').classList.add('show');
+}
+function initTeamsMode(){
+  const wrap=document.getElementById('teamsWrap');
+  wrap.innerHTML='<div class="teamsTopbar" style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span style="font-weight:800;font-size:14px;">Clue Trail — Teams</span><div style="display:flex;gap:8px;"><a href="teacher-home.html?pack='+pack+'" class="btn">Home</a><button type="button" class="btn primary" id="teamsEndBtn">End Mission</button></div></div>'+
+    '<div id="teamColA" class="teamColumn" data-side="A"><h3>'+(teamNames[0]||'Team A')+'</h3><div class="teamHud"><div class="teamChip"><b>Case</b><span class="teamCase">0/'+roundsA.length+'</span></div><div class="teamChip"><b>Accuracy</b><span class="teamAcc">0%</span></div><div class="teamChip"><b>Streak</b><span class="teamStr">0</span></div></div><div class="teamQ"><div class="scene teamScene"></div><div class="prompt teamPrompt"></div></div><div class="teamOpts"></div><p class="teamFeedback"></p></div>'+
+    '<div id="teamColB" class="teamColumn" data-side="B"><h3>'+(teamNames[1]||'Team B')+'</h3><div class="teamHud"><div class="teamChip"><b>Case</b><span class="teamCase">0/'+roundsB.length+'</span></div><div class="teamChip"><b>Accuracy</b><span class="teamAcc">0%</span></div><div class="teamChip"><b>Streak</b><span class="teamStr">0</span></div></div><div class="teamQ"><div class="scene teamScene"></div><div class="prompt teamPrompt"></div></div><div class="teamOpts"></div><p class="teamFeedback"></p></div>';
+  const endBtn=wrap.querySelector('#teamsEndBtn');if(endBtn)endBtn.addEventListener('click',endGameTeams);
+}
+
+document.getElementById('again').addEventListener('click',()=>{track('replay_click',{pack,game:'clue-trail'});document.getElementById('ov').classList.remove('show');document.getElementById('finalTeamsScoresWrap').style.display='none';const tw=document.getElementById('endTeamsWrap');if(tw)tw.style.display='none';pick();show();startTimer();});
+document.getElementById('endBtn').addEventListener('click',end);
+document.getElementById('btnOnboardClose').addEventListener('click',()=>{localStorage.setItem('gs_seen_clue_trail_guide','1');document.getElementById('onboardOverlay').classList.remove('show');pick();show();startTimer();});
+if(localStorage.getItem('gs_seen_clue_trail_guide')!=='1'){document.getElementById('onboardOverlay').classList.add('show');}else{pick();show();startTimer();}
+})();
+</script>
+</body></html>
