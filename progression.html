@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grammar Spy™ | Mission Training Path</title>
+    <link rel="stylesheet" href="core/theme.css" />
+  </head>
+  <body>
+    <main class="gs-shell">
+      <header id="topNav"></header>
+
+      <section class="gs-panel">
+        <h1>Mission Training Path</h1>
+        <p class="gs-subtitle">
+          Cognitive progression map for Grades 6–12. Start with pattern recognition, move through controlled retrieval, and transfer skills into paragraph-level logic.
+        </p>
+      </section>
+
+      <section id="pathGrid" class="gs-grid gs-grid-3" aria-live="polite"></section>
+    </main>
+
+    <script type="module">
+      import { renderTopNav } from "./core/router.js";
+      import { PROGRESSION_MAP } from "./core/progression.js";
+      import { listAllMissions } from "./core/missionLoader.js";
+
+      renderTopNav(document.getElementById("topNav"), "progression");
+
+      const pathGrid = document.getElementById("pathGrid");
+      const missions = await listAllMissions();
+
+      pathGrid.innerHTML = PROGRESSION_MAP.map((level) => {
+        const levelMissions = missions.filter(
+          (mission) =>
+            mission.gradeBand === level.gradeBand &&
+            Number(mission.cognitiveLevel) === Number(level.cognitiveLevel)
+        );
+        const missionLinks = levelMissions.length
+          ? levelMissions
+              .map(
+                (mission) =>
+                  `<li><a href="missions.html?missionId=${encodeURIComponent(
+                    mission.missionId
+                  )}">${mission.missionName}</a></li>`
+              )
+              .join("")
+          : "<li>No missions mapped yet. Add one in /missions and manifest.json.</li>";
+
+        const skills = level.skillFocus.map((skill) => `<span class="gs-chip">${skill}</span>`).join("");
+        const games = level.recommendedGameTypes
+          .map((game) => `<span class="gs-chip">${game}</span>`)
+          .join("");
+
+        return `
+          <article class="gs-card">
+            <h2 class="gs-card-title">Level ${level.cognitiveLevel} · Grade ${level.gradeBand}</h2>
+            <p class="gs-card-sub">${level.description}</p>
+            <h3 class="gs-field-label">Skill Focus</h3>
+            <div class="gs-chip-row">${skills}</div>
+            <h3 class="gs-field-label">Recommended Modes</h3>
+            <div class="gs-chip-row">${games}</div>
+            <h3 class="gs-field-label">Mapped Missions</h3>
+            <ul class="gs-list">${missionLinks}</ul>
+            <a class="gs-btn gs-btn-soft" href="missions.html?gradeBand=${level.gradeBand}&cognitiveLevel=${level.cognitiveLevel}">
+              View mission filter
+            </a>
+          </article>
+        `;
+      }).join("");
+    </script>
+  </body>
+</html>
