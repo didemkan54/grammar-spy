@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Free Account</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--navy:#0b1020;--midnight:#16223a;--teal:#1f5f63;--gold:#c9a227;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--white:#fff;--shadow-sm:0 10px 20px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--midnight);font-family:Inter, Montserrat, Poppins, Outfit, "Segoe UI", sans-serif;padding:22px 14px 34px}
+    .wrap{max-width:780px;margin:0 auto;display:grid;gap:14px}
+    .panel{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow-sm);padding:16px}
+    .k{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:800}
+    h1{margin:8px 0 0;font-size:36px;line-height:1.06;color:var(--navy)}
+    .lead{margin:8px 0 0;color:var(--slate)}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .tab{border:1px solid var(--cool);border-radius:999px;padding:8px 12px;background:#fff;color:var(--midnight);font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+    .tab.active{background:#1f5f63;color:#fff;border-color:#194f53}
+    .view{display:none;margin-top:12px}
+    .view.active{display:grid;gap:10px}
+    .field{display:grid;gap:6px}
+    label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);font-weight:700}
+    input{border:1px solid var(--cool);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--midnight)}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid var(--cool);border-radius:10px;padding:11px 14px;background:#fff;color:var(--midnight);text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--teal);border-color:#194f53;color:#fff}
+    .btn.biometric{display:inline-flex;align-items:center;gap:8px;border-color:var(--teal);color:var(--teal)}
+    .hint{margin:0;color:var(--slate);font-size:13px}
+    .biometric-row{margin-bottom:12px}
+    .biometric-opt{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--slate)}
+    .biometric-opt input{width:auto;margin:0}
+    .promo-box{background:#e8f4f5;border:2px solid var(--teal);border-radius:12px;padding:14px 16px;margin:14px 0}
+    .promo-box label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:800;margin-bottom:8px}
+    .promo-box input{width:100%;max-width:280px;border:2px solid var(--teal);border-radius:8px;padding:12px 14px;font-size:15px}
+  </style>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#16223A" />
+</head>
+<body>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+  <main class="wrap" id="main">
+    <section class="panel">
+      <p class="k">Access Setup</p>
+      <h1 id="authTitle">Sign Up</h1>
+      <p class="lead" id="authLead">Create a free account to get Mission 01 (Retell What Happened) at no cost. Save progress and mission history. Pay to unlock all other missions.</p>
+      <p class="hint" id="authStatus"></p>
+
+      <div class="promo-box">
+        <label for="promoCode">Promo code</label>
+        <input type="text" id="promoCode" placeholder="Enter code (e.g. FEEDBACK2025)" maxlength="20" />
+      </div>
+
+      <div class="biometric-row" id="biometricSignInRow" style="display:none">
+        <button class="btn biometric" id="btnBiometricSignIn" type="button">
+          <span aria-hidden="true">🔐</span>
+          <span id="biometricSignInLabel">Sign in with Face ID</span>
+        </button>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Auth options">
+        <button class="tab active" id="tabCreate" type="button">Create Account</button>
+        <button class="tab" id="tabSignIn" type="button">Sign In</button>
+        <button class="tab" id="tabGuest" type="button">Continue as Guest</button>
+      </div>
+
+      <section class="view active" id="viewCreate" aria-label="Create account">
+        <div class="field">
+          <label for="createName">Name</label>
+          <input id="createName" type="text" placeholder="Teacher name" />
+        </div>
+        <div class="field">
+          <label for="createEmail">Email</label>
+          <input id="createEmail" type="email" placeholder="teacher@school.edu" />
+        </div>
+        <div class="biometric-opt" id="createBiometricOpt" style="display:none">
+          <input type="checkbox" id="createUseBiometric" />
+          <label for="createUseBiometric">Use Face ID for quick sign-in next time</label>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="btnCreate" type="button">Create Free Account</button>
+          <a class="btn" href="teacher-home.html">Back</a>
+        </div>
+      </section>
+
+      <section class="view" id="viewSignIn" aria-label="Sign in">
+        <div class="field">
+          <label for="signinEmail">Email</label>
+          <input id="signinEmail" type="email" placeholder="teacher@school.edu" />
+        </div>
+        <div class="field">
+          <label for="signinName">Display Name</label>
+          <input id="signinName" type="text" placeholder="Teacher name" />
+        </div>
+        <div class="biometric-opt" id="signinBiometricOpt" style="display:none">
+          <input type="checkbox" id="signinUseBiometric" />
+          <label for="signinUseBiometric">Use Face ID for quick sign-in next time</label>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="btnSignIn" type="button">Sign In</button>
+          <a class="btn" href="teacher-home.html">Back</a>
+        </div>
+      </section>
+
+      <section class="view" id="viewGuest" aria-label="Guest mode">
+        <p class="hint">Guest mode: Mission 01 only, no saved account. Sign up later to save progress and upgrade.</p>
+        <div class="row">
+          <button class="btn primary" id="btnGuest" type="button">Continue as Guest</button>
+          <a class="btn" href="index.html?choose=1">Back</a>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="biometric-auth.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    const tabs = {
+      create: { btn: document.getElementById('tabCreate'), view: document.getElementById('viewCreate') },
+      signin: { btn: document.getElementById('tabSignIn'), view: document.getElementById('viewSignIn') },
+      guest: { btn: document.getElementById('tabGuest'), view: document.getElementById('viewGuest') }
+    };
+
+    function openTab(name){
+      Object.entries(tabs).forEach(([k, v]) => {
+        const active = k === name;
+        v.btn.classList.toggle('active', active);
+        v.view.classList.toggle('active', active);
+      });
+    }
+
+    tabs.create.btn.addEventListener('click', () => openTab('create'));
+    tabs.signin.btn.addEventListener('click', () => openTab('signin'));
+    tabs.guest.btn.addEventListener('click', () => openTab('guest'));
+
+    const promoCodeInput = document.getElementById('promoCode');
+    const urlCode = new URLSearchParams(location.search).get('code');
+    const storedCode = sessionStorage.getItem('gs_promo_code');
+    if (promoCodeInput) {
+      promoCodeInput.value = urlCode || storedCode || '';
+      if (storedCode) sessionStorage.removeItem('gs_promo_code');
+    }
+
+    function nextHref(defaultHref){
+      const params = new URLSearchParams(location.search);
+      const next = params.get('next');
+      const subscribe = params.get('subscribe');
+      if (!next) return defaultHref;
+      if (next.startsWith('http')) return defaultHref;
+      const sep = next.indexOf('?') >= 0 ? '&' : '?';
+      return subscribe ? next + sep + 'subscribe=' + encodeURIComponent(subscribe) : next;
+    }
+
+    function tryRedeemPromoCode() {
+      const code = document.getElementById('promoCode')?.value?.trim();
+      if (code && window.GS_BILLING?.redeemPromoCode) {
+        window.GS_BILLING.redeemPromoCode(code);
+      }
+    }
+
+    document.getElementById('btnCreate').addEventListener('click', async () => {
+      const name = document.getElementById('createName').value.trim() || 'Teacher';
+      const email = document.getElementById('createEmail').value.trim();
+      window.GS_AUTH.setAccount(name, email);
+      tryRedeemPromoCode();
+      const useBiometric = document.getElementById('createUseBiometric')?.checked;
+      if (useBiometric && window.GS_BIOMETRIC && window.GS_BILLING) {
+        const account = window.GS_BILLING.getAccount();
+        if (account) await window.GS_BIOMETRIC.saveCredentials(account);
+      }
+      location.href = nextHref('teacher-home.html');
+    });
+
+    document.getElementById('btnSignIn').addEventListener('click', async () => {
+      const name = document.getElementById('signinName').value.trim() || 'Teacher';
+      const email = document.getElementById('signinEmail').value.trim();
+      window.GS_AUTH.setAccount(name, email);
+      tryRedeemPromoCode();
+      const useBiometric = document.getElementById('signinUseBiometric')?.checked;
+      if (useBiometric && window.GS_BIOMETRIC && window.GS_BILLING) {
+        const account = window.GS_BILLING.getAccount();
+        if (account) await window.GS_BIOMETRIC.saveCredentials(account);
+      }
+      location.href = nextHref('teacher-home.html');
+    });
+
+    document.getElementById('btnBiometricSignIn').addEventListener('click', async () => {
+      if (!window.GS_BIOMETRIC || !window.GS_BILLING) return;
+      const account = await window.GS_BIOMETRIC.signInWithBiometric();
+      if (account) {
+        window.GS_BILLING.restoreFromBiometric(account);
+        location.href = nextHref('teacher-home.html');
+      }
+    });
+
+    document.getElementById('btnGuest').addEventListener('click', () => {
+      window.GS_AUTH.setGuest();
+      tryRedeemPromoCode();
+      location.href = nextHref('teacher-home.html');
+    });
+
+    const params = new URLSearchParams(location.search);
+    const m = params.get('mode');
+    if (m === 'signin') openTab('signin');
+    if (m === 'guest') openTab('guest');
+    if (m === 'create') openTab('create');
+
+    const subscribe = params.get('subscribe');
+    const authLead = document.getElementById('authLead');
+    const authTitle = document.getElementById('authTitle');
+    const btnCreate = document.getElementById('btnCreate');
+    if (subscribe) {
+      if (authTitle) authTitle.textContent = 'Continue to Payment';
+      if (authLead) authLead.textContent = 'Sign in or create an account to continue to secure payment.';
+      if (btnCreate) btnCreate.textContent = 'Continue to Payment';
+    }
+
+    const status = window.GS_BILLING ? window.GS_BILLING.getStatus() : null;
+    const authStatus = document.getElementById('authStatus');
+    if (status && status.signedIn){
+      const plan = (status.plan || '').toLowerCase();
+      authStatus.textContent = plan === 'paid' || plan === 'school'
+        ? 'Signed in. You have access to all missions.'
+        : 'Signed in. You have free access to Mission 01. Upgrade to unlock all missions.';
+    } else {
+      authStatus.textContent = subscribe ? 'Then you’ll go to secure payment.' : 'Sign up for a free account to get Mission 01 and save progress.';
+    }
+    (async function initBiometric(){
+      if (!window.GS_BIOMETRIC) return;
+      const { available, label } = await window.GS_BIOMETRIC.checkAvailable();
+      if (!available || !label) return;
+      const labelText = label === 'Biometric' ? 'Sign in with Biometric' : 'Sign in with ' + label;
+      const hasStored = await window.GS_BIOMETRIC.hasStoredCredentials();
+      const biometricRow = document.getElementById('biometricSignInRow');
+      const biometricLabel = document.getElementById('biometricSignInLabel');
+      if (biometricRow && biometricLabel) {
+        biometricLabel.textContent = labelText;
+        biometricRow.style.display = hasStored ? 'block' : 'none';
+      }
+      const createOpt = document.getElementById('createBiometricOpt');
+      const signinOpt = document.getElementById('signinBiometricOpt');
+      const createLabel = createOpt && createOpt.querySelector('label');
+      const signinLabel = signinOpt && signinOpt.querySelector('label');
+      if (createOpt && createLabel) {
+        createLabel.textContent = 'Use ' + label + ' for quick sign-in next time';
+        createOpt.style.display = 'block';
+      }
+      if (signinOpt && signinLabel) {
+        signinLabel.textContent = 'Use ' + label + ' for quick sign-in next time';
+        signinOpt.style.display = 'block';
+      }
+    })();
+  </script>
+</body>
+</html>

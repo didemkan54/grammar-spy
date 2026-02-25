@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Insights</title>
+  <meta name="description" content="Practical ELD instruction insights from Grammar Spy." />
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 8px 18px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 40px}
+    .wrap{max-width:980px;margin:0 auto;display:grid;gap:26px}
+    .section{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow);padding:28px}
+    h1,h2{margin:0;color:#0b1020;line-height:1.12}
+    h1{font-size:34px} h2{font-size:19px}
+    p{margin:10px 0 0;color:#4a5568;line-height:1.65;font-weight:450}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border:1px solid #194f53;background:#1f5f63;color:#fff;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 12px Inter,Arial,sans-serif;width:fit-content;margin-top:14px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+    .card{border-radius:12px;background:#f8fbfd;padding:14px;display:grid;gap:8px}
+    .card a{font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#1f5f63;text-decoration:none;width:fit-content}
+    .icon-sm{width:20px;height:20px;vertical-align:middle;margin-right:6px;object-fit:contain}
+    details{margin-top:14px;border:1px solid var(--cool);border-radius:12px;background:#f8fafc;padding:10px}
+    summary{cursor:pointer;font:700 12px Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#16223a}
+    ul{margin:10px 0 0;padding-left:18px;color:#4a5568;line-height:1.6}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.section{padding:20px}}
+  </style>
+</head>
+<body>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+  <main class="wrap" id="main">
+    <section class="section">
+      <h1>Practical ELD guidance</h1>
+      <p>Short reads with one clear, actionable next step for your classroom.</p>
+      <a class="btn" href="teacher-home.html">Continue</a>
+    </section>
+
+    <section class="section">
+      <div class="grid">
+        <article class="card"><h2>Pattern Control</h2><p>Move beyond rule memorization.</p><a href="insight-pattern-control.html">Read</a></article>
+        <article class="card"><h2>12-Minute Mission Block</h2><p>Use a repeatable class routine.</p><a href="insight-mission-block.html">Read</a></article>
+        <article class="card"><h2>Error Patterns as Data</h2><p>Turn mistakes into next-step instruction.</p><a href="insight-exit-data.html">Read</a></article>
+        <article class="card"><h2>Apply in Class</h2><p>Open mission setup and run one round.</p><a href="teacher-mode.html">Open Setup</a></article>
+      </div>
+      <details>
+        <summary>Learn more</summary>
+        <ul>
+          <li><a href="teacher-dashboard.html">Reports</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </details>
+    </section>
+  </main>
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+</body>
+</html>

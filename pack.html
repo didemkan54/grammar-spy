@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Pack</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 10px 20px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:22px 14px 34px}
+    .wrap{max-width:960px;margin:0 auto;display:grid;gap:16px}
+    .panel{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow)}
+    .hero{
+      padding:24px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(220px,320px);
+      gap:14px;
+      align-items:center;
+    }
+    .hero-copy{display:grid;gap:8px;align-content:start}
+    .pack-cover{
+      justify-self:end;
+      width:100%;
+      max-width:320px;
+      border-radius:14px;
+      box-shadow:0 18px 36px rgba(11,16,32,.14);
+      border:1px solid #d9dee6;
+      background:#fff;
+    }
+    h1{margin:0;font-size:34px;line-height:1.08;color:var(--navy)}
+    p{margin:0;color:var(--slate)}
+    .tabs{padding:0 24px;display:flex;gap:14px;flex-wrap:wrap;border-bottom:1px solid #e6ebf2}
+    .tab{
+      border:0;
+      border-bottom:2px solid transparent;
+      background:transparent;
+      color:#5a6678;
+      padding:10px 2px;
+      margin-bottom:-1px;
+      font:700 13px Inter,Arial,sans-serif;
+      letter-spacing:.02em;
+      cursor:pointer
+    }
+    .tab.active{color:#16223a;border-bottom-color:#1f5f63}
+    .body{padding:16px 24px 24px;display:grid;gap:12px}
+    .line{border-left:3px solid #d9dee6;border-radius:6px;padding:10px 12px;background:#ffffff}
+    .line b{display:block;color:#0b1020;font-size:13px}
+    .line b a.game-link{color:#1f5f63;text-decoration:none;font-weight:700}
+    .line b a.game-link:hover{text-decoration:underline}
+    .line span{color:#4a5568;font-size:13px}
+    .primary{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;border:1px solid #194f53;background:var(--teal);color:#fff;border-radius:10px;text-decoration:none;font:700 13px Inter,Arial,sans-serif;width:fit-content}
+    .icon-sm{width:20px;height:20px;vertical-align:middle;margin-right:6px;object-fit:contain}
+    .secondary{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:1px solid #d1d9e6;background:#fff;color:#16223a;border-radius:10px;text-decoration:none;font:700 13px Inter,Arial,sans-serif;width:fit-content}
+    details{border:1px solid var(--cool);border-radius:12px;background:#f8fafc;padding:10px}
+    summary{cursor:pointer;font:700 12px Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#16223a}
+    ul{margin:10px 0 0;padding-left:18px;color:#4a5568}
+    @media (max-width:760px){
+      .hero{grid-template-columns:1fr}
+      .pack-cover{justify-self:start;max-width:100%}
+    }
+  </style>
+</head>
+<body>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+  <main class="wrap" id="main">
+    <section class="panel hero">
+      <div class="hero-copy">
+        <p id="k" style="font:800 11px Inter,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1f5f63">Pack</p>
+        <h1 id="title">Pack</h1>
+        <p id="sub">One mission set at a time. Choose tab, then continue.</p>
+        <a id="continueBtn" class="primary" href="teacher-mode.html">Continue</a>
+      </div>
+      <img id="cover" class="pack-cover" src="assets/branding-images/packs/pack01-retell-what-happened.png" alt="Pack cover artwork">
+    </section>
+
+    <section class="panel">
+      <div class="tabs">
+        <button class="tab active" type="button" data-tab="overview">Overview</button>
+        <button class="tab" type="button" data-tab="modules">Modules</button>
+        <button class="tab" type="button" data-tab="guidance">Guidance</button>
+      </div>
+      <div class="body" id="tabBody"></div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    const PACKS = {
+      pack01:{name:'Retell What Happened',grammar:'Simple Past + Past Continuous',desc:'Narrative retelling with completed vs background actions.',teacher:'teacher-mode.html?pack=pack01',individual:'individual-mode.html?pack=pack01',brief:'teacher-brief-pack01.html',cover:'assets/branding-images/packs/pack01-retell-what-happened.png',games:['Error Smash','Drag & Sort','Narrative Builder','Dialogue Repair'],gameLinks:[['Error Smash','error-smash.html'],['Drag & Sort','past-sort.html'],['Narrative Builder','narrative-builder.html'],['Dialogue Repair','dialogue-repair.html?pack=pack01'],['Rewrite Studio','rewrite-studio.html?pack=pack01']]},
+      pack02:{name:'Speak In The Moment',grammar:'Present Simple + Present Continuous',desc:'Routine vs live-action language control.',teacher:'teacher-mode.html?pack=pack02',individual:'individual-mode.html?pack=pack02',brief:'teacher-brief-pack02.html',cover:'assets/branding-images/packs/pack02-speak-in-the-moment.png',games:['Rule Sprint','Signal Decoder','Case Interview','Rewrite Studio'],gameLinks:[['Rule Sprint','rule-sprint-present.html'],['Signal Decoder','signal-decoder-present.html'],['Case Interview','present-case-interview.html'],['Dialogue Repair','dialogue-repair.html?pack=pack02'],['Rewrite Studio','rewrite-studio.html?pack=pack02']]},
+      pack03:{name:'Sentence Confidence Missions',grammar:'am/is/are + Agreement',desc:'Be-verb foundations with clear subject matching.',teacher:'teacher-mode.html?pack=pack03',individual:'individual-mode.html?pack=pack03',brief:'teacher-brief-pack03.html',cover:'assets/branding-images/packs/pack03-sentence-confidence-missions.png',games:['Rule Sprint','Agreement Sweep','Case Interview','Rewrite Studio'],gameLinks:[['Rule Sprint','be-verb-rule-sprint.html'],['Agreement Sweep','be-verb-agreement-sweep.html'],['Case Interview','be-verb-case-interview.html'],['Dialogue Repair','dialogue-repair.html?pack=pack03'],['Rewrite Studio','rewrite-studio.html?pack=pack03']]},
+      pack04:{name:'Link Ideas Clearly',grammar:'Connectors',desc:'Cause, contrast, and purpose in context.',teacher:'teacher-mode.html?pack=pack04',individual:'individual-mode.html?pack=pack04',brief:'teacher-brief-pack04.html',cover:'assets/branding-images/packs/pack04-link-ideas-clearly.png',games:['Clue Trail','Dialogue Repair','Sequence Lab','Rewrite Studio'],gameLinks:[['Clue Trail','clue-trail.html?pack=pack04'],['Dialogue Repair','dialogue-repair.html?pack=pack04'],['Sequence Lab','mission-sequence-lab.html?pack=pack04'],['Evidence Sort','evidence-sort-board.html?pack=pack04'],['Rewrite Studio','rewrite-studio.html?pack=pack04']]},
+      pack05:{name:'Reference Smartly',grammar:'Pronouns + Reference',desc:'Pronoun clarity and ambiguity repair.',teacher:'teacher-mode.html?pack=pack05',individual:'individual-mode.html?pack=pack05',brief:'teacher-brief-pack05.html',cover:'assets/branding-images/packs/pack05-reference-smartly.png',games:['Clue Trail','Evidence Sort','Dialogue Repair','Rewrite Studio'],gameLinks:[['Clue Trail','clue-trail.html?pack=pack05'],['Dialogue Repair','dialogue-repair.html?pack=pack05'],['Evidence Sort','evidence-sort-board.html?pack=pack05'],['Sequence Lab','mission-sequence-lab.html?pack=pack05'],['Rewrite Studio','rewrite-studio.html?pack=pack05']]},
+      pack06:{name:'Question Flow Missions',grammar:'Yes/No + Wh Questions',desc:'Question patterns with auxiliary control.',teacher:'teacher-mode.html?pack=pack06',individual:'individual-mode.html?pack=pack06',brief:'teacher-brief-pack06.html',cover:'assets/branding-images/packs/pack06-question-flow-missions.png',games:['Clue Trail','Dialogue Repair','Evidence Sort','Rewrite Studio'],gameLinks:[['Clue Trail','clue-trail.html?pack=pack06'],['Dialogue Repair','dialogue-repair.html?pack=pack06'],['Evidence Sort','evidence-sort-board.html?pack=pack06'],['Sequence Lab','mission-sequence-lab.html?pack=pack06'],['Rewrite Studio','rewrite-studio.html?pack=pack06']]}
+    };
+
+    const qp = new URLSearchParams(location.search);
+    const packId = PACKS[qp.get('pack')] ? qp.get('pack') : 'pack01';
+    const pack = PACKS[packId];
+    const mode = localStorage.getItem('gs_use_context_v3') === 'individual' ? 'individual' : 'class';
+
+    document.getElementById('k').textContent = `Pack · ${pack.grammar}`;
+    document.getElementById('title').textContent = pack.name;
+    document.getElementById('sub').textContent = pack.desc;
+    document.getElementById('continueBtn').href = mode === 'individual' ? pack.individual : pack.teacher;
+    const cover = document.getElementById('cover');
+    if (cover){
+      if (pack.cover){
+        cover.src = pack.cover;
+        cover.alt = `${pack.name} cover artwork`;
+        cover.style.display = '';
+      } else {
+        cover.style.display = 'none';
+      }
+    }
+
+    const body = document.getElementById('tabBody');
+    function render(tab){
+      if(tab === 'overview'){
+        body.innerHTML = `<div class="line"><b>Focus</b><span>${pack.grammar}</span></div><div class="line"><b>Outcome</b><span>${pack.desc}</span></div><div class="line"><b>Flow</b><span>Setup → one mission → report.</span></div>`;
+      } else if(tab === 'modules'){
+        const links = pack.gameLinks || pack.games.map(g => [g, '#']);
+        const baseParams = 'pack=' + packId + '&mode=class&difficulty=field&count=10&timer=on';
+        body.innerHTML = links.map(([label, url]) => {
+          const sep = url.indexOf('?') >= 0 ? '&' : '?';
+          const href = url.startsWith('#') ? 'teacher-mode.html?pack=' + packId : url + sep + baseParams;
+          return `<div class="line"><b><a href="${href}" class="game-link">${label}</a></b><span>Short mission round with immediate feedback.</span></div>`;
+        }).join('');
+      } else {
+        body.innerHTML = `<div class="line"><b>Teacher Brief</b><span>Print objective, structures, and lesson flow.</span></div><a class="secondary" id="briefBtn" href="#">Open Brief</a><details><summary>Learn more</summary><ul><li>Use Rookie Agent for first pass.</li><li>Use Field Agent for retrieval practice.</li><li>Use Director for challenge check.</li></ul></details>`;
+        const briefBtn = document.getElementById('briefBtn');
+        if (briefBtn) briefBtn.setAttribute('href', pack.brief);
+      }
+    }
+
+    const tabs = [...document.querySelectorAll('.tab')];
+    tabs.forEach(btn => btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.toggle('active', b === btn));
+      render(btn.dataset.tab);
+    }));
+    render('overview');
+  </script>
+</body>
+</html>

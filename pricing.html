@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Pricing</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--ink:#16223a;--muted:#4a5568;--line:#d9dee6;--teal:#1f5f63;--gold:#c9a227;--bg:#f2f4f7;--card:#fff}
+    *{box-sizing:border-box}
+    body{margin:0;padding:22px 14px;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+    .wrap{max-width:1080px;margin:0 auto;display:grid;gap:14px}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(11,16,32,.08)}
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:-.02em}
+    p{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}}
+    .card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px;display:grid;gap:10px}
+    .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700}
+    .price{font-size:30px;font-weight:900;color:var(--ink)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;background:#fff;color:var(--ink);cursor:pointer}
+    .btn.primary{background:var(--teal);color:#fff;border-color:#194e52}
+    ul{margin:0;padding-left:18px;color:var(--muted)}
+    li{margin:4px 0}
+    .status{border:1px solid #d7ecd9;background:#f3fbf4;color:#1b5e34;border-radius:10px;padding:10px 12px;font:700 12px Inter,Arial,sans-serif;display:none}
+    .status.show{display:block}
+    .warn{border:1px solid #f2dab2;background:#fff8ed;color:#6d4a1d;border-radius:10px;padding:10px 12px;font:700 12px Inter,Arial,sans-serif;display:none}
+    .warn.show{display:block}
+    .small{font-size:12px;color:var(--muted)}
+    .plan-pack-preview{display:flex;align-items:center;gap:10px}
+    .plan-pack-preview img{width:120px;border-radius:12px;box-shadow:0 14px 28px rgba(11,16,32,.12)}
+  </style>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#16223A" />
+</head>
+<body>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+  <main class="wrap" id="main">
+    <p id="checkoutStatus" class="status" role="status"></p>
+    <p id="lockedStatus" class="warn" role="status"></p>
+    <section class="panel">
+      <h1 data-i18n="pricing_title">Pricing</h1>
+      <p data-i18n="pricing_intro">Structured grammar training for teachers who need reliability, scaffolded progression, and replay-ready lesson flow. Mission 01 is free; upgrade to unlock all missions.</p>
+      <p class="small" id="billingState"></p>
+    </section>
+
+    <section class="grid" aria-label="Pricing plans">
+      <article class="card">
+        <div class="k" data-i18n="pricing_freeLabel">Free — One Pack</div>
+        <div class="price">$0</div>
+        <p data-i18n="pricing_freeDesc">Sign up for a free account. Get Mission 01 (Retell What Happened) with no time limit.</p>
+        <ul>
+          <li>Mission 01 only</li>
+          <li>Teacher Mode + mission history</li>
+          <li>Student progress & reports</li>
+        </ul>
+        <div class="plan-pack-preview">
+          <img src="assets/branding-images/packs/pack01-retell-what-happened.png" alt="Pack 01 preview">
+          <span class="small">Mission 01 included</span>
+        </div>
+        <a class="btn" href="auth.html?next=teacher-home.html" id="startTrialBtn" data-i18n="pricing_signUpFree">Sign Up Free</a>
+      </article>
+
+      <article class="card" style="border-color:#1f5f63;box-shadow:0 0 0 2px rgba(31,95,99,.18)">
+        <div class="k">Single Teacher</div>
+        <div class="price">$19<span class="small" style="font-weight:600;color:var(--muted)">/mo</span></div>
+        <p style="margin-top:4px">$149/year — save when you pay annually. All missions, one educator.</p>
+        <ul>
+          <li>All missions (Retell, Speak In The Moment, and more)</li>
+          <li>Difficulty and mode controls</li>
+          <li>Report export + student progress</li>
+        </ul>
+        <div class="plan-pack-preview">
+          <img src="assets/branding-images/packs/pack02-speak-in-the-moment.png" alt="Pack 02 preview">
+          <span class="small">All missions included</span>
+        </div>
+        <button class="btn primary" type="button" id="checkoutMonthlyBtn">Subscribe — $19/mo</button>
+        <button class="btn" type="button" id="checkoutYearlyBtn" style="margin-top:6px">Subscribe — $149/year</button>
+      </article>
+
+      <article class="card" style="border-color:#1f5f63;box-shadow:0 0 0 2px rgba(31,95,99,.12)">
+        <div class="k" data-i18n="pricing_studentLabel">Student</div>
+        <div class="price">$9<span class="small" style="font-weight:600;color:var(--muted)">/mo</span></div>
+        <p style="margin-top:4px" data-i18n="pricing_studentDesc">$69/year — save when you pay annually. All missions, one learner.</p>
+        <ul>
+          <li data-i18n="pricing_student_feature1">All missions</li>
+          <li data-i18n="pricing_student_feature2">Self-paced practice</li>
+          <li data-i18n="pricing_student_feature3">Progress & reports</li>
+        </ul>
+        <div class="plan-pack-preview">
+          <img src="assets/branding-images/packs/pack01-retell-what-happened.png" alt="Pack 01 preview">
+          <span class="small" data-i18n="pricing_student_included">All missions included</span>
+        </div>
+        <button class="btn primary" type="button" id="checkoutStudentMonthlyBtn">Subscribe — $9/mo</button>
+        <button class="btn" type="button" id="checkoutStudentYearlyBtn" style="margin-top:6px">Subscribe — $69/year</button>
+      </article>
+
+      <article class="card">
+        <div class="k" data-i18n="pricing_schoolLicense">School License</div>
+        <div class="price">Custom</div>
+        <p>Multi-teacher access with onboarding support.</p>
+        <ul>
+          <li>Shared rollout support</li>
+          <li>Staff-ready implementation guide</li>
+          <li>Volume licensing</li>
+        </ul>
+        <div class="plan-pack-preview">
+          <img src="assets/branding-images/packs/pack03-sentence-confidence-missions.png" alt="Pack 03 preview">
+          <span class="small">Includes Mission 03 expansion</span>
+        </div>
+        <button class="btn" type="button" id="checkoutSchoolBtn">Checkout - School License</button>
+      </article>
+    </section>
+
+    <section class="panel">
+      <p><strong>Checkout note:</strong> subscriptions go through Stripe on web; in the app they use the App Store / Google Play.</p>
+      <p id="restoreWrap" style="display:none;margin-top:10px"><button class="btn" type="button" id="restoreBtn">Restore Purchases</button></p>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+  <script src="iap-config.js"></script>
+  <script src="iap-revenuecat.js"></script>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const statusEl = document.getElementById('checkoutStatus');
+    const lockedEl = document.getElementById('lockedStatus');
+    const billingState = document.getElementById('billingState');
+    const account = window.GS_BILLING ? window.GS_BILLING.getAccount() : null;
+    const status = window.GS_BILLING ? window.GS_BILLING.getStatus() : null;
+
+    // After sign-up from Subscribe: send straight to Stripe
+    const subscribePlan = params.get('subscribe');
+    if (subscribePlan && account && window.GS_BILLING && ['single_teacher_monthly','single_teacher_yearly','student_monthly','student_yearly'].indexOf(subscribePlan) >= 0) {
+      history.replaceState(null, '', 'pricing.html');
+      window.GS_BILLING.beginCheckout(subscribePlan);
+    } else {
+    const sessionId = params.get('session_id');
+    if (params.get('checkout') === 'success' && sessionId && window.GS_BILLING) {
+      fetch('/api/verify-session?session_id=' + encodeURIComponent(sessionId))
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if (data && data.paid) window.GS_BILLING.grantPaid('paid');
+          const planParam = params.get('plan') || '';
+          const planLabel = planParam === 'school_license' ? 'School License' : planParam === 'single_teacher_yearly' ? 'Yearly (Teacher)' : planParam === 'single_teacher_monthly' ? 'Monthly (Teacher)' : planParam === 'student_yearly' ? 'Yearly (Student)' : planParam === 'student_monthly' ? 'Monthly (Student)' : 'Single Teacher';
+          statusEl.textContent = 'Checkout complete. Your subscription is active—all missions are now unlocked.';
+          statusEl.classList.add('show');
+          if (data && data.paid) {
+            const p = (window.GS_BILLING.getAccount() || {}).plan;
+            billingState.textContent = 'Signed in · All missions. Thank you!';
+          }
+        })
+        .catch(function(){
+          statusEl.textContent = 'Payment received. If access did not update, refresh the page or sign in again.';
+          statusEl.classList.add('show');
+        });
+    } else if (params.get('checkout') === 'success') {
+      const planParam = params.get('plan') || '';
+      const planLabel = planParam === 'school_license' ? 'School License' : planParam === 'single_teacher_yearly' ? 'Yearly (Teacher)' : planParam === 'single_teacher_monthly' ? 'Monthly (Teacher)' : planParam === 'student_yearly' ? 'Yearly (Student)' : planParam === 'student_monthly' ? 'Monthly (Student)' : 'Single Teacher';
+      statusEl.textContent = `Checkout complete. ${planLabel} entitlement is now active on this account.`;
+      statusEl.classList.add('show');
+    } else if (params.get('checkout') === 'unavailable') {
+      statusEl.textContent = 'Subscription checkout is not available right now. Please try again later or contact us at support@grammarspy.net.';
+      statusEl.classList.add('show');
+    }
+    if (params.get('locked')){
+      lockedEl.textContent = 'That mission set is locked in your current plan. Upgrade to unlock full access.';
+      lockedEl.classList.add('show');
+    }
+    if (account && status){
+      const mode = account.mode === 'guest' ? 'Guest' : 'Account';
+      const plan = (account.plan || 'trial').toLowerCase();
+      const planLabel = plan === 'paid' || plan === 'school' ? 'All missions' : 'Mission 01 free';
+      billingState.textContent = `Signed in · ${planLabel}. Upgrade to unlock all missions.`;
+    } else {
+      billingState.textContent = 'Sign up for a free account to get Mission 01. Upgrade to unlock all missions.';
+    }
+
+    document.getElementById('checkoutMonthlyBtn').addEventListener('click', () => {
+      if (!window.GS_BILLING) return;
+      window.GS_BILLING.beginCheckout('single_teacher_monthly');
+    });
+    document.getElementById('checkoutYearlyBtn').addEventListener('click', () => {
+      if (!window.GS_BILLING) return;
+      window.GS_BILLING.beginCheckout('single_teacher_yearly');
+    });
+    document.getElementById('checkoutStudentMonthlyBtn').addEventListener('click', () => {
+      if (!window.GS_BILLING) return;
+      window.GS_BILLING.beginCheckout('student_monthly');
+    });
+    document.getElementById('checkoutStudentYearlyBtn').addEventListener('click', () => {
+      if (!window.GS_BILLING) return;
+      window.GS_BILLING.beginCheckout('student_yearly');
+    });
+    document.getElementById('checkoutSchoolBtn').addEventListener('click', () => {
+      if (!window.GS_BILLING) return;
+      window.GS_BILLING.beginCheckout('school_license');
+    });
+    if (window.GS_IAP && window.GS_IAP.isNative && window.GS_IAP.isNative()) {
+      const wrap = document.getElementById('restoreWrap');
+      if (wrap) wrap.style.display = 'block';
+      const restoreBtn = document.getElementById('restoreBtn');
+      if (restoreBtn) restoreBtn.addEventListener('click', () => {
+        if (!window.GS_IAP || !window.GS_IAP.restore) return;
+        restoreBtn.disabled = true;
+        window.GS_IAP.restore(
+          (result) => {
+            const info = result && result.customerInfo ? result.customerInfo : result;
+            const ent = info && info.entitlements && info.entitlements.all_missions;
+            if (ent && ent.isActive && window.GS_BILLING) {
+              window.GS_BILLING.grantPaid('paid');
+              location.reload();
+            } else {
+              statusEl.textContent = 'No active subscription found.';
+              statusEl.classList.add('show');
+            }
+            restoreBtn.disabled = false;
+          },
+          (err) => {
+            statusEl.textContent = err || 'Restore failed.';
+            statusEl.classList.add('show');
+            restoreBtn.disabled = false;
+          }
+        );
+      });
+    }
+    }
+  </script>
+</body>
+</html>

@@ -1,449 +1,450 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Grammar Spy | Structured grammar. Clear results.</title>
-  <meta name="description" content="Structured grammar for real classrooms. Teacher-first missions with clear student results.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ | Mission-Based Grammar Training</title>
+  <meta name="description" content="Start one focused grammar mission and continue when ready." />
+  <meta name="theme-color" content="#16223A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta property="og:title" content="Grammar Spy™ | Mission-Based Grammar Training" />
+  <meta property="og:description" content="Mission-based grammar training for real classrooms. One focused mission at a time." />
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/brand/icon-192.png" />
   <style>
-    :root {
-      --ink: #0c1730;
-      --ink-soft: #4a5870;
-      --teal: #1f6f73;
-      --teal-strong: #12545b;
-      --line: #d8dee6;
-      --paper: #ffffff;
-      --background: #f4f5f7;
-      --gold: #dfb443;
+    /* Grammar Spy palette (locked): Navy + Teal primary, Gold accent only. No yellow/other accent. */
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--gold:#c9a227;--shadow:0 8px 16px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:#ffffff;color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 52px}
+    .wrap{max-width:1120px;margin:0 auto;display:grid;gap:56px}
+    .section{padding:8px 0}
+    .section-flat{padding:8px 4px}
+    .section-band-dark{background:linear-gradient(170deg,#0b1020,#16223a);padding:34px 20px;color:#eaf0ff}
+    .section-band-dark h2,.section-band-dark p,.section-band-dark li{color:#eaf0ff}
+    .section-band-dark .link-action{color:#b9dfe2}
+    .k{margin:0 0 10px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
+    h1,h2{margin:0;color:var(--navy);line-height:1.05}
+    h1{font-size:48px;letter-spacing:.005em}
+    h2{font-size:28px;letter-spacing:.005em}
+    p{margin:10px 0 0;color:var(--slate);line-height:1.6;font-weight:440}
+    .subcopy{font-size:15px;color:#5c6677;max-width:62ch}
+    .btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 14px;border:1px solid #194f53;background:var(--teal);color:#fff;border-radius:8px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif;transition:filter .2s ease, transform .15s ease}
+    .btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .btn-primary:active{transform:translateY(0)}
+    .link-action{display:inline-block;margin-top:12px;color:#1f5f63;text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em}
+    .link-action:hover{text-decoration:underline}
+    .segmented{display:inline-flex;gap:6px;padding:3px;border:1px solid var(--cool);border-radius:8px;background:#f8fafc;margin-top:12px}
+    .seg{border:0;background:transparent;color:#4a5568;border-radius:6px;padding:7px 11px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+    .seg.active{background:#ffffff;color:#16223a;box-shadow:0 1px 3px rgba(11,16,32,.08)}
+    .passive{margin-top:10px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7a8698}
+    .mission-label{margin:0 0 8px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
+    .mission-label::before{content:"";display:block;width:16px;height:2px;border-radius:2px;background:var(--gold);margin-bottom:8px}
+    .hero-accent{width:36px;height:2px;background:var(--gold);border-radius:2px;margin:14px 0 0}
+    .hero-shell{margin:0 calc(50% - 50vw);padding:0 14px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:#ffffff;
+      color:var(--mid);
+      border-radius:0;
+      padding:34px 0;
     }
-
-    * {
-      box-sizing: border-box;
+    .hero h1{color:var(--navy)}
+    .hero .k{color:var(--teal)}
+    .hero .subcopy{color:var(--slate)}
+    .hero .passive{color:#7a8698}
+    .hero-who{max-width:42ch}
+    .hero-cta-copy{margin:0 0 10px;font-size:14px;color:var(--slate);line-height:1.5}
+    .hero-buttons{margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn-hero-primary{min-height:44px;padding:0 18px}
+    .hero::before{content:"";position:absolute;right:-60px;top:-48px;width:420px;height:420px;background:url('assets/illustrations/bg-shield-watermark.svg') center/contain no-repeat;opacity:.09;pointer-events:none}
+    .hero::after{
+      content:"";
+      position:absolute;inset:0;
+      background:
+        radial-gradient(circle at 78% 28%, rgba(201,162,39,.65) 0 2px, transparent 3px),
+        radial-gradient(circle at 82% 52%, rgba(201,162,39,.65) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 64%, rgba(201,162,39,.65) 0 2px, transparent 3px);
+      background-size:100% 100%,100% 100%,100% 100%;
+      background-position:0 0,0 0,0 0;
+      opacity:.12;
+      pointer-events:none;
     }
-
-    body {
-      margin: 0;
-      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--ink);
-      background: var(--background);
+    .hero-grid{
+      position:relative;
+      z-index:1;
+      max-width:1120px;
+      margin:0 auto;
+      padding:0 6px;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:40px;
+      align-items:center;
     }
-
-    .page {
-      width: min(1180px, calc(100% - 48px));
-      margin: 24px auto 40px;
+    .mission-panel{
+      margin-top:20px;
+      padding:20px 20px;
+      border:2px solid var(--teal);
+      border-radius:14px;
+      background:linear-gradient(165deg, rgba(31,95,99,.08), rgba(11,16,32,.06));
+      box-shadow:0 12px 28px rgba(11,16,32,.12), 0 0 0 1px rgba(31,95,99,.15);
     }
-
-    .topbar {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 28px;
-      padding: 4px 4px 22px;
-      border-bottom: 1px solid #cfd6df;
+    .mission-panel .mission-label{
+      font-size:13px;
+      letter-spacing:.12em;
+      color:var(--navy);
+      margin-top:0;
+      margin-bottom:10px;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--ink);
+    .mission-panel .mission-label::before{
+      width:24px;
+      height:3px;
+      background:var(--gold);
+      margin-bottom:10px;
     }
-
-    .brand svg {
-      width: 62px;
-      height: 62px;
-      flex: 0 0 auto;
+    .mission-panel .start-here{
+      font-weight:800;
+      font-size:14px;
+      letter-spacing:.14em;
+      text-shadow:0 0 20px rgba(31,95,99,.15), 0 0 40px rgba(201,162,39,.08);
+      animation:start-here-glow 2.8s ease-in-out infinite;
+      position:relative;
+      display:inline-block;
     }
-
-    .brand-wordmark {
-      line-height: 0.92;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      font-size: 44px;
+    .mission-panel .start-here::before{
+      animation:start-here-bar 2.2s ease-in-out infinite;
+      transform-origin:left center;
     }
-
-    .brand-wordmark span:last-child {
-      display: block;
-      color: var(--teal);
+    .mission-panel .start-here::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-4px;
+      width:100%;
+      height:2px;
+      background:linear-gradient(90deg, transparent, var(--gold), var(--teal), transparent);
+      background-size:200% 100%;
+      border-radius:2px;
+      animation:start-here-shimmer 3s ease-in-out infinite;
+      opacity:.88;
     }
-
-    .main-nav {
-      justify-self: center;
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 12px;
-      font-weight: 700;
+    @keyframes start-here-glow{
+      0%,100%{text-shadow:0 0 18px rgba(31,95,99,.1), 0 0 36px rgba(201,162,39,.05); transform:scale(1)}
+      50%{text-shadow:0 0 26px rgba(31,95,99,.22), 0 0 48px rgba(201,162,39,.12); transform:scale(1.02)}
     }
-
-    .main-nav a {
-      color: #28334a;
-      text-decoration: none;
+    @keyframes start-here-bar{
+      0%,100%{opacity:.8; transform:scaleX(1)}
+      50%{opacity:1; transform:scaleX(1.08)}
     }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #2f3a53;
+    @keyframes start-here-shimmer{
+      0%,100%{background-position:100% 0}
+      50%{background-position:0 0}
     }
-
-    .lang-switch {
-      display: inline-flex;
-      gap: 12px;
-      padding-right: 12px;
-      border-right: 1px solid #d8dde5;
+    @media (prefers-reduced-motion: reduce){
+      .mission-panel .start-here,
+      .mission-panel .start-here::before,
+      .mission-panel .start-here::after{ animation:none; }
+      .mission-panel .start-here::after{ opacity:.9; background-position:0 0; }
     }
-
-    .pill-btn {
-      border-radius: 999px;
-      padding: 10px 20px;
-      font-size: 12px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 700;
-      border: 1px solid #d6dbe4;
-      background: #fff;
-      color: #2e3b54;
-      cursor: pointer;
+    .hero-visual{
+      display:flex;
+      justify-content:flex-end;
     }
-
-    .pill-btn.primary {
-      border-color: transparent;
-      background: var(--teal);
-      color: #fff;
+    .hero-visual img{
+      width:100%;
+      max-width:480px;
+      border-radius:16px;
+      box-shadow:0 20px 60px rgba(11,16,32,.15);
     }
+    .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:18px}
+    .step{padding:12px 0;border-radius:0;background:transparent;border-bottom:1px solid #e4e8ef}
+    .step b{display:block;font-size:13px;color:#0b1020}
+    .step span{display:block;margin-top:4px;font-size:13px;color:#4a5568;line-height:1.55}
+    .case{padding:16px 0;border-radius:0;background:transparent;border-bottom:1px solid #e4e8ef}
+    ul{margin:14px 0 0;padding-left:18px;color:#4a5568;display:grid;gap:8px;line-height:1.6}
+    details{margin-top:14px;border:1px solid var(--cool);border-radius:8px;background:#fff;padding:10px}
+    summary{cursor:pointer;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#16223a}
+    .icon-sm{width:22px;height:22px;vertical-align:middle;margin-right:6px;object-fit:contain}
+    .step .icon-sm,.case .icon-sm{margin-right:8px}
+    .inside-mission{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px;align-items:start}
+    .inside-mission .screenshot-card{border:1px solid var(--cool);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(11,16,32,.08)}
+    .inside-mission .screenshot-card img{width:100%;height:auto;display:block;object-fit:cover}
+    .inside-mission .screenshot-card figcaption{margin:0;padding:12px 14px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);border-top:1px solid #e4e8ef}
+    @media (max-width:1000px){.inside-mission{grid-template-columns:1fr}}
+    @media (max-width:620px){.inside-mission{grid-template-columns:1fr}.inside-mission .screenshot-card img{max-height:280px;object-fit:contain}}
+    @media (max-width:620px){.inside-mission{gap:16px}}
+    @media (max-width:920px){h1{font-size:38px}h2{font-size:24px}.section-band-dark{padding:24px 14px}.hero{padding:34px 0}.hero-grid{grid-template-columns:1fr;gap:20px}.hero-visual{justify-content:flex-start}.flow{grid-template-columns:1fr 1fr}}
+    @media (max-width:620px){h1{font-size:32px}.hero{padding:24px 0}.hero-buttons{flex-direction:column;align-items:flex-start;gap:12px}.btn-primary,.seg{min-height:44px;padding:10px 16px}.flow{grid-template-columns:1fr}}
 
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(420px, 1.1fr) minmax(340px, 0.9fr);
-      gap: 42px;
-      align-items: center;
-      padding-top: 36px;
+    /* Welcome overlay */
+    .gs-welcome-overlay{
+      position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;
+      background:rgba(11,16,32,.75);backdrop-filter:blur(8px);
+      opacity:1;visibility:visible;transition:opacity .35s ease, visibility .35s ease;
     }
-
-    .eyebrow {
-      color: var(--teal);
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      font-size: 16px;
-      margin-bottom: 10px;
+    .gs-welcome-overlay.gs-welcome-dismissed{opacity:0;visibility:hidden;pointer-events:none}
+    .gs-welcome-card{
+      background:linear-gradient(165deg,#fff 0%,#f8fafc 100%);border:1px solid var(--cool);border-radius:20px;
+      box-shadow:0 24px 56px rgba(11,16,32,.2), 0 0 0 1px rgba(31,95,99,.2);
+      max-width:420px;width:100%;padding:32px 28px;text-align:center;
+      animation:gs-welcome-in .4s ease-out;
     }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(44px, 5vw, 70px);
-      line-height: 1.02;
-      letter-spacing: -0.03em;
-      max-width: 780px;
+    @keyframes gs-welcome-in{
+      from{opacity:0;transform:scale(.96) translateY(10px)}
+      to{opacity:1;transform:scale(1) translateY(0)}
     }
-
-    .gold-line {
-      width: 42px;
-      height: 4px;
-      border-radius: 2px;
-      background: var(--gold);
-      margin: 20px 0 14px;
-    }
-
-    .lead {
-      margin: 0 0 22px;
-      color: var(--ink-soft);
-      font-size: clamp(20px, 2vw, 29px);
-      line-height: 1.35;
-    }
-
-    .start-card {
-      background: #eef3f5;
-      border: 3px solid var(--teal);
-      border-radius: 20px;
-      padding: 18px;
-      max-width: 780px;
-      box-shadow: 0 1px 0 rgba(12, 23, 48, 0.04);
-    }
-
-    .start-title {
-      margin: 0 0 10px;
-      font-size: 28px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 900;
-      color: #132540;
-    }
-
-    .start-copy {
-      margin: 0;
-      color: #3f4d66;
-      font-size: 23px;
-      line-height: 1.4;
-    }
-
-    .choice-group {
-      display: inline-grid;
-      grid-template-columns: 1fr 1fr;
-      margin: 18px 0;
-      border: 2px solid #cfdae2;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .choice-group button {
-      border: 0;
-      background: transparent;
-      font: inherit;
-      color: #20314e;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 10px 20px;
-      cursor: pointer;
-    }
-
-    .choice-group button:first-child {
-      background: #f8fbfd;
-      border-right: 1px solid #d7dfe7;
-    }
-
-    .promo {
-      border: 3px solid var(--teal);
-      border-radius: 14px;
-      background: #e9eff3;
-      padding: 14px;
-    }
-
-    .promo label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--teal);
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .promo input {
-      width: 100%;
-      border: 2px solid #c3cfda;
-      border-radius: 10px;
-      padding: 12px 14px;
-      background: #fff;
-      font-size: 18px;
-      color: #243652;
-    }
-
-    .hero-image-wrap {
-      position: relative;
-      min-height: 420px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .hero-image-bg {
-      position: absolute;
-      inset: 0 24px 36px;
-      background: radial-gradient(circle at 40% 18%, #fafcfe 0%, #e9eff5 55%, #dce7f2 100%);
-      border-radius: 22px;
-      border: 1px solid #e0e6ed;
-    }
-
-    .illustration {
-      position: relative;
-      width: min(100%, 520px);
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid #d5dee8;
-      box-shadow: 0 16px 28px rgba(15, 36, 69, 0.13);
-      background: #f0f4f8;
-    }
-
-    .chat-bubble {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 0;
-      background: var(--ink);
-      color: #fff;
-      font-size: 20px;
-      box-shadow: 0 10px 20px rgba(12, 23, 48, 0.26);
-      cursor: pointer;
-    }
-
-    @media (max-width: 1120px) {
-      .topbar {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-
-      .main-nav,
-      .nav-actions {
-        justify-self: start;
-        flex-wrap: wrap;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .page {
-        width: calc(100% - 26px);
-      }
-
-      .brand-wordmark {
-        font-size: 36px;
-      }
-
-      .lead,
-      .start-copy {
-        font-size: 18px;
-      }
-
-      .start-title {
-        font-size: 24px;
-      }
-
-      .hero-image-wrap {
-        min-height: 320px;
-      }
-    }
+    .gs-welcome-card .k{margin:0 0 8px}
+    .gs-welcome-card h2{margin:0;font-size:26px;line-height:1.2;color:var(--navy)}
+    .gs-welcome-card p{margin:12px 0 0;color:var(--slate);font-size:15px}
+    .gs-welcome-actions{margin-top:24px;display:flex;flex-direction:column;gap:10px;align-items:stretch}
+    .gs-welcome-actions .btn-primary{min-height:44px;justify-content:center}
+    .gs-welcome-dismiss{background:transparent;border:1px solid var(--cool);color:var(--slate);border-radius:8px;padding:12px 16px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+    .gs-welcome-dismiss:hover{background:rgba(11,16,32,.04);color:var(--navy)}
+    .gs-welcome-email{margin-top:16px;padding-top:16px;border-top:1px solid var(--cool)}
+    .gs-welcome-email label{display:block;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin-bottom:6px}
+    .gs-welcome-email input[type=email]{width:100%;padding:10px 12px;border:1px solid var(--cool);border-radius:8px;font-size:14px;color:var(--navy)}
+    .gs-welcome-email .gs-email-msg{margin-top:8px;font-size:13px;color:var(--teal);font-weight:600;display:none}
+    .gs-welcome-email .gs-email-msg.show{display:block}
+    /* Email capture strip (before login) */
+    .email-capture{background:linear-gradient(165deg, rgba(31,95,99,.06), rgba(11,16,32,.04));border:1px solid rgba(31,95,99,.2);border-radius:14px;padding:24px 20px;max-width:560px;margin:0 auto}
+    .email-capture h3{margin:0 0 6px;font-size:20px;color:var(--navy)}
+    .email-capture p{margin:0 0 14px;font-size:14px;color:var(--slate)}
+    .email-capture-form{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .email-capture-form input[type=email]{flex:1;min-width:200px;padding:10px 14px;border:1px solid var(--cool);border-radius:8px;font-size:14px;color:var(--navy)}
+    .email-capture-form .btn-primary{margin:0}
+    .email-capture .email-capture-thanks{display:none;font-size:14px;color:var(--teal);font-weight:600}
+    .email-capture .email-capture-thanks.show{display:block}
+    .email-capture-form.hide{display:none}
   </style>
 </head>
 <body>
-  <main class="page">
-    <header class="topbar">
-      <a href="/" class="brand" aria-label="Grammar Spy home">
-        <svg viewBox="0 0 76 76" role="img" aria-hidden="true">
-          <path d="M38 4l22 8.2v18.6c0 17.7-11.4 31.2-22 37.2-10.6-6-22-19.5-22-37.2V12.2L38 4z" fill="#fff" stroke="#0d1b36" stroke-width="3.5"/>
-          <path d="M38 12l14.7 5.3v13.2c0 12.1-7.8 21.7-14.7 26.2-6.9-4.5-14.7-14.1-14.7-26.2V17.3L38 12z" fill="#f7fbfe" stroke="#1f6f73" stroke-width="2"/>
-          <circle cx="38" cy="31.4" r="8.7" fill="#dfb443" stroke="#0d1b36" stroke-width="2"/>
-          <path d="M33.3 31.5l3.5 3.5 6.9-7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div class="brand-wordmark">
-          <span>Grammar</span>
-          <span>Spy</span>
-        </div>
-      </a>
-
-      <nav class="main-nav" aria-label="Primary">
-        <a href="/">Home</a>
-        <a href="#missions">Missions</a>
-        <a href="/blog">Blog</a>
-        <a href="/pricing">Pricing</a>
-      </nav>
-
-      <div class="nav-actions">
-        <div class="lang-switch" aria-label="Language switch">
-          <span>EN</span>
-          <span>ES</span>
-          <span>FR</span>
-        </div>
-        <button class="pill-btn primary" type="button">Create Account</button>
-        <button class="pill-btn" type="button">Sign In</button>
+  <div id="gsWelcomeOverlay" class="gs-welcome-overlay" aria-modal="true" role="dialog" aria-labelledby="gsWelcomeTitle" aria-describedby="gsWelcomeDesc">
+    <div class="gs-welcome-backdrop" style="position:absolute;inset:0" aria-hidden="true"></div>
+    <div class="gs-welcome-card">
+      <p class="k">Grammar Spy™</p>
+      <h2 id="gsWelcomeTitle" data-i18n="welcome_title">Get the full experience of Grammar Spy</h2>
+      <p id="gsWelcomeDesc" data-i18n="welcome_desc">Join our community—teachers and students building grammar skills one mission at a time.</p>
+      <div class="gs-welcome-email" id="gsWelcomeEmail">
+        <label for="gsWelcomeEmailInput" data-i18n="email_getMission01">Get Mission 01 free.</label>
+        <input type="email" id="gsWelcomeEmailInput" placeholder="you@example.com" autocomplete="email">
+        <button type="button" class="btn-primary" id="gsWelcomeEmailBtn" style="margin-top:8px;width:100%" data-i18n="email_submit">Send me Mission 01</button>
+        <p class="gs-email-msg" id="gsWelcomeEmailMsg" data-i18n="email_onList">You're on the list. We'll be in touch.</p>
       </div>
-    </header>
+      <div class="gs-welcome-actions">
+        <a href="auth.html?mode=create" class="btn-primary" data-i18n="welcome_join">Join free</a>
+        <button type="button" class="gs-welcome-dismiss" data-i18n="welcome_continue">Continue to site</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var LEAD_KEY = 'gs_lead_emails';
+      function saveLead(email){
+        try {
+          var raw = localStorage.getItem(LEAD_KEY);
+          var list = raw ? JSON.parse(raw) : [];
+          if (list.indexOf(email) === -1) list.push(email);
+          localStorage.setItem(LEAD_KEY, JSON.stringify(list));
+        } catch(e) {}
+      }
+      function initWelcome(){
+        var overlay = document.getElementById('gsWelcomeOverlay');
+        if (!overlay) return;
+        if (sessionStorage.getItem('gs_welcome_dismissed')) { overlay.classList.add('gs-welcome-dismissed'); return; }
+        function dismiss(){ try { sessionStorage.setItem('gs_welcome_dismissed', '1'); } catch(e) {} overlay.classList.add('gs-welcome-dismissed'); }
+        overlay.querySelector('.gs-welcome-dismiss').addEventListener('click', dismiss);
+        overlay.querySelector('.gs-welcome-backdrop').addEventListener('click', dismiss);
+        var btn = document.getElementById('gsWelcomeEmailBtn');
+        var input = document.getElementById('gsWelcomeEmailInput');
+        var msg = document.getElementById('gsWelcomeEmailMsg');
+        if (btn && input && msg) {
+          btn.addEventListener('click', function(){
+            var email = (input.value || '').trim();
+            if (!email || email.indexOf('@') < 1) return;
+            saveLead(email);
+            msg.classList.add('show');
+            input.style.display = 'none';
+            btn.style.display = 'none';
+          });
+        }
+      }
+      initWelcome();
+      window.GS_SAVE_LEAD = saveLead;
+    })();
+  </script>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
 
-    <section class="hero" aria-labelledby="hero-title">
-      <div>
-        <p class="eyebrow">Grammar Spy&trade;</p>
-        <h1 id="hero-title">Structured grammar. Clear results. Zero chaos.</h1>
-        <div class="gold-line" aria-hidden="true"></div>
-        <p class="lead">Created by an ELD teacher for real classrooms.</p>
-
-        <article class="start-card">
-          <h2 class="start-title">Start Here</h2>
-          <p class="start-copy">Choose one (Teacher or Student), then click Continue. Sign up for a free account to get Mission 01 at no cost; pay to unlock all missions.</p>
-
-          <div class="choice-group" role="group" aria-label="Profile type">
-            <button type="button">Teacher</button>
-            <button type="button">Student</button>
+  <section class="hero-shell" aria-label="Hero">
+    <div class="hero section">
+      <div class="hero-grid">
+        <div>
+          <p class="k">Grammar Spy™</p>
+          <h1 data-i18n="hero_tagline">Structured grammar. Clear results. Zero chaos.</h1>
+          <div class="hero-accent" aria-hidden="true"></div>
+          <p class="subcopy hero-who" data-i18n="hero_subcopy">Created by an ELD teacher for real classrooms.</p>
+          <div class="mission-panel">
+            <p class="mission-label start-here" data-i18n="hero_startHere">Start here</p>
+            <p class="hero-cta-copy" data-i18n="hero_ctaCopy">Choose one (Teacher or Student), then click Continue. Sign up for a free account to get Mission 01 at no cost; pay to unlock all missions.</p>
+            <div class="segmented" role="tablist" aria-label="Mode selection">
+              <button id="modeTeacher" class="seg active" type="button" aria-selected="true" data-i18n="hero_teacher">Teacher</button>
+              <button id="modeStudent" class="seg" type="button" aria-selected="false" data-i18n="hero_student">Student</button>
+            </div>
+            <div style="margin-top:14px;padding:12px 14px;background:rgba(31,95,99,.12);border:2px solid #1f5f63;border-radius:10px">
+              <label for="indexPromoCode" style="display:block;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63;margin-bottom:6px">Promo code</label>
+              <input type="text" id="indexPromoCode" placeholder="Enter promo code" maxlength="20" style="width:100%;max-width:220px;border:2px solid #1f5f63;border-radius:8px;padding:10px 12px;font-size:14px" />
+            </div>
+            <div class="hero-buttons">
+              <a id="continueBtn" class="btn-primary btn-hero-primary" href="teacher-home.html" data-i18n="hero_continue">Continue</a>
+              <a class="link-action" href="auth.html" id="signUpLink" data-i18n="hero_signUpFree">Sign up free</a>
+              <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=6&timer=off" data-i18n="hero_trySample">Try a sample mission</a>
+            </div>
+            <div class="passive" data-i18n="hero_passive">Teacher path requires sign-in. Mission 01 free; upgrade for all missions.</div>
           </div>
-
-          <form class="promo" action="#" method="get">
-            <label for="promo-code">Promo Code</label>
-            <input id="promo-code" name="promo" type="text" placeholder="Enter code (e.g. FEEDBACK20)">
-          </form>
-        </article>
+        </div>
+        <div class="hero-visual">
+          <img src="assets/branding-images/hero/hero-classroom-feb23.png" alt="Classroom with teacher and students using Grammar Spy; mission brief on screen: Find the verb in the sentence.">
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="hero-image-wrap" aria-hidden="true">
-        <div class="hero-image-bg"></div>
-        <figure class="illustration">
-          <svg viewBox="0 0 640 430" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <linearGradient id="wall" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#f8fbff"/>
-                <stop offset="100%" stop-color="#e2edf8"/>
-              </linearGradient>
-              <linearGradient id="desk" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#f6c98f"/>
-                <stop offset="100%" stop-color="#d89f65"/>
-              </linearGradient>
-            </defs>
+  <main class="wrap">
 
-            <rect width="640" height="430" fill="url(#wall)"/>
-            <rect x="0" y="332" width="640" height="98" fill="#cfe3f9"/>
-            <rect x="30" y="270" width="580" height="86" rx="12" fill="url(#desk)" opacity="0.86"/>
-            <rect x="386" y="52" width="218" height="136" rx="8" fill="#fff" stroke="#99b8dd" stroke-width="4"/>
-            <text x="418" y="84" font-size="28" font-weight="700" fill="#2b5688">Grammar Spy</text>
-            <text x="420" y="112" font-size="18" font-weight="600" fill="#375b84">Mission Brief</text>
-            <text x="404" y="138" font-size="12" fill="#7189a9">Find the verb in the sentence.</text>
-            <line x1="404" y1="150" x2="580" y2="150" stroke="#d9e6f4"/>
-            <rect x="470" y="162" width="48" height="18" rx="6" fill="#e4eef8"/>
-            <rect x="524" y="162" width="48" height="18" rx="6" fill="#e4eef8"/>
+    <section class="section section-flat" aria-label="One mission flow">
+      <p class="mission-label" data-i18n="home_howItWorks">How it works</p>
+      <h2 data-i18n="home_whatHappens">What Happens in One Mission</h2>
+      <p data-i18n="home_oneTarget">One grammar target per mission, minimal prep, and a clear result—so you know exactly what to do next, in class or on your own.</p>
+      <div class="flow">
+        <article class="step"><b data-i18n="home_brief">Brief</b><span data-i18n="home_briefDesc">One clear target.</span></article>
+        <article class="step"><b data-i18n="home_activity">Activity</b><span data-i18n="home_activityDesc">One focused task.</span></article>
+        <article class="step"><b><img src="assets/icons/icon-check.svg" alt="" class="icon-sm" width="22" height="22"><span data-i18n="home_feedbackLabel">Feedback</span></b><span data-i18n="home_feedback">Immediate correction.</span></article>
+        <article class="step"><b data-i18n="home_report">Report</b><span data-i18n="home_reportDesc">Next-step guidance.</span></article>
+      </div>
+      <a class="link-action" href="teacher-mode.html" data-i18n="home_openSetup">Open mission setup</a>
+    </section>
 
-            <g transform="translate(70 188)">
-              <circle cx="44" cy="38" r="20" fill="#f0be8d"/>
-              <rect x="25" y="60" width="40" height="52" rx="12" fill="#4c77ad"/>
-              <rect x="60" y="66" width="50" height="14" rx="7" fill="#f0be8d"/>
-              <rect x="102" y="70" width="40" height="24" rx="8" fill="#2d4f7f"/>
-            </g>
-
-            <g transform="translate(226 190)">
-              <circle cx="36" cy="32" r="18" fill="#f2c694"/>
-              <rect x="18" y="50" width="36" height="46" rx="10" fill="#3a8b83"/>
-              <rect x="58" y="54" width="56" height="14" rx="7" fill="#f2c694"/>
-              <rect x="104" y="56" width="44" height="20" rx="8" fill="#648ec4"/>
-            </g>
-
-            <g transform="translate(394 210)">
-              <circle cx="34" cy="28" r="16" fill="#f0be8d"/>
-              <rect x="16" y="46" width="36" height="42" rx="10" fill="#f09e56"/>
-              <rect x="56" y="56" width="42" height="12" rx="6" fill="#f0be8d"/>
-              <rect x="94" y="56" width="34" height="18" rx="7" fill="#2f5c90"/>
-            </g>
-
-            <g transform="translate(542 214)">
-              <circle cx="28" cy="26" r="14" fill="#f2c694"/>
-              <rect x="12" y="42" width="32" height="40" rx="10" fill="#9466a7"/>
-            </g>
-
-            <g transform="translate(280 120)">
-              <circle cx="20" cy="18" r="16" fill="#f2c794"/>
-              <rect x="8" y="34" width="28" height="56" rx="12" fill="#f0b84e"/>
-              <rect x="22" y="44" width="42" height="10" rx="5" fill="#f2c794"/>
-              <rect x="56" y="42" width="22" height="58" rx="9" fill="#3b6a9f"/>
-            </g>
-          </svg>
+    <section class="section section-flat" aria-label="Inside a Mission">
+      <p class="mission-label" data-i18n="home_insideMissionLabel">See the product</p>
+      <h2 data-i18n="home_insideMission">Inside a Mission</h2>
+      <p class="subcopy" data-i18n="home_insideMissionDesc">One clear mission screen and a simple report—so you know exactly what happened.</p>
+      <div class="inside-mission" role="list">
+        <figure class="screenshot-card" role="listitem">
+          <img src="assets/branding-images/inside-mission/mission-screen-1.png" alt="Rule Sprint mission screen with sentence and answer choices." width="400" height="260">
+          <figcaption data-i18n="home_insideMission_cleanUI">Mission screen</figcaption>
+        </figure>
+        <figure class="screenshot-card" role="listitem">
+          <img src="assets/branding-images/inside-mission/mission-report.png" alt="Mission Report showing accuracy, strong area, vulnerability, and next steps." width="400" height="260">
+          <figcaption data-i18n="home_insideMission_report">Mission Report</figcaption>
         </figure>
       </div>
     </section>
+
+    <section class="section section-flat" aria-label="Sample case">
+      <p class="mission-label" data-i18n="home_sampleMission">Sample mission</p>
+      <h2 data-i18n="home_classroomCase">Today’s Classroom Case</h2>
+      <p class="subcopy" data-i18n="home_exploreCase">Explore one case before full missions.</p>
+      <article class="case">
+        <b style="font-size:18px;color:#0b1020" data-i18n="home_missingAnnouncement">The Missing Morning Announcement</b>
+        <p style="margin-top:6px" data-i18n="home_findTense">Find the tense breach and rebuild the final line.</p>
+      </article>
+      <div style="margin-top:14px">
+        <a class="btn-primary" href="case-interview.html?pack=pack01&difficulty=field&mode=class" data-i18n="home_exploreMission">Explore This Mission</a>
+      </div>
+    </section>
+
+    <section class="section section-band-dark" aria-label="For teachers and students">
+      <p class="mission-label" style="color:#d8e2ed" data-i18n="home_forTeachers">For teachers & students</p>
+      <h2 data-i18n="home_supportsFlow">How It Fits Your Flow</h2>
+      <p class="subcopy" style="color:#c8d4e2" data-i18n="home_classroomRhythm">Designed for classroom rhythm or self-paced practice—one mission at a time.</p>
+      <ul>
+        <li data-i18n="home_structuredPacing">Structured pacing</li>
+        <li data-i18n="home_realtimeFeedback">Real-time feedback</li>
+        <li data-i18n="home_reusableMissions">Reusable missions</li>
+      </ul>
+      <a class="link-action" href="insights.html" data-i18n="home_learnMore">Learn more</a>
+    </section>
+
+    <section class="section section-flat" aria-label="Final call to action">
+      <p class="mission-label" data-i18n="home_start">Start</p>
+      <h2 data-i18n="home_startFirst">Start Your First Mission</h2>
+      <p class="subcopy" data-i18n="home_beginMission01">Begin with Mission 01 and continue when ready.</p>
+      <div style="margin-top:14px"><a class="btn-primary" href="pack.html?pack=pack01" data-i18n="home_tryMission01Free">Try Mission 01 Free</a></div>
+      <details>
+        <summary data-i18n="home_moreOptions">More options</summary>
+        <ul>
+          <li><a href="packs.html" data-i18n="home_viewAllMissions">View all missions</a></li>
+          <li><a href="pricing.html" data-i18n="home_viewPricing">View pricing</a></li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="section section-flat email-capture" aria-label="Get Mission 01 free">
+      <h3 data-i18n="email_getMission01">Get Mission 01 free.</h3>
+      <p data-i18n="email_captureDesc">No login yet? Drop your email and we'll send you access to Mission 01.</p>
+      <div class="email-capture-form" id="homeEmailForm">
+        <input type="email" id="homeEmailInput" placeholder="you@example.com" autocomplete="email" aria-label="Email">
+        <button type="button" class="btn-primary" id="homeEmailBtn" data-i18n="email_submit">Send me Mission 01</button>
+      </div>
+      <p class="email-capture-thanks" id="homeEmailThanks" data-i18n="email_onList">You're on the list. We'll be in touch.</p>
+    </section>
   </main>
 
-  <button class="chat-bubble" type="button" aria-label="Open support chat">?</button>
+  <div data-include="footer"></div>
+  <script src="iap-config.js"></script>
+  <script src="iap-revenuecat.js"></script>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    const useKey = 'gs_use_context_v3';
+    const teacherBtn = document.getElementById('modeTeacher');
+    const studentBtn = document.getElementById('modeStudent');
+    const continueBtn = document.getElementById('continueBtn');
+
+    function applyMode(mode){
+      const teacher = mode !== 'individual';
+      teacherBtn.classList.toggle('active', teacher);
+      studentBtn.classList.toggle('active', !teacher);
+      teacherBtn.setAttribute('aria-selected', teacher ? 'true' : 'false');
+      studentBtn.setAttribute('aria-selected', !teacher ? 'true' : 'false');
+      continueBtn.href = teacher ? 'teacher-home.html' : 'individual-home.html';
+      localStorage.setItem(useKey, teacher ? 'class' : 'individual');
+    }
+
+    teacherBtn.addEventListener('click', () => applyMode('class'));
+    studentBtn.addEventListener('click', () => applyMode('individual'));
+
+    const saved = localStorage.getItem(useKey);
+    applyMode(saved === 'individual' ? 'individual' : 'class');
+
+    const promoInput = document.getElementById('indexPromoCode');
+    const signUpLink = document.getElementById('signUpLink');
+    if (promoInput && signUpLink) {
+      promoInput.addEventListener('input', function(){ sessionStorage.setItem('gs_promo_code', (promoInput.value || '').trim()); });
+      signUpLink.addEventListener('click', function(e){
+        const code = (promoInput.value || '').trim();
+        if (code) { e.preventDefault(); location.href = 'auth.html?code=' + encodeURIComponent(code); }
+      });
+    }
+
+    (function(){
+      var form = document.getElementById('homeEmailForm');
+      var input = document.getElementById('homeEmailInput');
+      var btn = document.getElementById('homeEmailBtn');
+      var thanks = document.getElementById('homeEmailThanks');
+      if (!form || !input || !btn || !thanks) return;
+      btn.addEventListener('click', function(){
+        var email = (input.value || '').trim();
+        if (!email || email.indexOf('@') < 1) return;
+        if (window.GS_SAVE_LEAD) window.GS_SAVE_LEAD(email);
+        form.classList.add('hide');
+        thanks.classList.add('show');
+      });
+    })();
+  </script>
 </body>
 </html>
