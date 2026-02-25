@@ -270,6 +270,10 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       text-decoration: none;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
     }
 
     .mode-note {
@@ -384,9 +388,9 @@
 
       <nav class="main-nav" aria-label="Primary">
         <a href="/">Home</a>
-        <a href="#missions">Missions</a>
-        <a href="/blog">Blog</a>
-        <a href="/pricing">Pricing</a>
+        <a href="/grammar-activities/">Missions</a>
+        <a href="/online-grammar-practice/">Blog</a>
+        <a href="/adult-grammar-practice/">Pricing</a>
       </nav>
 
       <div class="nav-actions">
@@ -395,8 +399,8 @@
           <span>ES</span>
           <span>FR</span>
         </div>
-        <a class="pill-btn primary" href="#start-card">Create Account</a>
-        <a class="pill-btn" href="#start-card">Sign In</a>
+        <a class="pill-btn primary" href="/grammar-activities/">Create Account</a>
+        <a class="pill-btn" href="/grammar-activities/">Sign In</a>
       </div>
     </header>
 
@@ -422,8 +426,8 @@
           </form>
 
           <div class="cta-row">
-            <a id="continue-link" class="pill-btn primary" href="#promo-code">Continue as Teacher</a>
-            <a class="link-inline" href="#promo-code">Apply Promo</a>
+            <a id="continue-link" class="pill-btn primary" href="/grammar-games-for-teachers/">Continue as Teacher</a>
+            <button id="apply-promo" class="link-inline" type="button">Apply Promo</button>
           </div>
           <p id="mode-note" class="mode-note">Teacher mode selected. Continue to set up your class account.</p>
         </article>
@@ -554,8 +558,9 @@
       const modeNote = document.getElementById("mode-note");
       const promoForm = document.getElementById("promo-form");
       const promoInput = document.getElementById("promo-code");
+      const applyPromoBtn = document.getElementById("apply-promo");
 
-      if (!teacherBtn || !studentBtn || !continueLink || !modeNote || !promoForm || !promoInput) {
+      if (!teacherBtn || !studentBtn || !continueLink || !modeNote || !promoForm || !promoInput || !applyPromoBtn) {
         return;
       }
 
@@ -567,6 +572,7 @@
         teacherBtn.setAttribute("aria-pressed", teacher ? "true" : "false");
         studentBtn.setAttribute("aria-pressed", teacher ? "false" : "true");
         continueLink.textContent = teacher ? "Continue as Teacher" : "Continue as Student";
+        continueLink.href = teacher ? "/grammar-games-for-teachers/" : "/interactive-grammar-games/";
         modeNote.textContent = teacher
           ? "Teacher mode selected. Continue to set up your class account."
           : "Student mode selected. Continue to join and start Mission 01.";
@@ -592,9 +598,10 @@
         event.preventDefault();
       });
 
-      promoInput.addEventListener("input", function () {
+      function savePromoCode() {
         const code = promoInput.value.trim();
         if (!code) {
+          modeNote.textContent = "Enter a promo code first, then click Apply Promo.";
           return;
         }
         try {
@@ -603,7 +610,16 @@
           /* no-op */
         }
         modeNote.textContent = "Promo saved. Click Continue to keep going.";
+      }
+
+      promoInput.addEventListener("input", function () {
+        if (!promoInput.value.trim()) {
+          return;
+        }
+        modeNote.textContent = "Promo code entered. Click Apply Promo.";
       });
+
+      applyPromoBtn.addEventListener("click", savePromoCode);
 
       applyMode(mode);
     })();
