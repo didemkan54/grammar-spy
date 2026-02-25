@@ -1081,6 +1081,582 @@
   };
 
   var packVariantBanks = {
+    "dialogue-repair": {
+      pack01: [
+        {
+          scene: "Retell Dialogue 1",
+          prompt: "Repair the past-time dialogue line.",
+          options: [
+            "Yesterday we fix the timeline after class.",
+            "Yesterday we fixed the timeline after class.",
+            "Yesterday we are fixing the timeline after class.",
+            "Yesterday we were fix the timeline after class."
+          ],
+          answer: 1,
+          explain: "Past-time marker yesterday requires simple past."
+        },
+        {
+          scene: "Retell Dialogue 2",
+          prompt: "Choose the best interrupted-action line.",
+          options: [
+            "We were checking clues when the bell rang.",
+            "We checking clues when the bell rang.",
+            "We are checking clues when the bell rang.",
+            "We checked clues when the bell rings."
+          ],
+          answer: 0,
+          explain: "Ongoing past action interrupted by a past event is best here."
+        },
+        {
+          scene: "Retell Dialogue 3",
+          prompt: "Pick the strongest question form.",
+          options: [
+            "Did the team finished the report?",
+            "Did the team finish the report?",
+            "Does the team finished the report?",
+            "Team did finish the report?"
+          ],
+          answer: 1,
+          explain: "Did + base verb is the correct question pattern."
+        }
+      ],
+      pack02: [
+        {
+          scene: "Present Dialogue 1",
+          prompt: "Repair the line for routine meaning.",
+          options: [
+            "She checks the board every morning.",
+            "She is checking the board every morning right now.",
+            "She checked the board every morning.",
+            "She check the board every morning."
+          ],
+          answer: 0,
+          explain: "Routine actions take simple present with third-person s."
+        },
+        {
+          scene: "Present Dialogue 2",
+          prompt: "Choose the best line for action happening now.",
+          options: [
+            "They read the clues right now.",
+            "They are reading the clues right now.",
+            "They were reading the clues right now.",
+            "They reads the clues right now."
+          ],
+          answer: 1,
+          explain: "Right now matches present continuous."
+        },
+        {
+          scene: "Present Dialogue 3",
+          prompt: "Pick the strongest present question.",
+          options: [
+            "Does the class need more time?",
+            "Does the class needs more time?",
+            "Do the class need more time?",
+            "Class does need more time?"
+          ],
+          answer: 0,
+          explain: "Singular class takes does + base verb."
+        }
+      ],
+      pack03: [
+        {
+          scene: "Agreement Dialogue 1",
+          prompt: "Repair the be-verb agreement line.",
+          options: [
+            "I is ready for the mission.",
+            "I am ready for the mission.",
+            "I are ready for the mission.",
+            "I be ready for the mission."
+          ],
+          answer: 1,
+          explain: "I always pairs with am."
+        },
+        {
+          scene: "Agreement Dialogue 2",
+          prompt: "Choose the strongest plural agreement sentence.",
+          options: [
+            "The clues is in the folder.",
+            "The clues are in the folder.",
+            "The clues am in the folder.",
+            "The clues was in the folder now."
+          ],
+          answer: 1,
+          explain: "Plural subject clues takes are."
+        },
+        {
+          scene: "Agreement Dialogue 3",
+          prompt: "Pick the correct past be-verb line.",
+          options: [
+            "The final draft were clear.",
+            "The final draft was clear.",
+            "The final draft are clear yesterday.",
+            "The final draft be clear."
+          ],
+          answer: 1,
+          explain: "Singular draft in past context uses was."
+        }
+      ],
+      pack04: [
+        {
+          scene: "Connector Dialogue 1",
+          prompt: "Repair the cause-result dialogue sentence.",
+          options: [
+            "The clue was unclear, so we checked the source.",
+            "The clue was unclear, because so we checked the source.",
+            "The clue was unclear, and because we checked the source.",
+            "The clue unclear, so checked source."
+          ],
+          answer: 0,
+          explain: "Use one connector to link reason and result."
+        },
+        {
+          scene: "Connector Dialogue 2",
+          prompt: "Choose the strongest contrast line.",
+          options: [
+            "We practiced a lot, but the first take still failed.",
+            "We practiced a lot, but and the first take still failed.",
+            "We practiced a lot, however but the first take still failed.",
+            "We practiced a lot, but first take fail yesterday."
+          ],
+          answer: 0,
+          explain: "Contrast should use a single, accurate connector."
+        },
+        {
+          scene: "Connector Dialogue 3",
+          prompt: "Pick the best purpose sentence.",
+          options: [
+            "We rewrote the note to make the meaning clearer.",
+            "We rewrote the note for make the meaning clearer.",
+            "We rewrote the note to making the meaning clearer.",
+            "We rewrote the note because to clearer meaning."
+          ],
+          answer: 0,
+          explain: "To + base verb is the strongest purpose structure."
+        }
+      ],
+      pack05: [
+        {
+          scene: "Reference Dialogue 1",
+          prompt: "Repair the line for clear pronoun reference.",
+          options: [
+            "Aylin gave Ece the file after Aylin checked it.",
+            "Aylin gave Ece the file after she checked it.",
+            "Aylin gave Ece the file after it checked it.",
+            "Aylin gave Ece file after she were checking it."
+          ],
+          answer: 0,
+          explain: "Repeating the subject name avoids ambiguity."
+        },
+        {
+          scene: "Reference Dialogue 2",
+          prompt: "Choose the line with explicit ownership.",
+          options: [
+            "Mina told Defne that Mina would present first.",
+            "Mina told Defne that she would present first.",
+            "Mina told Defne that it would present first.",
+            "Mina told Defne she were presenting first."
+          ],
+          answer: 0,
+          explain: "Explicit naming keeps meaning precise."
+        },
+        {
+          scene: "Reference Dialogue 3",
+          prompt: "Pick the clearest reference sentence.",
+          options: [
+            "The math club submitted the poster, and the club signed it.",
+            "The math club submitted the poster, and it signed it.",
+            "Math club submitted poster and signed it.",
+            "The math club submitted the poster and they was sign it."
+          ],
+          answer: 0,
+          explain: "Clear repeated noun references improve clarity."
+        }
+      ],
+      pack06: [
+        {
+          scene: "Question Dialogue 1",
+          prompt: "Repair the yes-no question.",
+          options: [
+            "Did the team check the final list?",
+            "Did the team checked the final list?",
+            "Does the team checked the final list?",
+            "Team did check the final list?"
+          ],
+          answer: 0,
+          explain: "Did is followed by a base verb."
+        },
+        {
+          scene: "Question Dialogue 2",
+          prompt: "Choose the strongest Wh-question.",
+          options: [
+            "Where did the class post the final notice?",
+            "Where did the class posted the final notice?",
+            "Where the class did post the final notice?",
+            "Where did posted the class final notice?"
+          ],
+          answer: 0,
+          explain: "Wh + did + subject + base verb is the correct order."
+        },
+        {
+          scene: "Question Dialogue 3",
+          prompt: "Pick the best present question form.",
+          options: [
+            "Does the monitor show the update?",
+            "Does the monitor shows the update?",
+            "Do the monitor show the update?",
+            "Monitor does show the update?"
+          ],
+          answer: 0,
+          explain: "Singular subject monitor takes does + base verb."
+        }
+      ]
+    },
+    "rewrite-studio": {
+      pack01: [
+        {
+          scene: "Past Rewrite 1",
+          prompt: "Choose the strongest rewrite.",
+          options: [
+            "Yesterday we checked the board, then we fixed the report.",
+            "Yesterday we check the board, then we fixed the report.",
+            "Yesterday we checked the board, then we fixing the report.",
+            "Yesterday checked board then fixed report."
+          ],
+          answer: 0,
+          explain: "Retell sequence should keep completed past forms."
+        },
+        {
+          scene: "Past Rewrite 2",
+          prompt: "Pick the best rewrite for interrupted action.",
+          options: [
+            "We were reviewing clues when the bell rang.",
+            "We review clues when the bell rang.",
+            "We are reviewing clues when the bell rang.",
+            "We were review clues when the bell rang."
+          ],
+          answer: 0,
+          explain: "Interrupted background action works with past continuous."
+        },
+        {
+          scene: "Past Rewrite 3",
+          prompt: "Select the cleanest question rewrite.",
+          options: [
+            "Did the class finish the mission before lunch?",
+            "Did the class finished the mission before lunch?",
+            "Does the class finished the mission before lunch?",
+            "Class did finish the mission before lunch?"
+          ],
+          answer: 0,
+          explain: "Did + base verb makes the strongest form."
+        }
+      ],
+      pack02: [
+        {
+          scene: "Present Rewrite 1",
+          prompt: "Choose the strongest routine rewrite.",
+          options: [
+            "She checks attendance every morning.",
+            "She is checking attendance every morning now.",
+            "She checked attendance every morning.",
+            "She check attendance every morning."
+          ],
+          answer: 0,
+          explain: "Routine meaning is best in simple present."
+        },
+        {
+          scene: "Present Rewrite 2",
+          prompt: "Pick the best rewrite for right now.",
+          options: [
+            "They are testing the audio right now.",
+            "They test the audio right now.",
+            "They tested the audio right now.",
+            "They is testing the audio right now."
+          ],
+          answer: 0,
+          explain: "Right now aligns with present continuous."
+        },
+        {
+          scene: "Present Rewrite 3",
+          prompt: "Select the strongest question rewrite.",
+          options: [
+            "Does the class need one more minute?",
+            "Does the class needs one more minute?",
+            "Do the class need one more minute?",
+            "Class does need one more minute?"
+          ],
+          answer: 0,
+          explain: "Singular class uses does + base verb."
+        }
+      ],
+      pack03: [
+        {
+          scene: "Agreement Rewrite 1",
+          prompt: "Choose the best be-verb rewrite.",
+          options: [
+            "I am ready for the final check.",
+            "I is ready for the final check.",
+            "I are ready for the final check.",
+            "I be ready for the final check."
+          ],
+          answer: 0,
+          explain: "I pairs with am."
+        },
+        {
+          scene: "Agreement Rewrite 2",
+          prompt: "Pick the strongest plural agreement rewrite.",
+          options: [
+            "The students are in the lab.",
+            "The students is in the lab.",
+            "The students am in the lab.",
+            "The students was in the lab now."
+          ],
+          answer: 0,
+          explain: "Plural subject students takes are."
+        },
+        {
+          scene: "Agreement Rewrite 3",
+          prompt: "Select the strongest past agreement rewrite.",
+          options: [
+            "The checklist was complete.",
+            "The checklist were complete.",
+            "The checklist are complete yesterday.",
+            "The checklist be complete."
+          ],
+          answer: 0,
+          explain: "Singular checklist in past takes was."
+        }
+      ],
+      pack04: [
+        {
+          scene: "Connector Rewrite 1",
+          prompt: "Choose the strongest cause-result rewrite.",
+          options: [
+            "The instructions were unclear, so we simplified them.",
+            "The instructions were unclear, because so we simplified them.",
+            "The instructions were unclear, and because we simplified them.",
+            "Instructions unclear, so simplified."
+          ],
+          answer: 0,
+          explain: "Use one connector for clear logic."
+        },
+        {
+          scene: "Connector Rewrite 2",
+          prompt: "Pick the best contrast rewrite.",
+          options: [
+            "We practiced all morning, but the first try still failed.",
+            "We practiced all morning, but and the first try still failed.",
+            "We practiced all morning, however but the first try still failed.",
+            "We practiced all morning, but first try fail."
+          ],
+          answer: 0,
+          explain: "Contrast should use one transition signal."
+        },
+        {
+          scene: "Connector Rewrite 3",
+          prompt: "Select the strongest purpose rewrite.",
+          options: [
+            "We added labels to make each step clearer.",
+            "We added labels for make each step clearer.",
+            "We added labels to making each step clearer.",
+            "We added labels because to clear each step."
+          ],
+          answer: 0,
+          explain: "To + base verb is the clean purpose form."
+        }
+      ],
+      pack05: [
+        {
+          scene: "Reference Rewrite 1",
+          prompt: "Choose the clearest rewrite.",
+          options: [
+            "Mina gave Ece the report after Mina checked it.",
+            "Mina gave Ece the report after she checked it.",
+            "Mina gave Ece the report after it checked it.",
+            "Mina gave Ece report after she were checking it."
+          ],
+          answer: 0,
+          explain: "Explicit naming removes pronoun confusion."
+        },
+        {
+          scene: "Reference Rewrite 2",
+          prompt: "Pick the strongest reference rewrite.",
+          options: [
+            "Kerem told Arda that Kerem would speak first.",
+            "Kerem told Arda that he would speak first.",
+            "Kerem told Arda that it would speak first.",
+            "Kerem told Arda he were speaking first."
+          ],
+          answer: 0,
+          explain: "Clear repeated subject preserves meaning."
+        },
+        {
+          scene: "Reference Rewrite 3",
+          prompt: "Select the best ownership rewrite.",
+          options: [
+            "The robotics team submitted the plan, and the team signed it.",
+            "The robotics team submitted the plan, and it signed it.",
+            "Robotics team submitted plan and signed it.",
+            "The robotics team submitted the plan and they was sign it."
+          ],
+          answer: 0,
+          explain: "Clear ownership helps readers track reference."
+        }
+      ],
+      pack06: [
+        {
+          scene: "Question Rewrite 1",
+          prompt: "Choose the strongest yes-no question rewrite.",
+          options: [
+            "Did the class check the final answer?",
+            "Did the class checked the final answer?",
+            "Does the class checked the final answer?",
+            "Class did check the final answer?"
+          ],
+          answer: 0,
+          explain: "Did requires the base verb."
+        },
+        {
+          scene: "Question Rewrite 2",
+          prompt: "Pick the best Wh-question rewrite.",
+          options: [
+            "Where did the team upload the final file?",
+            "Where did the team uploaded the final file?",
+            "Where the team did upload the final file?",
+            "Where did uploaded the team final file?"
+          ],
+          answer: 0,
+          explain: "Wh + did + subject + base verb is correct."
+        },
+        {
+          scene: "Question Rewrite 3",
+          prompt: "Select the strongest present question rewrite.",
+          options: [
+            "Does the speaker explain the rubric clearly?",
+            "Does the speaker explains the rubric clearly?",
+            "Do the speaker explain the rubric clearly?",
+            "Speaker does explain the rubric clearly?"
+          ],
+          answer: 0,
+          explain: "Singular subject speaker uses does."
+        }
+      ]
+    },
+    "mission-sequence-lab": {
+      pack04: [
+        {
+          scene: "Connector Sequence 1",
+          prompt: "Choose the sentence with the clearest cause/result order.",
+          options: [
+            "We checked the sources, so we corrected the sentence.",
+            "We checked the sources, because so we corrected the sentence.",
+            "We checked the sources, and because we corrected the sentence.",
+            "Checked sources so corrected sentence."
+          ],
+          answer: 0,
+          explain: "Sequence logic is strongest with one connector."
+        },
+        {
+          scene: "Connector Sequence 2",
+          prompt: "Pick the strongest contrast sequence line.",
+          options: [
+            "We prepared carefully, but the first draft still had errors.",
+            "We prepared carefully, but and the first draft still had errors.",
+            "We prepared carefully, however but the first draft still had errors.",
+            "We prepared carefully, but first draft have errors."
+          ],
+          answer: 0,
+          explain: "One contrast signal keeps sequence readable."
+        },
+        {
+          scene: "Connector Sequence 3",
+          prompt: "Select the best purpose sequence sentence.",
+          options: [
+            "We color-coded notes to make the timeline easier to follow.",
+            "We color-coded notes for make the timeline easier to follow.",
+            "We color-coded notes to making the timeline easier to follow.",
+            "We color-coded notes because to easy timeline."
+          ],
+          answer: 0,
+          explain: "Purpose is cleanest with to + base verb."
+        }
+      ],
+      pack05: [
+        {
+          scene: "Reference Sequence 1",
+          prompt: "Choose the sequence line with clear reference.",
+          options: [
+            "Mina reviewed the script, then Mina sent it to Ece.",
+            "Mina reviewed the script, then she sent it to Ece.",
+            "Mina reviewed script, then sent it to Ece.",
+            "Mina reviewed the script, then she were sending it to Ece."
+          ],
+          answer: 0,
+          explain: "Explicit subject naming keeps sequence reference clear."
+        },
+        {
+          scene: "Reference Sequence 2",
+          prompt: "Pick the strongest sequence sentence.",
+          options: [
+            "The science club finished the chart, and the club posted it.",
+            "The science club finished the chart, and it posted it.",
+            "Science club finished chart and posted it.",
+            "The science club finished the chart, and they was post it."
+          ],
+          answer: 0,
+          explain: "Clear ownership strengthens sequence writing."
+        },
+        {
+          scene: "Reference Sequence 3",
+          prompt: "Select the best timeline sentence with clear names.",
+          options: [
+            "Elif called Duru, and Elif explained the correction.",
+            "Elif called Duru, and she explained the correction.",
+            "Elif called Duru and explained correction.",
+            "Elif called Duru, and she were explaining the correction."
+          ],
+          answer: 0,
+          explain: "Explicit reference avoids ambiguity across steps."
+        }
+      ],
+      pack06: [
+        {
+          scene: "Question Sequence 1",
+          prompt: "Choose the strongest question in sequence order.",
+          options: [
+            "First we checked notes; then we asked, Did we miss anything?",
+            "First we checked notes; then we asked, Did we missed anything?",
+            "First we checked notes; then we asked, Does we miss anything?",
+            "First checked notes then asked did missed anything."
+          ],
+          answer: 0,
+          explain: "Did + base verb keeps the question stage accurate."
+        },
+        {
+          scene: "Question Sequence 2",
+          prompt: "Pick the strongest Wh-question sequence line.",
+          options: [
+            "After comparing drafts, we asked where the file was saved.",
+            "After comparing drafts, we asked where did the file saved.",
+            "After comparing drafts, we asked where file did save.",
+            "After comparing drafts, asked where saved file."
+          ],
+          answer: 0,
+          explain: "Question sequence should preserve grammatical word order."
+        },
+        {
+          scene: "Question Sequence 3",
+          prompt: "Select the best present question sentence.",
+          options: [
+            "Now we ask: Does each sentence match the evidence?",
+            "Now we ask: Does each sentence matches the evidence?",
+            "Now we ask: Do each sentence match the evidence?",
+            "Now we ask does each sentence match evidence?"
+          ],
+          answer: 0,
+          explain: "Singular subject each sentence takes does."
+        }
+      ]
+    },
     "evidence-sort-board": {
       pack04: [
         {
@@ -1230,6 +1806,28 @@
     return roundBanks[key] || fallbackRounds;
   }
 
+  function resolveGameConfig(key, packId, baseCfg) {
+    var packLabels = {
+      pack01: "Retell What Happened",
+      pack02: "Speak In The Moment",
+      pack03: "Sentence Confidence Missions",
+      pack04: "Link Ideas Clearly",
+      pack05: "Reference Smartly",
+      pack06: "Question Flow Missions"
+    };
+    var next = {
+      title: baseCfg.title,
+      subtitle: baseCfg.subtitle,
+      howTo: baseCfg.howTo
+    };
+    if (key === "dialogue-repair" || key === "rewrite-studio" || key === "mission-sequence-lab" || key === "evidence-sort-board") {
+      var focus = packLabels[packId] || packId.toUpperCase();
+      next.subtitle = baseCfg.subtitle + " Pack focus: " + focus + ".";
+      next.howTo = baseCfg.howTo + " Keep answers aligned to the " + focus + " grammar target.";
+    }
+    return next;
+  }
+
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
     var target = Math.max(1, Math.min(20, desiredCount));
@@ -1256,7 +1854,7 @@
     if (el) el.innerHTML = value;
   }
 
-  var cfg = games[gameKey] || games["error-smash"];
+  var cfg = resolveGameConfig(gameKey, pack, games[gameKey] || games["error-smash"]);
   var packTitle = (window.GSPacks && window.GSPacks.meta && window.GSPacks.meta[pack] && window.GSPacks.meta[pack].short) || pack.toUpperCase();
   var teacherBtn = document.getElementById("btnTeacher");
   var homeBtn = document.getElementById("btnHome");

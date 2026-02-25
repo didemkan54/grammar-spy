@@ -112,13 +112,8 @@
       p.set('count', document.getElementById('count').value);
       p.set('timer', document.getElementById('timer').value);
       const base = gameSel.value;
-      if (playFormat === 'teams') {
-        p.set('game', base);
-        document.getElementById('continueBtn').href = 'team-setup.html?' + p.toString();
-      } else {
-        const join = base.includes('?') ? '&' : '?';
-        document.getElementById('continueBtn').href = `${base}${join}${p.toString()}`;
-      }
+      const join = base.includes('?') ? '&' : '?';
+      document.getElementById('continueBtn').href = `${base}${join}${p.toString()}`;
     }
     ['change','input'].forEach(ev => {
       gameSel.addEventListener(ev, syncHref);
