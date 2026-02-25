@@ -54,8 +54,8 @@
   <script src="auth-scaffold.js"></script><script src="layout-loader.js"></script><script src="app-shell.js"></script><script src="game-sound.js"></script><script src="grammar-context-bank.js"></script>
 <script>
 (()=>{
-const q=new URLSearchParams(location.search),pack=(q.get('pack')||'pack01'),count=Math.max(20,Math.min(40,Number(q.get('count')||20)||20)),timerOn=(q.get('timer')||'on')!=='off',difficulty=q.get('difficulty')||'field';
-const meta=(window.GSPacks&&GSPacks.meta[pack])||GSPacks.meta.pack01,bank=(GSPacks.clueTrail[pack]||GSPacks.clueTrail.pack01).slice();
+const q=new URLSearchParams(location.search),pack=(q.get('pack')||'pack01'),count=Math.max(6,Math.min(20,Number(q.get('count')||10)||10)),timerOn=(q.get('timer')||'on')!=='off',difficulty=q.get('difficulty')||'field';
+const meta=(window.GSPacks&&GSPacks.meta[pack])||GSPacks.meta.pack01,bank=(GSPacks.clueTrail[pack]||GSPacks.clueTrail.pack01||[]).slice();
 document.getElementById('packK').textContent=meta.title+' · '+meta.short;
 const teacherLink=document.getElementById('teacherLink');teacherLink.href=(teacherLink.getAttribute('href')||'teacher-home.html').split('?')[0]+'?pack='+pack;
 const scene=document.getElementById('scene'),prompt=document.getElementById('prompt'),opts=document.getElementById('opts'),fb=document.getElementById('fb');
@@ -65,21 +65,33 @@ let rounds=[],i=0,ok=0,streak=0,locked=false,sec=timerOn?count*10:null,timer=nul
 let teamsMode=false,teamNames=[];
 try{if(q.get('play_format')==='teams'){const raw=localStorage.getItem('gs_teams_session');const data=raw?JSON.parse(raw):null;if(data&&data.teams&&data.teams.length===2){teamsMode=true;teamNames=[data.teams[0].name,data.teams[1].name];}}}catch(e){}
 let roundsA=[],roundsB=[],iA=0,iB=0,okA=0,okB=0,streakA=0,streakB=0,lockedA=false,lockedB=false;
-const nRounds=Math.min(count,bank.length);
+const nRounds=count;
+
+function cloneRound(r){return {scene:r.scene,prompt:r.prompt,options:r.options.slice(),answer:r.answer,explain:r.explain};}
+function shuffle(list){const a=list.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));const t=a[k];a[k]=a[j];a[j]=t;}return a;}
+function buildRounds(source,target){
+  const src=(source&&source.length)?source:[{scene:'Mission Warmup',prompt:'Choose the strongest line.',options:['The team checked the script before class.','The team check the script before class.','The team is checked the script before class.','The team were checking the script before class yesterday.'],answer:0,explain:'Simple past is best for completed action.'}];
+  const out=[];
+  while(out.length<target){
+    const chunk=shuffle(src).map(cloneRound);
+    for(let n=0;n<chunk.length&&out.length<target;n++){out.push(chunk[n]);}
+  }
+  return out;
+}
 
 function track(n,d){window.GSAnalytics&&GSAnalytics.track&&GSAnalytics.track(n,d||{});}
 function pick(){
   if(teamsMode){
     document.querySelector('.wrap').style.display='none';
     document.getElementById('teamsWrap').style.display='grid';
-    roundsA=bank.slice().sort(()=>Math.random()-.5).slice(0,nRounds);
-    roundsB=bank.slice().sort(()=>Math.random()-.5).slice(0,nRounds);
+    roundsA=buildRounds(bank,nRounds);
+    roundsB=buildRounds(bank,nRounds);
     iA=0;iB=0;okA=0;okB=0;streakA=0;streakB=0;lockedA=false;lockedB=false;
     initTeamsMode();
     showTeamsSide('A');showTeamsSide('B');
     return;
   }
-  rounds=bank.sort(()=>Math.random()-.5).slice(0,nRounds);i=0;ok=0;streak=0;if(!timerOn)hudTimer.textContent='Off';sec=timerOn?rounds.length*10:null;
+  rounds=buildRounds(bank,nRounds);i=0;ok=0;streak=0;if(!timerOn)hudTimer.textContent='Off';sec=timerOn?rounds.length*10:null;
 }
 function hud(){hudCase.textContent=`${Math.min(i+1,rounds.length)}/${rounds.length}`;hudAcc.textContent=`${Math.round((ok/Math.max(1,i))*100)}%`;hudStreak.textContent=String(streak);if(timerOn)hudTimer.textContent=`${Math.max(0,sec)}s`;}
 function show(){if(i>=rounds.length){end();return;}locked=false;fb.textContent='';fb.className='feedback';const r=rounds[i];scene.textContent=r.scene;prompt.textContent=r.prompt;opts.innerHTML='';r.options.map((t,ix)=>({t,ix})).sort(()=>Math.random()-.5).forEach(o=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=o.t;b.addEventListener('click',()=>choose(o,b,r));opts.appendChild(b)});hud();}
