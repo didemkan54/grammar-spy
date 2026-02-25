@@ -43,6 +43,12 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://grammarspy.net/grammar-activities/</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://grammarspy.net/interactive-grammar-games/</loc>
     <lastmod>2026-02-25</lastmod>
     <changefreq>monthly</changefreq>
