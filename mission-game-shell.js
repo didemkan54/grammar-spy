@@ -1881,8 +1881,60 @@
       + ".classify-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 10px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;}"
       + ".classify-pick.active-completed{background:#eaf2ff;border-color:#6a8fdf;color:#23427f;}"
       + ".classify-pick.active-ongoing{background:#efeafe;border-color:#9a78df;color:#4b2c84;}"
+      + ".action-bar{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:10px;display:grid;gap:8px;}"
+      + ".action-bar b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
+      + ".action-bar p{margin:0;font-size:13px;line-height:1.45;color:#34455f;}"
+      + ".action-progress{height:8px;background:#e8edf5;border-radius:99px;overflow:hidden;}"
+      + ".action-progress > span{display:block;height:100%;width:100%;background:" + accent + ";transition:width .2s ease;}"
       + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}";
     document.head.appendChild(style);
+  }
+
+  function ensureActionUI() {
+    var hud = document.querySelector(".hud");
+    if (hud && !document.getElementById("hudScore")) {
+      hud.style.gridTemplateColumns = "repeat(7,minmax(0,1fr))";
+      var extra = [
+        { label: "Score", id: "hudScore", value: "0" },
+        { label: "Combo", id: "hudCombo", value: "1x" },
+        { label: "Shot", id: "hudShot", value: "--" }
+      ];
+      extra.forEach(function (item) {
+        var chip = document.createElement("div");
+        chip.className = "chip";
+        chip.innerHTML = "<b>" + item.label + "</b><span id=\"" + item.id + "\">" + item.value + "</span>";
+        hud.appendChild(chip);
+      });
+    }
+
+    var play = document.querySelector(".play");
+    if (play && !document.getElementById("actionBar")) {
+      var bar = document.createElement("div");
+      bar.id = "actionBar";
+      bar.className = "action-bar";
+      bar.innerHTML = "<b>Action Briefing</b><p id=\"actionTip\">Mission mode active.</p><div class=\"action-progress\"><span id=\"actionProgressFill\"></span></div>";
+      var scene = play.querySelector(".scene");
+      if (scene && scene.nextSibling) play.insertBefore(bar, scene.nextSibling);
+      else play.insertBefore(bar, play.firstChild);
+    }
+
+    var row = document.querySelector(".row");
+    if (row && !document.getElementById("btnHint")) {
+      var hintBtn = document.createElement("button");
+      hintBtn.type = "button";
+      hintBtn.className = "btn";
+      hintBtn.id = "btnHint";
+      hintBtn.textContent = "Hint (1)";
+
+      var skipBtn = document.createElement("button");
+      skipBtn.type = "button";
+      skipBtn.className = "btn";
+      skipBtn.id = "btnSkip";
+      skipBtn.textContent = "Skip (1)";
+
+      row.insertBefore(skipBtn, row.firstChild);
+      row.insertBefore(hintBtn, row.firstChild);
+    }
   }
 
   function modeHelperText(mode) {
@@ -1941,6 +1993,7 @@
   var ux = gameUx[gameKey] || gameUx["error-smash"];
   var activeMode = ux.playMode || "best";
   applyGameUx(ux);
+  ensureActionUI();
   var packTitle = (window.GSPacks && window.GSPacks.meta && window.GSPacks.meta[pack] && window.GSPacks.meta[pack].short) || pack.toUpperCase();
   var teacherBtn = document.getElementById("btnTeacher");
   var homeBtn = document.getElementById("btnHome");
@@ -1952,6 +2005,7 @@
   text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Mode: " + (ux.modeLabel || "Standard"));
   text("howToText", modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode) + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
   text("howToTitle", "How to play: " + cfg.title);
+  text("actionTip", modePrompt(activeMode));
   text("hudTimer", timerOn ? "--" : "Off");
   var sceneLabelEl = document.querySelector(".scene .label");
   if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
@@ -1961,6 +2015,13 @@
   var correct = 0;
   var streak = 0;
   var locked = false;
+  var score = 0;
+  var combo = 1;
+  var hintsLeft = 1;
+  var skipsLeft = 1;
+  var shotClock = 12;
+  var shotTimer = null;
+  var currentRoundState = {};
   var sec = timerOn ? rounds.length * 9 : null;
   var timer = null;
 
@@ -1971,6 +2032,18 @@
     text("hudAcc", Math.round((correct / Math.max(1, idx)) * 100) + "%");
     text("hudStreak", String(streak));
     if (timerOn) text("hudTimer", Math.max(0, sec) + "s");
+    text("hudScore", String(score));
+    text("hudCombo", combo + "x");
+    text("hudShot", timerOn ? Math.max(0, shotClock) + "s" : "--");
+    var progress = document.getElementById("actionProgressFill");
+    if (progress) {
+      var pct = timerOn ? Math.max(0, Math.min(100, Math.round((shotClock / 12) * 100))) : 100;
+      progress.style.width = pct + "%";
+    }
+    var hintBtn = document.getElementById("btnHint");
+    var skipBtn = document.getElementById("btnSkip");
+    if (hintBtn) hintBtn.textContent = "Hint (" + hintsLeft + ")";
+    if (skipBtn) skipBtn.textContent = "Skip (" + skipsLeft + ")";
   }
 
   function buildOptionButton(label, description) {
@@ -1989,25 +2062,53 @@
   function finishRound(userCorrect, successMsg, failMsg, btn) {
     if (locked) return;
     locked = true;
+    if (shotTimer) clearInterval(shotTimer);
     idx += 1;
     if (userCorrect) {
       correct += 1;
       streak += 1;
+      combo = 1 + Math.floor(Math.max(0, streak - 1) / 3);
+      var speedBonus = timerOn ? Math.max(0, shotClock) * 6 : 0;
+      var streakBonus = Math.min(80, streak * 10);
+      var award = Math.round((80 + speedBonus + streakBonus) * combo);
+      score += award;
       if (btn) btn.classList.add("good");
-      html("feedback", "<span class=\"ok\">" + successMsg + "</span>");
+      html("feedback", "<span class=\"ok\">" + successMsg + " +" + award + " pts</span>");
       if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
     } else {
       streak = 0;
+      combo = 1;
+      score = Math.max(0, score - 20);
       if (btn) btn.classList.add("bad");
-      html("feedback", "<span class=\"bad\">" + failMsg + "</span>");
+      html("feedback", "<span class=\"bad\">" + failMsg + " -20 pts</span>");
     }
     updateHud();
     setTimeout(showRound, 900);
   }
 
+  function startShotClock(round) {
+    if (!timerOn) {
+      shotClock = 12;
+      return;
+    }
+    if (shotTimer) clearInterval(shotTimer);
+    shotClock = 12;
+    updateHud();
+    shotTimer = setInterval(function () {
+      if (locked) return;
+      shotClock -= 1;
+      updateHud();
+      if (shotClock <= 0) {
+        clearInterval(shotTimer);
+        finishRound(false, "", "Time breach: no decision submitted. " + round.explain);
+      }
+    }, 1000);
+  }
+
   function showChoiceOptions(round) {
     optionsEl.style.gridTemplateColumns = ux.columns === 1 ? "1fr" : "1fr 1fr";
     optionsEl.innerHTML = "";
+    currentRoundState = { mode: activeMode, round: round };
     shuffle(round.options.map(function (lineText, optionIdx) {
       return { lineText: lineText, optionIdx: optionIdx };
     })).forEach(function (item, displayIdx) {
@@ -2015,6 +2116,8 @@
       btn.type = "button";
       btn.className = "opt";
       btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      var isTarget = activeMode === "smash" ? item.optionIdx !== round.answer : item.optionIdx === round.answer;
+      btn.dataset.target = isTarget ? "1" : "0";
       btn.addEventListener("click", function () {
         selectOption(item.optionIdx, item.lineText, round, btn);
       });
@@ -2033,6 +2136,7 @@
   function showRepairOptions(round) {
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
+    currentRoundState = { mode: "repair", round: round };
     var brokenIdx = pickWrongIndex(round);
     var brokenLine = round.options[brokenIdx];
     var rightLine = round.options[round.answer];
@@ -2065,6 +2169,7 @@
       btn.type = "button";
       btn.className = "opt";
       btn.innerHTML = "<b>Repair " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
           item.idx === round.answer,
@@ -2081,6 +2186,7 @@
   function showDuelOptions(round, duelLabel) {
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
+    currentRoundState = { mode: activeMode, round: round };
     var wrongIdx = pickWrongIndex(round);
     var duel = shuffle([
       { idx: round.answer, text: round.options[round.answer] },
@@ -2106,6 +2212,7 @@
       btn.type = "button";
       btn.className = "opt";
       btn.innerHTML = "<b>Option " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
           item.idx === round.answer,
@@ -2128,6 +2235,8 @@
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     var assignments = {};
+    var rowControllers = [];
+    currentRoundState = { mode: "classify", round: round, assignments: assignments, rows: rowControllers };
 
     var board = document.createElement("div");
     board.className = "classify-board";
@@ -2157,6 +2266,11 @@
         completedBtn.classList.toggle("active-completed", kind === "completed");
         ongoingBtn.classList.toggle("active-ongoing", kind === "ongoing");
       }
+      rowControllers.push({
+        optionIdx: item.optionIdx,
+        hasPick: function () { return typeof assignments[item.optionIdx] !== "undefined"; },
+        pickCorrect: function () { setPick(sentenceClass(round.options[item.optionIdx])); }
+      });
 
       completedBtn.addEventListener("click", function () {
         if (locked) return;
@@ -2209,6 +2323,7 @@
     var candidateIdx = Math.floor(Math.random() * round.options.length);
     var candidateText = round.options[candidateIdx];
     var candidateCorrect = candidateIdx === round.answer;
+    currentRoundState = { mode: "binary", round: round, candidateCorrect: candidateCorrect };
 
     var card = document.createElement("div");
     card.className = "binary-card";
@@ -2242,6 +2357,7 @@
     optionsEl.innerHTML = "";
     var removedWrong = 0;
     var totalWrong = Math.max(0, round.options.length - 1);
+    currentRoundState = { mode: "eliminate", round: round };
 
     shuffle(round.options.map(function (lineText, optionIdx) {
       return { lineText: lineText, optionIdx: optionIdx };
@@ -2253,26 +2369,13 @@
       btn.addEventListener("click", function () {
         if (locked || btn.classList.contains("eliminated")) return;
         if (item.optionIdx === round.answer) {
-          locked = true;
-          idx += 1;
-          streak = 0;
-          btn.classList.add("bad");
-          html("feedback", "<span class=\"bad\">You eliminated the strongest line. Keep one strong line and remove weak ones. " + round.explain + "</span>");
-          updateHud();
-          setTimeout(showRound, 900);
+          finishRound(false, "", "You eliminated the strongest line. Keep one strong line and remove weak ones. " + round.explain, btn);
           return;
         }
         btn.classList.add("bad", "eliminated");
         removedWrong += 1;
         if (removedWrong >= totalWrong) {
-          locked = true;
-          idx += 1;
-          correct += 1;
-          streak += 1;
-          html("feedback", "<span class=\"ok\">All weak lines eliminated. Strongest line secured. " + round.explain + "</span>");
-          if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
-          updateHud();
-          setTimeout(showRound, 900);
+          finishRound(true, "All weak lines eliminated. Strongest line secured. " + round.explain, "", btn);
         } else {
           html("feedback", "<span class=\"ok\">Weak line removed. " + (totalWrong - removedWrong) + " weak lines left.</span>");
         }
@@ -2285,6 +2388,8 @@
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     var selections = {};
+    var rowControllers = [];
+    currentRoundState = { mode: "sweep", round: round, selections: selections, rows: rowControllers };
 
     var board = document.createElement("div");
     board.className = "sweep-board";
@@ -2316,6 +2421,11 @@
         secureBtn.classList.toggle("active-secure", isSecure);
         repairBtn.classList.toggle("active-breach", !isSecure);
       }
+      rowControllers.push({
+        optionIdx: item.optionIdx,
+        hasPick: function () { return typeof selections[item.optionIdx] !== "undefined"; },
+        pickCorrect: function () { setChoice(item.optionIdx === round.answer); }
+      });
 
       secureBtn.addEventListener("click", function () {
         if (locked) return;
@@ -2343,8 +2453,6 @@
         html("feedback", "<span class=\"bad\">Mark every line first, then submit your verdict.</span>");
         return;
       }
-      locked = true;
-      idx += 1;
       var allCorrect = true;
       for (var i = 0; i < round.options.length; i++) {
         var shouldSecure = i === round.answer;
@@ -2353,17 +2461,12 @@
           break;
         }
       }
-      if (allCorrect) {
-        correct += 1;
-        streak += 1;
-        html("feedback", "<span class=\"ok\">Board verified: only the strongest line is marked secure. " + round.explain + "</span>");
-        if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
-      } else {
-        streak = 0;
-        html("feedback", "<span class=\"bad\">Board mismatch: one or more verdicts are incorrect. " + round.explain + "</span>");
-      }
-      updateHud();
-      setTimeout(showRound, 900);
+      finishRound(
+        allCorrect,
+        "Board verified: only the strongest line is marked secure. " + round.explain,
+        "Board mismatch: one or more verdicts are incorrect. " + round.explain,
+        submitBtn
+      );
     });
 
     optionsEl.appendChild(board);
@@ -2378,6 +2481,7 @@
     locked = false;
     text("feedback", "");
     var round = rounds[idx];
+    currentRoundState = { mode: activeMode, round: round };
     text("scene", round.scene);
     if (activeMode === "smash") {
       text("prompt", modePrompt(activeMode));
@@ -2407,62 +2511,98 @@
       text("prompt", modePrompt(activeMode));
       showChoiceOptions(round);
     }
+    startShotClock(round);
     updateHud();
   }
 
   function selectOption(selectedIdx, selectedText, round, btn) {
-    if (locked) return;
-    locked = true;
-    idx += 1;
     var userCorrect = activeMode === "smash" ? selectedIdx !== round.answer : selectedIdx === round.answer;
-    if (userCorrect) {
-      correct += 1;
-      streak += 1;
-      btn.classList.add("good");
-      if (activeMode === "smash") {
-        html("feedback", "<span class=\"ok\">Hit confirmed: you smashed an incorrect line. " + round.explain + "</span>");
-      } else {
-        html("feedback", "<span class=\"ok\">Secure: " + round.explain + "</span>");
-      }
-      if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
-    } else {
-      streak = 0;
-      btn.classList.add("bad");
-      if (activeMode === "smash") {
-        html("feedback", "<span class=\"bad\">That line is already correct. Smash an error line instead. " + round.explain + "</span>");
-      } else {
-        html("feedback", "<span class=\"bad\">Needs repair: " + round.explain + "</span>");
-      }
-    }
-    updateHud();
-    setTimeout(showRound, 850);
+    finishRound(
+      userCorrect,
+      activeMode === "smash"
+        ? "Hit confirmed: you smashed an incorrect line. " + round.explain
+        : "Secure: " + round.explain,
+      activeMode === "smash"
+        ? "That line is already correct. Smash an error line instead. " + round.explain
+        : "Needs repair: " + round.explain,
+      btn
+    );
   }
 
   function selectBinaryVerdict(markSecure, candidateCorrect, round, btn) {
-    if (locked) return;
-    locked = true;
-    idx += 1;
     var userCorrect = markSecure ? candidateCorrect : !candidateCorrect;
-    if (userCorrect) {
-      correct += 1;
-      streak += 1;
-      btn.classList.add("good");
-      html("feedback", "<span class=\"ok\">Verdict confirmed: " + (candidateCorrect ? "this line is secure. " : "this line needs repair. ") + round.explain + "</span>");
-      if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+    finishRound(
+      userCorrect,
+      "Verdict confirmed: " + (candidateCorrect ? "this line is secure. " : "this line needs repair. ") + round.explain,
+      "Verdict mismatch: this line is " + (candidateCorrect ? "secure. " : "not secure. ") + round.explain,
+      btn
+    );
+  }
+
+  function useHint() {
+    if (locked) return;
+    if (hintsLeft <= 0) {
+      html("feedback", "<span class=\"bad\">Hint unavailable: no hints left.</span>");
+      return;
+    }
+    hintsLeft -= 1;
+    var used = false;
+
+    if (currentRoundState.mode === "classify" || currentRoundState.mode === "sweep") {
+      var rows = currentRoundState.rows || [];
+      for (var i = 0; i < rows.length; i++) {
+        if (!rows[i].hasPick()) {
+          rows[i].pickCorrect();
+          used = true;
+          break;
+        }
+      }
+      if (used) html("feedback", "<span class=\"ok\">Hint applied: one line was auto-classified.</span>");
+    } else if (currentRoundState.mode === "binary") {
+      used = true;
+      html("feedback", "<span class=\"ok\">Hint: the highlighted line is " + (currentRoundState.candidateCorrect ? "Secure" : "Needs Repair") + ".</span>");
     } else {
-      streak = 0;
-      btn.classList.add("bad");
-      html("feedback", "<span class=\"bad\">Verdict mismatch: this line is " + (candidateCorrect ? "secure. " : "not secure. ") + round.explain + "</span>");
+      var decoys = Array.prototype.slice.call(optionsEl.querySelectorAll(".opt")).filter(function (btn) {
+        return btn.dataset.target === "0" && !btn.classList.contains("eliminated");
+      });
+      if (decoys.length) {
+        decoys[0].classList.add("eliminated");
+        decoys[0].disabled = true;
+        used = true;
+        html("feedback", "<span class=\"ok\">Hint applied: one decoy was removed.</span>");
+      }
+    }
+
+    if (!used) {
+      html("feedback", "<span class=\"bad\">No hint action available for this step.</span>");
     }
     updateHud();
-    setTimeout(showRound, 850);
+  }
+
+  function useSkip() {
+    if (locked) return;
+    if (skipsLeft <= 0) {
+      html("feedback", "<span class=\"bad\">Skip unavailable: no skips left.</span>");
+      return;
+    }
+    skipsLeft -= 1;
+    if (shotTimer) clearInterval(shotTimer);
+    locked = true;
+    idx += 1;
+    streak = 0;
+    combo = 1;
+    score = Math.max(0, score - 15);
+    html("feedback", "<span class=\"bad\">Skip used: next file loaded. -15 pts</span>");
+    updateHud();
+    setTimeout(showRound, 600);
   }
 
   function endGame() {
     if (timer) clearInterval(timer);
+    if (shotTimer) clearInterval(shotTimer);
     var acc = Math.round((correct / Math.max(1, idx)) * 100);
     text("reportAcc", "Accuracy: " + acc + "% (" + correct + "/" + Math.max(1, idx) + ")");
-    text("reportPlan", acc >= 80 ? "Recommendation: advance to the next mission game." : "Recommendation: replay this game for retrieval strength.");
+    text("reportPlan", (acc >= 80 ? "Recommendation: advance to the next mission game." : "Recommendation: replay this game for retrieval strength.") + " Final score: " + score + " pts.");
     text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
     var report = document.getElementById("reportOverlay");
     if (report) report.classList.add("show");
@@ -2493,19 +2633,31 @@
   if (endBtn && ux.endText) endBtn.textContent = ux.endText;
   if (endBtn) endBtn.addEventListener("click", endGame);
 
+  var hintBtn = document.getElementById("btnHint");
+  if (hintBtn) hintBtn.addEventListener("click", useHint);
+  var skipBtn = document.getElementById("btnSkip");
+  if (skipBtn) skipBtn.addEventListener("click", useSkip);
+
   var replayBtn = document.getElementById("replayBtn");
   if (replayBtn && ux.replayText) replayBtn.textContent = ux.replayText;
   if (replayBtn) {
     replayBtn.addEventListener("click", function () {
       var report = document.getElementById("reportOverlay");
       if (report) report.classList.remove("show");
+      if (shotTimer) clearInterval(shotTimer);
       rounds = buildRounds(resolveRoundBank(gameKey, pack), count);
       idx = 0;
       correct = 0;
       streak = 0;
+      score = 0;
+      combo = 1;
+      hintsLeft = 1;
+      skipsLeft = 1;
+      shotClock = 12;
       sec = timerOn ? rounds.length * 9 : null;
       showRound();
       startTimer();
     });
   }
+  updateHud();
 })();
