@@ -1935,6 +1935,15 @@
       row.insertBefore(skipBtn, row.firstChild);
       row.insertBefore(hintBtn, row.firstChild);
     }
+    if (row && !document.getElementById("btnNext")) {
+      var nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "btn primary";
+      nextBtn.id = "btnNext";
+      nextBtn.textContent = "Next";
+      nextBtn.style.display = "none";
+      row.appendChild(nextBtn);
+    }
   }
 
   function modeHelperText(mode) {
@@ -2022,6 +2031,7 @@
   var shotClock = 12;
   var shotTimer = null;
   var currentRoundState = {};
+  var awaitingNext = false;
   var sec = timerOn ? rounds.length * 9 : null;
   var timer = null;
 
@@ -2059,9 +2069,18 @@
     return btn;
   }
 
+  function setNextVisibility(show, label) {
+    var nextBtn = document.getElementById("btnNext");
+    if (!nextBtn) return;
+    nextBtn.style.display = show ? "inline-flex" : "none";
+    nextBtn.textContent = label || "Next";
+    nextBtn.disabled = !show;
+  }
+
   function finishRound(userCorrect, successMsg, failMsg, btn) {
     if (locked) return;
     locked = true;
+    awaitingNext = true;
     if (shotTimer) clearInterval(shotTimer);
     idx += 1;
     if (userCorrect) {
@@ -2073,17 +2092,17 @@
       var award = Math.round((80 + speedBonus + streakBonus) * combo);
       score += award;
       if (btn) btn.classList.add("good");
-      html("feedback", "<span class=\"ok\">" + successMsg + " +" + award + " pts</span>");
+      html("feedback", "<span class=\"ok\"><b>CORRECT.</b> " + successMsg + " +" + award + " pts</span>");
       if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
     } else {
       streak = 0;
       combo = 1;
       score = Math.max(0, score - 20);
       if (btn) btn.classList.add("bad");
-      html("feedback", "<span class=\"bad\">" + failMsg + " -20 pts</span>");
+      html("feedback", "<span class=\"bad\"><b>WRONG.</b> " + failMsg + " -20 pts</span>");
     }
+    setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
-    setTimeout(showRound, 900);
   }
 
   function startShotClock(round) {
@@ -2479,6 +2498,8 @@
       return;
     }
     locked = false;
+    awaitingNext = false;
+    setNextVisibility(false);
     text("feedback", "");
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
@@ -2588,13 +2609,23 @@
     skipsLeft -= 1;
     if (shotTimer) clearInterval(shotTimer);
     locked = true;
+    awaitingNext = true;
     idx += 1;
     streak = 0;
     combo = 1;
     score = Math.max(0, score - 15);
-    html("feedback", "<span class=\"bad\">Skip used: next file loaded. -15 pts</span>");
+    html("feedback", "<span class=\"bad\"><b>SKIPPED.</b> Click Next to continue. -15 pts</span>");
+    setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
-    setTimeout(showRound, 600);
+  }
+
+  function goNext() {
+    if (!awaitingNext) return;
+    if (idx >= rounds.length) {
+      endGame();
+      return;
+    }
+    showRound();
   }
 
   function endGame() {
@@ -2612,6 +2643,7 @@
     if (!timerOn) return;
     if (timer) clearInterval(timer);
     timer = setInterval(function () {
+      if (awaitingNext) return;
       sec -= 1;
       text("hudTimer", Math.max(0, sec) + "s");
       if (sec <= 0) endGame();
@@ -2637,6 +2669,8 @@
   if (hintBtn) hintBtn.addEventListener("click", useHint);
   var skipBtn = document.getElementById("btnSkip");
   if (skipBtn) skipBtn.addEventListener("click", useSkip);
+  var nextBtn = document.getElementById("btnNext");
+  if (nextBtn) nextBtn.addEventListener("click", goNext);
 
   var replayBtn = document.getElementById("replayBtn");
   if (replayBtn && ux.replayText) replayBtn.textContent = ux.replayText;
@@ -2654,6 +2688,8 @@
       hintsLeft = 1;
       skipsLeft = 1;
       shotClock = 12;
+      awaitingNext = false;
+      setNextVisibility(false);
       sec = timerOn ? rounds.length * 9 : null;
       showRound();
       startTimer();
