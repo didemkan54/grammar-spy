@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Redirecting...</title>
+  <meta http-equiv="refresh" content="0;url=teacher-mode.html?pack=pack04">
+  <script>
+    (function () {
+      var target = 'teacher-mode.html?pack=pack04';
+      var q = window.location.search || '';
+      var h = window.location.hash || '';
+      var hasQ = target.indexOf('?') !== -1;
+      var next = target + (q ? (hasQ ? '&' : '?') + q.slice(1) : '') + h;
+      window.location.replace(next);
+    })();
+  </script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; color: #16223a; }
+    a { color: #1f5f63; }
+  </style>
+</head>
+<body>
+  <p>Redirecting... If this does not happen automatically, <a href="teacher-mode.html?pack=pack04">continue here</a>.</p>
+</body>
+</html>
