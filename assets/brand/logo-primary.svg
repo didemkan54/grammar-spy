@@ -1,18 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="120" viewBox="0 0 480 120" role="img" aria-labelledby="title desc">
   <title id="title">Grammar Spy logo</title>
-  <desc id="desc">Shield icon with Grammar Spy wordmark.</desc>
+  <desc id="desc">Teal shield with book and quill, Grammar Spy wordmark with gold underline.</desc>
   <defs>
-    <linearGradient id="shieldFill" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#eef4fb"/>
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f7a7e"/>
+      <stop offset="100%" stop-color="#1a5c5f"/>
     </linearGradient>
   </defs>
-  <g transform="translate(6 6)">
-    <path d="M38 2l27 10v21.5c0 21.1-13.5 37.5-27 44.9C24.5 71 11 54.6 11 33.5V12z" fill="url(#shieldFill)" stroke="#16223a" stroke-width="4"/>
-    <path d="M38 12l17 6.4v14.9c0 13.1-8.4 23.2-17 28.2-8.6-5-17-15.1-17-28.2V18.4z" fill="#f8fbff" stroke="#1f5f63" stroke-width="2.4"/>
-    <circle cx="38" cy="33" r="11" fill="#c9a227" stroke="#16223a" stroke-width="2.2"/>
-    <path d="M32.8 33.4l3.9 3.9 7.6-7.7" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Shield -->
+  <path d="M50 8 L90 20 V58 C90 82 70 98 50 106 C30 98 10 82 10 58 V20 Z" fill="url(#shieldGrad)"/>
+  <path d="M50 106 L90 20 V58 C90 82 70 98 50 106Z" fill="#18575a" opacity="0.35"/>
+
+  <!-- Book (open) -->
+  <g transform="translate(50,54)">
+    <!-- Left page -->
+    <path d="M-2 -14 C-10 -16 -18 -14 -22 -10 L-22 12 C-18 8 -10 6 -2 8 Z" fill="#ffffff" opacity="0.95"/>
+    <!-- Right page -->
+    <path d="M2 -14 C10 -16 18 -14 22 -10 L22 12 C18 8 10 6 2 8 Z" fill="#f0f4f8" opacity="0.9"/>
+    <!-- Spine -->
+    <line x1="0" y1="-14" x2="0" y2="8" stroke="#d9dee6" stroke-width="0.8"/>
+    <!-- Page lines left -->
+    <line x1="-18" y1="-4" x2="-5" y2="-6" stroke="#c8d0da" stroke-width="0.7"/>
+    <line x1="-18" y1="1" x2="-5" y2="-1" stroke="#c8d0da" stroke-width="0.7"/>
+    <line x1="-18" y1="6" x2="-5" y2="4" stroke="#c8d0da" stroke-width="0.7"/>
   </g>
-  <text x="92" y="44" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="45" fill="#16223a">Grammar</text>
-  <text x="92" y="84" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="45" fill="#1f5f63">Spy</text>
+
+  <!-- Quill feather -->
+  <g transform="translate(50,54)">
+    <path d="M6 -10 C14 -28 22 -32 28 -34 C24 -28 18 -18 12 -8 C10 -4 8 -1 8 2" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M28 -34 C26 -30 20 -22 14 -12" fill="none" stroke="#e8edf4" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+    <path d="M28 -34 C30 -33 29 -31 27 -30 C24 -26 18 -16 12 -6" fill="#ffffff" opacity="0.7"/>
+  </g>
+
+  <!-- Text: Grammar Spy -->
+  <text x="112" y="70" font-family="Inter,'Segoe UI',Arial,sans-serif" font-weight="800" font-size="52" letter-spacing="-0.5" fill="#0f1b2d">Grammar Spy</text>
+  <!-- TM symbol -->
+  <text x="430" y="46" font-family="Inter,'Segoe UI',Arial,sans-serif" font-weight="600" font-size="16" fill="#0f1b2d">™</text>
+
+  <!-- Gold underline -->
+  <line x1="112" y1="82" x2="440" y2="82" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
 </svg>
