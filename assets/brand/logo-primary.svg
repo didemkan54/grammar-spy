@@ -1,36 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="120" viewBox="0 0 480 120" role="img" aria-labelledby="title desc">
   <title id="title">Grammar Spy logo</title>
-  <desc id="desc">Teal shield with book and quill, Grammar Spy wordmark with gold underline.</desc>
+  <desc id="desc">Magnifying glass over text with Grammar Spy wordmark and gold underline.</desc>
   <defs>
-    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="mgGrad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#1f7a7e"/>
       <stop offset="100%" stop-color="#1a5c5f"/>
     </linearGradient>
+    <clipPath id="lensClip">
+      <circle cx="48" cy="48" r="30"/>
+    </clipPath>
   </defs>
 
-  <!-- Shield -->
-  <path d="M50 8 L90 20 V58 C90 82 70 98 50 106 C30 98 10 82 10 58 V20 Z" fill="url(#shieldGrad)"/>
-  <path d="M50 106 L90 20 V58 C90 82 70 98 50 106Z" fill="#18575a" opacity="0.35"/>
+  <!-- Magnifying glass body -->
+  <g transform="translate(6,10)">
+    <!-- Glass lens background -->
+    <circle cx="48" cy="48" r="34" fill="#e8f4f5" opacity=".5"/>
+    <circle cx="48" cy="48" r="30" fill="#ffffff"/>
 
-  <!-- Book (open) -->
-  <g transform="translate(50,54)">
-    <!-- Left page -->
-    <path d="M-2 -14 C-10 -16 -18 -14 -22 -10 L-22 12 C-18 8 -10 6 -2 8 Z" fill="#ffffff" opacity="0.95"/>
-    <!-- Right page -->
-    <path d="M2 -14 C10 -16 18 -14 22 -10 L22 12 C18 8 10 6 2 8 Z" fill="#f0f4f8" opacity="0.9"/>
-    <!-- Spine -->
-    <line x1="0" y1="-14" x2="0" y2="8" stroke="#d9dee6" stroke-width="0.8"/>
-    <!-- Page lines left -->
-    <line x1="-18" y1="-4" x2="-5" y2="-6" stroke="#c8d0da" stroke-width="0.7"/>
-    <line x1="-18" y1="1" x2="-5" y2="-1" stroke="#c8d0da" stroke-width="0.7"/>
-    <line x1="-18" y1="6" x2="-5" y2="4" stroke="#c8d0da" stroke-width="0.7"/>
-  </g>
+    <!-- Text lines visible through lens (zoomed/magnified look) -->
+    <g clip-path="url(#lensClip)">
+      <rect x="22" y="32" width="52" height="4.5" rx="2" fill="#1f5f63" opacity=".55"/>
+      <rect x="22" y="41" width="40" height="4.5" rx="2" fill="#c9a227" opacity=".6"/>
+      <rect x="22" y="50" width="48" height="4.5" rx="2" fill="#1f5f63" opacity=".4"/>
+      <rect x="22" y="59" width="36" height="4.5" rx="2" fill="#16223a" opacity=".25"/>
+    </g>
 
-  <!-- Quill feather -->
-  <g transform="translate(50,54)">
-    <path d="M6 -10 C14 -28 22 -32 28 -34 C24 -28 18 -18 12 -8 C10 -4 8 -1 8 2" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M28 -34 C26 -30 20 -22 14 -12" fill="none" stroke="#e8edf4" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-    <path d="M28 -34 C30 -33 29 -31 27 -30 C24 -26 18 -16 12 -6" fill="#ffffff" opacity="0.7"/>
+    <!-- Lens ring -->
+    <circle cx="48" cy="48" r="30" fill="none" stroke="url(#mgGrad)" stroke-width="5.5"/>
+    <!-- Lens shine -->
+    <path d="M32 30 Q38 24 46 28" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+
+    <!-- Handle -->
+    <line x1="72" y1="72" x2="92" y2="92" stroke="#1a5c5f" stroke-width="7" stroke-linecap="round"/>
+    <line x1="72" y1="72" x2="92" y2="92" stroke="#1f7a7e" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- Small pencil accent (tucked behind lens) -->
+    <g transform="translate(12,18) rotate(-35)">
+      <rect x="0" y="0" width="3.5" height="22" rx="1" fill="#c9a227" opacity=".55"/>
+      <polygon points="0,22 3.5,22 1.75,27" fill="#16223a" opacity=".4"/>
+    </g>
   </g>
 
   <!-- Text: Grammar Spy -->
