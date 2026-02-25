@@ -2095,13 +2095,18 @@
       score += award;
       if (btn) btn.classList.add("good");
       html("feedback", "<span class=\"ok\"><b>CORRECT.</b> " + successMsg + " +" + award + " pts</span>");
-      if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+      if (window.GSSound) {
+        if (streak > 2 && window.GSSound.streak) { window.GSSound.streak(streak); }
+        else if (combo > 1 && window.GSSound.combo) { window.GSSound.combo(); }
+        else if (window.GSSound.correct) { window.GSSound.correct(); }
+      }
     } else {
       streak = 0;
       combo = 1;
       score = Math.max(0, score - 20);
       if (btn) btn.classList.add("bad");
       html("feedback", "<span class=\"bad\"><b>WRONG.</b> " + failMsg + " -20 pts</span>");
+      if (window.GSSound && window.GSSound.wrong) window.GSSound.wrong();
     }
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
@@ -2624,6 +2629,7 @@
 
   function goNext() {
     if (!awaitingNext) return;
+    if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
     if (idx >= rounds.length) {
       endGame();
       return;
@@ -2640,6 +2646,7 @@
     text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
     var report = document.getElementById("reportOverlay");
     if (report) report.classList.add("show");
+    if (window.GSSound && window.GSSound.missionComplete) window.GSSound.missionComplete();
   }
 
   function startTimer() {
