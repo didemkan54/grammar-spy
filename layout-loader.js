@@ -6,7 +6,7 @@
   };
 
   var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 auto 16px;max-width:1120px;padding:8px 2px 12px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
-    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:88px;width:auto;display:block;background:transparent;border:none"></a>' +
+    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:72px;width:auto;display:block;background:transparent;border:none"></a>' +
     '<span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">' +
     '<a href="index.html" data-i18n="nav_home" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Home</a>' +
     '<a href="packs.html" data-i18n="nav_missions" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Missions</a>' +
