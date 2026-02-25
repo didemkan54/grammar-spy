@@ -2024,9 +2024,13 @@
     optionsEl.appendChild(card);
 
     var choices = [round.answer];
-    while (choices.length < Math.min(3, round.options.length)) {
-      var candidate = pickWrongIndex(round, brokenIdx);
-      if (choices.indexOf(candidate) === -1) choices.push(candidate);
+    var distractorPool = [];
+    for (var d = 0; d < round.options.length; d++) {
+      if (d !== round.answer && d !== brokenIdx) distractorPool.push(d);
+    }
+    distractorPool = shuffle(distractorPool);
+    for (var p = 0; p < distractorPool.length && choices.length < Math.min(3, round.options.length); p++) {
+      choices.push(distractorPool[p]);
     }
     choices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
 
@@ -2093,7 +2097,7 @@
   }
 
   function sentenceClass(lineText) {
-    return /\b(was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
+    return /\b(am|is|are|was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
   }
 
   function showClassifyOptions(round) {
