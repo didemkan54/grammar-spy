@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grammar Spy | Structured grammar. Clear results.</title>
+  <meta name="description" content="Structured grammar for real classrooms. Teacher-first missions with clear student results.">
+  <style>
+    :root {
+      --ink: #0c1730;
+      --ink-soft: #4a5870;
+      --teal: #1f6f73;
+      --teal-strong: #12545b;
+      --line: #d8dee6;
+      --paper: #ffffff;
+      --background: #f4f5f7;
+      --gold: #dfb443;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--background);
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 48px));
+      margin: 24px auto 40px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 28px;
+      padding: 4px 4px 22px;
+      border-bottom: 1px solid #cfd6df;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand svg {
+      width: 62px;
+      height: 62px;
+      flex: 0 0 auto;
+    }
+
+    .brand-wordmark {
+      line-height: 0.92;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 44px;
+    }
+
+    .brand-wordmark span:last-child {
+      display: block;
+      color: var(--teal);
+    }
+
+    .main-nav {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .main-nav a {
+      color: #28334a;
+      text-decoration: none;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #2f3a53;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      gap: 12px;
+      padding-right: 12px;
+      border-right: 1px solid #d8dde5;
+    }
+
+    .pill-btn {
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+      border: 1px solid #d6dbe4;
+      background: #fff;
+      color: #2e3b54;
+      cursor: pointer;
+    }
+
+    .pill-btn.primary {
+      border-color: transparent;
+      background: var(--teal);
+      color: #fff;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(420px, 1.1fr) minmax(340px, 0.9fr);
+      gap: 42px;
+      align-items: center;
+      padding-top: 36px;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 5vw, 70px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      max-width: 780px;
+    }
+
+    .gold-line {
+      width: 42px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--gold);
+      margin: 20px 0 14px;
+    }
+
+    .lead {
+      margin: 0 0 22px;
+      color: var(--ink-soft);
+      font-size: clamp(20px, 2vw, 29px);
+      line-height: 1.35;
+    }
+
+    .start-card {
+      background: #eef3f5;
+      border: 3px solid var(--teal);
+      border-radius: 20px;
+      padding: 18px;
+      max-width: 780px;
+      box-shadow: 0 1px 0 rgba(12, 23, 48, 0.04);
+    }
+
+    .start-title {
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: #132540;
+    }
+
+    .start-copy {
+      margin: 0;
+      color: #3f4d66;
+      font-size: 23px;
+      line-height: 1.4;
+    }
+
+    .choice-group {
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      margin: 18px 0;
+      border: 2px solid #cfdae2;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .choice-group button {
+      border: 0;
+      background: transparent;
+      font: inherit;
+      color: #20314e;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .choice-group button:first-child {
+      background: #f8fbfd;
+      border-right: 1px solid #d7dfe7;
+    }
+
+    .promo {
+      border: 3px solid var(--teal);
+      border-radius: 14px;
+      background: #e9eff3;
+      padding: 14px;
+    }
+
+    .promo label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .promo input {
+      width: 100%;
+      border: 2px solid #c3cfda;
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: #fff;
+      font-size: 18px;
+      color: #243652;
+    }
+
+    .hero-image-wrap {
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .hero-image-bg {
+      position: absolute;
+      inset: 0 24px 36px;
+      background: radial-gradient(circle at 40% 18%, #fafcfe 0%, #e9eff5 55%, #dce7f2 100%);
+      border-radius: 22px;
+      border: 1px solid #e0e6ed;
+    }
+
+    .illustration {
+      position: relative;
+      width: min(100%, 520px);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #d5dee8;
+      box-shadow: 0 16px 28px rgba(15, 36, 69, 0.13);
+      background: #f0f4f8;
+    }
+
+    .chat-bubble {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 0;
+      background: var(--ink);
+      color: #fff;
+      font-size: 20px;
+      box-shadow: 0 10px 20px rgba(12, 23, 48, 0.26);
+      cursor: pointer;
+    }
+
+    @media (max-width: 1120px) {
+      .topbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .main-nav,
+      .nav-actions {
+        justify-self: start;
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: calc(100% - 26px);
+      }
+
+      .brand-wordmark {
+        font-size: 36px;
+      }
+
+      .lead,
+      .start-copy {
+        font-size: 18px;
+      }
+
+      .start-title {
+        font-size: 24px;
+      }
+
+      .hero-image-wrap {
+        min-height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a href="/" class="brand" aria-label="Grammar Spy home">
+        <svg viewBox="0 0 76 76" role="img" aria-hidden="true">
+          <path d="M38 4l22 8.2v18.6c0 17.7-11.4 31.2-22 37.2-10.6-6-22-19.5-22-37.2V12.2L38 4z" fill="#fff" stroke="#0d1b36" stroke-width="3.5"/>
+          <path d="M38 12l14.7 5.3v13.2c0 12.1-7.8 21.7-14.7 26.2-6.9-4.5-14.7-14.1-14.7-26.2V17.3L38 12z" fill="#f7fbfe" stroke="#1f6f73" stroke-width="2"/>
+          <circle cx="38" cy="31.4" r="8.7" fill="#dfb443" stroke="#0d1b36" stroke-width="2"/>
+          <path d="M33.3 31.5l3.5 3.5 6.9-7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-wordmark">
+          <span>Grammar</span>
+          <span>Spy</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="#missions">Missions</a>
+        <a href="/blog">Blog</a>
+        <a href="/pricing">Pricing</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="lang-switch" aria-label="Language switch">
+          <span>EN</span>
+          <span>ES</span>
+          <span>FR</span>
+        </div>
+        <button class="pill-btn primary" type="button">Create Account</button>
+        <button class="pill-btn" type="button">Sign In</button>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Grammar Spy&trade;</p>
+        <h1 id="hero-title">Structured grammar. Clear results. Zero chaos.</h1>
+        <div class="gold-line" aria-hidden="true"></div>
+        <p class="lead">Created by an ELD teacher for real classrooms.</p>
+
+        <article class="start-card">
+          <h2 class="start-title">Start Here</h2>
+          <p class="start-copy">Choose one (Teacher or Student), then click Continue. Sign up for a free account to get Mission 01 at no cost; pay to unlock all missions.</p>
+
+          <div class="choice-group" role="group" aria-label="Profile type">
+            <button type="button">Teacher</button>
+            <button type="button">Student</button>
+          </div>
+
+          <form class="promo" action="#" method="get">
+            <label for="promo-code">Promo Code</label>
+            <input id="promo-code" name="promo" type="text" placeholder="Enter code (e.g. FEEDBACK20)">
+          </form>
+        </article>
+      </div>
+
+      <div class="hero-image-wrap" aria-hidden="true">
+        <div class="hero-image-bg"></div>
+        <figure class="illustration">
+          <svg viewBox="0 0 640 430" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="wall" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f8fbff"/>
+                <stop offset="100%" stop-color="#e2edf8"/>
+              </linearGradient>
+              <linearGradient id="desk" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#f6c98f"/>
+                <stop offset="100%" stop-color="#d89f65"/>
+              </linearGradient>
+            </defs>
+
+            <rect width="640" height="430" fill="url(#wall)"/>
+            <rect x="0" y="332" width="640" height="98" fill="#cfe3f9"/>
+            <rect x="30" y="270" width="580" height="86" rx="12" fill="url(#desk)" opacity="0.86"/>
+            <rect x="386" y="52" width="218" height="136" rx="8" fill="#fff" stroke="#99b8dd" stroke-width="4"/>
+            <text x="418" y="84" font-size="28" font-weight="700" fill="#2b5688">Grammar Spy</text>
+            <text x="420" y="112" font-size="18" font-weight="600" fill="#375b84">Mission Brief</text>
+            <text x="404" y="138" font-size="12" fill="#7189a9">Find the verb in the sentence.</text>
+            <line x1="404" y1="150" x2="580" y2="150" stroke="#d9e6f4"/>
+            <rect x="470" y="162" width="48" height="18" rx="6" fill="#e4eef8"/>
+            <rect x="524" y="162" width="48" height="18" rx="6" fill="#e4eef8"/>
+
+            <g transform="translate(70 188)">
+              <circle cx="44" cy="38" r="20" fill="#f0be8d"/>
+              <rect x="25" y="60" width="40" height="52" rx="12" fill="#4c77ad"/>
+              <rect x="60" y="66" width="50" height="14" rx="7" fill="#f0be8d"/>
+              <rect x="102" y="70" width="40" height="24" rx="8" fill="#2d4f7f"/>
+            </g>
+
+            <g transform="translate(226 190)">
+              <circle cx="36" cy="32" r="18" fill="#f2c694"/>
+              <rect x="18" y="50" width="36" height="46" rx="10" fill="#3a8b83"/>
+              <rect x="58" y="54" width="56" height="14" rx="7" fill="#f2c694"/>
+              <rect x="104" y="56" width="44" height="20" rx="8" fill="#648ec4"/>
+            </g>
+
+            <g transform="translate(394 210)">
+              <circle cx="34" cy="28" r="16" fill="#f0be8d"/>
+              <rect x="16" y="46" width="36" height="42" rx="10" fill="#f09e56"/>
+              <rect x="56" y="56" width="42" height="12" rx="6" fill="#f0be8d"/>
+              <rect x="94" y="56" width="34" height="18" rx="7" fill="#2f5c90"/>
+            </g>
+
+            <g transform="translate(542 214)">
+              <circle cx="28" cy="26" r="14" fill="#f2c694"/>
+              <rect x="12" y="42" width="32" height="40" rx="10" fill="#9466a7"/>
+            </g>
+
+            <g transform="translate(280 120)">
+              <circle cx="20" cy="18" r="16" fill="#f2c794"/>
+              <rect x="8" y="34" width="28" height="56" rx="12" fill="#f0b84e"/>
+              <rect x="22" y="44" width="42" height="10" rx="5" fill="#f2c794"/>
+              <rect x="56" y="42" width="22" height="58" rx="9" fill="#3b6a9f"/>
+            </g>
+          </svg>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <button class="chat-bubble" type="button" aria-label="Open support chat">?</button>
+</body>
+</html>
