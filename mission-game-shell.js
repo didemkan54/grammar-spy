@@ -77,19 +77,19 @@
   };
 
   var gameUx = {
-    "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Rapid Correction", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash" },
-    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Timeline Sort", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Story Flow", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Dialogue Repair", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Rewrite Challenge", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite" },
-    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Rule Sprint", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint" },
-    "signal-decoder-present": { accent: "#0a7fa5", columns: 2, modeLabel: "Signal Decoder", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode" },
-    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Mode", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview" },
-    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Agreement Sprint", sceneLabel: "Rule Check", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint" },
-    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Agreement Sweep", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep" },
-    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Case Interview", sceneLabel: "Case File", startText: "Open Case", replayText: "Open New Case", endText: "Close Case" },
-    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Sequence Lab", sceneLabel: "Sequence Step", startText: "Run Lab", replayText: "Run Lab Again", endText: "End Lab" },
-    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Sorting", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board" }
+    "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Smash Wrong Line", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash", playMode: "smash" },
+    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Secure or Repair", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "binary" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Pick Best Line", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "best" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Pick Best Repair", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "best" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick Best Rewrite", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "best" },
+    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Smash Rule Breach", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
+    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Signal Verdict", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
+    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Verdict", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
+    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Smash Agreement Error", sceneLabel: "Rule Check", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 2, modeLabel: "Smash Agreement Error", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep", playMode: "smash" },
+    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Case Verdict", sceneLabel: "Case File", startText: "Open Case", replayText: "Open New Case", endText: "Close Case", playMode: "binary" },
+    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Sequence Verdict", sceneLabel: "Sequence Step", startText: "Run Lab", replayText: "Run Lab Again", endText: "End Lab", playMode: "binary" },
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Verdict", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "binary" }
   };
 
   var fallbackRounds = [
@@ -1856,8 +1856,20 @@
       + ".btn.primary{background:" + accent + " !important;border-color:" + accent + " !important;}"
       + ".scene .label{color:" + accent + " !important;}"
       + ".modal h2{color:" + accent + " !important;}"
-      + "#options{grid-template-columns:" + columns + " !important;}";
+      + "#options{grid-template-columns:" + columns + " !important;}"
+      + ".binary-card{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:12px;display:grid;gap:8px;}"
+      + ".binary-card b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
+      + ".binary-card p{margin:0;font-size:15px;line-height:1.45;color:#16223a;font-weight:700;}"
+      + ".binary-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
+      + ".binary-actions .opt{min-height:56px;}"
+      + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}";
     document.head.appendChild(style);
+  }
+
+  function modeHelperText(mode) {
+    if (mode === "smash") return "Mode rule: tap the line that contains the error.";
+    if (mode === "binary") return "Mode rule: judge one highlighted line as Secure or Needs Repair.";
+    return "Mode rule: choose the single strongest line.";
   }
 
   function buildRounds(bank, desiredCount) {
@@ -1878,6 +1890,7 @@
 
   var cfg = resolveGameConfig(gameKey, pack, games[gameKey] || games["error-smash"]);
   var ux = gameUx[gameKey] || gameUx["error-smash"];
+  var activeMode = ux.playMode || "best";
   applyGameUx(ux);
   var packTitle = (window.GSPacks && window.GSPacks.meta && window.GSPacks.meta[pack] && window.GSPacks.meta[pack].short) || pack.toUpperCase();
   var teacherBtn = document.getElementById("btnTeacher");
@@ -1888,7 +1901,7 @@
   text("gameTitle", cfg.title);
   text("gameSub", cfg.subtitle);
   text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Mode: " + (ux.modeLabel || "Standard"));
-  text("howToText", cfg.howTo + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
+  text("howToText", cfg.howTo + " " + modeHelperText(activeMode) + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
   text("howToTitle", "How to play: " + cfg.title);
   text("hudTimer", timerOn ? "--" : "Off");
   var sceneLabelEl = document.querySelector(".scene .label");
@@ -1911,6 +1924,70 @@
     if (timerOn) text("hudTimer", Math.max(0, sec) + "s");
   }
 
+  function buildOptionButton(label, description) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "opt";
+    var b = document.createElement("b");
+    b.textContent = label;
+    var span = document.createElement("span");
+    span.textContent = description;
+    btn.appendChild(b);
+    btn.appendChild(span);
+    return btn;
+  }
+
+  function showChoiceOptions(round) {
+    optionsEl.style.gridTemplateColumns = ux.columns === 1 ? "1fr" : "1fr 1fr";
+    optionsEl.innerHTML = "";
+    shuffle(round.options.map(function (lineText, optionIdx) {
+      return { lineText: lineText, optionIdx: optionIdx };
+    })).forEach(function (item, displayIdx) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt";
+      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      btn.addEventListener("click", function () {
+        selectOption(item.optionIdx, item.lineText, round, btn);
+      });
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function showBinaryOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    var candidateIdx = Math.floor(Math.random() * round.options.length);
+    var candidateText = round.options[candidateIdx];
+    var candidateCorrect = candidateIdx === round.answer;
+
+    var card = document.createElement("div");
+    card.className = "binary-card";
+    var cardK = document.createElement("b");
+    cardK.textContent = "Line under review";
+    var cardText = document.createElement("p");
+    cardText.textContent = candidateText;
+    card.appendChild(cardK);
+    card.appendChild(cardText);
+
+    var actions = document.createElement("div");
+    actions.className = "binary-actions";
+    var secureBtn = buildOptionButton("Secure", "This line is grammatically correct.");
+    var repairBtn = buildOptionButton("Needs Repair", "This line has an error.");
+
+    secureBtn.addEventListener("click", function () {
+      selectBinaryVerdict(true, candidateCorrect, round, secureBtn);
+    });
+    repairBtn.addEventListener("click", function () {
+      selectBinaryVerdict(false, candidateCorrect, round, repairBtn);
+    });
+
+    actions.appendChild(secureBtn);
+    actions.appendChild(repairBtn);
+    optionsEl.appendChild(card);
+    optionsEl.appendChild(actions);
+  }
+
   function showRound() {
     if (idx >= rounds.length) {
       endGame();
@@ -1920,37 +1997,62 @@
     text("feedback", "");
     var round = rounds[idx];
     text("scene", round.scene);
-    text("prompt", round.prompt);
-    optionsEl.innerHTML = "";
-    shuffle(round.options.map(function (text, optionIdx) {
-      return { text: text, optionIdx: optionIdx };
-    })).forEach(function (item, displayIdx) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "opt";
-      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.text + "</span>";
-      btn.addEventListener("click", function () {
-        selectOption(item.optionIdx, round, btn);
-      });
-      optionsEl.appendChild(btn);
-    });
+    if (activeMode === "smash") {
+      text("prompt", round.prompt + " Smash the line with the error.");
+      showChoiceOptions(round);
+    } else if (activeMode === "binary") {
+      text("prompt", round.prompt + " Evaluate the highlighted line.");
+      showBinaryOptions(round);
+    } else {
+      text("prompt", round.prompt);
+      showChoiceOptions(round);
+    }
     updateHud();
   }
 
-  function selectOption(selectedIdx, round, btn) {
+  function selectOption(selectedIdx, selectedText, round, btn) {
     if (locked) return;
     locked = true;
     idx += 1;
-    if (selectedIdx === round.answer) {
+    var userCorrect = activeMode === "smash" ? selectedIdx !== round.answer : selectedIdx === round.answer;
+    if (userCorrect) {
       correct += 1;
       streak += 1;
       btn.classList.add("good");
-      html("feedback", "<span class=\"ok\">Secure: " + round.explain + "</span>");
+      if (activeMode === "smash") {
+        html("feedback", "<span class=\"ok\">Hit confirmed: you smashed an incorrect line. " + round.explain + "</span>");
+      } else {
+        html("feedback", "<span class=\"ok\">Secure: " + round.explain + "</span>");
+      }
       if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
     } else {
       streak = 0;
       btn.classList.add("bad");
-      html("feedback", "<span class=\"bad\">Needs repair: " + round.explain + "</span>");
+      if (activeMode === "smash") {
+        html("feedback", "<span class=\"bad\">That line is already correct. Smash an error line instead. " + round.explain + "</span>");
+      } else {
+        html("feedback", "<span class=\"bad\">Needs repair: " + round.explain + "</span>");
+      }
+    }
+    updateHud();
+    setTimeout(showRound, 850);
+  }
+
+  function selectBinaryVerdict(markSecure, candidateCorrect, round, btn) {
+    if (locked) return;
+    locked = true;
+    idx += 1;
+    var userCorrect = markSecure ? candidateCorrect : !candidateCorrect;
+    if (userCorrect) {
+      correct += 1;
+      streak += 1;
+      btn.classList.add("good");
+      html("feedback", "<span class=\"ok\">Verdict confirmed: " + (candidateCorrect ? "this line is secure. " : "this line needs repair. ") + round.explain + "</span>");
+      if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+    } else {
+      streak = 0;
+      btn.classList.add("bad");
+      html("feedback", "<span class=\"bad\">Verdict mismatch: this line is " + (candidateCorrect ? "secure. " : "not secure. ") + round.explain + "</span>");
     }
     updateHud();
     setTimeout(showRound, 850);
