@@ -1897,6 +1897,30 @@
     return "Mode rule: choose the single strongest line.";
   }
 
+  function modePrompt(mode) {
+    if (mode === "smash") return "Find and tap the line with a grammar error.";
+    if (mode === "binary") return "Read the highlighted line and decide: Secure or Needs Repair.";
+    if (mode === "classify") return "Classify each line: Completed Event or Ongoing Background.";
+    if (mode === "repair") return "Choose the strongest repair for the broken line.";
+    if (mode === "duel") return "Compare the two options and choose the stronger rewrite.";
+    if (mode === "sequence") return "Choose the strongest next line for the sequence.";
+    if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
+    if (mode === "sweep") return "Mark each line Secure or Needs Repair, then submit.";
+    return "Choose the single strongest line.";
+  }
+
+  function modeHowTo(mode, fallback) {
+    if (mode === "smash") return "Scan all options and smash only lines that contain errors.";
+    if (mode === "binary") return "Judge one line at a time as correct or incorrect.";
+    if (mode === "classify") return "Sort lines by timeline role: completed events vs ongoing background actions.";
+    if (mode === "repair") return "Read the broken line and pick the best corrected version.";
+    if (mode === "duel") return "Compare two rewrites and choose the stronger sentence.";
+    if (mode === "sequence") return "Pick the line that best continues the sequence logically and grammatically.";
+    if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
+    if (mode === "sweep") return "Mark every line secure or needs repair before submitting the board.";
+    return fallback || "Choose the strongest line.";
+  }
+
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
     var target = Math.max(1, Math.min(20, desiredCount, source.length));
@@ -1926,7 +1950,7 @@
   text("gameTitle", cfg.title);
   text("gameSub", cfg.subtitle);
   text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Mode: " + (ux.modeLabel || "Standard"));
-  text("howToText", cfg.howTo + " " + modeHelperText(activeMode) + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
+  text("howToText", modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode) + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
   text("howToTitle", "How to play: " + cfg.title);
   text("hudTimer", timerOn ? "--" : "Off");
   var sceneLabelEl = document.querySelector(".scene .label");
@@ -2356,31 +2380,31 @@
     var round = rounds[idx];
     text("scene", round.scene);
     if (activeMode === "smash") {
-      text("prompt", round.prompt + " Smash the line with the error.");
+      text("prompt", modePrompt(activeMode));
       showChoiceOptions(round);
     } else if (activeMode === "binary") {
-      text("prompt", round.prompt + " Evaluate the highlighted line.");
+      text("prompt", modePrompt(activeMode));
       showBinaryOptions(round);
     } else if (activeMode === "classify") {
-      text("prompt", round.prompt + " Classify each line by timeline role.");
+      text("prompt", modePrompt(activeMode));
       showClassifyOptions(round);
     } else if (activeMode === "repair") {
-      text("prompt", round.prompt + " Repair the broken line.");
+      text("prompt", modePrompt(activeMode));
       showRepairOptions(round);
     } else if (activeMode === "duel") {
-      text("prompt", round.prompt + " Compare two rewrites.");
+      text("prompt", modePrompt(activeMode));
       showDuelOptions(round, "Rewrite Duel");
     } else if (activeMode === "sequence") {
-      text("prompt", round.prompt + " Choose the stronger next line.");
+      text("prompt", modePrompt(activeMode));
       showDuelOptions(round, "Next-line Duel");
     } else if (activeMode === "eliminate") {
-      text("prompt", round.prompt + " Eliminate 3 weak lines and keep the strongest one.");
+      text("prompt", modePrompt(activeMode));
       showEliminateOptions(round);
     } else if (activeMode === "sweep") {
-      text("prompt", round.prompt + " Mark each line Secure or Needs Repair, then submit.");
+      text("prompt", modePrompt(activeMode));
       showSweepOptions(round);
     } else {
-      text("prompt", round.prompt);
+      text("prompt", modePrompt(activeMode));
       showChoiceOptions(round);
     }
     updateHud();
