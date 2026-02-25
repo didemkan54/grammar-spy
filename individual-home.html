@@ -37,14 +37,17 @@
   <script src="i18n.js"></script>
   <div data-include="header"></div>
   <main class="wrap">
-    <section class="section">
-      <p class="k">Student Home</p>
-      <h1>Your mission start dashboard</h1>
-      <p>Pick a mission, play, and review your progress one step at a time.</p>
-      <div class="segmented" role="tablist" aria-label="Mode selection">
-        <a class="seg" aria-selected="false" href="teacher-home.html">Teacher</a>
-        <a class="seg active" aria-selected="true" href="individual-home.html">Student</a>
+    <section class="section" style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center">
+      <div>
+        <p class="k">Student Home</p>
+        <h1>Your mission start dashboard</h1>
+        <p>Pick a mission, play, and review your progress one step at a time.</p>
+        <div class="segmented" role="tablist" aria-label="Mode selection">
+          <a class="seg" aria-selected="false" href="teacher-home.html">Teacher</a>
+          <a class="seg active" aria-selected="true" href="individual-home.html">Student</a>
+        </div>
       </div>
+      <img src="assets/illustrations/student-dashboard.svg" alt="" style="width:220px;height:auto;opacity:.85" aria-hidden="true" />
     </section>
 
     <section class="section" aria-label="Student welcome video">

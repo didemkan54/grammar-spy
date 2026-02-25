@@ -67,6 +67,9 @@
     '@keyframes gs-page-in{from{opacity:0}to{opacity:1}}',
     'body{animation:gs-page-in .35s ease both}',
 
+    /* Hide illustrations on small screens */
+    '@media(max-width:700px){.hide-mobile,[aria-hidden="true"][src*="illustrations"]{display:none!important}section[style*="grid-template-columns:1fr auto"]{grid-template-columns:1fr!important}}',
+
     /* Respect reduced-motion */
     '@media(prefers-reduced-motion:reduce){*,.gs-reveal,.gs-reveal-left,.gs-reveal-right,.gs-reveal-scale,.hero,.hero-shell,.btn-primary,.pack-card,article,.pack-thumb-link img,#feedback .ok,#feedback .bad,#reportOverlay.show,body{animation:none!important;transition:none!important;transform:none!important}}'
   ].join('\n');
