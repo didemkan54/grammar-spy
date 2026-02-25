@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grammar Spy™ | Launch Mission</title>
+    <link rel="stylesheet" href="../../core/theme.css" />
+  </head>
+  <body>
+    <main class="gs-shell">
+      <header id="topNav"></header>
+
+      <section id="missionPanel" class="gs-panel">
+        <h1 id="missionTitle">Mission Launcher</h1>
+        <p id="missionBrief" class="gs-subtitle">Loading mission brief...</p>
+        <div class="gs-chip-row" style="margin-top: 10px;">
+          <span id="metaTier" class="gs-chip">Tier: --</span>
+          <span id="metaCount" class="gs-chip">Questions: --</span>
+          <span id="metaGameType" class="gs-chip">Mode: --</span>
+          <span id="metaTimer" class="gs-chip">Timer: Off</span>
+        </div>
+      </section>
+
+      <section class="gs-grid gs-grid-2">
+        <article class="gs-panel">
+          <h2>Mission Panel</h2>
+          <p class="gs-subtitle">Read the signal line and choose the strongest answer.</p>
+          <div id="gameMount"></div>
+        </article>
+        <aside class="gs-panel">
+          <h2>Action Controls</h2>
+          <p class="gs-inline-metric"><b id="questionCounter">0 / 0</b></p>
+          <p class="gs-inline-metric"><b>Streak:</b> <span id="streakLabel">0</span></p>
+          <p class="gs-inline-metric"><b>Best streak:</b> <span id="bestStreakLabel">0</span></p>
+          <p class="gs-inline-metric"><b>Accuracy:</b> <span id="accuracyLabel">0%</span></p>
+          <p class="gs-inline-metric"><b>XP ledger:</b> <span id="xpLabel">0</span></p>
+          <p class="gs-inline-metric"><b>Timer:</b> <span id="timerLabel">Off</span></p>
+          <div class="gs-button-row" style="margin-top: 10px;">
+            <label class="gs-btn gs-btn-soft">
+              <input id="soundToggle" type="checkbox" aria-label="Toggle sound effects" />
+              Sound
+            </label>
+            <label class="gs-btn gs-btn-soft">
+              <input id="motionToggle" type="checkbox" aria-label="Toggle reduced motion" />
+              Reduced motion
+            </label>
+          </div>
+        </aside>
+      </section>
+
+      <section id="feedbackToast" class="gs-toast" aria-live="polite">
+        <h3>Feedback</h3>
+        <p>Awaiting your selection.</p>
+      </section>
+
+      <div class="gs-button-row">
+        <button id="nextBtn" class="gs-btn gs-btn-primary" type="button" disabled>Next</button>
+        <a class="gs-btn" href="../../missions.html">Back to mission library</a>
+      </div>
+    </main>
+
+    <div id="reportModalBackdrop" class="gs-modal-backdrop" data-open="false">
+      <div class="gs-modal" role="dialog" aria-modal="true" aria-labelledby="report-title">
+        <div class="gs-modal-head">
+          <h2 id="report-title">Mission Intelligence Report</h2>
+          <button id="closeReportBtn" class="gs-btn" type="button" aria-label="Close intelligence report">Close</button>
+        </div>
+        <div id="reportBody"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { renderTopNav, applyReducedMotion, readQueryParams } from "../../core/router.js";
+      import { listAllMissions, loadMission, getTierItems } from "../../core/missionLoader.js";
+      import { getProfile, saveProfile } from "../../core/storage.js";
+      import {
+        computeXP,
+        awardXP,
+        updateSkillMastery,
+        updateRank,
+        getRecommendations
+      } from "../../core/xpEngine.js";
+      import { logItemEvent, logMissionAttempt } from "../../core/analytics.js";
+      import { createPlaceholderGame } from "./placeholder-game.js";
+
+      const query = readQueryParams();
+      const missionId = query.missionId || "";
+      const gameType = query.gameType || "retrieval-raid";
+      const tier = (query.tier || "field").toLowerCase();
+      const requestedCount = Math.max(1, Number(query.count || 10));
+      const timerEnabled = query.timer === "on";
+
+      renderTopNav(document.getElementById("topNav"), "launch");
+
+      const missionTitle = document.getElementById("missionTitle");
+      const missionBrief = document.getElementById("missionBrief");
+      const metaTier = document.getElementById("metaTier");
+      const metaCount = document.getElementById("metaCount");
+      const metaGameType = document.getElementById("metaGameType");
+      const metaTimer = document.getElementById("metaTimer");
+      const questionCounter = document.getElementById("questionCounter");
+      const streakLabel = document.getElementById("streakLabel");
+      const bestStreakLabel = document.getElementById("bestStreakLabel");
+      const accuracyLabel = document.getElementById("accuracyLabel");
+      const xpLabel = document.getElementById("xpLabel");
+      const timerLabel = document.getElementById("timerLabel");
+      const feedbackToast = document.getElementById("feedbackToast");
+      const nextBtn = document.getElementById("nextBtn");
+      const reportModalBackdrop = document.getElementById("reportModalBackdrop");
+      const closeReportBtn = document.getElementById("closeReportBtn");
+      const reportBody = document.getElementById("reportBody");
+      const soundToggle = document.getElementById("soundToggle");
+      const motionToggle = document.getElementById("motionToggle");
+
+      const tierTimeMs = { rookie: 24000, field: 20000, director: 16000 };
+      let timerInterval = null;
+      let audioContext = null;
+
+      const state = {
+        mission: null,
+        manifest: [],
+        items: [],
+        index: 0,
+        answers: [],
+        correctCount: 0,
+        streak: 0,
+        bestStreak: 0,
+        rawXp: 0,
+        penaltyXp: 0,
+        repeatedErrorsCount: 0,
+        errorCounts: {},
+        skillErrorCounts: {},
+        awaitingNext: false,
+        questionStartMs: 0,
+        profile: getProfile(),
+        game: null
+      };
+
+      soundToggle.checked = Boolean(state.profile.settings?.soundOn ?? true);
+      motionToggle.checked = Boolean(state.profile.settings?.reducedMotion ?? false);
+      applyReducedMotion(motionToggle.checked);
+
+      soundToggle.addEventListener("change", () => {
+        const next = saveProfile({
+          ...state.profile,
+          settings: { ...state.profile.settings, soundOn: soundToggle.checked }
+        });
+        state.profile = next;
+      });
+
+      motionToggle.addEventListener("change", () => {
+        const next = saveProfile({
+          ...state.profile,
+          settings: { ...state.profile.settings, reducedMotion: motionToggle.checked }
+        });
+        state.profile = next;
+        applyReducedMotion(motionToggle.checked);
+      });
+
+      function initAudio() {
+        if (!soundToggle.checked) return null;
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        return audioContext;
+      }
+
+      function playTone(type) {
+        if (!soundToggle.checked) return;
+        const ctx = initAudio();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const now = ctx.currentTime;
+
+        const settings = {
+          click: { freq: 320, dur: 0.06, gain: 0.04 },
+          correct: { freq: 520, dur: 0.12, gain: 0.06 },
+          wrong: { freq: 180, dur: 0.15, gain: 0.05 },
+          rank: { freq: 680, dur: 0.24, gain: 0.06 }
+        }[type] || { freq: 260, dur: 0.07, gain: 0.04 };
+
+        osc.frequency.setValueAtTime(settings.freq, now);
+        gain.gain.setValueAtTime(settings.gain, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + settings.dur);
+
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + settings.dur);
+      }
+
+      function currentAccuracy() {
+        if (!state.answers.length) return 0;
+        return Math.round((state.correctCount / state.answers.length) * 100);
+      }
+
+      function xpLedger() {
+        return Math.max(0, state.rawXp - state.penaltyXp);
+      }
+
+      function updateHud() {
+        questionCounter.textContent = `${Math.min(state.index + 1, state.items.length)} / ${state.items.length}`;
+        streakLabel.textContent = String(state.streak);
+        bestStreakLabel.textContent = String(state.bestStreak);
+        accuracyLabel.textContent = `${currentAccuracy()}%`;
+        xpLabel.textContent = `${xpLedger()} XP`;
+      }
+
+      function safeCorrectAnswerText(item) {
+        if (typeof item.correctAnswer === "string") return item.correctAnswer;
+        if (Array.isArray(item.correctAnswer)) return item.correctAnswer.join(" / ");
+        if (item.correctAnswer && typeof item.correctAnswer === "object") {
+          return item.correctAnswer.value || JSON.stringify(item.correctAnswer);
+        }
+        return "No answer key";
+      }
+
+      function inferErrorType(item, selectedValue) {
+        const value = String(selectedValue || "").toLowerCase();
+        if (value.includes(" is ") || value.startsWith("is ") || value.includes(" are ")) {
+          return "present_tense_intrusion";
+        }
+        if (value.includes("was ") || value.includes("were ")) {
+          return "auxiliary_misuse";
+        }
+        return item.commonErrors?.[0]?.pattern || "logic_mismatch";
+      }
+
+      function friendlyError(errorType) {
+        const labels = {
+          present_tense_intrusion: "Present tense inserted into past context",
+          auxiliary_misuse: "Auxiliary verb form mismatch",
+          logic_mismatch: "Tense logic mismatch",
+          timeout: "Response timing issue"
+        };
+        return labels[errorType] || errorType.replaceAll("_", " ");
+      }
+
+      function setToast(kind, message) {
+        feedbackToast.className = `gs-toast ${kind === "success" ? "gs-toast-success" : "gs-toast-error"}`;
+        feedbackToast.innerHTML = `
+          <h3>${kind === "success" ? "Correct" : "Needs repair"}</h3>
+          <p>${message}</p>
+        `;
+      }
+
+      function clearTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+      }
+
+      function startTimerForQuestion() {
+        clearTimer();
+        if (!timerEnabled) {
+          timerLabel.textContent = "Off";
+          return;
+        }
+        const target = tierTimeMs[tier] || 20000;
+        const endAt = performance.now() + target;
+        timerLabel.textContent = `${Math.ceil(target / 1000)}s`;
+        timerInterval = window.setInterval(() => {
+          const remaining = Math.max(0, endAt - performance.now());
+          timerLabel.textContent = `${Math.ceil(remaining / 1000)}s`;
+          if (remaining <= 0) {
+            clearTimer();
+            if (!state.awaitingNext) {
+              handleAnswer({
+                item: state.items[state.index],
+                selectedIndex: -1,
+                selectedValue: "(No response)",
+                correct: false,
+                options: [],
+                context: { timedOut: true }
+              });
+            }
+          }
+        }, 150);
+      }
+
+      function renderQuestion() {
+        if (state.index >= state.items.length) {
+          finishMission();
+          return;
+        }
+        state.awaitingNext = false;
+        nextBtn.disabled = true;
+        nextBtn.textContent = state.index === state.items.length - 1 ? "Finish Mission" : "Next";
+        state.questionStartMs = performance.now();
+        state.game.render(state.items[state.index], { index: state.index });
+        setToast("error", "Select the best answer to continue.");
+        startTimerForQuestion();
+        updateHud();
+      }
+
+      function applySkillUpdates(item, result) {
+        const skillTags = Array.isArray(item.targetSkillTags) ? item.targetSkillTags : [];
+        skillTags.forEach((skillTag) => {
+          state.profile = updateSkillMastery(state.profile, skillTag, result);
+          state.profile = logItemEvent(state.profile, {
+            missionId: state.mission.missionId,
+            skillTag,
+            correct: result.correct,
+            errorType: result.errorType,
+            repeatedError: result.repeatedError
+          });
+          if (!result.correct) {
+            state.skillErrorCounts[skillTag] = (state.skillErrorCounts[skillTag] || 0) + 1;
+          }
+        });
+      }
+
+      function handleAnswer(payload) {
+        if (state.awaitingNext) return;
+        clearTimer();
+
+        const item = payload.item;
+        const correct = Boolean(payload.correct);
+        const responseTimeMs = Math.max(1, performance.now() - state.questionStartMs);
+        const targetTimeMs = tierTimeMs[tier] || 20000;
+        const errorType = correct
+          ? "none"
+          : payload.context?.timedOut
+          ? "timeout"
+          : inferErrorType(item, payload.selectedValue);
+
+        state.errorCounts[errorType] = (state.errorCounts[errorType] || 0) + (correct ? 0 : 1);
+        const repeatedError = !correct && state.errorCounts[errorType] > 1;
+        if (repeatedError) {
+          state.penaltyXp += 15;
+          state.repeatedErrorsCount += 1;
+        }
+
+        if (correct) {
+          state.correctCount += 1;
+          state.streak += 1;
+          playTone("correct");
+        } else {
+          state.streak = 0;
+          playTone("wrong");
+        }
+        state.bestStreak = Math.max(state.bestStreak, state.streak);
+
+        const xpEvent = computeXP({
+          correct,
+          streak: state.streak,
+          timerEnabled,
+          responseTimeMs,
+          targetTimeMs,
+          repeatedError
+        });
+        state.rawXp += xpEvent.xp;
+
+        const answerRecord = {
+          itemId: item.id,
+          correct,
+          selectedValue: payload.selectedValue,
+          correctAnswer: safeCorrectAnswerText(item),
+          errorType,
+          repeatedError
+        };
+        state.answers.push(answerRecord);
+
+        applySkillUpdates(item, {
+          correct,
+          streak: state.streak,
+          errorType,
+          repeatedError
+        });
+
+        const explanation = item.explanation || "Review the tense cue and try the next line.";
+        if (correct) {
+          setToast("success", `${explanation} +${xpEvent.xp} XP`);
+        } else {
+          const cue = item.commonErrors?.find((entry) => entry.pattern === errorType)?.message || "Check clause timing and verb form.";
+          setToast(
+            "error",
+            `Correct line: "${safeCorrectAnswerText(item)}". ${cue} ${explanation}`
+          );
+        }
+
+        state.awaitingNext = true;
+        nextBtn.disabled = false;
+        updateHud();
+      }
+
+      function topErrors(limit = 2) {
+        return Object.entries(state.errorCounts)
+          .filter(([type]) => type !== "none")
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, limit)
+          .map(([errorType, count]) => ({ errorType, count }));
+      }
+
+      function topSkillPatterns(limit = 2) {
+        return Object.entries(state.skillErrorCounts)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, limit)
+          .map(([skillTag, count]) => ({ skillTag, count }));
+      }
+
+      function showReport(summary, recommendations) {
+        const topErrorRows = topErrors(2);
+        const errorList = topErrorRows.length
+          ? topErrorRows
+              .map((row) => `<li>${friendlyError(row.errorType)} (${row.count})</li>`)
+              .join("")
+          : "<li>No repeated error pattern detected.</li>";
+
+        const recList = recommendations.length
+          ? recommendations
+              .map(
+                (rec) => `
+                <li>
+                  <a href="../../missions.html?missionId=${encodeURIComponent(rec.missionId)}">${rec.missionName}</a>
+                  <span class="gs-subtitle"> — ${rec.reason}</span>
+                </li>
+              `
+              )
+              .join("")
+          : "<li>Continue with a mission at the same cognitive level for spaced retrieval.</li>";
+
+        const nextRankTarget = {
+          "Cadet": 300,
+          "Rookie Agent": 900,
+          "Field Agent": 1800,
+          "Senior Agent": 3200,
+          "Director": 3200
+        }[state.profile.rank] || 300;
+        const progress = Math.min(100, Math.round((Number(state.profile.totalXP || 0) / nextRankTarget) * 100));
+
+        reportBody.innerHTML = `
+          <div class="gs-grid gs-grid-2">
+            <article class="gs-card">
+              <h3 class="gs-card-title">Mission Results</h3>
+              <p class="gs-inline-metric"><b>Accuracy:</b> ${Math.round(summary.accuracy)}%</p><br />
+              <p class="gs-inline-metric"><b>Best streak:</b> ${summary.bestStreak}</p><br />
+              <p class="gs-inline-metric"><b>XP gained:</b> ${summary.xpGained}</p><br />
+              <p class="gs-inline-metric"><b>Rank:</b> ${state.profile.rank}</p>
+              <div class="gs-progress" style="margin-top: 10px;">
+                <div class="gs-progress-fill" style="width: ${progress}%"></div>
+              </div>
+              <p class="gs-subtitle" style="margin-top: 8px;">Rank progress ${progress}% toward next threshold.</p>
+            </article>
+
+            <article class="gs-card">
+              <h3 class="gs-card-title">Top Error Patterns</h3>
+              <ul class="gs-list">${errorList}</ul>
+              <h3 class="gs-card-title" style="margin-top: 12px;">Recommended Next Missions</h3>
+              <ul class="gs-list">${recList}</ul>
+            </article>
+          </div>
+          <div class="gs-button-row" style="margin-top: 14px;">
+            <a class="gs-btn gs-btn-primary" href="../../missions.html">Back to Mission Library</a>
+            <button id="replayBtn" class="gs-btn" type="button">Replay Mission</button>
+            <a class="gs-btn" href="../../profile.html">Open Profile</a>
+          </div>
+        `;
+
+        reportModalBackdrop.dataset.open = "true";
+
+        const replayBtn = document.getElementById("replayBtn");
+        replayBtn?.addEventListener("click", () => {
+          reportModalBackdrop.dataset.open = "false";
+          resetRuntimeAndReplay();
+        });
+      }
+
+      function finishMission() {
+        clearTimer();
+        nextBtn.disabled = true;
+        state.awaitingNext = false;
+        const totalItems = state.items.length || 1;
+        const accuracy = (state.correctCount / totalItems) * 100;
+        const repeatedErrorRate = state.answers.length
+          ? state.repeatedErrorsCount / state.answers.length
+          : 0;
+        const xpGained = xpLedger();
+        const topPatternSkills = topSkillPatterns(2);
+        const masteryAchieved =
+          totalItems >= 5 && accuracy >= 85 && repeatedErrorRate <= 0.2;
+
+        const summary = {
+          missionId: state.mission.missionId,
+          missionName: state.mission.missionName,
+          completedAt: new Date().toISOString(),
+          accuracy,
+          bestStreak: state.bestStreak,
+          repeatedErrorRate,
+          xpGained,
+          cognitiveLevel: state.mission.cognitiveLevel,
+          masteryAchieved,
+          topErrorPatterns: topPatternSkills
+        };
+
+        state.profile = awardXP(state.profile, xpGained);
+        state.profile = logMissionAttempt(state.profile, summary);
+        const previousRank = state.profile.rank;
+        state.profile = updateRank(state.profile);
+        state.profile = saveProfile(state.profile);
+        if (state.profile.rank !== previousRank) playTone("rank");
+
+        const recommendations = getRecommendations(state.profile, summary, state.manifest);
+        showReport(summary, recommendations);
+      }
+
+      function resetRuntimeAndReplay() {
+        state.index = 0;
+        state.answers = [];
+        state.correctCount = 0;
+        state.streak = 0;
+        state.bestStreak = 0;
+        state.rawXp = 0;
+        state.penaltyXp = 0;
+        state.repeatedErrorsCount = 0;
+        state.errorCounts = {};
+        state.skillErrorCounts = {};
+        state.awaitingNext = false;
+        state.items = getTierItems(state.mission, tier, requestedCount, true);
+        nextBtn.disabled = true;
+        renderQuestion();
+      }
+
+      nextBtn.addEventListener("click", () => {
+        if (!state.awaitingNext) return;
+        playTone("click");
+        if (state.index >= state.items.length - 1) {
+          finishMission();
+          return;
+        }
+        state.index += 1;
+        renderQuestion();
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key.toLowerCase() === "n" && !nextBtn.disabled) {
+          nextBtn.click();
+        }
+        if (event.key === "Escape" && reportModalBackdrop.dataset.open === "true") {
+          reportModalBackdrop.dataset.open = "false";
+        }
+      });
+
+      closeReportBtn.addEventListener("click", () => {
+        reportModalBackdrop.dataset.open = "false";
+      });
+
+      reportModalBackdrop.addEventListener("click", (event) => {
+        if (event.target === reportModalBackdrop) reportModalBackdrop.dataset.open = "false";
+      });
+
+      async function boot() {
+        if (!missionId) {
+          missionTitle.textContent = "Mission not selected";
+          missionBrief.innerHTML = `Open the <a href="../../missions.html">Mission Library</a> and launch a mission.`;
+          return;
+        }
+
+        try {
+          state.manifest = await listAllMissions();
+          state.mission = await loadMission(missionId);
+          state.items = getTierItems(state.mission, tier, requestedCount, true);
+          if (!state.items.length) {
+            missionBrief.textContent = "No mission items are available for this tier.";
+            return;
+          }
+
+          missionTitle.textContent = state.mission.missionName;
+          missionBrief.textContent = `${state.mission.missionBrief} Focus: ${state.mission.grammarFocus}.`;
+          metaTier.textContent = `Tier: ${tier}`;
+          metaCount.textContent = `Questions: ${state.items.length}`;
+          metaGameType.textContent = `Mode: ${gameType}`;
+          metaTimer.textContent = `Timer: ${timerEnabled ? "On" : "Off"}`;
+
+          state.game = createPlaceholderGame({
+            mountNode: document.getElementById("gameMount"),
+            onAnswer: handleAnswer,
+            onReadyForInput: () => {
+              playTone("click");
+            }
+          });
+
+          renderQuestion();
+        } catch (error) {
+          missionTitle.textContent = "Mission load failed";
+          missionBrief.textContent = error?.message || "Unable to load this mission configuration.";
+        }
+      }
+
+      boot();
+    </script>
+  </body>
+</html>

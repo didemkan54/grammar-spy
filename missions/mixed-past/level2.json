@@ -1,0 +1,204 @@
+{
+  "missionId": "mission-mixed-past-l2",
+  "missionName": "Mission: Interruption Logic Control",
+  "missionBrief": "Apply past simple and past continuous in mixed contexts without relying on visual prompts.",
+  "grammarFocus": "Mixed Past: Interruptions and Sequences",
+  "gradeBand": "8-9",
+  "cognitiveLevel": 2,
+  "skills": [
+    "mixed_past_paragraphs",
+    "interrupt_logic",
+    "multi_clause_control",
+    "error_detection_repair"
+  ],
+  "retrievalType": "interleaved",
+  "estimatedCognitiveLoad": "moderate",
+  "gameTypes": [
+    "retrieval-raid",
+    "error-intelligence",
+    "logic-lock"
+  ],
+  "difficultyTiers": {
+    "rookie": [
+      "mpl2-01",
+      "mpl2-02",
+      "mpl2-03",
+      "mpl2-04",
+      "mpl2-05"
+    ],
+    "field": [
+      "mpl2-01",
+      "mpl2-02",
+      "mpl2-03",
+      "mpl2-04",
+      "mpl2-05",
+      "mpl2-06",
+      "mpl2-07"
+    ],
+    "director": [
+      "mpl2-03",
+      "mpl2-04",
+      "mpl2-06",
+      "mpl2-07",
+      "mpl2-08"
+    ]
+  },
+  "items": [
+    {
+      "id": "mpl2-01",
+      "context": "Corridor camera report",
+      "sentence": "While we ___ the notice board, the principal called us.",
+      "options": ["checked", "were checking", "are checking", "check"],
+      "correctAnswer": "were checking",
+      "targetSkillTags": ["interrupt_logic", "mixed_past_paragraphs"],
+      "explanation": "The while-clause gives the background action, so past continuous is required.",
+      "commonErrors": [
+        { "pattern": "simple_past_in_background", "message": "Background actions in interruption patterns need past continuous." }
+      ],
+      "metadata": {
+        "timeMarkers": ["while"],
+        "clauseCount": 2,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "mpl2-02",
+      "context": "Incident timeline",
+      "sentence": "The class ___ quietly when the fire drill began.",
+      "options": ["was reading", "read", "reads", "is reading"],
+      "correctAnswer": "was reading",
+      "targetSkillTags": ["interrupt_logic", "mixed_past_paragraphs"],
+      "explanation": "Ongoing background action + interrupting event uses was/were + verb-ing.",
+      "commonErrors": [
+        { "pattern": "simple_for_background", "message": "Use continuous for the action already in progress." }
+      ],
+      "metadata": {
+        "timeMarkers": ["when"],
+        "clauseCount": 2,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "mpl2-03",
+      "context": "Draft correction memo",
+      "sentence": "They were discussing the answer when the monitor ___ off.",
+      "options": ["switch", "switched", "was switching", "switches"],
+      "correctAnswer": "switched",
+      "targetSkillTags": ["interrupt_logic", "error_detection_repair"],
+      "explanation": "The interrupting event is completed, so simple past 'switched' is correct.",
+      "commonErrors": [
+        { "pattern": "continuous_for_interrupt", "message": "Interrupting actions are usually simple past, not continuous." }
+      ],
+      "metadata": {
+        "timeMarkers": ["when"],
+        "clauseCount": 2,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "mpl2-04",
+      "context": "Teacher reflection paragraph",
+      "sentence": "When I entered, students ___ notes and one group ___ a debate.",
+      "options": [
+        "were writing / was having",
+        "wrote / had",
+        "are writing / has",
+        "were writing / had"
+      ],
+      "correctAnswer": "were writing / was having",
+      "targetSkillTags": ["multi_clause_control", "mixed_past_paragraphs"],
+      "explanation": "Both activities were ongoing at the entry moment, so past continuous fits both clauses.",
+      "commonErrors": [
+        { "pattern": "mixed_aspect_mismatch", "message": "Maintain consistent aspect when two actions are both in progress." }
+      ],
+      "metadata": {
+        "timeMarkers": ["when"],
+        "clauseCount": 3,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "mpl2-05",
+      "context": "Mission transcript repair",
+      "sentence": "Fix the line: 'We were prepared the slides when the guest arrived.'",
+      "options": [
+        "We prepared the slides when the guest arrived.",
+        "We were preparing the slides when the guest arrived.",
+        "We are preparing the slides when the guest arrived.",
+        "We were prepare the slides when the guest arrived."
+      ],
+      "correctAnswer": "We were preparing the slides when the guest arrived.",
+      "targetSkillTags": ["error_detection_repair", "interrupt_logic"],
+      "explanation": "Past continuous requires was/were + verb-ing for the background action in progress.",
+      "commonErrors": [
+        { "pattern": "auxiliary_plus_base", "message": "After was/were, use verb-ing, not base verb." }
+      ],
+      "metadata": {
+        "timeMarkers": ["when"],
+        "clauseCount": 2,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "mpl2-06",
+      "context": "Narrative consistency check",
+      "sentence": "Choose the best continuation: 'The team was mapping evidence. Then the lights ___.'",
+      "options": ["go out", "went out", "were going out", "goes out"],
+      "correctAnswer": "went out",
+      "targetSkillTags": ["multi_clause_control", "interrupt_logic"],
+      "explanation": "After a background continuous sentence, the interrupting event takes simple past.",
+      "commonErrors": [
+        { "pattern": "present_after_past_context", "message": "Maintain past timeline consistency in continuation sentences." }
+      ],
+      "metadata": {
+        "timeMarkers": ["then"],
+        "clauseCount": 2,
+        "irregularVerbFlag": true
+      }
+    },
+    {
+      "id": "mpl2-07",
+      "context": "Error analysis",
+      "sentence": "Identify the best correction: 'While she checked attendance, the bell was rang.'",
+      "options": [
+        "While she checked attendance, the bell rang.",
+        "While she was checking attendance, the bell rang.",
+        "While she checks attendance, the bell rang.",
+        "While she was checking attendance, the bell was rung."
+      ],
+      "correctAnswer": "While she was checking attendance, the bell rang.",
+      "targetSkillTags": ["error_detection_repair", "mixed_past_paragraphs"],
+      "explanation": "Background action uses past continuous; interrupting bell event uses simple past.",
+      "commonErrors": [
+        { "pattern": "passive_interrupt_misuse", "message": "Do not force passive forms when the event is a simple interruption." }
+      ],
+      "metadata": {
+        "timeMarkers": ["while"],
+        "clauseCount": 2,
+        "irregularVerbFlag": true
+      }
+    },
+    {
+      "id": "mpl2-08",
+      "context": "Director challenge paragraph",
+      "sentence": "By the time the coach arrived, we ___ examples and ___ our notes.",
+      "options": [
+        "reviewed / organized",
+        "were reviewing / organizing",
+        "had reviewed / organized",
+        "review / organize"
+      ],
+      "correctAnswer": "reviewed / organized",
+      "targetSkillTags": ["multi_clause_control", "mixed_past_paragraphs"],
+      "explanation": "Both actions were complete before the arrival point in this controlled retrieval context.",
+      "commonErrors": [
+        { "pattern": "continuous_overextension", "message": "Not every prior action needs continuous form; choose by completion meaning." }
+      ],
+      "metadata": {
+        "timeMarkers": ["by the time"],
+        "clauseCount": 2,
+        "irregularVerbFlag": false
+      }
+    }
+  ]
+}
