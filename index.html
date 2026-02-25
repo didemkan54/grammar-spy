@@ -388,9 +388,9 @@
 
       <nav class="main-nav" aria-label="Primary">
         <a href="/">Home</a>
-        <a href="/grammar-activities/">Missions</a>
-        <a href="/online-grammar-practice/">Blog</a>
-        <a href="/adult-grammar-practice/">Pricing</a>
+        <a href="#start-card">Missions</a>
+        <a href="#blog">Blog</a>
+        <a href="#pricing">Pricing</a>
       </nav>
 
       <div class="nav-actions">
@@ -399,8 +399,8 @@
           <span>ES</span>
           <span>FR</span>
         </div>
-        <a class="pill-btn primary" href="/grammar-activities/">Create Account</a>
-        <a class="pill-btn" href="/grammar-activities/">Sign In</a>
+        <a class="pill-btn primary" href="#start-card">Create Account</a>
+        <a class="pill-btn" href="#start-card">Sign In</a>
       </div>
     </header>
 
@@ -426,7 +426,7 @@
           </form>
 
           <div class="cta-row">
-            <a id="continue-link" class="pill-btn primary" href="/grammar-games-for-teachers/">Continue as Teacher</a>
+            <a id="continue-link" class="pill-btn primary" href="#promo-code">Continue as Teacher</a>
             <button id="apply-promo" class="link-inline" type="button">Apply Promo</button>
           </div>
           <p id="mode-note" class="mode-note">Teacher mode selected. Continue to set up your class account.</p>
@@ -495,6 +495,26 @@
         </figure>
       </div>
     </section>
+
+    <section id="blog" class="hero" aria-labelledby="blog-title">
+      <div>
+        <p class="eyebrow">Blog</p>
+        <h2 id="blog-title" style="margin:0;font-size:clamp(32px,3.5vw,48px);line-height:1.08;letter-spacing:-0.02em;">Teaching tips and mission updates.</h2>
+        <div class="gold-line" aria-hidden="true"></div>
+        <p class="lead" style="max-width:720px;">This page is currently a single-file build, so blog articles open here for now. We can add full blog pages next.</p>
+      </div>
+      <div></div>
+    </section>
+
+    <section id="pricing" class="hero" aria-labelledby="pricing-title" style="padding-top:0;">
+      <div>
+        <p class="eyebrow">Pricing</p>
+        <h2 id="pricing-title" style="margin:0;font-size:clamp(32px,3.5vw,48px);line-height:1.08;letter-spacing:-0.02em;">Mission 01 is free. Upgrade unlocks all missions.</h2>
+        <div class="gold-line" aria-hidden="true"></div>
+        <p class="lead" style="max-width:720px;">If you want, I can add a full pricing page next so this links to a dedicated route instead of this section.</p>
+      </div>
+      <div></div>
+    </section>
   </main>
 
   <button class="chat-bubble" type="button" aria-label="Open support chat">?</button>
@@ -520,10 +540,10 @@
         teacherBtn.setAttribute("aria-pressed", teacher ? "true" : "false");
         studentBtn.setAttribute("aria-pressed", teacher ? "false" : "true");
         continueLink.textContent = teacher ? "Continue as Teacher" : "Continue as Student";
-        continueLink.href = teacher ? "/grammar-games-for-teachers/" : "/interactive-grammar-games/";
+        continueLink.href = "#promo-code";
         modeNote.textContent = teacher
-          ? "Teacher mode selected. Continue to set up your class account."
-          : "Student mode selected. Continue to join and start Mission 01.";
+          ? "Teacher mode selected. Add promo code or continue below."
+          : "Student mode selected. Add promo code or continue below.";
       }
 
       teacherBtn.addEventListener("click", function () {
