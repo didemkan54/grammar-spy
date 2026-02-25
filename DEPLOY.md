@@ -119,4 +119,36 @@ When you buy a domain (e.g. grammarspy.com):
 - [ ] (Optional) Stripe secret key added in Vercel env vars and project redeployed (Part 3).  
 - [ ] (Optional) Custom domain added in Vercel and DNS set (Part 4).
 
+---
+
+## Part 5: Make sure Google can find your site
+
+If your site is live but not showing in search yet, complete this section immediately after deployment.
+
+1. **Keep crawl files at the site root**
+   - `https://grammarspy.net/robots.txt`
+   - `https://grammarspy.net/sitemap.xml`
+
+2. **Verify in Google Search Console**
+   - Add a **Domain property** for your domain.
+   - Verify using DNS.
+   - Submit your sitemap URL: `https://grammarspy.net/sitemap.xml`.
+
+3. **Request indexing for key pages**
+   - Homepage (`/`)
+   - Interactive grammar games page
+   - Online grammar practice page
+   - Grammar games for teachers page
+   - Middle school and high school grammar practice pages
+
+4. **Double-check indexing blockers**
+   - No `noindex` tag on public pages
+   - Public pages return HTTP `200`
+   - Content is readable without login
+
+5. **Track results weekly**
+   - Search Console → Pages: watch "Indexed" vs "Not indexed"
+   - Search Console → Queries: watch impressions/clicks for target grammar terms
+   - Improve page copy and internal links based on real query data
+
 If something doesn’t match (e.g. different buttons or menu names), the same ideas apply: get code on GitHub, connect that repo to Vercel, add `STRIPE_SECRET_KEY` when you’re ready for payments, and add the domain when you have one.
