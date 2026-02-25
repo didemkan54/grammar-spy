@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Teacher Welcome Video</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 10px 22px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 40px}
+    .wrap{max-width:1100px;margin:0 auto;display:grid;gap:18px}
+    .panel{background:#fff;border:1px solid var(--cool);border-radius:16px;box-shadow:var(--shadow);padding:22px}
+    .k{margin:0 0 8px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
+    h1,h2{margin:0;color:#0b1020;line-height:1.1}
+    h1{font-size:34px}
+    h2{font-size:22px}
+    p{margin:10px 0 0;color:#4a5568;line-height:1.62}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .video-shell{border:1px solid var(--cool);border-radius:12px;background:#0b1020;padding:8px}
+    video{display:block;width:100%;height:auto;border-radius:10px;background:#000}
+    .notice{margin-top:10px;padding:10px 12px;border-radius:10px;background:#fff8e8;border:1px solid #edd9a7;color:#5c4a1f;font-size:13px;display:none}
+    .notice.show{display:block}
+    .btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif}
+    .btn-primary{border:1px solid #194f53;background:#1f5f63;color:#fff}
+    .btn-secondary{border:1px solid var(--cool);background:#fff;color:#16223a}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .steps{margin:12px 0 0;padding-left:18px;color:#4a5568;display:grid;gap:8px;line-height:1.58}
+    .quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .quick-nav a{display:block;padding:10px 12px;border:1px solid #d9dee6;border-radius:10px;background:#f8fafc;color:#16223a;text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em}
+    .quick-nav a:hover{border-color:#b9c7d8}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+
+  <main class="wrap" id="main">
+    <section class="panel">
+      <p class="k">Teacher onboarding</p>
+      <h1>Welcome video: how Grammar Spy works</h1>
+      <p>This short tour explains how teachers navigate the site, choose missions, run a class flow, and review progress.</p>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Teacher welcome video</h2>
+        <p>Press play to start the walkthrough.</p>
+        <div class="video-shell">
+          <video id="teacherWelcomeVideo" controls preload="metadata" poster="assets/branding-images/hero/hero-classroom-feb23.png">
+            <source src="assets/videos/teacher-welcome.mp4" type="video/mp4" />
+            Your browser does not support HTML5 video.
+          </video>
+        </div>
+        <p id="videoNotice" class="notice">Video file not found yet. Upload <b>assets/videos/teacher-welcome.mp4</b> to show your custom teacher walkthrough.</p>
+        <div class="actions">
+          <a class="btn-primary" href="teacher-home.html">Open teacher dashboard</a>
+          <a class="btn-secondary" href="packs.html">Open mission library</a>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>What teachers learn in this video</h2>
+        <ol class="steps">
+          <li>Pick Teacher mode on the homepage and continue to the dashboard.</li>
+          <li>Open <b>Missions</b>, choose a pack, then select difficulty.</li>
+          <li>Run one game round in Teacher Mode and review immediate feedback.</li>
+          <li>Open reports/insights and decide the next mission step.</li>
+          <li>Return to dashboard to continue, switch packs, or assign independent practice.</li>
+        </ol>
+        <h2 style="margin-top:18px">Quick navigation links</h2>
+        <div class="quick-nav">
+          <a href="index.html">Home</a>
+          <a href="teacher-home.html">Teacher Dashboard</a>
+          <a href="packs.html">Mission Library</a>
+          <a href="teacher-mode.html?pack=pack01">Teacher Mode</a>
+          <a href="insights.html">Insights</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    (function () {
+      var video = document.getElementById('teacherWelcomeVideo');
+      var notice = document.getElementById('videoNotice');
+      if (!video || !notice) return;
+
+      function showNotice() {
+        notice.classList.add('show');
+      }
+
+      video.addEventListener('error', showNotice);
+      video.addEventListener('loadeddata', function () {
+        notice.classList.remove('show');
+      });
+
+      // If source cannot load, most browsers keep readyState at 0.
+      setTimeout(function () {
+        if (video.readyState === 0) showNotice();
+      }, 1400);
+    })();
+  </script>
+</body>
+</html>
