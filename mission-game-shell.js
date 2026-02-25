@@ -76,152 +76,1138 @@
     }
   };
 
-  var genericRounds = [
+  var fallbackRounds = [
     {
-      scene: "Hallway Before First Period",
-      prompt: "Choose the strongest line.",
+      scene: "Mission Warmup",
+      prompt: "Choose the strongest sentence.",
       options: [
-        "When the bell rang, students were finding their seats.",
-        "When the bell rang, students find their seats.",
-        "When the bell rang, students is finding their seats.",
-        "When the bell rang, students are found their seats."
+        "The team checked the notes before class started.",
+        "The team checks the notes before class started.",
+        "The team was check the notes before class started.",
+        "The team checking the notes before class started."
       ],
       answer: 0,
-      explain: "Interrupted past action should use past continuous."
+      explain: "Completed action before a past event should stay in simple past."
     },
     {
-      scene: "Office Announcement Draft",
-      prompt: "Select the best correction.",
+      scene: "Live Prompt",
+      prompt: "Pick the clearest present-time line.",
       options: [
-        "Yesterday the principal approved the final message.",
-        "Yesterday the principal approves the final message.",
-        "Yesterday the principal is approving the final message.",
-        "Yesterday the principal approve the final message."
+        "The class is discussing the clue right now.",
+        "The class discuss the clue right now.",
+        "The class discussed the clue right now.",
+        "The class are discussing the clue right now."
       ],
       answer: 0,
-      explain: "Completed events yesterday should use simple past."
+      explain: "Right now signals present continuous with a singular subject."
     },
     {
-      scene: "Partner Reflection",
-      prompt: "Pick the best parallel structure.",
+      scene: "Question Desk",
+      prompt: "Select the correct question form.",
       options: [
-        "I was checking the board while my partner was reviewing attendance.",
-        "I was checking the board while my partner review attendance.",
-        "I was checking the board while my partner reviews attendance.",
-        "I was checking the board while my partner reviewed attendance and now."
+        "Did the team finish the report?",
+        "Did the team finished the report?",
+        "Does the team finished the report?",
+        "Team did finish the report?"
       ],
       answer: 0,
-      explain: "Parallel past actions should use matching past continuous form."
-    },
-    {
-      scene: "Camera Log Entry",
-      prompt: "Choose the timeline-accurate sentence.",
-      options: [
-        "The class was reading quietly when the speaker failed.",
-        "The class read quietly when the speaker failed and fails.",
-        "The class is reading quietly when the speaker failed.",
-        "The class reads quietly when the speaker failed."
-      ],
-      answer: 0,
-      explain: "Use ongoing past + interrupting past event."
-    },
-    {
-      scene: "Debrief Summary",
-      prompt: "Which line is strongest?",
-      options: [
-        "After we fixed the script, students read the corrected version.",
-        "After we fixed the script, students reads the corrected version.",
-        "After we fixed the script, students are reading the corrected version.",
-        "After we fixed the script, students were read the corrected version."
-      ],
-      answer: 0,
-      explain: "Completed sequence uses simple past."
-    },
-    {
-      scene: "Timeline Rebuild",
-      prompt: "Complete the while-clause correctly.",
-      options: [
-        "While we were rebuilding the timeline, we found two errors.",
-        "While we rebuild the timeline, we found two errors.",
-        "While we are rebuilding the timeline, we found two errors.",
-        "While we rebuilt the timeline, we finding two errors."
-      ],
-      answer: 0,
-      explain: "While-clause in past context needs past continuous."
-    },
-    {
-      scene: "Intercom Final Check",
-      prompt: "Choose the strongest be-verb line.",
-      options: [
-        "The final script was clear and ready.",
-        "The final script were clear and ready.",
-        "The final script are clear and ready.",
-        "The final script be clear and ready."
-      ],
-      answer: 0,
-      explain: "Singular subject in past context uses 'was'."
-    },
-    {
-      scene: "Mission Closeout",
-      prompt: "Pick the best closing line.",
-      options: [
-        "By first period, the class submitted the corrected announcement.",
-        "By first period, the class submits the corrected announcement.",
-        "By first period, the class is submitting the corrected announcement.",
-        "By first period, the class were submitting the corrected announcement."
-      ],
-      answer: 0,
-      explain: "By-the-end result should be a completed past action."
-    },
-    {
-      scene: "Connector Check",
-      prompt: "Select the sentence with clear cause/result.",
-      options: [
-        "Students revised the line, so the meaning became clear.",
-        "Students revised the line, because so the meaning became clear.",
-        "Students revised the line, and because so clear.",
-        "Students revised the line, so meaning clear be."
-      ],
-      answer: 0,
-      explain: "Use one precise connector, not mixed connector forms."
-    },
-    {
-      scene: "Pronoun Audit",
-      prompt: "Choose the clearest reference.",
-      options: [
-        "Maria gave Ana the script after Maria finished editing it.",
-        "Maria gave Ana the script after she finished editing it.",
-        "Maria gave Ana the script after it finished editing it.",
-        "Maria gave Ana the script after she were editing."
-      ],
-      answer: 0,
-      explain: "Ambiguous pronouns should be clarified with explicit nouns."
-    },
-    {
-      scene: "Question Flow",
-      prompt: "Pick the strongest question form.",
-      options: [
-        "Did the class finish the correction before lunch?",
-        "Did the class finished the correction before lunch?",
-        "Does the class finished the correction before lunch?",
-        "Class did finish before lunch?"
-      ],
-      answer: 0,
-      explain: "After 'did', the main verb should be base form."
-    },
-    {
-      scene: "Wh-Question Precision",
-      prompt: "Choose the best Wh-question.",
-      options: [
-        "Where did the team post the final announcement?",
-        "Where did the team posted the final announcement?",
-        "Where the team did post the final announcement?",
-        "Where did posted the team final announcement?"
-      ],
-      answer: 0,
-      explain: "Use Wh + did + subject + base verb."
+      explain: "After did, use the base verb."
     }
   ];
+
+  var roundBanks = {
+    "error-smash": [
+      {
+        scene: "Hallway Camera",
+        prompt: "Smash the incorrect draft and choose the best fix.",
+        options: [
+          "When the bell rang, students were finding their seats.",
+          "When the bell rang, students finds their seats.",
+          "When the bell rang, students are finding their seats yesterday.",
+          "When the bell rang, students was finding their seats."
+        ],
+        answer: 0,
+        explain: "Interrupted past action is best with past continuous."
+      },
+      {
+        scene: "Announcement Edit",
+        prompt: "Select the corrected sentence.",
+        options: [
+          "Yesterday the principal approves the final memo.",
+          "Yesterday the principal approved the final memo.",
+          "Yesterday the principal is approving the final memo.",
+          "Yesterday the principal approve the final memo."
+        ],
+        answer: 1,
+        explain: "Finished action yesterday needs simple past."
+      },
+      {
+        scene: "Lab Notebook",
+        prompt: "Which sentence is error-free?",
+        options: [
+          "The monitor were flashing during the test.",
+          "The monitor was flashing during the test.",
+          "The monitor are flashing during the test.",
+          "The monitor flashing during the test."
+        ],
+        answer: 1,
+        explain: "Singular subject monitor pairs with was."
+      },
+      {
+        scene: "Team Debrief",
+        prompt: "Choose the strongest correction.",
+        options: [
+          "After we fix the script, the class read it aloud.",
+          "After we fixed the script, the class read it aloud.",
+          "After we fixed the script, the class reads it aloud yesterday.",
+          "After we were fix the script, the class read it aloud."
+        ],
+        answer: 1,
+        explain: "Both events are completed in the past."
+      },
+      {
+        scene: "Final Report",
+        prompt: "Pick the best be-verb line.",
+        options: [
+          "The final version was clear and complete.",
+          "The final version were clear and complete.",
+          "The final version are clear and complete.",
+          "The final version be clear and complete."
+        ],
+        answer: 0,
+        explain: "Singular subject takes was in a past report."
+      },
+      {
+        scene: "Exit Ticket",
+        prompt: "Select the accurate question sentence.",
+        options: [
+          "Did the class finished the task before lunch?",
+          "Did the class finish the task before lunch?",
+          "Does the class finish the task before lunch yesterday?",
+          "Class did finish the task before lunch?"
+        ],
+        answer: 1,
+        explain: "Did + base verb is the correct question pattern."
+      }
+    ],
+    "past-sort": [
+      {
+        scene: "Timeline Card A",
+        prompt: "Choose the line for background action interrupted by an event.",
+        options: [
+          "The team was checking clues when the lights went out.",
+          "The team checked clues when the lights go out.",
+          "The team is checking clues when the lights went out.",
+          "The team check clues when the lights went out."
+        ],
+        answer: 0,
+        explain: "Past continuous plus simple past shows interruption clearly."
+      },
+      {
+        scene: "Timeline Card B",
+        prompt: "Select the sentence for two completed past actions in order.",
+        options: [
+          "We are solved the puzzle, then we wrote the report.",
+          "We solved the puzzle, then we wrote the report.",
+          "We were solving the puzzle, then we write the report.",
+          "We solve the puzzle, then we wrote the report."
+        ],
+        answer: 1,
+        explain: "Sequence of finished events should stay in simple past."
+      },
+      {
+        scene: "Timeline Card C",
+        prompt: "Pick the best while-clause combination.",
+        options: [
+          "While Maya interviewed witnesses, Leo was updating the board.",
+          "While Maya interview witnesses, Leo was updating the board.",
+          "While Maya interviewed witnesses, Leo updates the board.",
+          "While Maya was interviewed witnesses, Leo was updating the board."
+        ],
+        answer: 0,
+        explain: "Parallel past context needs accurate verb forms."
+      },
+      {
+        scene: "Timeline Card D",
+        prompt: "Choose the sentence with clear past completion.",
+        options: [
+          "By second period, the class submits the corrected script.",
+          "By second period, the class submitted the corrected script.",
+          "By second period, the class is submitting the corrected script.",
+          "By second period, the class were submitting the corrected script."
+        ],
+        answer: 1,
+        explain: "By + past checkpoint points to completed simple past."
+      },
+      {
+        scene: "Timeline Card E",
+        prompt: "Select the line that keeps time meaning accurate.",
+        options: [
+          "When I arrived, they discuss the answer.",
+          "When I arrived, they were discussing the answer.",
+          "When I arrived, they are discussing the answer.",
+          "When I arrived, they discussed the answer every day."
+        ],
+        answer: 1,
+        explain: "Arrival interrupts an ongoing past action."
+      },
+      {
+        scene: "Timeline Card F",
+        prompt: "Pick the strongest retell sentence.",
+        options: [
+          "First we collected clues, and then we compared notes.",
+          "First we collect clues, and then we compared notes.",
+          "First we were collect clues, and then we compared notes.",
+          "First we collected clues, and then we compare notes yesterday."
+        ],
+        answer: 0,
+        explain: "Retelling a finished sequence works best in simple past."
+      }
+    ],
+    "narrative-builder": [
+      {
+        scene: "Story Step 1",
+        prompt: "Which line best continues this story clearly?",
+        options: [
+          "First, we reviewed the clue cards; then we grouped them by time.",
+          "First, we review the clue cards; then we grouped them by time.",
+          "First, we reviewed the clue cards; then we grouping them by time.",
+          "First, we were review the clue cards; then we grouped them by time."
+        ],
+        answer: 0,
+        explain: "Strong narrative flow uses stable tense and sequence markers."
+      },
+      {
+        scene: "Story Step 2",
+        prompt: "Pick the best transition sentence.",
+        options: [
+          "Because the evidence was weak, we tested a second explanation.",
+          "Because the evidence weak, we tested a second explanation.",
+          "Because the evidence was weak, we are testing a second explanation yesterday.",
+          "Because the evidence were weak, we tested a second explanation."
+        ],
+        answer: 0,
+        explain: "Cause-and-result must be grammatical and time-consistent."
+      },
+      {
+        scene: "Story Step 3",
+        prompt: "Choose the strongest line for background and event.",
+        options: [
+          "The class read quietly when the speaker failed.",
+          "The class was reading quietly when the speaker failed.",
+          "The class is reading quietly when the speaker failed.",
+          "The class reads quietly when the speaker failed yesterday."
+        ],
+        answer: 1,
+        explain: "Ongoing background plus interrupting event is most precise."
+      },
+      {
+        scene: "Story Step 4",
+        prompt: "Which sentence keeps pronoun reference clear?",
+        options: [
+          "Aylin handed Nisa the file after she corrected it.",
+          "Aylin handed Nisa the file after Aylin corrected it.",
+          "Aylin handed Nisa the file after it corrected it.",
+          "Aylin handed Nisa the file after she were correcting it."
+        ],
+        answer: 1,
+        explain: "Naming the person removes pronoun ambiguity."
+      },
+      {
+        scene: "Story Step 5",
+        prompt: "Select the best final sentence.",
+        options: [
+          "At the end, we submit the report and celebrate.",
+          "At the end, we submitted the report and celebrated.",
+          "At the end, we are submitting the report and celebrated.",
+          "At the end, we submitted the report and celebrates."
+        ],
+        answer: 1,
+        explain: "Ending a past narrative should stay in completed past forms."
+      },
+      {
+        scene: "Story Step 6",
+        prompt: "Choose the clearest timeline link.",
+        options: [
+          "After we checked the evidence, we finalize the poster.",
+          "After we checked the evidence, we finalized the poster.",
+          "After we check the evidence, we finalized the poster yesterday.",
+          "After we were checked the evidence, we finalized the poster."
+        ],
+        answer: 1,
+        explain: "After-clause and result are both completed in the past."
+      }
+    ],
+    "dialogue-repair": [
+      {
+        scene: "Classroom Pair Talk",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "I no understand this clue.",
+          "I did not understand this clue.",
+          "I am not understood this clue.",
+          "I not understanded this clue."
+        ],
+        answer: 1,
+        explain: "Past misunderstanding should be expressed with did not + base verb."
+      },
+      {
+        scene: "Teacher Check-in",
+        prompt: "Which response sounds natural and correct?",
+        options: [
+          "She are waiting near the board.",
+          "She is waiting near the board.",
+          "She waiting near the board.",
+          "She was wait near the board."
+        ],
+        answer: 1,
+        explain: "Singular she takes is in present continuous."
+      },
+      {
+        scene: "Group Discussion",
+        prompt: "Choose the best repaired question.",
+        options: [
+          "Where you put the final note?",
+          "Where did you put the final note?",
+          "Where did you putted the final note?",
+          "Where you did put the final note?"
+        ],
+        answer: 1,
+        explain: "Wh-question pattern is Wh + did + subject + base verb."
+      },
+      {
+        scene: "Partner Clarification",
+        prompt: "Select the clearest spoken line.",
+        options: [
+          "After she read it, she gave it to her.",
+          "After Elif read the draft, she gave it to Ada.",
+          "After she read it, gave it to her.",
+          "After Elif read it, she give it to Ada."
+        ],
+        answer: 1,
+        explain: "Replacing ambiguous pronouns makes dialogue clearer."
+      },
+      {
+        scene: "Hallway Debrief",
+        prompt: "Pick the corrected connector line.",
+        options: [
+          "We were late because so the printer failed.",
+          "We were late because the printer failed.",
+          "We were late because and the printer failed.",
+          "We were late, so because the printer failed."
+        ],
+        answer: 1,
+        explain: "Use one connector that fits the relationship."
+      },
+      {
+        scene: "Mission Wrap",
+        prompt: "Which line is the strongest final response?",
+        options: [
+          "Yes, we did finished the mission.",
+          "Yes, we finished the mission.",
+          "Yes, we are finished the mission yesterday.",
+          "Yes, we were finish the mission."
+        ],
+        answer: 1,
+        explain: "Simple past is the cleanest form for a completed mission."
+      }
+    ],
+    "rewrite-studio": [
+      {
+        scene: "Original: The note was not clear and students were confused.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "Students were confused because the note was unclear.",
+          "Students confusion because note unclear.",
+          "Because unclear note, students was confusion.",
+          "Students are confused because the note was unclear yesterday."
+        ],
+        answer: 0,
+        explain: "Good rewrites improve grammar and preserve meaning."
+      },
+      {
+        scene: "Original: She give me the paper after she edit it.",
+        prompt: "Select the best rewrite.",
+        options: [
+          "She gave me the paper after she edited it.",
+          "She gives me the paper after she edited it yesterday.",
+          "She gave me the paper after she edit it.",
+          "She was gave me the paper after she edited it."
+        ],
+        answer: 0,
+        explain: "Completed sequence should use gave and edited."
+      },
+      {
+        scene: "Original: Team A and Team B was ready.",
+        prompt: "Pick the best rewrite.",
+        options: [
+          "Team A and Team B were ready.",
+          "Team A and Team B is ready.",
+          "Team A and Team B ready.",
+          "Team A and Team B was being ready."
+        ],
+        answer: 0,
+        explain: "Plural compound subject requires were."
+      },
+      {
+        scene: "Original: We did not knew where the clue was.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "We did not know where the clue was.",
+          "We did not knew where the clue is.",
+          "We not knowed where the clue was.",
+          "We did not knowing where the clue was."
+        ],
+        answer: 0,
+        explain: "After did not, use base verb know."
+      },
+      {
+        scene: "Original: Because we checked twice, so the answer was correct.",
+        prompt: "Choose the cleaner rewrite.",
+        options: [
+          "Because we checked twice, the answer was correct.",
+          "Because we checked twice, so the answer was correct.",
+          "We checked twice because so answer correct.",
+          "Because we were check twice, the answer was correct."
+        ],
+        answer: 0,
+        explain: "Avoid double connectors in one clause link."
+      },
+      {
+        scene: "Original: Maria told Ana that she should rewrite it.",
+        prompt: "Pick the rewrite with clearer reference.",
+        options: [
+          "Maria told Ana that Ana should rewrite the paragraph.",
+          "Maria told Ana that she should rewrite it quickly.",
+          "Maria told Ana she should rewrite it, and she did.",
+          "Maria told Ana that it should rewrite."
+        ],
+        answer: 0,
+        explain: "Clear noun references make the sentence easier to understand."
+      }
+    ],
+    "rule-sprint-present": [
+      {
+        scene: "Morning Routine Board",
+        prompt: "Choose the sentence that states a routine.",
+        options: [
+          "The class is checking homework every day.",
+          "The class checks homework every day.",
+          "The class checked homework every day now.",
+          "The class check homework every day."
+        ],
+        answer: 1,
+        explain: "Routine habits usually take simple present."
+      },
+      {
+        scene: "Live Classroom Feed",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The teacher explains the clue right now.",
+          "The teacher is explaining the clue right now.",
+          "The teacher explained the clue right now.",
+          "The teacher explaining the clue right now."
+        ],
+        answer: 1,
+        explain: "Right now calls for present continuous."
+      },
+      {
+        scene: "Schedule Check",
+        prompt: "Select the strongest third-person present sentence.",
+        options: [
+          "Mina write the summary after lunch.",
+          "Mina writes the summary after lunch.",
+          "Mina is write the summary after lunch.",
+          "Mina wrote the summary after lunch usually."
+        ],
+        answer: 1,
+        explain: "Third-person singular takes writes."
+      },
+      {
+        scene: "Noise Monitor",
+        prompt: "Choose the best negative present sentence.",
+        options: [
+          "The team does not talks during silent reading.",
+          "The team does not talk during silent reading.",
+          "The team do not talks during silent reading.",
+          "The team not talk during silent reading."
+        ],
+        answer: 1,
+        explain: "Does not is followed by a base verb."
+      },
+      {
+        scene: "Help Desk",
+        prompt: "Pick the correct present question.",
+        options: [
+          "Does the team needs another hint?",
+          "Do the team need another hint?",
+          "Does the team need another hint?",
+          "Team does need another hint?"
+        ],
+        answer: 2,
+        explain: "Singular team takes does + base verb."
+      },
+      {
+        scene: "Board Update",
+        prompt: "Select the sentence with accurate present timing.",
+        options: [
+          "They are solving the final clue at the moment.",
+          "They solve the final clue at the moment.",
+          "They solved the final clue at the moment.",
+          "They is solving the final clue at the moment."
+        ],
+        answer: 0,
+        explain: "At the moment signals present continuous."
+      }
+    ],
+    "signal-decoder-present": [
+      {
+        scene: "Signal: usually",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The librarian is opening the archive usually.",
+          "The librarian opens the archive usually.",
+          "The librarian opened the archive usually.",
+          "The librarian open the archive usually."
+        ],
+        answer: 1,
+        explain: "Usually points to simple present, opens."
+      },
+      {
+        scene: "Signal: right now",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "Students compare notes right now.",
+          "Students compared notes right now.",
+          "Students are comparing notes right now.",
+          "Students compares notes right now."
+        ],
+        answer: 2,
+        explain: "Right now requires present continuous."
+      },
+      {
+        scene: "Signal: every Monday",
+        prompt: "Choose the routine sentence.",
+        options: [
+          "She is leading the briefing every Monday.",
+          "She leads the briefing every Monday.",
+          "She leaded the briefing every Monday.",
+          "She lead the briefing every Monday."
+        ],
+        answer: 1,
+        explain: "Repeated weekly actions use simple present."
+      },
+      {
+        scene: "Signal: listen",
+        prompt: "Pick the line that fits immediate action.",
+        options: [
+          "Listen, the printer is making a strange sound.",
+          "Listen, the printer makes a strange sound now always.",
+          "Listen, the printer made a strange sound.",
+          "Listen, the printer make a strange sound."
+        ],
+        answer: 0,
+        explain: "Immediate observation is best in present continuous."
+      },
+      {
+        scene: "Signal: on Fridays",
+        prompt: "Select the strongest habitual statement.",
+        options: [
+          "Our class review feedback on Fridays.",
+          "Our class reviews feedback on Fridays.",
+          "Our class is reviewing feedback on Fridays now.",
+          "Our class reviewed feedback on Fridays."
+        ],
+        answer: 1,
+        explain: "Singular class takes reviews for habits."
+      },
+      {
+        scene: "Signal: currently",
+        prompt: "Decode the signal and choose correctly.",
+        options: [
+          "The team currently prepares the final slide.",
+          "The team is currently preparing the final slide.",
+          "The team currently prepared the final slide.",
+          "The team currently prepare the final slide."
+        ],
+        answer: 1,
+        explain: "Currently usually signals an in-progress action."
+      }
+    ],
+    "present-case-interview": [
+      {
+        scene: "Interview File 1",
+        prompt: "Witness says this is a daily routine. Choose the best line.",
+        options: [
+          "He checks the clue board before lunch.",
+          "He is checking the clue board before lunch every day right now.",
+          "He checked the clue board before lunch every day.",
+          "He check the clue board before lunch."
+        ],
+        answer: 0,
+        explain: "Daily routine should use simple present with checks."
+      },
+      {
+        scene: "Interview File 2",
+        prompt: "Witness says action is happening now. Select the line.",
+        options: [
+          "They read the witness statement now.",
+          "They are reading the witness statement now.",
+          "They were reading the witness statement now.",
+          "They reads the witness statement now."
+        ],
+        answer: 1,
+        explain: "Now supports present continuous."
+      },
+      {
+        scene: "Interview File 3",
+        prompt: "Choose the strongest present question.",
+        options: [
+          "Does she explains the clue clearly?",
+          "Does she explain the clue clearly?",
+          "Do she explain the clue clearly?",
+          "She does explain the clue clearly?"
+        ],
+        answer: 1,
+        explain: "Does + base verb is required in this question."
+      },
+      {
+        scene: "Interview File 4",
+        prompt: "Pick the most accurate negative present form.",
+        options: [
+          "The witness do not remember the code.",
+          "The witness does not remembers the code.",
+          "The witness does not remember the code.",
+          "The witness not remember the code."
+        ],
+        answer: 2,
+        explain: "Does not must pair with base verb remember."
+      },
+      {
+        scene: "Interview File 5",
+        prompt: "Choose the line that best matches right now.",
+        options: [
+          "The class is organizing evidence right now.",
+          "The class organizes evidence right now every day.",
+          "The class organized evidence right now.",
+          "The class are organizing evidence right now."
+        ],
+        answer: 0,
+        explain: "In-progress present uses is organizing."
+      },
+      {
+        scene: "Interview File 6",
+        prompt: "Select the strongest statement for school policy.",
+        options: [
+          "The team submit logs before dismissal.",
+          "The team submits logs before dismissal.",
+          "The team is submitting logs before dismissal every day now.",
+          "The team submitted logs before dismissal."
+        ],
+        answer: 1,
+        explain: "Policy or rule statements use simple present."
+      }
+    ],
+    "be-verb-rule-sprint": [
+      {
+        scene: "Status Board",
+        prompt: "Choose the correct be-verb sentence.",
+        options: [
+          "I am ready for the mission.",
+          "I is ready for the mission.",
+          "I are ready for the mission.",
+          "I be ready for the mission."
+        ],
+        answer: 0,
+        explain: "I pairs with am."
+      },
+      {
+        scene: "Team Check",
+        prompt: "Select the line with correct agreement.",
+        options: [
+          "The clues are on the back table.",
+          "The clues is on the back table.",
+          "The clues am on the back table.",
+          "The clues be on the back table."
+        ],
+        answer: 0,
+        explain: "Plural clues takes are."
+      },
+      {
+        scene: "Speaker Note",
+        prompt: "Pick the strongest be-verb form.",
+        options: [
+          "Our teacher are in the media room.",
+          "Our teacher is in the media room.",
+          "Our teacher am in the media room.",
+          "Our teacher be in the media room."
+        ],
+        answer: 1,
+        explain: "Singular teacher needs is."
+      },
+      {
+        scene: "Past Evidence",
+        prompt: "Choose the accurate past be-verb sentence.",
+        options: [
+          "The final list were on my desk.",
+          "The final list was on my desk.",
+          "The final list are on my desk yesterday.",
+          "The final list be on my desk."
+        ],
+        answer: 1,
+        explain: "Singular list in past takes was."
+      },
+      {
+        scene: "Dual Subject",
+        prompt: "Select the sentence with correct plural agreement.",
+        options: [
+          "Mina and Sude is in the hallway.",
+          "Mina and Sude are in the hallway.",
+          "Mina and Sude am in the hallway.",
+          "Mina and Sude was in the hallway."
+        ],
+        answer: 1,
+        explain: "Two names form a plural subject, so use are."
+      },
+      {
+        scene: "Negative Form",
+        prompt: "Pick the best negative be-verb sentence.",
+        options: [
+          "The clues not are complete.",
+          "The clues are not complete.",
+          "The clues is not complete.",
+          "The clues be not complete."
+        ],
+        answer: 1,
+        explain: "Plural subject uses are not."
+      }
+    ],
+    "be-verb-agreement-sweep": [
+      {
+        scene: "Sweep 01",
+        prompt: "Find the line with correct subject-be agreement.",
+        options: [
+          "Each student are prepared for discussion.",
+          "Each student is prepared for discussion.",
+          "Each student am prepared for discussion.",
+          "Each student be prepared for discussion."
+        ],
+        answer: 1,
+        explain: "Each student is grammatically singular."
+      },
+      {
+        scene: "Sweep 02",
+        prompt: "Choose the sentence that matches the subject.",
+        options: [
+          "The notebooks is on the shelf.",
+          "The notebooks are on the shelf.",
+          "The notebooks am on the shelf.",
+          "The notebooks was on the shelf now."
+        ],
+        answer: 1,
+        explain: "Plural notebooks pairs with are."
+      },
+      {
+        scene: "Sweep 03",
+        prompt: "Select the strongest agreement line.",
+        options: [
+          "My partner and I is ready.",
+          "My partner and I are ready.",
+          "My partner and I am ready.",
+          "My partner and I was ready."
+        ],
+        answer: 1,
+        explain: "Compound subject with I takes are in present."
+      },
+      {
+        scene: "Sweep 04",
+        prompt: "Pick the correct sentence for past context.",
+        options: [
+          "The answers was on the board yesterday.",
+          "The answers were on the board yesterday.",
+          "The answers is on the board yesterday.",
+          "The answers be on the board yesterday."
+        ],
+        answer: 1,
+        explain: "Plural subject in past takes were."
+      },
+      {
+        scene: "Sweep 05",
+        prompt: "Choose the line with correct singular agreement.",
+        options: [
+          "The new instruction are clear.",
+          "The new instruction is clear.",
+          "The new instruction am clear.",
+          "The new instruction were clear."
+        ],
+        answer: 1,
+        explain: "Instruction is singular, so use is."
+      },
+      {
+        scene: "Sweep 06",
+        prompt: "Select the accurate negative agreement sentence.",
+        options: [
+          "The pages is not dry yet.",
+          "The pages are not dry yet.",
+          "The pages am not dry yet.",
+          "The pages were not dry yet now."
+        ],
+        answer: 1,
+        explain: "Plural pages requires are not."
+      }
+    ],
+    "be-verb-case-interview": [
+      {
+        scene: "Interview A",
+        prompt: "Witness refers to one folder in the present. Choose the line.",
+        options: [
+          "The folder are on the top shelf.",
+          "The folder is on the top shelf.",
+          "The folder am on the top shelf.",
+          "The folder be on the top shelf."
+        ],
+        answer: 1,
+        explain: "Singular folder pairs with is."
+      },
+      {
+        scene: "Interview B",
+        prompt: "Witness refers to two students. Select the sentence.",
+        options: [
+          "The students is in the lab.",
+          "The students are in the lab.",
+          "The students am in the lab.",
+          "The students was in the lab now."
+        ],
+        answer: 1,
+        explain: "Plural students requires are."
+      },
+      {
+        scene: "Interview C",
+        prompt: "Past-time clue: choose the best form.",
+        options: [
+          "The key cards was missing after break.",
+          "The key cards were missing after break.",
+          "The key cards are missing after break yesterday.",
+          "The key cards be missing after break."
+        ],
+        answer: 1,
+        explain: "Plural subject in past uses were."
+      },
+      {
+        scene: "Interview D",
+        prompt: "Pick the strongest be-verb question.",
+        options: [
+          "Is the witness notes complete?",
+          "Are the witness notes complete?",
+          "Am the witness notes complete?",
+          "Be the witness notes complete?"
+        ],
+        answer: 1,
+        explain: "Plural notes takes are in a yes-no question."
+      },
+      {
+        scene: "Interview E",
+        prompt: "Choose the line with correct first-person agreement.",
+        options: [
+          "I is sure this is the right code.",
+          "I am sure this is the right code.",
+          "I are sure this is the right code.",
+          "I be sure this is the right code."
+        ],
+        answer: 1,
+        explain: "I always pairs with am."
+      },
+      {
+        scene: "Interview F",
+        prompt: "Select the sentence with the cleanest agreement.",
+        options: [
+          "Your explanation are helpful.",
+          "Your explanation is helpful.",
+          "Your explanation am helpful.",
+          "Your explanation were helpful now."
+        ],
+        answer: 1,
+        explain: "Singular explanation requires is."
+      }
+    ],
+    "mission-sequence-lab": [
+      {
+        scene: "Sequence Draft 1",
+        prompt: "Choose the sentence with clear order markers.",
+        options: [
+          "First we reviewed the clue, then we tested our answer.",
+          "First we review the clue, then we tested our answer yesterday.",
+          "First we reviewed the clue, then we are testing our answer.",
+          "First reviewed clue, then tested answer."
+        ],
+        answer: 0,
+        explain: "Sequence writing should keep tense and connectors consistent."
+      },
+      {
+        scene: "Sequence Draft 2",
+        prompt: "Pick the strongest cause-result sequence line.",
+        options: [
+          "Because the label was unclear, we rewrote it before posting.",
+          "Because the label unclear, we rewrote it before posting.",
+          "Because the label was unclear, so we rewrote it before posting.",
+          "Because label was unclear we were rewrite it."
+        ],
+        answer: 0,
+        explain: "Use one correct cause connector and complete verb forms."
+      },
+      {
+        scene: "Sequence Draft 3",
+        prompt: "Select the line that links contrast correctly.",
+        options: [
+          "We prepared carefully, but the first draft still had errors.",
+          "We prepared carefully, but and the first draft still had errors.",
+          "We prepared carefully, however but the first draft had errors.",
+          "We prepared carefully, but the first draft has errors yesterday."
+        ],
+        answer: 0,
+        explain: "Contrast should use one connector in a clear structure."
+      },
+      {
+        scene: "Sequence Draft 4",
+        prompt: "Choose the best before-after sentence.",
+        options: [
+          "Before we print the poster, we checked each source line.",
+          "Before we printed the poster, we checked each source line.",
+          "Before we printed the poster, we check each source line yesterday.",
+          "Before printed poster, checked sources."
+        ],
+        answer: 1,
+        explain: "Both actions were completed in past context."
+      },
+      {
+        scene: "Sequence Draft 5",
+        prompt: "Which line gives the clearest final step?",
+        options: [
+          "Finally, we submitted the corrected report.",
+          "Finally, we submit the corrected report yesterday.",
+          "Finally, we were submitted the corrected report.",
+          "Finally, submitted corrected report."
+        ],
+        answer: 0,
+        explain: "Final step in a past sequence should be simple past."
+      },
+      {
+        scene: "Sequence Draft 6",
+        prompt: "Pick the sentence with strongest transition logic.",
+        options: [
+          "We checked the chart; therefore, we caught the mismatch early.",
+          "We checked the chart; therefore because we caught the mismatch early.",
+          "We checked the chart; so therefore caught mismatch.",
+          "We checked the chart; therefore, we catch the mismatch early yesterday."
+        ],
+        answer: 0,
+        explain: "One precise transition makes reasoning clear."
+      }
+    ],
+    "evidence-sort-board": [
+      {
+        scene: "Evidence Card A",
+        prompt: "Choose the strongest evidence sentence.",
+        options: [
+          "The timestamp showed the update happened at 09:12.",
+          "The timestamp show the update happened at 09:12.",
+          "The timestamp was showing the update happened at 09:12 every day.",
+          "The timestamp happened the update at 09:12."
+        ],
+        answer: 0,
+        explain: "Clear subject-verb match keeps evidence statements precise."
+      },
+      {
+        scene: "Evidence Card B",
+        prompt: "Pick the line with clear reference.",
+        options: [
+          "Selin shared the note with Rana after Selin verified it.",
+          "Selin shared the note with Rana after she verified it.",
+          "Selin shared the note with Rana after it verified it.",
+          "Selin shared note with Rana after she were verify it."
+        ],
+        answer: 0,
+        explain: "Explicit naming avoids ambiguity in evidence logs."
+      },
+      {
+        scene: "Evidence Card C",
+        prompt: "Select the best question evidence line.",
+        options: [
+          "Did the team archive the file before lunch?",
+          "Did the team archived the file before lunch?",
+          "Does the team archived the file before lunch?",
+          "Team did archive the file before lunch?"
+        ],
+        answer: 0,
+        explain: "Question evidence should follow the did + base pattern."
+      },
+      {
+        scene: "Evidence Card D",
+        prompt: "Choose the sentence with valid cause/result.",
+        options: [
+          "The microphone failed, so the recording stopped.",
+          "The microphone failed, because so the recording stopped.",
+          "The microphone failed, and because recording stopped.",
+          "The microphone failed, so stopped recording be."
+        ],
+        answer: 0,
+        explain: "A single correct connector keeps logic clean."
+      },
+      {
+        scene: "Evidence Card E",
+        prompt: "Pick the strongest present evidence statement.",
+        options: [
+          "The system is currently syncing the backup files.",
+          "The system currently sync the backup files.",
+          "The system currently synced the backup files.",
+          "The system are currently syncing the backup files."
+        ],
+        answer: 0,
+        explain: "Currently aligns with present continuous."
+      },
+      {
+        scene: "Evidence Card F",
+        prompt: "Select the line with accurate be-verb agreement.",
+        options: [
+          "The results is in the folder.",
+          "The results are in the folder.",
+          "The results am in the folder.",
+          "The results was in the folder now."
+        ],
+        answer: 1,
+        explain: "Plural results takes are."
+      }
+    ]
+  };
+
+  var packVariantBanks = {
+    "evidence-sort-board": {
+      pack04: [
+        {
+          scene: "Connector Evidence 1",
+          prompt: "Choose the line that links reason and result clearly.",
+          options: [
+            "The sign was unclear, so students asked for help.",
+            "The sign was unclear, because so students asked for help.",
+            "The sign was unclear, and because students asked for help.",
+            "The sign unclear, so asked for help students."
+          ],
+          answer: 0,
+          explain: "Use one logical connector for a clean evidence chain."
+        },
+        {
+          scene: "Connector Evidence 2",
+          prompt: "Pick the strongest contrast sentence.",
+          options: [
+            "We prepared carefully, but the first attempt failed.",
+            "We prepared carefully, but and the first attempt failed.",
+            "We prepared carefully, however but the first attempt failed.",
+            "We prepared carefully, but the first attempt fail yesterday."
+          ],
+          answer: 0,
+          explain: "Contrast should use one connector with correct verbs."
+        },
+        {
+          scene: "Connector Evidence 3",
+          prompt: "Select the clearest purpose sentence.",
+          options: [
+            "We highlighted key words to make directions clearer.",
+            "We highlighted key words for make directions clearer.",
+            "We highlighted key words to making directions clearer.",
+            "We highlighted key words because to clearer directions."
+          ],
+          answer: 0,
+          explain: "To + base verb expresses purpose clearly."
+        }
+      ],
+      pack05: [
+        {
+          scene: "Reference Evidence 1",
+          prompt: "Choose the sentence with clear pronoun reference.",
+          options: [
+            "Aylin gave Melis the file after Aylin checked it.",
+            "Aylin gave Melis the file after she checked it.",
+            "Aylin gave Melis the file after it checked it.",
+            "Aylin gave Melis file after she were checking it."
+          ],
+          answer: 0,
+          explain: "Repeating the noun prevents pronoun ambiguity."
+        },
+        {
+          scene: "Reference Evidence 2",
+          prompt: "Pick the strongest rewrite for clarity.",
+          options: [
+            "The science club submitted the report, and the club signed it.",
+            "The science club submitted the report, and it signed it.",
+            "The science club submitted report, and signed it.",
+            "The science club submitted the report and they was sign it."
+          ],
+          answer: 0,
+          explain: "Clear references avoid confusion in evidence logs."
+        },
+        {
+          scene: "Reference Evidence 3",
+          prompt: "Select the option with no unclear pronoun.",
+          options: [
+            "Mina called Ece after Mina reviewed the notes.",
+            "Mina called Ece after she reviewed the notes.",
+            "Mina called Ece after it reviewed the notes.",
+            "Mina called Ece after she were reviewing the notes."
+          ],
+          answer: 0,
+          explain: "Explicit subject naming keeps reference accurate."
+        }
+      ],
+      pack06: [
+        {
+          scene: "Question Evidence 1",
+          prompt: "Choose the correct yes-no question.",
+          options: [
+            "Did the class finish the draft before noon?",
+            "Did the class finished the draft before noon?",
+            "Does the class finished the draft before noon?",
+            "Class did finish the draft before noon?"
+          ],
+          answer: 0,
+          explain: "Did + base verb is required."
+        },
+        {
+          scene: "Question Evidence 2",
+          prompt: "Pick the strongest Wh-question.",
+          options: [
+            "Where did the team save the final file?",
+            "Where did the team saved the final file?",
+            "Where the team did save the final file?",
+            "Where did saved the team final file?"
+          ],
+          answer: 0,
+          explain: "Wh + did + subject + base verb is the target order."
+        },
+        {
+          scene: "Question Evidence 3",
+          prompt: "Select the best present question.",
+          options: [
+            "Does the monitor show the update status?",
+            "Does the monitor shows the update status?",
+            "Do the monitor show the update status?",
+            "Monitor does show the update status?"
+          ],
+          answer: 0,
+          explain: "Singular subject takes does + base verb."
+        }
+      ]
+    }
+  };
+
+  function cloneRound(round) {
+    return {
+      scene: round.scene,
+      prompt: round.prompt,
+      options: round.options.slice(),
+      answer: round.answer,
+      explain: round.explain
+    };
+  }
 
   function shuffle(list) {
     var copy = list.slice();
@@ -232,6 +1218,32 @@
       copy[j] = tmp;
     }
     return copy;
+  }
+
+  function cloneRounds(list) {
+    return list.map(cloneRound);
+  }
+
+  function resolveRoundBank(key, packId) {
+    var variant = packVariantBanks[key];
+    if (variant && variant[packId]) return variant[packId];
+    return roundBanks[key] || fallbackRounds;
+  }
+
+  function buildRounds(bank, desiredCount) {
+    var source = (bank && bank.length) ? bank : fallbackRounds;
+    var target = Math.max(1, Math.min(20, desiredCount));
+    if (source.length >= target) {
+      return shuffle(cloneRounds(source)).slice(0, target);
+    }
+    var result = [];
+    while (result.length < target) {
+      var chunk = shuffle(cloneRounds(source));
+      for (var i = 0; i < chunk.length && result.length < target; i++) {
+        result.push(chunk[i]);
+      }
+    }
+    return result;
   }
 
   function text(id, value) {
@@ -257,7 +1269,7 @@
   text("howToText", cfg.howTo + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
   text("hudTimer", timerOn ? "--" : "Off");
 
-  var rounds = shuffle(genericRounds).slice(0, Math.min(count, genericRounds.length));
+  var rounds = buildRounds(resolveRoundBank(gameKey, pack), count);
   var idx = 0;
   var correct = 0;
   var streak = 0;
@@ -357,7 +1369,7 @@
     replayBtn.addEventListener("click", function () {
       var report = document.getElementById("reportOverlay");
       if (report) report.classList.remove("show");
-      rounds = shuffle(genericRounds).slice(0, Math.min(count, genericRounds.length));
+      rounds = buildRounds(resolveRoundBank(gameKey, pack), count);
       idx = 0;
       correct = 0;
       streak = 0;
