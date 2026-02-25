@@ -64,9 +64,17 @@
     });
   }
 
+  function loadAnimations() {
+    if (document.querySelector('script[src="gs-animations.js"]')) return;
+    var s = document.createElement('script');
+    s.src = 'gs-animations.js';
+    document.body.appendChild(s);
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
+    document.addEventListener('DOMContentLoaded', function(){ run(); loadAnimations(); });
   } else {
     run();
+    loadAnimations();
   }
 })();
