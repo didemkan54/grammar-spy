@@ -303,7 +303,7 @@
           "Because the evidence were weak, we tested a second explanation."
         ],
         answer: 0,
-        explain: "Cause-and-result must be grammatical and time-consistent."
+        explain: "Cause/result logic must keep tense and clause structure consistent."
       },
       {
         scene: "Story Step 3",
@@ -315,7 +315,7 @@
           "The class reads quietly when the speaker failed yesterday."
         ],
         answer: 1,
-        explain: "Ongoing background plus interrupting event is most precise."
+        explain: "Past continuous background plus past simple interrupting verb gives correct timeline logic."
       },
       {
         scene: "Story Step 4",
@@ -439,7 +439,7 @@
           "Students are confused because the note was unclear yesterday."
         ],
         answer: 0,
-        explain: "Good rewrites improve grammar and preserve meaning."
+        explain: "A strong rewrite preserves meaning while improving tense and clause grammar."
       },
       {
         scene: "Original: She give me the paper after she edit it.",
@@ -647,7 +647,7 @@
           "The team currently prepare the final slide."
         ],
         answer: 1,
-        explain: "Currently usually signals an in-progress action."
+        explain: "Currently signals present continuous verb structure for in-progress action."
       }
     ],
     "present-case-interview": [
@@ -735,7 +735,7 @@
           "I be ready for the mission."
         ],
         answer: 0,
-        explain: "I pairs with am."
+        explain: "Subject I takes the present be-verb form am."
       },
       {
         scene: "Team Check",
@@ -931,7 +931,7 @@
           "I be sure this is the right code."
         ],
         answer: 1,
-        explain: "I always pairs with am."
+        explain: "Subject I always takes the be-verb am in present tense."
       },
       {
         scene: "Interview F",
@@ -1017,7 +1017,7 @@
           "We checked the chart; therefore, we catch the mismatch early yesterday."
         ],
         answer: 0,
-        explain: "One precise transition makes reasoning clear."
+        explain: "One precise connector keeps clause logic and sequence reasoning clear."
       }
     ],
     "evidence-sort-board": [
@@ -1043,7 +1043,7 @@
           "Selin shared note with Rana after she were verify it."
         ],
         answer: 0,
-        explain: "Explicit naming avoids ambiguity in evidence logs."
+        explain: "Explicit noun naming avoids pronoun-reference ambiguity in evidence logs."
       },
       {
         scene: "Evidence Card C",
@@ -1185,7 +1185,7 @@
             "I be ready for the mission."
           ],
           answer: 1,
-          explain: "I always pairs with am."
+          explain: "Subject I always takes the be-verb am in present tense."
         },
         {
           scene: "Agreement Dialogue 2",
@@ -1273,7 +1273,7 @@
             "Mina told Defne she were presenting first."
           ],
           answer: 0,
-          explain: "Explicit naming keeps meaning precise."
+          explain: "Explicit noun naming keeps pronoun reference and meaning precise."
         },
         {
           scene: "Reference Dialogue 3",
@@ -1415,7 +1415,7 @@
             "I be ready for the final check."
           ],
           answer: 0,
-          explain: "I pairs with am."
+          explain: "Subject I takes the present be-verb form am."
         },
         {
           scene: "Agreement Rewrite 2",
@@ -1465,7 +1465,7 @@
             "We practiced all morning, but first try fail."
           ],
           answer: 0,
-          explain: "Contrast should use one transition signal."
+          explain: "Contrast clauses should use one transition connector for clean logic."
         },
         {
           scene: "Connector Rewrite 3",
@@ -2028,11 +2028,13 @@
   var combo = 1;
   var hintsLeft = 1;
   var skipsLeft = 1;
-  var shotClock = 12;
+  var shotMax = difficulty === "rookie" ? 24 : difficulty === "field" ? 20 : 16;
+  var missionSecondsPerRound = difficulty === "rookie" ? 36 : difficulty === "field" ? 30 : 24;
+  var shotClock = shotMax;
   var shotTimer = null;
   var currentRoundState = {};
   var awaitingNext = false;
-  var sec = timerOn ? rounds.length * 9 : null;
+  var sec = timerOn ? rounds.length * missionSecondsPerRound : null;
   var timer = null;
 
   var optionsEl = document.getElementById("options");
@@ -2047,7 +2049,7 @@
     text("hudShot", timerOn ? Math.max(0, shotClock) + "s" : "--");
     var progress = document.getElementById("actionProgressFill");
     if (progress) {
-      var pct = timerOn ? Math.max(0, Math.min(100, Math.round((shotClock / 12) * 100))) : 100;
+      var pct = timerOn ? Math.max(0, Math.min(100, Math.round((shotClock / shotMax) * 100))) : 100;
       progress.style.width = pct + "%";
     }
     var hintBtn = document.getElementById("btnHint");
@@ -2107,11 +2109,11 @@
 
   function startShotClock(round) {
     if (!timerOn) {
-      shotClock = 12;
+      shotClock = shotMax;
       return;
     }
     if (shotTimer) clearInterval(shotTimer);
-    shotClock = 12;
+    shotClock = shotMax;
     updateHud();
     shotTimer = setInterval(function () {
       if (locked) return;
@@ -2233,10 +2235,11 @@
       btn.innerHTML = "<b>Option " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
+        var correctText = round.options[round.answer];
         finishRound(
           item.idx === round.answer,
           "Strong choice secured. " + round.explain,
-          "Weaker option selected. " + round.explain,
+          "Weaker option selected. Correct line: \"" + correctText + "\". " + round.explain,
           btn
         );
       });
@@ -2545,7 +2548,7 @@
         : "Secure: " + round.explain,
       activeMode === "smash"
         ? "That line is already correct. Smash an error line instead. " + round.explain
-        : "Needs repair: " + round.explain,
+        : "Needs repair: correct line is \"" + round.options[round.answer] + "\". " + round.explain,
       btn
     );
   }
@@ -2687,10 +2690,10 @@
       combo = 1;
       hintsLeft = 1;
       skipsLeft = 1;
-      shotClock = 12;
+      shotClock = shotMax;
       awaitingNext = false;
       setNextVisibility(false);
-      sec = timerOn ? rounds.length * 9 : null;
+      sec = timerOn ? rounds.length * missionSecondsPerRound : null;
       showRound();
       startTimer();
     });

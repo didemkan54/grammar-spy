@@ -232,9 +232,10 @@
     const repStrong = document.getElementById('repStrong');
     const repWeak = document.getElementById('repWeak');
 
+    const secondsPerRound = difficulty === 'rookie' ? 36 : (difficulty === 'field' ? 30 : 24);
     let rounds = [];
     let idx = 0, correct = 0, streak = 0, locked = false;
-    let sec = timerOn ? count * 9 : null;
+    let sec = timerOn ? count * secondsPerRound : null;
     let timer = null;
     const hits = { completed:0, timeline:0, parallel:0, agreement:0 };
 
@@ -242,7 +243,7 @@
       rounds = [...BANK].sort(() => Math.random() - 0.5).slice(0, Math.min(count, BANK.length));
       idx = 0; correct = 0; streak = 0; locked = false;
       Object.keys(hits).forEach(k => hits[k] = 0);
-      sec = timerOn ? rounds.length * 9 : null;
+      sec = timerOn ? rounds.length * secondsPerRound : null;
       if (!timerOn) hudTimer.textContent = 'Off';
     }
 
