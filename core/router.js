@@ -43,12 +43,26 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
           ${langBtns}
         </span>
       </span>
-      <span style="display:inline-flex;gap:6px">
+      <span id="gsAuthButtons" style="display:inline-flex;gap:6px">
         <a href="auth.html?mode=create" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">Create account</a>
         <a href="auth.html?mode=signin" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign In</a>
       </span>
     </nav>
   `;
+
+  try {
+    const session = JSON.parse(localStorage.getItem('gs_auth_session'));
+    if (session && session.name) {
+      const authEl = targetEl.querySelector('#gsAuthButtons');
+      if (authEl) {
+        const name = session.name.length > 15 ? session.name.slice(0, 15) + '…' : session.name;
+        authEl.innerHTML = `
+          <a href="profile.html" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">${name}</a>
+          <a href="#" onclick="localStorage.removeItem('gs_auth_session');localStorage.removeItem('gs_account_v1');location.reload();return false;" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign Out</a>
+        `;
+      }
+    }
+  } catch(e) {}
 }
 
 export function applyReducedMotion(enabled) {
