@@ -1612,6 +1612,30 @@
         ],
         answer: 1,
         explain: "Present is matches the negative tag isn't he."
+      },
+      {
+        scene: "Contraction Check",
+        prompt: "Choose the correct be-verb contraction.",
+        options: [
+          "They're ready for the next drill.",
+          "They's ready for the next drill.",
+          "They'am ready for the next drill.",
+          "They is ready for the next drill."
+        ],
+        answer: 0,
+        explain: "Plural they contracts with are to form they're."
+      },
+      {
+        scene: "Mixed Subject",
+        prompt: "Pick the sentence with correct be-verb agreement for a mixed subject.",
+        options: [
+          "Neither the teacher nor the students is in the lab.",
+          "Neither the teacher nor the students are in the lab.",
+          "Neither the teacher nor the students am in the lab.",
+          "Neither the teacher nor the students was in the lab now."
+        ],
+        answer: 1,
+        explain: "With neither…nor the verb agrees with the nearer plural subject students, so use are."
       }
     ],
     "be-verb-agreement-sweep": [
