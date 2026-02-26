@@ -4253,50 +4253,107 @@
     }
   }
 
-  function modeHelperText(mode) {
-    if (mode === "spotlight") return "4 options appear one at a time. Read carefully and click the ONE correct sentence.";
-    if (mode === "timeline") return "Drag each sentence to BEFORE (completed) or DURING (ongoing) on the timeline.";
-    if (mode === "builder") return "Drag the word chips into the correct order to build the sentence.";
-    if (mode === "dialogue") return "Read the conversation and pick the reply that fills the blank speech bubble.";
-    if (mode === "rewrite") return "The original is struck through. Compare the two rewrites and pick the better one.";
-    if (mode === "signal") return "A signal word is shown. Decide: does the sentence MATCH the signal?";
-    if (mode === "evidence") return "Mark each evidence card as Strong (correct) or Weak (has errors), then submit.";
-    if (mode === "interrogation") return "Read the witness statement and pick the report that captures it with correct grammar.";
-    if (mode === "smash") return "3 sentences are correct. Find the ONE with the error.";
-    if (mode === "binary") return "A signal word is highlighted. Decide: does the verb tense MATCH or MISMATCH?";
-    if (mode === "classify") return "Drag each sentence to BEFORE (completed) or DURING (ongoing) on the timeline.";
-    if (mode === "repair") return "One message in the chat has a grammar error. Pick the corrected reply.";
-    if (mode === "duel") return "The original has a weakness underlined. Pick the stronger rewrite to fill the meter.";
-    if (mode === "sequence") return "A paragraph has a blank. Pick the sentence that fills the gap.";
-    if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
-    if (mode === "sweep") return "Pin each evidence card as VERIFIED (correct) or FLAGGED (error), then submit.";
-    if (mode === "forge") return "Build the correct sentence by clicking word tiles in order. Watch out for distractor words!";
-    if (mode === "detect") return "A sentence has an error. Click the specific word that is wrong.";
-    if (mode === "order") return "Arrange the sentences in the correct sequence: best answer first.";
-    return "Mode rule: choose the single strongest line.";
+  function pickRoundVariant(lines, roundIndex, fallback) {
+    var list = Array.isArray(lines) ? lines.filter(Boolean) : [];
+    if (!list.length) return fallback || "";
+    var safeIndex = Math.max(0, Number(roundIndex) || 0);
+    return list[safeIndex % list.length];
   }
 
-  function modePrompt(mode) {
-    if (mode === "spotlight") return "Read each option carefully, then click the correct sentence.";
-    if (mode === "timeline") return "Drag each sentence to the correct zone on the timeline.";
-    if (mode === "builder") return "Arrange the word chips to build the correct sentence.";
-    if (mode === "dialogue") return "Read the conversation and pick the reply for the blank bubble.";
-    if (mode === "rewrite") return "The original is struck through. Pick the better rewrite.";
-    if (mode === "signal") return "Does this sentence match the signal? \u2713 Matches or \u2717 Doesn\u2019t Match";
-    if (mode === "evidence") return "Mark each card as Strong or Weak evidence, then submit.";
-    if (mode === "interrogation") return "Read the witness statement. Pick the accurate report.";
-    if (mode === "smash") return "3 sentences are correct. Find the one with the error.";
-    if (mode === "binary") return "Does the verb tense match the signal word? \u2713 MATCH or \u2717 MISMATCH";
-    if (mode === "classify") return "Drag each sentence to the correct zone on the timeline.";
-    if (mode === "repair") return "One message has an error. Pick the corrected reply.";
-    if (mode === "duel") return "Compare the two rewrites. Pick the stronger one.";
-    if (mode === "sequence") return "Read the paragraph and pick the sentence that fills the blank.";
-    if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
-    if (mode === "sweep") return "Mark each card VERIFIED or FLAGGED, then submit the board.";
-    if (mode === "forge") return "Click word tiles to build the correct sentence, then submit.";
-    if (mode === "detect") return "Read the sentence and click the word that contains the error.";
-    if (mode === "order") return "Drag sentences into the best order, then submit.";
-    return "Choose the single strongest line.";
+  function modeHelperText(mode) {
+    if (mode === "spotlight") return "Tip: scan for time markers first, then verify verb form.";
+    if (mode === "timeline") return "Tip: completed action goes BEFORE; ongoing background goes DURING.";
+    if (mode === "builder") return "Tip: lock subject + verb first, then place details.";
+    if (mode === "dialogue") return "Tip: choose the reply that keeps both meaning and tense.";
+    if (mode === "rewrite") return "Tip: stronger rewrites improve grammar without changing meaning.";
+    if (mode === "signal") return "Tip: signal words should match tense, not just sound familiar.";
+    if (mode === "evidence") return "Tip: verify every line before trusting your final verdict.";
+    if (mode === "interrogation") return "Tip: match the report to the original statement precisely.";
+    if (mode === "smash") return "Tip: compare all options before committing to one word-level error.";
+    if (mode === "binary") return "Tip: focus on the highlighted signal before choosing MATCH/MISMATCH.";
+    if (mode === "classify") return "Tip: ask whether the action was finished or still in progress.";
+    if (mode === "repair") return "Tip: the best fix sounds natural and stays true to context.";
+    if (mode === "duel") return "Tip: pick the rewrite that is both correct and clear.";
+    if (mode === "sequence") return "Tip: test transitions to find the line that completes the flow.";
+    if (mode === "eliminate") return "Tip: remove weak options one by one, then confirm your keeper.";
+    if (mode === "sweep") return "Tip: tag each card quickly, then double-check before submit.";
+    if (mode === "forge") return "Tip: ignore distractors and build around the main verb phrase.";
+    if (mode === "detect") return "Tip: one word causes the break - find the exact mismatch.";
+    if (mode === "order") return "Tip: anchor the opening line first, then arrange the rest.";
+    return "Tip: read for meaning first, then grammar precision.";
+  }
+
+  function modePrompt(mode, roundIndex) {
+    if (mode === "spotlight") return pickRoundVariant([
+      "Pick the one line that is fully correct.",
+      "Which option keeps both grammar and meaning strongest?",
+      "Choose the sentence that best fits this scene."
+    ], roundIndex, "Pick the strongest line.");
+    if (mode === "timeline" || mode === "classify") return pickRoundVariant([
+      "Drag each sentence to BEFORE or DURING on the timeline.",
+      "Sort each line: completed event or ongoing background?",
+      "Place every sentence in its correct timeline zone."
+    ], roundIndex, "Sort each sentence on the timeline.");
+    if (mode === "builder") return pickRoundVariant([
+      "Arrange the word chips to build the target sentence.",
+      "Build the sentence in correct grammatical order.",
+      "Order the chips so the sentence reads correctly."
+    ], roundIndex, "Build the sentence with the chips.");
+    if (mode === "dialogue") return pickRoundVariant([
+      "Pick the reply that fits the conversation.",
+      "Choose the response that keeps the dialogue natural and correct.",
+      "Select the line that best completes the chat."
+    ], roundIndex, "Pick the best reply.");
+    if (mode === "rewrite" || mode === "duel") return pickRoundVariant([
+      "Compare both rewrites and choose the stronger one.",
+      "Pick the rewrite with clearer and correct grammar.",
+      "Choose the better revision for this sentence."
+    ], roundIndex, "Pick the stronger rewrite.");
+    if (mode === "signal" || mode === "binary") return pickRoundVariant([
+      "Does this sentence match the signal word? MATCH or MISMATCH.",
+      "Use the signal to judge the tense fit.",
+      "Check signal vs tense: does it align?"
+    ], roundIndex, "Decide whether the sentence matches the signal.");
+    if (mode === "evidence" || mode === "sweep") return pickRoundVariant([
+      "Label each card, then submit your board verdict.",
+      "Mark every line as strong or weak evidence, then submit.",
+      "Classify all cards before final board check."
+    ], roundIndex, "Mark each card, then submit.");
+    if (mode === "interrogation") return pickRoundVariant([
+      "Pick the report that accurately captures the statement.",
+      "Choose the report line that preserves the original meaning.",
+      "Select the most accurate grammar report."
+    ], roundIndex, "Pick the accurate report.");
+    if (mode === "smash" || mode === "detect") return pickRoundVariant([
+      "Find the word that causes the grammar error.",
+      "Identify the exact word that needs correction.",
+      "Tap the one word that breaks the sentence."
+    ], roundIndex, "Find the grammar error word.");
+    if (mode === "repair") return pickRoundVariant([
+      "Choose the corrected message for this chat line.",
+      "Pick the reply that repairs the grammar issue.",
+      "Select the clean fix that fits the conversation."
+    ], roundIndex, "Pick the corrected line.");
+    if (mode === "sequence" || mode === "order") return pickRoundVariant([
+      "Arrange the lines so the sequence makes sense.",
+      "Order the sentences from strongest start to finish.",
+      "Build the best flow by reordering the lines."
+    ], roundIndex, "Order the lines for best flow.");
+    if (mode === "eliminate") return pickRoundVariant([
+      "Eliminate weak lines and keep the strongest one.",
+      "Remove three weak options, then lock your best line.",
+      "Filter out weak lines to reveal the best answer."
+    ], roundIndex, "Eliminate weak options.");
+    if (mode === "forge") return pickRoundVariant([
+      "Click tiles in order to forge the correct sentence.",
+      "Build the sentence using only the tiles that fit.",
+      "Assemble the line and avoid distractor tiles."
+    ], roundIndex, "Forge the correct sentence.");
+    return pickRoundVariant([
+      "Choose the strongest line for this scene.",
+      "Pick the best grammar choice.",
+      "Select the most accurate option."
+    ], roundIndex, "Choose the strongest line.");
   }
 
   function modeHowTo(mode, fallback) {
@@ -4320,6 +4377,32 @@
     if (mode === "detect") return "A wrong sentence is displayed word by word. Click the word that contains the error to reveal the correct version.";
     if (mode === "order") return "Four sentences are shuffled. Click to select and move them into the best order, then submit.";
     return fallback || "Choose the strongest line.";
+  }
+
+  function modeScenarioPrompt(mode, round, roundIndex) {
+    if (round && typeof round.prompt === "string" && round.prompt.trim()) {
+      return round.prompt.trim();
+    }
+    return modePrompt(mode, roundIndex);
+  }
+
+  function modeMicroTip(mode, roundIndex) {
+    if (mode === "spotlight") return pickRoundVariant([
+      "Coach tip: read all options before your first click.",
+      "Coach tip: compare verb forms before picking.",
+      "Coach tip: one option is fully clean."
+    ], roundIndex, "Coach tip: check tense + meaning.");
+    if (mode === "detect") return pickRoundVariant([
+      "Coach tip: click only one word - make it count.",
+      "Coach tip: look for tense or agreement mismatch.",
+      "Coach tip: compare subject and verb first."
+    ], roundIndex, "Coach tip: find the exact mismatch.");
+    if (mode === "order") return pickRoundVariant([
+      "Coach tip: place the opening line first, then reorder.",
+      "Coach tip: move one sentence at a time and re-read.",
+      "Coach tip: transitions reveal the best sequence."
+    ], roundIndex, "Coach tip: test sequence coherence.");
+    return modeHelperText(mode);
   }
 
   function buildRounds(bank, desiredCount) {
@@ -4362,7 +4445,7 @@
     ? "Projector mode! The teacher controls the pace. Discuss each question as a class, vote, then reveal the answer."
     : modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode));
   text("howToTitle", "How to play: " + cfg.title);
-  text("actionTip", modePrompt(activeMode));
+  text("actionTip", modePrompt(activeMode, 0));
   text("hudTimer", timerOn ? "--" : "Off");
   var sceneLabelEl = document.querySelector(".scene .label");
   if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
@@ -5100,7 +5183,7 @@
 
     var instruction = document.createElement("p");
     instruction.className = "spotlight-instruction";
-    instruction.textContent = "Read each option carefully, then click the correct sentence.";
+    instruction.textContent = modeMicroTip("spotlight", idx);
     wrap.appendChild(instruction);
 
     var items = shuffle(round.options.map(function (lineText, optionIdx) {
@@ -5713,7 +5796,7 @@
 
     var instruction = document.createElement("p");
     instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
-    instruction.textContent = "Click the word that contains the error:";
+    instruction.textContent = modeMicroTip("detect", idx);
     wrap.appendChild(instruction);
 
     var sentenceDiv = document.createElement("div");
@@ -5784,7 +5867,7 @@
 
     var instruction = document.createElement("p");
     instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
-    instruction.textContent = "Arrange the sentences in the best order (click to select, click a position to move):";
+    instruction.textContent = modeMicroTip("order", idx);
     wrap.appendChild(instruction);
 
     var list = document.createElement("div");
@@ -5924,8 +6007,9 @@
     teamB.locked = false;
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
+    text("actionTip", modePrompt(activeMode, idx));
     text("scene", round.scene);
-    text("prompt", modePrompt(activeMode));
+    text("prompt", modeScenarioPrompt(activeMode, round, idx));
 
     optionsEl.innerHTML = "";
     var split = document.createElement("div");
@@ -5958,6 +6042,7 @@
     wcRevealed = false;
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
+    text("actionTip", modePrompt(activeMode, idx));
     var voteKey = wcVotedKey + idx;
     var alreadyVoted = false;
     try { alreadyVoted = !!sessionStorage.getItem(voteKey); } catch (e) {}
@@ -5973,7 +6058,7 @@
 
     var promptEl = document.createElement("div");
     promptEl.className = "wc-prompt";
-    promptEl.textContent = round.prompt || modePrompt(activeMode);
+    promptEl.textContent = modeScenarioPrompt(activeMode, round, idx);
     wrap.appendChild(promptEl);
 
     var optsGrid = document.createElement("div");
@@ -6115,8 +6200,9 @@
     text("feedback", "");
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
+    text("actionTip", modePrompt(activeMode, idx));
     text("scene", round.scene);
-    text("prompt", modePrompt(activeMode));
+    text("prompt", modeScenarioPrompt(activeMode, round, idx));
     if (activeMode === "spotlight") {
       showSpotlightOptions(round);
     } else if (activeMode === "timeline") {
