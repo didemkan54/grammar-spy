@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — Clause Linker</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg" />
+  <link rel="stylesheet" href="../game-ui.css" />
+  <style>
+    /* Scene context */
+    .scene-context{background:linear-gradient(135deg,var(--teal-light),#f0f8f9);border:1px solid rgba(31,95,99,.15);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+    .scene-context .scene-icon{font-size:24px;margin-right:10px}
+    .scene-context .scene-text{font-size:14px;color:var(--slate);line-height:1.5}
+    .scene-context .scene-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:4px}
+
+    /* Two-sentence display */
+    .sentence-pair{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:14px 0}
+    .sentence-card{background:#fff;border:2px solid var(--line);border-radius:12px;padding:16px;font-size:16px;font-weight:600;color:var(--mid);line-height:1.5;transition:border-color .2s,box-shadow .2s}
+    .sentence-card .modified-noun{background:var(--teal-light);color:var(--teal);font-weight:700;padding:2px 6px;border-radius:6px;display:inline;transition:background .3s,box-shadow .3s}
+    .sentence-card .modified-noun.zoomed{background:var(--teal);color:#fff;box-shadow:0 0 14px rgba(31,95,99,.35)}
+    .link-arrow{font-size:28px;color:var(--gold);font-weight:800}
+
+    /* Pronoun choice buttons */
+    .pronoun-choices{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+    .pronoun-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 28px;background:#fff;border:2px solid var(--line);border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s,transform .12s,box-shadow .15s;color:var(--mid)}
+    .pronoun-btn:hover{border-color:var(--teal);background:var(--teal-light);transform:translateY(-2px);box-shadow:0 3px 10px rgba(31,95,99,.12)}
+    .pronoun-btn.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+    .pronoun-btn.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+    .pronoun-btn:disabled{opacity:.5;cursor:default;transform:none}
+
+    /* Combined sentence with blank */
+    .combined-sentence{font-size:18px;line-height:2;color:var(--mid);font-weight:600;padding:14px 0;text-align:center}
+    .blank-slot{display:inline-flex;min-width:80px;padding:4px 12px;border-bottom:3px solid var(--teal);margin:0 4px;font-weight:700;color:var(--teal);cursor:pointer;transition:border-color .15s;justify-content:center;border-radius:4px}
+    .blank-slot.filled{border-color:var(--gold);color:var(--mid);background:#f8fafc}
+    .blank-slot.correct-fill{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+    .blank-slot.wrong-fill{border-color:var(--bad);color:var(--bad);background:var(--bad-bg)}
+
+    /* Drag zones for Field/Director */
+    .drag-zone{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;min-height:48px;padding:10px;background:#f8fafc;border:2px dashed var(--line);border-radius:12px}
+    .drag-zone.active{border-color:var(--teal);background:var(--teal-light)}
+    .word-tile{display:inline-flex;align-items:center;padding:8px 16px;background:#fff;border:2px solid var(--line);border-radius:10px;font-size:15px;font-weight:600;cursor:grab;user-select:none;transition:transform .12s,border-color .15s,box-shadow .15s}
+    .word-tile:hover{border-color:var(--teal);box-shadow:0 3px 10px rgba(31,95,99,.15);transform:translateY(-2px)}
+    .word-tile.placed{opacity:.4;cursor:default}
+    .word-tile.correct{border-color:var(--ok);background:var(--ok-bg)}
+    .word-tile.wrong{border-color:var(--bad);background:var(--bad-bg)}
+    .word-tile.pronoun-tile{border-color:var(--gold);background:#fdf6e3;color:var(--gold);font-weight:800}
+
+    /* Clause structure feedback */
+    .clause-structure{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;font-size:14px;line-height:1.7;display:none}
+    .clause-structure .noun-part{color:var(--teal);font-weight:700}
+    .clause-structure .pronoun-part{color:var(--gold);font-weight:700}
+    .clause-structure .clause-part{color:var(--slate);font-style:italic}
+    .clause-structure .arrow{color:var(--mid);margin:0 4px}
+
+    /* Instruction */
+    .game-instruction{text-align:center;font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin:8px 0;padding:8px 14px;background:var(--teal-light);border-radius:8px}
+
+    /* Zoom animation */
+    @keyframes clause-zoom{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+    .zoom-animate{animation:clause-zoom .4s ease}
+
+    @media(max-width:700px){.sentence-pair{grid-template-columns:1fr;gap:8px}.link-arrow{transform:rotate(90deg)}.word-tile{padding:6px 12px;font-size:13px}}
+  </style>
+</head>
+<body>
+<div data-include="header" data-base="../"></div>
+<main class="wrap">
+  <section class="panel">
+    <p class="k" id="packLabel">New Mission · Relative Clauses</p>
+    <h1>Clause Linker</h1>
+    <p class="sub">Two sentences, one connection — use relative pronouns to combine them like a pro.</p>
+    <div class="progress-bar"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+    <div class="hud">
+      <div class="chip"><b>Round</b><span id="hudCase">1/4</span></div>
+      <div class="chip"><b>Accuracy</b><span id="hudAcc">0%</span></div>
+      <div class="chip"><b>Streak</b><span id="hudStreak">0</span></div>
+      <div class="chip"><b>Timer</b><span id="hudTimer">Off</span></div>
+    </div>
+
+    <div id="gameArea">
+      <div class="scene-context" id="sceneCtx">
+        <div class="scene-label" id="sceneLabel">School Event</div>
+        <div><span class="scene-icon" id="sceneIcon">🏫</span><span class="scene-text" id="sceneText"></span></div>
+      </div>
+      <div class="game-instruction" id="instruction"></div>
+      <div id="sentenceArea"></div>
+      <div class="pronoun-choices" id="pronounChoices"></div>
+      <div class="clause-structure" id="clauseStructure"></div>
+    </div>
+    <p class="feedback" id="feedback"></p>
+    <div class="row">
+      <button class="btn" id="endBtn" type="button">End Mission</button>
+      <button class="btn" id="hintBtn" type="button">Hint (2 left)</button>
+      <button class="btn" id="btnSound" type="button">Sound: ON</button>
+      <a class="btn" href="../index.html">Home</a>
+    </div>
+  </section>
+</main>
+
+<!-- Onboarding -->
+<div id="onboardOverlay" class="overlay show" role="dialog" aria-modal="true">
+  <section class="modal" style="max-width:540px">
+    <div class="onboard-difficulty diff-field" id="diffBadge">Field Agent</div>
+    <h2 class="onboard-title">Clause Linker</h2>
+    <p class="onboard-subtitle">Two sentences share a connection. Your mission: find the right relative pronoun to link them into one smooth sentence.</p>
+    <div class="onboard-steps">
+      <div class="onboard-step">
+        <div class="onboard-step-num">1</div>
+        <div class="onboard-step-text"><strong>Read two sentences.</strong> They describe the same noun — a person, thing, or place from a school event.</div>
+      </div>
+      <div class="onboard-step">
+        <div class="onboard-step-num">2</div>
+        <div class="onboard-step-text"><strong>Find the connection.</strong> The modified noun is highlighted. The relative clause expands on it — like zooming in for more detail.</div>
+      </div>
+      <div class="onboard-step">
+        <div class="onboard-step-num">3</div>
+        <div class="onboard-step-text"><strong>Pick or place the pronoun</strong> (who, which, that, where) to link the sentences. "Who" for people, "which/that" for things, "where" for places.</div>
+      </div>
+    </div>
+    <div class="onboard-tip">
+      <span class="onboard-tip-icon">💡</span>
+      <span><strong>Key rule:</strong> "who" = people, "which" = things (non-restrictive), "that" = things (restrictive), "where" = places.</span>
+    </div>
+    <button class="onboard-start" id="startBtn" type="button">Start Mission</button>
+  </section>
+</div>
+
+<!-- Mission Report -->
+<div class="overlay" id="reportOverlay">
+  <section class="modal">
+    <h2 style="margin:0">Mission Report</h2>
+    <p id="reportAcc"></p>
+    <p id="reportScore"></p>
+    <p id="reportRec"></p>
+    <div class="box" id="reportInsight"></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn primary" id="replayBtn" type="button">Play Again</button>
+      <a class="btn" href="../index.html">Home</a>
+    </div>
+  </section>
+</div>
+
+<div data-include="footer" data-base="../"></div>
+<script src="../billing-scaffold.js"></script>
+<script src="../auth-scaffold.js"></script>
+<script src="../layout-loader.js"></script>
+<script src="../app-shell.js"></script>
+<script src="../game-sound.js"></script>
+<script src="../gs-animations.js"></script>
+<script>
+(function(){
+  // ── Item Bank ──
+  var ITEMS = [
+    // Rookie (pick who/which/that/where from 4 buttons)
+    {id:"r1",scene:"Science Fair",icon:"🔬",context:"The science fair is next week and the school is buzzing with excitement.",
+     sentA:"The student won first place.",sentB:"She built a volcano model.",
+     modifiedNoun:"student",nounType:"person",
+     combined:"The student ___ built a volcano model won first place.",
+     answer:"who",options:["who","which","that","where"],
+     explain:"\"Who\" connects to a person (the student). Structure: The student → who → built a volcano model.",
+     level:"rookie",tags:["who_person"]},
+    {id:"r2",scene:"Library Event",icon:"📚",context:"The school library is hosting a reading challenge this month.",
+     sentA:"The book was very popular.",sentB:"It was on the display shelf.",
+     modifiedNoun:"book",nounType:"thing",
+     combined:"The book ___ was on the display shelf was very popular.",
+     answer:"that",options:["who","which","that","where"],
+     explain:"\"That\" connects to a thing (the book) in a restrictive clause. Structure: The book → that → was on the display shelf.",
+     level:"rookie",tags:["that_thing"]},
+    {id:"r3",scene:"Basketball Game",icon:"🏀",context:"The championship basketball game was last Friday.",
+     sentA:"The gym was packed with fans.",sentB:"The game took place there.",
+     modifiedNoun:"gym",nounType:"place",
+     combined:"The gym ___ the game took place was packed with fans.",
+     answer:"where",options:["who","which","that","where"],
+     explain:"\"Where\" refers to a place (the gym). Structure: The gym → where → the game took place.",
+     level:"rookie",tags:["where_place"]},
+    {id:"r4",scene:"Art Show",icon:"🎨",context:"The school art show featured work from every grade.",
+     sentA:"The painting impressed the judges.",sentB:"It used only watercolors.",
+     modifiedNoun:"painting",nounType:"thing",
+     combined:"The painting, ___ used only watercolors, impressed the judges.",
+     answer:"which",options:["who","which","that","where"],
+     explain:"\"Which\" introduces extra info about a thing (the painting) in a non-restrictive clause. Structure: The painting → which → used only watercolors.",
+     level:"rookie",tags:["which_thing"]},
+
+    // Field Agent (drag pronoun into position in combined sentence)
+    {id:"f1",scene:"School Play",icon:"🎭",context:"The drama club is performing Romeo and Juliet this semester.",
+     sentA:"The teacher directed the play.",sentB:"She also teaches English.",
+     modifiedNoun:"teacher",nounType:"person",
+     combinedWords:["The","teacher,","___,","also","teaches","English,","directed","the","play."],
+     blankIdx:2,answer:"who",
+     pronounPool:["who","which","that","where"],
+     explain:"\"Who\" refers to the teacher (a person). The clause \"who also teaches English\" adds detail about her.",
+     level:"field",tags:["who_person"]},
+    {id:"f2",scene:"Club Fair",icon:"🎪",context:"The annual club fair lets students explore new activities.",
+     sentA:"The robotics club won an award.",sentB:"It was started last year.",
+     modifiedNoun:"robotics club",nounType:"thing",
+     combinedWords:["The","robotics","club,","___","was","started","last","year,","won","an","award."],
+     blankIdx:3,answer:"which",
+     pronounPool:["who","which","that","where"],
+     explain:"\"Which\" adds extra information about a thing (the robotics club). Non-restrictive clause with commas.",
+     level:"field",tags:["which_thing"]},
+    {id:"f3",scene:"Field Trip",icon:"🚌",context:"The 8th graders visited a museum downtown.",
+     sentA:"The museum had a dinosaur exhibit.",sentB:"The class visited it.",
+     modifiedNoun:"museum",nounType:"place",
+     combinedWords:["The","museum","___","the","class","visited","had","a","dinosaur","exhibit."],
+     blankIdx:2,answer:"that",
+     pronounPool:["who","which","that","where"],
+     explain:"\"That\" identifies which museum (restrictive clause about a thing). Structure: The museum → that → the class visited.",
+     level:"field",tags:["that_thing"]},
+    {id:"f4",scene:"Talent Show",icon:"🎤",context:"The talent show brought out some amazing performances.",
+     sentA:"The cafeteria was transformed into a stage.",sentB:"The show happened there.",
+     modifiedNoun:"cafeteria",nounType:"place",
+     combinedWords:["The","cafeteria","___","the","show","happened","was","transformed","into","a","stage."],
+     blankIdx:2,answer:"where",
+     pronounPool:["who","which","that","where"],
+     explain:"\"Where\" refers to a place (the cafeteria). Structure: The cafeteria → where → the show happened.",
+     level:"field",tags:["where_place"]},
+
+    // Director (build combined sentence from word tiles)
+    {id:"d1",scene:"Graduation Ceremony",icon:"🎓",context:"The graduation ceremony honored outstanding students.",
+     sentA:"The student gave a speech.",sentB:"She had the highest GPA.",
+     modifiedNoun:"student",nounType:"person",
+     buildWords:["The","student","who","had","the","highest","GPA","gave","a","speech."],
+     correctOrder:"The student who had the highest GPA gave a speech.",
+     answer:"who",
+     explain:"\"Who\" connects to a person (the student). The relative clause identifies which student. Structure: The student → who → had the highest GPA.",
+     level:"director",tags:["who_person"]},
+    {id:"d2",scene:"School Newspaper",icon:"📰",context:"The school newspaper published a story about the new garden.",
+     sentA:"The article was written by Maya.",sentB:"The article won a journalism prize.",
+     modifiedNoun:"article",nounType:"thing",
+     buildWords:["The","article,","which","was","written","by","Maya,","won","a","journalism","prize."],
+     correctOrder:"The article, which was written by Maya, won a journalism prize.",
+     answer:"which",
+     explain:"\"Which\" adds non-restrictive info about a thing (the article). The commas signal extra, non-essential detail.",
+     level:"director",tags:["which_thing"]},
+    {id:"d3",scene:"Sports Day",icon:"⚽",context:"Sports Day activities were spread across the whole campus.",
+     sentA:"The students gathered at the field.",sentB:"The relay races were held there.",
+     modifiedNoun:"field",nounType:"place",
+     buildWords:["The","students","gathered","at","the","field","where","the","relay","races","were","held."],
+     correctOrder:"The students gathered at the field where the relay races were held.",
+     answer:"where",
+     explain:"\"Where\" connects to a place (the field). Structure: the field → where → the relay races were held.",
+     level:"director",tags:["where_place"]},
+    {id:"d4",scene:"Math Competition",icon:"🧮",context:"The regional math competition drew teams from 20 schools.",
+     sentA:"The problem stumped most teams.",sentB:"The problem involved geometry.",
+     modifiedNoun:"problem",nounType:"thing",
+     buildWords:["The","problem","that","involved","geometry","stumped","most","teams."],
+     correctOrder:"The problem that involved geometry stumped most teams.",
+     answer:"that",
+     explain:"\"That\" identifies which problem (restrictive clause about a thing). Structure: The problem → that → involved geometry.",
+     level:"director",tags:["that_thing"]}
+  ];
+
+  // ── State ──
+  var q = new URLSearchParams(location.search);
+  var difficulty = q.get('difficulty') || 'field';
+  var count = Math.max(4, Math.min(12, Number(q.get('count') || 4)));
+  var timerOn = (q.get('timer') || 'off') !== 'off';
+  var rounds = [], idx = 0, correct = 0, streak = 0, score = 0, locked = false, hints = 2;
+
+  // ── DOM ──
+  var hudCase = document.getElementById('hudCase');
+  var hudAcc = document.getElementById('hudAcc');
+  var hudStreak = document.getElementById('hudStreak');
+  var hudTimer = document.getElementById('hudTimer');
+  var progressBar = document.getElementById('progressBar');
+  var feedback = document.getElementById('feedback');
+  var sentenceArea = document.getElementById('sentenceArea');
+  var pronounChoices = document.getElementById('pronounChoices');
+  var clauseStructure = document.getElementById('clauseStructure');
+  var instructionEl = document.getElementById('instruction');
+  var sceneText = document.getElementById('sceneText');
+  var sceneIcon = document.getElementById('sceneIcon');
+  var sceneLabel = document.getElementById('sceneLabel');
+
+  // ── Difficulty badge ──
+  var badge = document.getElementById('diffBadge');
+  if (badge) {
+    badge.className = 'onboard-difficulty diff-' + difficulty;
+    badge.textContent = difficulty === 'rookie' ? 'Rookie' : difficulty === 'director' ? 'Director' : 'Field Agent';
+  }
+
+  // ── Helpers ──
+  function shuffle(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  function buildRounds() {
+    var pool = ITEMS.filter(function(item) { return item.level === difficulty; });
+    if (!pool.length) pool = ITEMS.filter(function(item) { return item.level === 'rookie'; });
+    rounds = shuffle(pool).slice(0, Math.min(count, pool.length));
+  }
+
+  function updateHud() {
+    hudCase.textContent = Math.min(idx + 1, rounds.length) + '/' + rounds.length;
+    hudAcc.textContent = Math.round((correct / Math.max(1, idx)) * 100) + '%';
+    hudStreak.textContent = String(streak);
+    hudTimer.textContent = timerOn ? 'On' : 'Off';
+    progressBar.style.width = Math.round((idx / Math.max(1, rounds.length)) * 100) + '%';
+  }
+
+  function showFeedback(isCorrect, explain) {
+    if (isCorrect) {
+      feedback.innerHTML = '<span class="ok"><b>Correct!</b> ' + explain + '</span>';
+      if (window.GSSound && window.GSSound.correct) window.GSSound.correct();
+    } else {
+      feedback.innerHTML = '<span class="bad"><b>Not quite.</b> ' + explain + '</span>';
+      if (window.GSSound && window.GSSound.wrong) window.GSSound.wrong();
+    }
+  }
+
+  function showClauseStructure(item) {
+    clauseStructure.style.display = 'block';
+    clauseStructure.innerHTML = '<strong>Clause structure:</strong> ' +
+      '<span class="noun-part">' + item.modifiedNoun + '</span>' +
+      '<span class="arrow"> → </span>' +
+      '<span class="pronoun-part">' + item.answer + '</span>' +
+      '<span class="arrow"> → </span>' +
+      '<span class="clause-part">relative clause</span>';
+  }
+
+  function highlightNoun(container, noun) {
+    setTimeout(function() {
+      var nounSpans = container.querySelectorAll('.modified-noun');
+      nounSpans.forEach(function(s) { s.classList.add('zoomed'); });
+    }, 200);
+  }
+
+  // ── Rookie: Show two sentences + pick pronoun ──
+  function renderRookieMode(item) {
+    sentenceArea.innerHTML = '';
+    var pair = document.createElement('div');
+    pair.className = 'sentence-pair';
+
+    var cardA = document.createElement('div');
+    cardA.className = 'sentence-card';
+    cardA.innerHTML = highlightNounInText(item.sentA, item.modifiedNoun);
+    pair.appendChild(cardA);
+
+    var arrow = document.createElement('div');
+    arrow.className = 'link-arrow';
+    arrow.textContent = '🔗';
+    pair.appendChild(arrow);
+
+    var cardB = document.createElement('div');
+    cardB.className = 'sentence-card';
+    cardB.innerHTML = highlightNounInText(item.sentB, item.modifiedNoun);
+    pair.appendChild(cardB);
+
+    sentenceArea.appendChild(pair);
+
+    var combinedDiv = document.createElement('div');
+    combinedDiv.className = 'combined-sentence';
+    var parts = item.combined.split('___');
+    combinedDiv.appendChild(document.createTextNode(parts[0]));
+    var blank = document.createElement('span');
+    blank.className = 'blank-slot';
+    blank.textContent = '___';
+    blank.id = 'rookieBlank';
+    combinedDiv.appendChild(blank);
+    if (parts[1]) combinedDiv.appendChild(document.createTextNode(parts[1]));
+    sentenceArea.appendChild(combinedDiv);
+
+    pronounChoices.innerHTML = '';
+    var labels = 'ABCD';
+    item.options.forEach(function(opt, i) {
+      var btn = document.createElement('button');
+      btn.className = 'pronoun-btn';
+      btn.type = 'button';
+      btn.textContent = opt;
+      btn.setAttribute('data-label', labels[i]);
+      btn.addEventListener('click', function() {
+        if (locked) return;
+        locked = true;
+        idx++;
+        var isCorrect = opt === item.answer;
+        if (isCorrect) { correct++; streak++; score += 100; btn.classList.add('correct'); }
+        else { streak = 0; btn.classList.add('wrong'); pronounChoices.querySelectorAll('.pronoun-btn').forEach(function(b) { if (b.textContent === item.answer) b.classList.add('correct'); }); }
+        blank.textContent = item.answer;
+        blank.className = 'blank-slot ' + (isCorrect ? 'correct-fill' : 'wrong-fill');
+        highlightNoun(sentenceArea, item.modifiedNoun);
+        showClauseStructure(item);
+        showFeedback(isCorrect, item.explain);
+        setTimeout(showRound, 1800);
+      });
+      pronounChoices.appendChild(btn);
+    });
+  }
+
+  function highlightNounInText(text, noun) {
+    var lowerText = text.toLowerCase();
+    var lowerNoun = noun.toLowerCase();
+    var pos = lowerText.indexOf(lowerNoun);
+    if (pos >= 0) {
+      return text.substring(0, pos) + '<span class="modified-noun">' + text.substring(pos, pos + noun.length) + '</span>' + text.substring(pos + noun.length);
+    }
+    var words = noun.split(' ');
+    if (words.length > 1) {
+      var lastWord = words[words.length - 1].toLowerCase();
+      pos = lowerText.indexOf(lastWord);
+      if (pos >= 0) {
+        return text.substring(0, pos) + '<span class="modified-noun">' + text.substring(pos, pos + lastWord.length) + '</span>' + text.substring(pos + lastWord.length);
+      }
+    }
+    return text;
+  }
+
+  // ── Field Agent: Drag pronoun into blank in combined sentence ──
+  function renderFieldMode(item) {
+    sentenceArea.innerHTML = '';
+    var pair = document.createElement('div');
+    pair.className = 'sentence-pair';
+    var cardA = document.createElement('div');
+    cardA.className = 'sentence-card';
+    cardA.innerHTML = highlightNounInText(item.sentA, item.modifiedNoun);
+    pair.appendChild(cardA);
+    var arrow = document.createElement('div');
+    arrow.className = 'link-arrow';
+    arrow.textContent = '🔗';
+    pair.appendChild(arrow);
+    var cardB = document.createElement('div');
+    cardB.className = 'sentence-card';
+    cardB.innerHTML = highlightNounInText(item.sentB, item.modifiedNoun);
+    pair.appendChild(cardB);
+    sentenceArea.appendChild(pair);
+
+    var sentDiv = document.createElement('div');
+    sentDiv.className = 'combined-sentence';
+    var blankEl = null;
+    item.combinedWords.forEach(function(word, wi) {
+      if (word === '___') {
+        blankEl = document.createElement('span');
+        blankEl.className = 'blank-slot';
+        blankEl.textContent = '___';
+        blankEl.id = 'fieldBlank';
+        sentDiv.appendChild(blankEl);
+      } else {
+        sentDiv.appendChild(document.createTextNode(word + ' '));
+      }
+    });
+    sentenceArea.appendChild(sentDiv);
+
+    var tileZone = document.createElement('div');
+    tileZone.className = 'drag-zone';
+    var allTiles = shuffle(item.pronounPool.slice());
+    pronounChoices.innerHTML = '';
+    allTiles.forEach(function(pronoun) {
+      var tile = document.createElement('button');
+      tile.className = 'word-tile pronoun-tile';
+      tile.type = 'button';
+      tile.textContent = pronoun;
+      tile.addEventListener('click', function() {
+        if (locked || tile.classList.contains('placed')) return;
+        if (!blankEl) return;
+        locked = true;
+        idx++;
+        tile.classList.add('placed');
+        var isCorrect = pronoun === item.answer;
+        blankEl.textContent = pronoun;
+        if (isCorrect) {
+          correct++; streak++; score += 120;
+          blankEl.className = 'blank-slot correct-fill';
+          tile.classList.add('correct');
+        } else {
+          streak = 0;
+          blankEl.className = 'blank-slot wrong-fill';
+          tile.classList.add('wrong');
+          blankEl.textContent = pronoun + ' → ' + item.answer;
+        }
+        highlightNoun(sentenceArea, item.modifiedNoun);
+        showClauseStructure(item);
+        showFeedback(isCorrect, item.explain);
+        setTimeout(showRound, 1800);
+      });
+      tileZone.appendChild(tile);
+    });
+    pronounChoices.appendChild(tileZone);
+  }
+
+  // ── Director: Build combined sentence from word tiles ──
+  function renderDirectorMode(item) {
+    sentenceArea.innerHTML = '';
+    var pair = document.createElement('div');
+    pair.className = 'sentence-pair';
+    var cardA = document.createElement('div');
+    cardA.className = 'sentence-card';
+    cardA.innerHTML = highlightNounInText(item.sentA, item.modifiedNoun);
+    pair.appendChild(cardA);
+    var arrow = document.createElement('div');
+    arrow.className = 'link-arrow';
+    arrow.textContent = '🔗';
+    pair.appendChild(arrow);
+    var cardB = document.createElement('div');
+    cardB.className = 'sentence-card';
+    cardB.innerHTML = highlightNounInText(item.sentB, item.modifiedNoun);
+    pair.appendChild(cardB);
+    sentenceArea.appendChild(pair);
+
+    pronounChoices.innerHTML = '';
+    var placed = [];
+
+    var buildArea = document.createElement('div');
+    buildArea.className = 'drag-zone active';
+    buildArea.style.minHeight = '56px';
+    buildArea.id = 'buildArea';
+    pronounChoices.appendChild(buildArea);
+
+    var tileZone = document.createElement('div');
+    tileZone.className = 'drag-zone';
+    shuffle(item.buildWords).forEach(function(word) {
+      var tile = document.createElement('button');
+      tile.className = 'word-tile' + (word === item.answer ? ' pronoun-tile' : '');
+      tile.type = 'button';
+      tile.textContent = word;
+      tile.addEventListener('click', function() {
+        if (locked) return;
+        if (tile.classList.contains('placed')) {
+          tile.classList.remove('placed');
+          placed = placed.filter(function(w) { return w !== word; });
+          tileZone.appendChild(tile);
+        } else {
+          tile.classList.add('placed');
+          placed.push(word);
+          buildArea.appendChild(tile);
+        }
+      });
+      tileZone.appendChild(tile);
+    });
+    pronounChoices.appendChild(tileZone);
+
+    var submitBtn = document.createElement('button');
+    submitBtn.className = 'btn primary';
+    submitBtn.type = 'button';
+    submitBtn.textContent = 'Submit Sentence';
+    submitBtn.style.marginTop = '10px';
+    submitBtn.addEventListener('click', function() {
+      if (locked) return;
+      locked = true;
+      idx++;
+      var built = placed.join(' ');
+      var normalize = function(s) { return s.toLowerCase().replace(/[.,!?]/g, '').replace(/\s+/g, ' ').trim(); };
+      var isCorrect = normalize(built) === normalize(item.correctOrder);
+      if (isCorrect) { correct++; streak++; score += 150; }
+      else { streak = 0; }
+      highlightNoun(sentenceArea, item.modifiedNoun);
+      showClauseStructure(item);
+      showFeedback(isCorrect, (isCorrect ? '' : 'The correct sentence is: "' + item.correctOrder + '" ') + item.explain);
+      setTimeout(showRound, 2200);
+    });
+    pronounChoices.appendChild(submitBtn);
+  }
+
+  // ── Show Round ──
+  function showRound() {
+    if (idx >= rounds.length) { endGame(); return; }
+    locked = false;
+    feedback.textContent = '';
+    pronounChoices.innerHTML = '';
+    sentenceArea.innerHTML = '';
+    clauseStructure.style.display = 'none';
+    clauseStructure.innerHTML = '';
+    var item = rounds[idx];
+
+    sceneText.textContent = item.context;
+    sceneIcon.textContent = item.icon;
+    sceneLabel.textContent = item.scene;
+
+    if (difficulty === 'rookie') {
+      instructionEl.textContent = '🎯 Pick the correct relative pronoun to connect the sentences.';
+      renderRookieMode(item);
+    } else if (difficulty === 'field') {
+      instructionEl.textContent = '🔍 Drag the correct pronoun into the blank.';
+      renderFieldMode(item);
+    } else {
+      instructionEl.textContent = '🕵️ Build the combined sentence from the word tiles.';
+      renderDirectorMode(item);
+    }
+    updateHud();
+  }
+
+  // ── End Game ──
+  function endGame() {
+    var acc = Math.round((correct / Math.max(1, idx)) * 100);
+    document.getElementById('reportAcc').textContent = 'Accuracy: ' + acc + '% (' + correct + '/' + idx + ')';
+    document.getElementById('reportScore').textContent = 'Score: ' + score + ' pts';
+    document.getElementById('reportRec').textContent = acc >= 80 ? 'Recommendation: Advance to the next difficulty!' : 'Recommendation: Replay to strengthen your clause-linking skills.';
+    document.getElementById('reportInsight').innerHTML = '<div class="skill-label" style="color:var(--teal)">GRAMMAR INSIGHT</div>' +
+      '<p style="margin:6px 0 0;font-size:13px;line-height:1.6">Relative pronouns connect a noun to extra information: <strong>"who"</strong> for people, <strong>"which"</strong> for things (non-restrictive, with commas), <strong>"that"</strong> for things (restrictive, no commas), and <strong>"where"</strong> for places. The clause always follows the noun it describes.</p>';
+    document.getElementById('reportOverlay').classList.add('show');
+    if (window.GSSound && window.GSSound.missionComplete) window.GSSound.missionComplete();
+  }
+
+  // ── Hint ──
+  document.getElementById('hintBtn').addEventListener('click', function() {
+    if (hints <= 0 || locked) return;
+    hints--;
+    document.getElementById('hintBtn').textContent = 'Hint (' + hints + ' left)';
+    score = Math.max(0, score - 30);
+    var item = rounds[idx];
+    if (item) {
+      var nounHint = 'The modified noun is "' + item.modifiedNoun + '" (' + item.nounType + ').';
+      feedback.innerHTML = '<span class="ok">💡 Hint: ' + nounHint + ' Who → people, which/that → things, where → places.</span>';
+    }
+  });
+
+  // ── Start ──
+  document.getElementById('startBtn').addEventListener('click', function() {
+    document.getElementById('onboardOverlay').classList.remove('show');
+    buildRounds();
+    showRound();
+  });
+  document.getElementById('endBtn').addEventListener('click', function() { idx = rounds.length; endGame(); });
+  document.getElementById('replayBtn').addEventListener('click', function() {
+    document.getElementById('reportOverlay').classList.remove('show');
+    idx = 0; correct = 0; streak = 0; score = 0; hints = 2;
+    document.getElementById('hintBtn').textContent = 'Hint (2 left)';
+    buildRounds();
+    showRound();
+  });
+
+  if (!timerOn) hudTimer.textContent = 'Off';
+})();
+</script>
+</body>
+</html>
