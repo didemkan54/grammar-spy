@@ -18,6 +18,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   const navLinks = [
     { label: "Home", href: "index.html" },
     { label: "Missions", href: "packs.html" },
+    { label: "Teacher", href: "teacher-home.html" },
     { label: "Mission Library", href: "missions.html" },
     { label: "Training Path", href: "progression.html" },
     { label: "Profile", href: "profile.html" },
