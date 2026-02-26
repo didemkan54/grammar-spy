@@ -77,19 +77,19 @@
   };
 
   var gameUx = {
-    "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Smash Wrong Line", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash", playMode: "smash" },
-    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Classify Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Sequence Choice", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "sequence" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Repair Line", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "repair" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Rewrite Duel", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
-    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Smash Rule Breach", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
-    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Signal Verdict", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
-    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Verdict", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
-    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Smash Agreement Error", sceneLabel: "Rule Check", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
-    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Board Sweep", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep", playMode: "sweep" },
-    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Case Verdict", sceneLabel: "Case File", startText: "Open Case", replayText: "Open New Case", endText: "Close Case", playMode: "binary" },
-    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Sequence Verdict", sceneLabel: "Sequence Step", startText: "Run Lab", replayText: "Run Lab Again", endText: "End Lab", playMode: "binary" },
-    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Board Sweep", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "sweep" }
+    "error-smash": { accent: "#1f8f63", columns: 2, modeLabel: "Spot the Correct Form", sceneLabel: "Grammar Card", startText: "Start Spotting", replayText: "Play Again", endText: "End Game", playMode: "smash" },
+    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Sort the Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Story", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "sequence" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Choose the Best Line", sceneLabel: "Dialogue Line", startText: "Start Mission", replayText: "Play Again", endText: "End Mission", playMode: "repair" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick the Rewrite", sceneLabel: "Writing Prompt", startText: "Start Rewriting", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
+    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Match the Rule", sceneLabel: "Rule Card", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
+    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Check the Grammar", sceneLabel: "Signal Card", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
+    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Judge the Sentence", sceneLabel: "Case Card", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
+    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Match the Agreement", sceneLabel: "Agreement Card", startText: "Start Matching", replayText: "Match Again", endText: "End Match", playMode: "smash" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Sort the Board", sceneLabel: "Grammar Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" },
+    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Judge the Agreement", sceneLabel: "Case Card", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
+    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Order the Sequence", sceneLabel: "Sequence Card", startText: "Start Lab", replayText: "Run Again", endText: "End Lab", playMode: "binary" },
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "sweep" }
   };
 
   var fallbackRounds = [
@@ -1947,10 +1947,10 @@
   }
 
   function modeHelperText(mode) {
-    if (mode === "smash") return "Mode rule: tap the line that contains the error.";
-    if (mode === "binary") return "Mode rule: judge one highlighted line as Correct or Incorrect.";
-    if (mode === "classify") return "Mode rule: classify one sentence as Completed action or Ongoing background.";
-    if (mode === "repair") return "Mode rule: read the broken line and choose the strongest repair.";
+    if (mode === "smash") return "Mode rule: find the line with the correct grammar form.";
+    if (mode === "binary") return "Mode rule: decide if the highlighted sentence is correct or incorrect.";
+    if (mode === "classify") return "Mode rule: classify the sentence — is it a completed action or ongoing background?";
+    if (mode === "repair") return "Mode rule: pick the strongest version of this sentence.";
     if (mode === "duel") return "Mode rule: compare two rewrites and pick the stronger one.";
     if (mode === "sequence") return "Mode rule: choose the strongest next line for story flow.";
     if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
@@ -1959,10 +1959,10 @@
   }
 
   function modePrompt(mode) {
-    if (mode === "smash") return "Find and tap the line with a grammar error.";
+    if (mode === "smash") return "Find the line with the correct grammar.";
     if (mode === "binary") return "Read the highlighted line and decide: is it correct or incorrect?";
     if (mode === "classify") return "Classify each line: Completed Event or Ongoing Background.";
-    if (mode === "repair") return "Choose the strongest repair for the broken line.";
+    if (mode === "repair") return "Choose the best version of this line.";
     if (mode === "duel") return "Compare the two options and choose the stronger rewrite.";
     if (mode === "sequence") return "Choose the strongest next line for the sequence.";
     if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
@@ -1971,14 +1971,14 @@
   }
 
   function modeHowTo(mode, fallback) {
-    if (mode === "smash") return "Scan all options and smash only lines that contain errors.";
-    if (mode === "binary") return "Judge one line at a time as correct or incorrect.";
-    if (mode === "classify") return "Sort lines by timeline role: completed events vs ongoing background actions.";
-    if (mode === "repair") return "Read the broken line and pick the best corrected version.";
-    if (mode === "duel") return "Compare two rewrites and choose the stronger sentence.";
-    if (mode === "sequence") return "Pick the line that best continues the sequence logically and grammatically.";
-    if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
-    if (mode === "sweep") return "Mark every line correct or incorrect before submitting the board.";
+    if (mode === "smash") return "Read all the options and pick the one with the correct grammar form.";
+    if (mode === "binary") return "Read the sentence and decide — is the grammar correct or does it need a fix?";
+    if (mode === "classify") return "Sort each sentence into the right category: completed action or ongoing background.";
+    if (mode === "repair") return "Read the sentence and choose the best version from the options.";
+    if (mode === "duel") return "Compare two versions and choose the stronger, more natural sentence.";
+    if (mode === "sequence") return "Pick the line that best continues the story in the right order.";
+    if (mode === "eliminate") return "Cross out the weaker options and keep only the strongest sentence.";
+    if (mode === "sweep") return "Go through each sentence and mark it correct or incorrect, then submit.";
     return fallback || "Choose the strongest line.";
   }
 
@@ -2549,10 +2549,10 @@
     finishRound(
       userCorrect,
       activeMode === "smash"
-        ? "Nice catch! You found the error. " + round.explain
+        ? "Nice catch! You spotted the right form. " + round.explain
         : "Correct! " + round.explain,
       activeMode === "smash"
-        ? "That line is already correct. Smash an error line instead. " + round.explain
+        ? "Not quite — that one has an error. Look for the correct form. " + round.explain
         : "Not quite — the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
       btn
     );
