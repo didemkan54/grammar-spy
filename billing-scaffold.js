@@ -241,10 +241,16 @@
     'GRAMMARSPY'
   ]);
 
+  /** Teacher classroom codes — students enter these at home for full access */
+  var TEACHER_CODES = {
+    'KANCLASS': { teacher: 'Mrs. Kan', school: 'MCPS', access: 'full' },
+    'SPYGRAMMAR': { teacher: 'Mrs. Kan', school: 'MCPS', access: 'full' }
+  };
+
   function redeemPromoCode(code){
     if (!code || typeof code !== 'string') return false;
     var normalized = String(code).trim().toUpperCase();
-    if (!PROMO_CODES.has(normalized)) return false;
+    if (!PROMO_CODES.has(normalized) && !TEACHER_CODES[normalized]) return false;
     var a = ensureAccount();
     if (!a) return false;
     grantPaid('school');

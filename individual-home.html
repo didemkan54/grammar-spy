@@ -131,10 +131,18 @@
             var code = (codeInput.value || "").trim();
             var name = (nameInput.value || "").trim();
             errEl.style.display = "none";
-            if (!code || code.length < 4) { errEl.textContent = "Please enter the 6-letter code."; errEl.style.display = "block"; codeInput.focus(); return; }
+            if (!code || code.length < 4) { errEl.textContent = "Please enter your class code."; errEl.style.display = "block"; codeInput.focus(); return; }
             if (!name) { errEl.textContent = "Please enter your name."; errEl.style.display = "block"; nameInput.focus(); return; }
-            var result = window.GSClassroom.addStudentToClassroom(code, name);
-            if (!result) { errEl.textContent = "Code not found. Check the code and try again."; errEl.style.display = "block"; return; }
+            var result = window.GSClassroom && window.GSClassroom.addStudentToClassroom(code, name);
+            if (!result && window.GS_BILLING && window.GS_BILLING.redeemPromoCode) {
+              var redeemed = window.GS_BILLING.redeemPromoCode(code);
+              if (redeemed) {
+                window.GS_AUTH && window.GS_AUTH.setAccount(name, '');
+                try { localStorage.setItem('gs_student_classroom', JSON.stringify({ code: code.toUpperCase(), studentName: name, joinedAt: new Date().toISOString() })); } catch(e){}
+                result = true;
+              }
+            }
+            if (!result) { errEl.textContent = "Code not found. Check with your teacher and try again."; errEl.style.display = "block"; return; }
             renderJoinSection();
           });
           if (codeInput) codeInput.addEventListener("keydown", function(e) { if (e.key === "Enter") joinBtn.click(); });
