@@ -299,7 +299,7 @@
             </div>
             <div style="margin-top:14px;padding:12px 14px;background:rgba(31,95,99,.12);border:2px solid #1f5f63;border-radius:10px">
               <label for="indexPromoCode" style="display:block;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63;margin-bottom:6px">Promo code</label>
-              <input type="text" id="indexPromoCode" placeholder="Enter promo code" maxlength="20" style="width:100%;max-width:220px;border:2px solid #1f5f63;border-radius:8px;padding:10px 12px;font-size:14px" />
+              <input type="text" id="indexPromoCode" placeholder="Enter promo code" maxlength="20" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" inputmode="text" style="width:100%;max-width:220px;border:2px solid #1f5f63;border-radius:8px;padding:10px 12px;font-size:14px" />
             </div>
             <div class="hero-buttons">
               <a id="continueBtn" class="btn-primary btn-hero-primary" href="teacher-home.html" data-i18n="hero_continue">Continue</a>
@@ -432,13 +432,32 @@
     const saved = localStorage.getItem(useKey);
     applyMode(saved === 'individual' ? 'individual' : 'class');
 
+    function normalizePromoCode(raw) {
+      var value = String(raw || '').trim();
+      if (!value || value.indexOf('@') >= 0) return '';
+      var normalized = value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+      if (normalized.length < 4 || normalized.length > 20) return '';
+      return normalized;
+    }
+
     const promoInput = document.getElementById('indexPromoCode');
     const signUpLink = document.getElementById('signUpLink');
     if (promoInput && signUpLink) {
-      promoInput.addEventListener('input', function(){ sessionStorage.setItem('gs_promo_code', (promoInput.value || '').trim()); });
+      promoInput.value = normalizePromoCode(promoInput.value);
+      promoInput.addEventListener('input', function(){
+        if ((promoInput.value || '').indexOf('@') >= 0) promoInput.value = '';
+        var normalized = normalizePromoCode(promoInput.value);
+        sessionStorage.setItem('gs_promo_code', normalized);
+      });
+      promoInput.addEventListener('blur', function(){
+        promoInput.value = normalizePromoCode(promoInput.value);
+      });
       signUpLink.addEventListener('click', function(e){
-        const code = (promoInput.value || '').trim();
-        if (code) { e.preventDefault(); location.href = 'auth.html?code=' + encodeURIComponent(code); }
+        const code = normalizePromoCode(promoInput.value);
+        if (code) {
+          e.preventDefault();
+          location.href = 'auth.html?code=' + encodeURIComponent(code);
+        }
       });
     }
 
