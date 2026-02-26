@@ -101,13 +101,27 @@
         var el = document.getElementById("joinState");
         if (!el || !window.GSClassroom) return;
         var current = window.GSClassroom.getStudentClassroom();
-        if (current) {
-          el.innerHTML = '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">' +
-            '<div style="flex:1;min-width:200px"><h2 style="margin:0;font-size:20px">You\'re in: ' + current.classroomName + '</h2>' +
-            (current.teacherName ? '<p style="margin:4px 0 0;color:#7a8698;font-size:13px">Teacher: ' + current.teacherName + '</p>' : '') +
+        var studentData = null;
+        try { studentData = JSON.parse(localStorage.getItem('gs_student_classroom')); } catch(e){}
+        if (current || studentData) {
+          var displayName = (current && current.classroomName) || (studentData && studentData.code) || 'your classroom';
+          var studentName = (current && current.studentName) || (studentData && studentData.studentName) || 'Student';
+          var teacherName = (current && current.teacherName) || '';
+          el.innerHTML = '<div style="background:#e6f2f2;border:2px solid #1f5f63;border-radius:16px;padding:24px">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">' +
+            '<div><h2 style="margin:0;font-size:22px;color:#1f5f63">Welcome, ' + studentName + '!</h2>' +
+            '<p style="margin:4px 0 0;color:#4a5568;font-size:14px">Class: ' + displayName + (teacherName ? ' &middot; Teacher: ' + teacherName : '') + '</p></div>' +
+            '<button id="leaveClassBtn" type="button" style="padding:6px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;color:#7a8698;font:600 11px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Leave class</button>' +
             '</div>' +
-            '<button class="btn-primary" id="leaveClassBtn" type="button" style="display:inline-flex;align-items:center;padding:8px 16px;border:1px solid #194f53;border-radius:8px;background:#fff;color:#b04444;font:700 12px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Leave</button>' +
-            '</div>';
+            '<p style="margin:0 0 14px;color:#16223a;font-weight:600">Your missions are ready. Pick one to start practicing:</p>' +
+            '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">' +
+            '<a href="packs.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📋</span><span>All Missions</span></a>' +
+            '<a href="pack.html?pack=pack01" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🕵️</span><span>Mission 01: Past Tense</span></a>' +
+            '<a href="pack.html?pack=pack02" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🔍</span><span>Mission 02: Present</span></a>' +
+            '<a href="pack.html?pack=pack03" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🎯</span><span>Mission 03: Be-Verbs</span></a>' +
+            '<a href="clues.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📖</span><span>CLUES Archive</span></a>' +
+            '<a href="progression.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📈</span><span>Training Path</span></a>' +
+            '</div></div>';
           var leaveBtn = document.getElementById("leaveClassBtn");
           if (leaveBtn) leaveBtn.addEventListener("click", function() {
             window.GSClassroom.leaveClassroom();
