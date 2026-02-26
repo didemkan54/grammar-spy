@@ -348,6 +348,30 @@
         ],
         answer: 1,
         explain: "Did + base verb complete is the correct past question form."
+      },
+      {
+        scene: "Cafeteria Log",
+        prompt: "Smash the incorrect draft and choose the best fix.",
+        options: [
+          "While the students were eating lunch, the fire alarm sounded.",
+          "While the students was eating lunch, the fire alarm sounded.",
+          "While the students eating lunch, the fire alarm sounded.",
+          "While the students are eating lunch, the fire alarm sounded yesterday."
+        ],
+        answer: 0,
+        explain: "Plural students takes were in past continuous; sounded is simple past for the interruption."
+      },
+      {
+        scene: "Art Room Report",
+        prompt: "Select the corrected sentence.",
+        options: [
+          "The teacher collected the brushes after the students left the room.",
+          "The teacher collected the brushes after the students leaves the room.",
+          "The teacher was collected the brushes after the students left the room.",
+          "The teacher collect the brushes after the students left the room."
+        ],
+        answer: 0,
+        explain: "Two completed past actions in sequence both use simple past."
       }
     ],
     "past-sort": [
@@ -518,6 +542,78 @@
         ],
         answer: 1,
         explain: "A past sequence uses simple past in both clauses."
+      },
+      {
+        scene: "Timeline Card O",
+        prompt: "Choose the sentence that shows a completed past action.",
+        options: [
+          "The nurse checked the attendance sheet after the bell rang.",
+          "The nurse was checking the attendance sheet after the bell rang.",
+          "The nurse checks the attendance sheet after the bell rang yesterday.",
+          "The nurse checking the attendance sheet after the bell rang."
+        ],
+        answer: 0,
+        explain: "A completed sequence in the past uses simple past for both actions."
+      },
+      {
+        scene: "Timeline Card P",
+        prompt: "Select the line that shows an ongoing action interrupted by an event.",
+        options: [
+          "The students were presenting their project when the visitor arrived.",
+          "The students presented their project when the visitor arrives.",
+          "The students are presenting their project when the visitor arrived.",
+          "The students presenting their project when the visitor arrived."
+        ],
+        answer: 0,
+        explain: "Were presenting shows an ongoing past action interrupted by arrived."
+      },
+      {
+        scene: "Timeline Card Q",
+        prompt: "Pick the sentence with correct past sequence.",
+        options: [
+          "First the captain locked the door, and then she turned off the lights.",
+          "First the captain lock the door, and then she turned off the lights.",
+          "First the captain locked the door, and then she turns off the lights.",
+          "First the captain was locked the door, and then she turned off the lights."
+        ],
+        answer: 0,
+        explain: "A retold sequence of finished actions stays in simple past."
+      },
+      {
+        scene: "Timeline Card R",
+        prompt: "Choose the sentence that shows two simultaneous past actions.",
+        options: [
+          "While the chef was cooking dinner, the waiter was setting the tables.",
+          "While the chef cooked dinner, the waiter sets the tables.",
+          "While the chef was cooking dinner, the waiter set the tables yesterday now.",
+          "While the chef cooking dinner, the waiter was setting the tables."
+        ],
+        answer: 0,
+        explain: "Two simultaneous ongoing past actions both use past continuous."
+      },
+      {
+        scene: "Timeline Card S",
+        prompt: "Select the sentence for a completed past action.",
+        options: [
+          "By the end of the day, the crew finished all the repairs.",
+          "By the end of the day, the crew was finishing all the repairs.",
+          "By the end of the day, the crew finishes all the repairs.",
+          "By the end of the day, the crew finishing all the repairs."
+        ],
+        answer: 0,
+        explain: "By + past checkpoint points to completed simple past finished."
+      },
+      {
+        scene: "Timeline Card T",
+        prompt: "Pick the line that shows an interrupted action.",
+        options: [
+          "The librarian was shelving books when the phone rang.",
+          "The librarian shelved books when the phone rings.",
+          "The librarian is shelving books when the phone rang.",
+          "The librarian shelving books when the phone rang."
+        ],
+        answer: 0,
+        explain: "Past continuous was shelving shows the action interrupted by rang."
       }
     ],
     "narrative-builder": [
@@ -733,6 +829,30 @@
           "In the end, the team solve every puzzle and celebrated their victory.",
           "In the end, the team solved every puzzle and celebrates their victory.",
           "In the end, the team was solved every puzzle and celebrated their victory."
+        ],
+        answer: 0,
+        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
+      },
+      {
+        scene: "Story Step 19",
+        prompt: "Which line best continues the narrative?",
+        options: [
+          "After the scouts returned, the leader assigned new roles to each member.",
+          "After the scouts returned, the leader assigns new roles to each member.",
+          "After the scouts returns, the leader assigned new roles to each member.",
+          "After the scouts was returned, the leader assigned new roles to each member."
+        ],
+        answer: 0,
+        explain: "Both clauses in a past narrative need consistent simple past."
+      },
+      {
+        scene: "Story Step 20",
+        prompt: "Select the best closing line for the story.",
+        options: [
+          "At last, the team packed the equipment and headed back to base.",
+          "At last, the team pack the equipment and headed back to base.",
+          "At last, the team packed the equipment and heads back to base.",
+          "At last, the team was packed the equipment and headed back to base."
         ],
         answer: 0,
         explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
@@ -954,6 +1074,30 @@
         ],
         answer: 2,
         explain: "Had + past participle shows an action completed before another past event."
+      },
+      {
+        scene: "Morning Check",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "The teacher asked if everyone were ready for the quiz.",
+          "The teacher asked if everyone was ready for the quiz.",
+          "The teacher asked if everyone is ready for the quiz yesterday.",
+          "The teacher ask if everyone was ready for the quiz."
+        ],
+        answer: 1,
+        explain: "Reported past speech uses was for singular agreement in the embedded clause."
+      },
+      {
+        scene: "Peer Review",
+        prompt: "Choose the best repaired question.",
+        options: [
+          "Did you checked your partner's work before submitting?",
+          "Did you check your partner's work before submitting?",
+          "Does you check your partner's work before submitting?",
+          "You did checked your partner's work before submitting?"
+        ],
+        answer: 1,
+        explain: "Did + base verb check is the correct past question form."
       }
     ],
     "rewrite-studio": [
@@ -1172,6 +1316,30 @@
         ],
         answer: 0,
         explain: "Subject pronoun they with don't + base verb; embedded clause uses statement order."
+      },
+      {
+        scene: "Original: The students is ready for the test.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "The students are ready for the test.",
+          "The students is ready for the test.",
+          "The students be ready for the test.",
+          "The students was ready for the test now."
+        ],
+        answer: 0,
+        explain: "Plural students requires are for correct subject-verb agreement."
+      },
+      {
+        scene: "Original: We was waiting when the bus came.",
+        prompt: "Select the best rewrite.",
+        options: [
+          "We were waiting when the bus came.",
+          "We was waiting when the bus came.",
+          "We waiting when the bus came.",
+          "We are waiting when the bus came yesterday."
+        ],
+        answer: 0,
+        explain: "Plural we takes were in past continuous; came is simple past for the interruption."
       }
     ],
     "rule-sprint-present": [
@@ -1390,6 +1558,30 @@
         ],
         answer: 2,
         explain: "Singular class takes does + base verb agree."
+      },
+      {
+        scene: "Science Lab",
+        prompt: "Choose the sentence that states a routine.",
+        options: [
+          "The lab assistant is preparing the equipment every morning.",
+          "The lab assistant prepares the equipment every morning.",
+          "The lab assistant prepared the equipment every morning now.",
+          "The lab assistant prepare the equipment every morning."
+        ],
+        answer: 1,
+        explain: "Every morning signals a routine, requiring simple present prepares."
+      },
+      {
+        scene: "Recess Monitor",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The monitor counts the students right now.",
+          "The monitor is counting the students right now.",
+          "The monitor counted the students right now.",
+          "The monitor counting the students right now."
+        ],
+        answer: 1,
+        explain: "Right now calls for present continuous is counting."
       }
     ],
     "signal-decoder-present": [
@@ -1608,6 +1800,30 @@
         ],
         answer: 1,
         explain: "On weekdays signals a regular schedule using simple present arrives."
+      },
+      {
+        scene: "Signal: twice a week",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The club is meeting twice a week.",
+          "The club meets twice a week.",
+          "The club met twice a week now.",
+          "The club meet twice a week."
+        ],
+        answer: 1,
+        explain: "Twice a week describes a routine, requiring simple present meets."
+      },
+      {
+        scene: "Signal: as we speak",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "The technician repairs the server as we speak.",
+          "The technician is repairing the server as we speak.",
+          "The technician repaired the server as we speak.",
+          "The technician repairing the server as we speak."
+        ],
+        answer: 1,
+        explain: "As we speak signals an action in progress, requiring present continuous."
       }
     ],
     "present-case-interview": [
@@ -1778,6 +1994,78 @@
         ],
         answer: 2,
         explain: "Does not must pair with base verb recall."
+      },
+      {
+        scene: "Interview File 15",
+        prompt: "Witness says action is happening now. Select the line.",
+        options: [
+          "The clerk files the reports right now.",
+          "The clerk is filing the reports right now.",
+          "The clerk filed the reports right now.",
+          "The clerk filing the reports right now."
+        ],
+        answer: 1,
+        explain: "Right now requires present continuous is filing."
+      },
+      {
+        scene: "Interview File 16",
+        prompt: "Witness describes a daily rule. Choose the best line.",
+        options: [
+          "The receptionist greets every visitor at the front desk.",
+          "The receptionist is greeting every visitor at the front desk.",
+          "The receptionist greeted every visitor at the front desk now.",
+          "The receptionist greet every visitor at the front desk."
+        ],
+        answer: 0,
+        explain: "A daily rule uses simple present with third-person singular greets."
+      },
+      {
+        scene: "Interview File 17",
+        prompt: "Choose the strongest present question for the witness.",
+        options: [
+          "Does the manager checks the inventory daily?",
+          "Do the manager check the inventory daily?",
+          "Does the manager check the inventory daily?",
+          "Manager does check the inventory daily?"
+        ],
+        answer: 2,
+        explain: "Singular manager takes does + base verb check."
+      },
+      {
+        scene: "Interview File 18",
+        prompt: "Pick the most accurate negative present form.",
+        options: [
+          "The guard do not patrol the east wing.",
+          "The guard does not patrols the east wing.",
+          "The guard does not patrol the east wing.",
+          "The guard not patrol the east wing."
+        ],
+        answer: 2,
+        explain: "Does not must pair with base verb patrol."
+      },
+      {
+        scene: "Interview File 19",
+        prompt: "Witness says this is a weekly habit. Choose the best line.",
+        options: [
+          "The team reviews the security footage every Wednesday.",
+          "The team is reviewing the security footage every Wednesday.",
+          "The team reviewed the security footage every Wednesday now.",
+          "The team review the security footage every Wednesday."
+        ],
+        answer: 0,
+        explain: "Weekly habit uses simple present with third-person singular reviews."
+      },
+      {
+        scene: "Interview File 20",
+        prompt: "Witness says the action is happening now. Select the line.",
+        options: [
+          "The inspector checks the equipment right now.",
+          "The inspector is checking the equipment right now.",
+          "The inspector checked the equipment right now.",
+          "The inspector checking the equipment right now."
+        ],
+        answer: 1,
+        explain: "Right now signals present continuous is checking."
       }
     ],
     "be-verb-rule-sprint": [
@@ -1972,6 +2260,54 @@
         ],
         answer: 1,
         explain: "With neither…nor the verb agrees with the nearer plural subject students, so use are."
+      },
+      {
+        scene: "Visitor Badge",
+        prompt: "Choose the correct be-verb sentence.",
+        options: [
+          "The visitor are waiting in the lobby.",
+          "The visitor is waiting in the lobby.",
+          "The visitor am waiting in the lobby.",
+          "The visitor be waiting in the lobby."
+        ],
+        answer: 1,
+        explain: "Singular visitor takes is."
+      },
+      {
+        scene: "Morning Count",
+        prompt: "Select the line with correct agreement.",
+        options: [
+          "All the chairs is arranged in a circle.",
+          "All the chairs are arranged in a circle.",
+          "All the chairs am arranged in a circle.",
+          "All the chairs was arranged in a circle now."
+        ],
+        answer: 1,
+        explain: "Plural chairs takes are."
+      },
+      {
+        scene: "Lab Safety",
+        prompt: "Pick the strongest past be-verb form.",
+        options: [
+          "The chemicals was stored in the cabinet yesterday.",
+          "The chemicals were stored in the cabinet yesterday.",
+          "The chemicals are stored in the cabinet yesterday.",
+          "The chemicals be stored in the cabinet yesterday."
+        ],
+        answer: 1,
+        explain: "Plural chemicals in past takes were."
+      },
+      {
+        scene: "End-of-Day Check",
+        prompt: "Choose the accurate be-verb sentence.",
+        options: [
+          "The reports is complete and ready for review.",
+          "The reports are complete and ready for review.",
+          "The reports am complete and ready for review.",
+          "The reports was complete and ready for review now."
+        ],
+        answer: 1,
+        explain: "Plural reports requires are."
       }
     ],
     "be-verb-agreement-sweep": [
