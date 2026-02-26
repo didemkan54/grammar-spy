@@ -10,86 +10,86 @@
 
   var games = {
     "error-smash": {
-      title: "Error Spotter",
-      subtitle: "Three sentences are correct — find the one with the error.",
-      howTo: "All four sentences are shown. Three are correct. Click the one that contains a grammar error."
+      title: "Error Detector",
+      subtitle: "Scan the sentence and click the word that breaks the grammar rule.",
+      howTo: "A sentence with an error is displayed. Read carefully, then click on the exact word or phrase that contains the mistake. The correct version appears after you click."
     },
     "past-sort": {
       title: "Timeline Sort",
-      subtitle: "Drag sentences onto the timeline to classify past actions.",
-      howTo: "Read each sentence and drag it to the correct zone: completed events go BEFORE, ongoing actions go DURING."
+      subtitle: "Drag each sentence to the correct timeline zone.",
+      howTo: "Sentences appear in a pool. Drag or tap each one into the 'Completed Event' or 'Ongoing Background' zone based on the verb tense."
     },
     "narrative-builder": {
-      title: "Sequence Lab",
-      subtitle: "Fill the blank in the paragraph with the right sentence.",
-      howTo: "A short paragraph has a gap. Pick the sentence that fits the blank and completes the meaning."
+      title: "Sentence Forge",
+      subtitle: "Drag word tiles to build the grammatically correct sentence.",
+      howTo: "Word tiles are scattered below. Tap tiles in order to build the correct sentence. Watch out for distractor words that don't belong!"
     },
     "dialogue-repair": {
       title: "Dialogue Builder",
-      subtitle: "Fix the broken line in the conversation thread.",
-      howTo: "A chat conversation has one message with a grammar error. Pick the corrected reply from the suggestions below."
+      subtitle: "Read the conversation and choose the best reply.",
+      howTo: "A conversation is in progress. One speaker needs to respond. Read the context and pick the reply that's grammatically correct and fits the conversation naturally."
     },
     "rewrite-studio": {
-      title: "Rewrite Challenge",
-      subtitle: "Spot the weakness and pick the stronger rewrite.",
-      howTo: "The original sentence has a problem underlined. Compare two rewrites and choose the stronger one. Build the strength meter!"
+      title: "Rewrite Duel",
+      subtitle: "The original has a problem. Pick the stronger rewrite.",
+      howTo: "Read the original sentence with its issue. Two rewrites are offered — choose the one that fixes the grammar while keeping the meaning clear."
     },
     "rule-sprint-present": {
-      title: "Error Spotter (Present)",
-      subtitle: "Three sentences are correct — find the one with the error.",
-      howTo: "All four sentences are shown. Three are correct. Click the one that contains a grammar error."
+      title: "Error Detector",
+      subtitle: "Scan the sentence and click the word that breaks the grammar rule.",
+      howTo: "A sentence with a present-tense error is displayed. Click on the exact word that's wrong."
     },
     "signal-decoder-present": {
-      title: "Signal Decoder",
-      subtitle: "Does the verb tense match the signal word?",
-      howTo: "A signal word is highlighted. Decide if the verb tense matches it — press MATCH or MISMATCH."
+      title: "Context Match",
+      subtitle: "Read the scene, then pick the sentence that fits the context.",
+      howTo: "A scenario is described with a key signal word highlighted. Four sentences are offered — choose the one where the grammar matches the context clue."
     },
     "present-case-interview": {
-      title: "Signal Decoder (Case)",
-      subtitle: "Does the verb tense match the signal word?",
-      howTo: "A signal word is highlighted. Decide if the verb tense matches it — press MATCH or MISMATCH."
+      title: "Case Judge",
+      subtitle: "Read the evidence and decide: is the grammar correct or not?",
+      howTo: "A sentence is presented as evidence. Study it carefully and make your call — press Correct if the grammar holds up, or Incorrect if it doesn't. Explain your reasoning!"
     },
     "be-verb-rule-sprint": {
-      title: "Error Spotter (Be-Verb)",
-      subtitle: "Three sentences are correct — find the one with the error.",
-      howTo: "All four sentences are shown. Three are correct. Click the one that contains a grammar error."
+      title: "Error Detector",
+      subtitle: "Scan the sentence and click the be-verb error.",
+      howTo: "A sentence with a be-verb agreement error is displayed. Click on the exact word that doesn't match its subject."
     },
     "be-verb-agreement-sweep": {
-      title: "Evidence Board",
-      subtitle: "Pin each sentence as VERIFIED or FLAGGED, then submit.",
-      howTo: "Review each evidence card. Mark correct grammar as VERIFIED and errors as FLAGGED, then submit your board."
+      title: "Evidence Sort",
+      subtitle: "Review each sentence and sort it: correct grammar or needs revision.",
+      howTo: "Evidence cards appear one by one. For each sentence, label it as 'Strong Grammar' or 'Needs Revision', then submit your full board for scoring."
     },
     "be-verb-case-interview": {
-      title: "Signal Decoder (Be-Verb)",
-      subtitle: "Does the verb form match the subject signal?",
-      howTo: "A signal word is highlighted. Decide if the verb form matches it — press MATCH or MISMATCH."
+      title: "Case Judge",
+      subtitle: "Evaluate the be-verb agreement. Is the evidence solid?",
+      howTo: "A sentence is presented. Study the subject and verb — do they agree? Press Correct or Incorrect."
     },
     "mission-sequence-lab": {
-      title: "Sequence Lab",
-      subtitle: "Fill the blank in the paragraph with the right sentence.",
-      howTo: "A short paragraph has a gap. Pick the sentence that fits the blank and completes the meaning."
+      title: "Sequence Order",
+      subtitle: "Drag the sentences into the correct narrative order.",
+      howTo: "Four sentences from a story are scrambled. Tap to select a sentence, then tap the position where it belongs. Get them in the right order and submit!"
     },
     "evidence-sort-board": {
-      title: "Evidence Board",
-      subtitle: "Pin each sentence as VERIFIED or FLAGGED, then submit.",
-      howTo: "Review each evidence card. Mark correct grammar as VERIFIED and errors as FLAGGED, then submit your board."
+      title: "Evidence Sort",
+      subtitle: "Review each sentence and sort it: correct grammar or needs revision.",
+      howTo: "Evidence cards appear one by one. For each sentence, label it as 'Strong Grammar' or 'Needs Revision', then submit your full board for scoring."
     }
   };
 
   var gameUx = {
-    "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Find the Error", sceneLabel: "Grammar Card", startText: "Start Spotting", replayText: "Play Again", endText: "End Game", playMode: "spotlight" },
-    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Sort the Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "timeline" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Sentence", sceneLabel: "Story Step", startText: "Start Lab", replayText: "Run Again", endText: "End Lab", playMode: "builder" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Fix the Conversation", sceneLabel: "Dialogue Line", startText: "Start Chat", replayText: "Play Again", endText: "End Chat", playMode: "dialogue" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick the Rewrite", sceneLabel: "Writing Prompt", startText: "Start Rewriting", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "rewrite" },
-    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Find the Error", sceneLabel: "Rule Card", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "spotlight" },
-    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Decode the Signal", sceneLabel: "Signal Card", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "signal" },
-    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Evaluate the Report", sceneLabel: "Case Card", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "interrogation" },
-    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Find the Error", sceneLabel: "Agreement Card", startText: "Start Matching", replayText: "Match Again", endText: "End Match", playMode: "spotlight" },
-    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Review the Board", sceneLabel: "Evidence Card", startText: "Start Review", replayText: "Review Again", endText: "End Board", playMode: "evidence" },
-    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Evaluate the Report", sceneLabel: "Case Card", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "interrogation" },
-    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Evaluate the Report", sceneLabel: "Sequence Card", startText: "Start Lab", replayText: "Run Again", endText: "End Lab", playMode: "interrogation" },
-    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Review the Board", sceneLabel: "Evidence Card", startText: "Start Review", replayText: "Review Again", endText: "End Board", playMode: "evidence" }
+    "error-smash": { accent: "#b04444", columns: 1, modeLabel: "Click the Error", sceneLabel: "Grammar Card", startText: "Start Detecting", replayText: "Play Again", endText: "End Game", playMode: "detect" },
+    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Sort the Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Sentence", sceneLabel: "Story Step", startText: "Start Building", replayText: "Build Again", endText: "End Build", playMode: "forge" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Continue the Conversation", sceneLabel: "Dialogue", startText: "Start Chat", replayText: "Play Again", endText: "End Chat", playMode: "dialogue" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick the Best Rewrite", sceneLabel: "Writing Prompt", startText: "Start Rewriting", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
+    "rule-sprint-present": { accent: "#d84f7f", columns: 1, modeLabel: "Click the Error", sceneLabel: "Rule Card", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "detect" },
+    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Read the Context, Pick the Match", sceneLabel: "Signal Card", startText: "Start Decoding", replayText: "Decode Again", endText: "End Decode", playMode: "best" },
+    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Judge the Evidence", sceneLabel: "Case File", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
+    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 1, modeLabel: "Click the Error", sceneLabel: "Agreement Card", startText: "Start Detecting", replayText: "Detect Again", endText: "End Detection", playMode: "detect" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" },
+    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Judge the Evidence", sceneLabel: "Case File", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
+    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Put in Order", sceneLabel: "Sequence Card", startText: "Start Ordering", replayText: "Reorder", endText: "End Lab", playMode: "order" },
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" }
   };
 
   var fallbackRounds = [
