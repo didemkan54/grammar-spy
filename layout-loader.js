@@ -5,20 +5,32 @@
     sidebar: 'components/sidebar.html'
   };
 
-  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 16px;padding:12px 40px 14px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
+  var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase';
+  var dropdownLinkStyle = 'display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap';
+  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px;background:#fff;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px';
+  var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
+
+  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 16px;padding:12px 40px 14px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
     '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:88px;width:auto;display:block;background:transparent;border:none"></a>' +
-    '<span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">' +
-    '<a href="index.html" data-i18n="nav_home" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Home</a>' +
-    '<a href="packs.html" data-i18n="nav_missions" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Missions</a>' +
-    '<a href="teacher-home.html" data-i18n="nav_teacher" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Teacher</a>' +
-    '<a href="missions.html" style="text-decoration:none;color:#0f5c5c;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Mission Library</a>' +
-    '<a href="progression.html" style="text-decoration:none;color:#0f5c5c;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Training Path</a>' +
-    '<a href="profile.html" style="text-decoration:none;color:#0f5c5c;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Profile</a>' +
-    '<a href="clues.html" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">CLUES</a>' +
-    '<a href="community.html" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Community</a>' +
-    '<a href="insights.html" data-i18n="nav_blog" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Blog</a>' +
-    '<a href="pricing.html" data-i18n="nav_pricing" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Pricing</a>' +
-    '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center;margin-left:8px;padding-left:12px;border-left:1px solid #d9dee6">' +
+    '<span style="display:flex;flex:1 1 420px;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">' +
+    '<a href="index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
+    '<a href="packs.html" data-i18n="nav_missions" style="' + navLinkStyle + '">Missions</a>' +
+    '<a href="missions.html" style="' + navLinkStyle + '">Mission Library</a>' +
+    '<a href="progression.html" style="' + navLinkStyle + '">Training Path</a>' +
+    '<a href="clues.html" style="' + navLinkStyle + '">CLUES</a>' +
+    '</span>' +
+    '<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">' +
+    '<details id="gsMoreMenu" style="position:relative">' +
+    '<summary style="' + menuSummaryStyle + '">More &#9662;</summary>' +
+    '<span style="' + menuPanelStyle + '">' +
+    '<a href="teacher-home.html" data-i18n="nav_teacher" style="' + dropdownLinkStyle + '">Teacher</a>' +
+    '<a href="community.html" style="' + dropdownLinkStyle + '">Community</a>' +
+    '<a href="profile.html" style="' + dropdownLinkStyle + '">Profile</a>' +
+    '<a href="insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
+    '<a href="pricing.html" data-i18n="nav_pricing" style="' + dropdownLinkStyle + '">Pricing</a>' +
+    '</span>' +
+    '</details>' +
+    '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center">' +
     '<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
     '<option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option><option value="fr">🇫🇷 Français</option>' +
     '<option value="am">🇪🇹 አማርኛ</option><option value="tr">🇹🇷 Türkçe</option><option value="ar">🇸🇦 العربية</option>' +
@@ -26,8 +38,14 @@
     '<option value="vi">🇻🇳 Tiếng Việt</option><option value="zh">🇨🇳 中文</option><option value="ko">🇰🇷 한국어</option>' +
     '<option value="so">🇸🇴 Soomaali</option><option value="ti">🇪🇷 ትግርኛ</option><option value="pt">🇧🇷 Português</option>' +
     '</select></span>' +
+    '<details id="gsAccountMenu" style="position:relative">' +
+    '<summary id="gsAccountLabel" style="' + menuSummaryStyle + '">Account &#9662;</summary>' +
+    '<span id="gsAccountPanel" style="' + menuPanelStyle + '">' +
+    '<a href="auth.html?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
+    '<a href="auth.html?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>' +
     '</span>' +
-    '<span style="display:inline-flex;gap:6px"><a href="auth.html?mode=create" data-i18n="nav_createAccount" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">Create account</a><a href="auth.html?mode=signin" data-i18n="nav_signIn" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign In</a></span>' +
+    '</details>' +
+    '</span>' +
     '</nav>';
 
   var footerFallback = '<footer class="site-footer" style="margin:24px 0 0;padding:24px 40px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Arial,sans-serif;font-size:13px;">' +
@@ -72,22 +90,36 @@
   }
 
   function updateAuthButtons() {
+    var session = null;
     try {
-      var session = JSON.parse(localStorage.getItem('gs_auth_session'));
-      if (!session || !session.name) return;
+      session = JSON.parse(localStorage.getItem('gs_auth_session'));
+    } catch (e) {}
+
+    var navs = document.querySelectorAll('nav[aria-label="Primary navigation"]');
+    navs.forEach(function(nav) {
+      var label = nav.querySelector('#gsAccountLabel');
+      var panel = nav.querySelector('#gsAccountPanel');
+      if (!label || !panel) return;
+
+      if (!session || !session.name) {
+        label.textContent = 'Account ▼';
+        panel.innerHTML =
+          '<a href="auth.html?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
+          '<a href="auth.html?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>';
+        return;
+      }
+
       var safeName = session.name;
       if (/[!@#$%^&*(){}[\]|\\<>\/~`+=]/.test(safeName) || safeName.length > 40) safeName = 'My Account';
-      var navs = document.querySelectorAll('nav[aria-label="Primary navigation"]');
-      navs.forEach(function(nav) {
-        var authSpans = nav.querySelectorAll('span');
-        var last = authSpans[authSpans.length - 1];
-        if (!last || !last.querySelector('a[href*="auth.html"]')) return;
-        var name = safeName.length > 15 ? safeName.slice(0, 15) + '…' : safeName;
-        last.innerHTML =
-          '<a href="profile.html" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">' + name + '</a>' +
-          '<a href="#" onclick="localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');localStorage.removeItem(\'gs_student_classroom\');localStorage.removeItem(\'gs_use_context_v3\');localStorage.removeItem(\'gs_active_student_v1\');localStorage.removeItem(\'gs_credentials\');location.href=\'index.html\';return false;" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign Out</a>';
-      });
-    } catch(e) {}
+      var shortName = safeName.length > 14 ? safeName.slice(0, 14) + '…' : safeName;
+      label.textContent = shortName + ' ▼';
+      panel.innerHTML =
+        '<a href="profile.html" style="' + dropdownLinkStyle + '">Profile</a>' +
+        '<a href="#" data-i18n="nav_signOut" onclick="localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');localStorage.removeItem(\'gs_student_classroom\');localStorage.removeItem(\'gs_use_context_v3\');localStorage.removeItem(\'gs_active_student_v1\');localStorage.removeItem(\'gs_credentials\');location.href=\'index.html\';return false;" style="' + dropdownLinkStyle + '">Sign Out</a>';
+    });
+    try {
+      if (window.GS_I18N && typeof window.GS_I18N.apply === 'function') window.GS_I18N.apply();
+    } catch (e2) {}
   }
 
   function applyRoleVisibility() {

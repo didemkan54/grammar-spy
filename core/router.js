@@ -15,19 +15,34 @@ export function resolveRouteIdFromPath(pathname = window.location.pathname) {
 export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath()) {
   if (!targetEl) return;
 
-  const navLinks = [
+  const currentPage = (window.location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
+  const navLinkStyle = "text-decoration:none;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase";
+  const dropdownLinkStyle = "display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap";
+  const menuSummaryStyle = "cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px;background:#fff;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px";
+  const menuPanelStyle = "position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30";
+
+  const primaryLinks = [
     { label: "Home", href: "index.html" },
     { label: "Missions", href: "packs.html" },
-    { label: "Teacher", href: "teacher-home.html" },
     { label: "Mission Library", href: "missions.html" },
     { label: "Training Path", href: "progression.html" },
+    { label: "CLUES", href: "clues.html" }
+  ];
+  const moreLinks = [
+    { label: "Teacher", href: "teacher-home.html" },
+    { label: "Community", href: "community.html" },
     { label: "Profile", href: "profile.html" },
     { label: "Blog", href: "insights.html" },
     { label: "Pricing", href: "pricing.html" }
   ];
 
-  const linkStyle = "text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase";
-  const links = navLinks.map(l => `<a href="${l.href}" style="${linkStyle}">${l.label}</a>`).join("");
+  const buildPrimaryLink = (link) => {
+    const isActive = currentPage === link.href.toLowerCase();
+    const color = isActive ? "#0f5c5c" : "#4a5568";
+    return `<a href="${link.href}" style="${navLinkStyle};color:${color}">${link.label}</a>`;
+  };
+  const primaryLinksHtml = primaryLinks.map(buildPrimaryLink).join("");
+  const moreLinksHtml = moreLinks.map((l) => `<a href="${l.href}" style="${dropdownLinkStyle}">${l.label}</a>`).join("");
 
   const langSelect = `<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +
     `<option value="en">\u{1F1FA}\u{1F1F8} English</option><option value="es">\u{1F1EA}\u{1F1F8} Español</option><option value="fr">\u{1F1EB}\u{1F1F7} Français</option>` +
@@ -38,38 +53,61 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     `</select>`;
 
   targetEl.innerHTML = `
-    <nav aria-label="Primary navigation" style="margin:0 0 16px;padding:12px 40px 14px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">
+    <nav aria-label="Primary navigation" style="margin:0 0 16px;padding:12px 40px 14px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">
       <a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent">
         <img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:88px;width:auto;display:block;background:transparent;border:none">
       </a>
-      <span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
-        ${links}
-        <span id="gsLangSwitcher" style="display:inline-flex;align-items:center;margin-left:8px;padding-left:12px;border-left:1px solid #d9dee6">
+      <span style="display:flex;flex:1 1 420px;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">
+        ${primaryLinksHtml}
+      </span>
+      <span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">
+        <details style="position:relative">
+          <summary style="${menuSummaryStyle}">More &#9662;</summary>
+          <span style="${menuPanelStyle}">
+            ${moreLinksHtml}
+          </span>
+        </details>
+        <span id="gsLangSwitcher" style="display:inline-flex;align-items:center">
           ${langSelect}
         </span>
-      </span>
-      <span id="gsAuthButtons" style="display:inline-flex;gap:6px">
-        <a href="auth.html?mode=create" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">Create account</a>
-        <a href="auth.html?mode=signin" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign In</a>
+        <details id="gsAccountMenu" style="position:relative">
+          <summary id="gsAccountLabel" style="${menuSummaryStyle}">Account &#9662;</summary>
+          <span id="gsAccountPanel" style="${menuPanelStyle}">
+            <a href="auth.html?mode=signin" style="${dropdownLinkStyle}">Sign In</a>
+            <a href="auth.html?mode=create" style="${dropdownLinkStyle}">Create account</a>
+          </span>
+        </details>
       </span>
     </nav>
   `;
 
   try {
     const session = JSON.parse(localStorage.getItem('gs_auth_session'));
-    if (session && session.name) {
-      const authEl = targetEl.querySelector('#gsAuthButtons');
-      if (authEl) {
-        let safeName = session.name;
-        if (/[!@#$%^&*(){}[\]|\\<>\/~`+=]/.test(safeName) || safeName.length > 40) safeName = 'My Account';
-        const name = safeName.length > 15 ? safeName.slice(0, 15) + '…' : safeName;
-        authEl.innerHTML = `
-          <a href="profile.html" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">${name}</a>
-          <a href="#" onclick="localStorage.removeItem('gs_auth_session');localStorage.removeItem('gs_account_v1');location.reload();return false;" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign Out</a>
-        `;
-      }
+    const authLabel = targetEl.querySelector('#gsAccountLabel');
+    const authPanel = targetEl.querySelector('#gsAccountPanel');
+    if (authLabel && authPanel && session && session.name) {
+      let safeName = session.name;
+      if (/[!@#$%^&*(){}[\]|\\<>\/~`+=]/.test(safeName) || safeName.length > 40) safeName = 'My Account';
+      const name = safeName.length > 14 ? safeName.slice(0, 14) + '…' : safeName;
+      authLabel.textContent = `${name} ▼`;
+      authPanel.innerHTML = `
+        <a href="profile.html" style="${dropdownLinkStyle}">Profile</a>
+        <a href="#" style="${dropdownLinkStyle}" onclick="localStorage.removeItem('gs_auth_session');localStorage.removeItem('gs_account_v1');localStorage.removeItem('gs_student_classroom');localStorage.removeItem('gs_use_context_v3');localStorage.removeItem('gs_active_student_v1');localStorage.removeItem('gs_credentials');location.href='index.html';return false;">Sign Out</a>
+      `;
     }
   } catch(e) {}
+
+  try {
+    const ctx = localStorage.getItem('gs_use_context_v3');
+    const studentClassroom = localStorage.getItem('gs_student_classroom');
+    const isStudent = ctx === 'individual' || studentClassroom;
+    if (isStudent) {
+      targetEl.querySelectorAll('a').forEach((a) => {
+        const href = (a.getAttribute('href') || '').toLowerCase();
+        if (href.includes('teacher-home') || href.includes('teacher-mode')) a.style.display = 'none';
+      });
+    }
+  } catch (e) {}
 }
 
 export function applyReducedMotion(enabled) {
