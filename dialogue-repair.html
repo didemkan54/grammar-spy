@@ -6,6 +6,63 @@
   <title>Grammar Spy™ — Dialogue Builder</title>
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <link rel="stylesheet" href="game-ui.css" />
+  <style>
+    .dialogue-hero-preview {
+      width: min(100%, 560px);
+      margin: 10px auto 2px;
+      padding: 14px;
+      border: 1px solid #d9dee6;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+      box-shadow: 0 6px 18px rgba(11, 16, 32, .08);
+      display: grid;
+      gap: 10px;
+    }
+    .dialogue-hero-preview-label {
+      margin: 0;
+      font: 800 11px Inter, Arial, sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #1f5f63;
+      text-align: center;
+    }
+    .dialogue-hero-thread {
+      display: grid;
+      gap: 8px;
+    }
+    .dialogue-hero-bubble {
+      max-width: 88%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #16223a;
+    }
+    .dialogue-hero-bubble span {
+      display: block;
+      margin-bottom: 4px;
+      font: 800 10px Inter, Arial, sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #1f5f63;
+    }
+    .dialogue-hero-bubble-a {
+      justify-self: start;
+      background: #edf2f8;
+      border-bottom-left-radius: 4px;
+    }
+    .dialogue-hero-bubble-b {
+      justify-self: end;
+      background: #e8f4f5;
+      border-bottom-right-radius: 4px;
+    }
+    .dialogue-hero-bubble-fix {
+      justify-self: start;
+      background: #edf9f3;
+      border: 1px solid #b6e2cc;
+      border-bottom-left-radius: 4px;
+    }
+  </style>
 </head>
 <body>
   <script src="i18n.js"></script>
@@ -17,7 +74,23 @@
         <p class="k" id="gameK">Pack · Difficulty</p>
         <h1 id="gameTitle">Dialogue Builder</h1>
         <p class="sub" id="gameSub">Loading game details...</p>
-        <img src="assets/illustrations/dialogue-builder-scene.svg" alt="Chat-based dialogue practice scene" style="width:100%;max-width:460px;height:auto;margin:8px 0 4px" />
+        <div class="dialogue-hero-preview" aria-label="Dialogue Builder preview">
+          <p class="dialogue-hero-preview-label">How this mission works</p>
+          <div class="dialogue-hero-thread">
+            <div class="dialogue-hero-bubble dialogue-hero-bubble-a">
+              <span>Draft line</span>
+              "Where you did put the final note?"
+            </div>
+            <div class="dialogue-hero-bubble dialogue-hero-bubble-b">
+              <span>Coach line</span>
+              Fix the question order and pick the clean revised sentence.
+            </div>
+            <div class="dialogue-hero-bubble dialogue-hero-bubble-fix">
+              <span>Revised line</span>
+              "Where did you put the final note?"
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="hud">
