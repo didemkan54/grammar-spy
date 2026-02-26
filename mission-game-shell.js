@@ -3975,6 +3975,249 @@
     }
   };
 
+  var timelineSortRounds = [
+    {
+      scene: "Timeline Card A",
+      prompt: "Sort each sentence into BEFORE (completed) or DURING (ongoing).",
+      options: [
+        "The team was checking clues when the lights went out.",
+        "The principal announced the final schedule before lunch.",
+        "Students were organizing folders during homeroom.",
+        "The librarian locked the media room at 4:00."
+      ],
+      answer: 0,
+      explain: "Use DURING for was/were + verb-ing actions and BEFORE for completed simple past actions."
+    },
+    {
+      scene: "Timeline Card B",
+      prompt: "Drag each line to the correct timeline zone.",
+      options: [
+        "Maya was interviewing witnesses while Leo was updating the board.",
+        "The class submitted the project after second period.",
+        "We were reviewing notes when the fire drill started.",
+        "The coach blew the whistle and ended practice."
+      ],
+      answer: 0,
+      explain: "Background actions in progress belong in DURING. Finished events belong in BEFORE."
+    },
+    {
+      scene: "Timeline Card C",
+      prompt: "Sort the timeline cards: ongoing background vs completed event.",
+      options: [
+        "The nurse was checking attendance when the bell rang.",
+        "The secretary filed the forms after the meeting ended.",
+        "The students were discussing the prompt while the teacher walked around.",
+        "The captain turned off the lights before leaving."
+      ],
+      answer: 0,
+      explain: "Past continuous forms map to DURING, while simple past forms map to BEFORE."
+    },
+    {
+      scene: "Timeline Card D",
+      prompt: "Place each sentence in BEFORE or DURING.",
+      options: [
+        "We were preparing slides when the projector failed.",
+        "The team solved the puzzle and wrote the report.",
+        "The janitor was cleaning the hallway during dismissal.",
+        "The principal called the office after lunch."
+      ],
+      answer: 0,
+      explain: "Was/were + verb-ing means an action was in progress (DURING)."
+    },
+    {
+      scene: "Timeline Card E",
+      prompt: "Sort each sentence based on timeline meaning.",
+      options: [
+        "The class was reading quietly while rain tapped the windows.",
+        "The teacher posted feedback before first period.",
+        "We were arranging materials when the guest arrived.",
+        "The counselor finished the parent call at noon."
+      ],
+      answer: 0,
+      explain: "Ongoing background actions go to DURING; completed actions go to BEFORE."
+    },
+    {
+      scene: "Timeline Card F",
+      prompt: "Drag cards to BEFORE or DURING using verb clues.",
+      options: [
+        "The students were presenting their posters when the bell rang.",
+        "The office opened the doors at 8:00.",
+        "Ava was collecting lab tools while Noah labeled samples.",
+        "The team packed the equipment after class."
+      ],
+      answer: 0,
+      explain: "Use the verb form to classify each card, not whether the sentence is right/wrong."
+    },
+    {
+      scene: "Timeline Card G",
+      prompt: "Sort each line into the correct timeline zone.",
+      options: [
+        "Leo was explaining the chart while Maya took notes.",
+        "The librarian checked out the final book.",
+        "We were waiting in line when the door opened.",
+        "The teacher ended the quiz and collected papers."
+      ],
+      answer: 0,
+      explain: "DURING captures in-progress background. BEFORE captures completed events."
+    },
+    {
+      scene: "Timeline Card H",
+      prompt: "Classify each sentence: completed event or ongoing background.",
+      options: [
+        "The class was reviewing examples when the speaker arrived.",
+        "The principal signed the forms after lunch.",
+        "Students were rehearsing lines during advisory period.",
+        "The bus left the parking lot at 3:30."
+      ],
+      answer: 0,
+      explain: "Past continuous = DURING. Simple past = BEFORE."
+    },
+    {
+      scene: "Timeline Card I",
+      prompt: "Drag all four lines to BEFORE or DURING.",
+      options: [
+        "We were comparing answers while the timer was running.",
+        "The captain checked the door and locked it.",
+        "The teacher was answering questions when the call came in.",
+        "The class finished the warm-up before discussion."
+      ],
+      answer: 0,
+      explain: "Every card belongs in one zone based on timeline role."
+    },
+    {
+      scene: "Timeline Card J",
+      prompt: "Sort each sentence by timeline role.",
+      options: [
+        "Mina was organizing evidence while Berk tracked time.",
+        "The team posted the final chart before leaving.",
+        "The teacher was reading directions when the power flickered.",
+        "The office sent the announcement at 9:15."
+      ],
+      answer: 0,
+      explain: "Use DURING for progressive past actions and BEFORE for completed simple past actions."
+    },
+    {
+      scene: "Timeline Card K",
+      prompt: "Place each line in the right timeline bucket.",
+      options: [
+        "The class was taking notes while the teacher explained the graph.",
+        "The coach reviewed scores after practice.",
+        "I was checking the rubric when my phone buzzed.",
+        "The librarian closed the desk at 5:00."
+      ],
+      answer: 0,
+      explain: "In-progress actions belong in DURING. Completed events belong in BEFORE."
+    },
+    {
+      scene: "Timeline Card L",
+      prompt: "Sort these timeline clues into BEFORE or DURING.",
+      options: [
+        "We were setting up stations when the visitors arrived.",
+        "The teacher graded quizzes after school.",
+        "Students were discussing evidence while the monitor timed them.",
+        "The class submitted notebooks before the bell."
+      ],
+      answer: 0,
+      explain: "Was/were + ing is DURING. Finished actions in simple past are BEFORE."
+    },
+    {
+      scene: "Timeline Card M",
+      prompt: "Drag each sentence to the correct timeline zone.",
+      options: [
+        "The lab team was measuring samples when the timer beeped.",
+        "The secretary printed agendas before assembly.",
+        "The students were brainstorming while music played softly.",
+        "The counselor ended the meeting at 2:00."
+      ],
+      answer: 0,
+      explain: "Timeline Sort is about classifying action type, not finding one wrong line."
+    },
+    {
+      scene: "Timeline Card N",
+      prompt: "Classify each line by timeline meaning.",
+      options: [
+        "The class was watching the demo when the internet dropped.",
+        "The principal visited three classrooms before noon.",
+        "Maya was highlighting notes while Leo summarized evidence.",
+        "The teacher posted scores after class."
+      ],
+      answer: 0,
+      explain: "Choose DURING for ongoing background actions and BEFORE for completed actions."
+    },
+    {
+      scene: "Timeline Card O",
+      prompt: "Sort all cards into BEFORE or DURING.",
+      options: [
+        "We were practicing introductions when the guests entered.",
+        "The team reviewed the checklist after lunch.",
+        "Students were editing drafts while the timer was counting down.",
+        "The office delivered badges at 8:20."
+      ],
+      answer: 0,
+      explain: "Progressive forms show DURING; simple past forms show BEFORE."
+    },
+    {
+      scene: "Timeline Card P",
+      prompt: "Use the verb clues to sort each sentence.",
+      options: [
+        "The students were presenting projects when the visitor arrived.",
+        "The librarian stamped returns before recess.",
+        "I was revising the paragraph while my partner checked punctuation.",
+        "The coach started practice at 4:10."
+      ],
+      answer: 0,
+      explain: "Sort by action timing: in progress (DURING) vs completed (BEFORE)."
+    },
+    {
+      scene: "Timeline Card Q",
+      prompt: "Drag each sentence to the timeline zone that fits.",
+      options: [
+        "The class was discussing themes while rain was falling outside.",
+        "The teacher opened the rubric and explained criteria.",
+        "We were waiting in the hallway when the door unlocked.",
+        "The team finalized the script after rehearsal."
+      ],
+      answer: 0,
+      explain: "DURING captures ongoing background actions, BEFORE captures completed events."
+    },
+    {
+      scene: "Timeline Card R",
+      prompt: "Sort each line into BEFORE or DURING.",
+      options: [
+        "The teacher was reading aloud while students were taking notes.",
+        "The class completed the worksheet before discussion.",
+        "I was reviewing the clue when the alarm sounded.",
+        "The office sent the reminder at 10:30."
+      ],
+      answer: 0,
+      explain: "Past continuous belongs in DURING; simple past belongs in BEFORE."
+    },
+    {
+      scene: "Timeline Card S",
+      prompt: "Classify the timeline cards by action type.",
+      options: [
+        "The team was building the model when the glue spilled.",
+        "The nurse checked attendance after the bell rang.",
+        "Students were comparing answers while the clock was ticking.",
+        "The principal approved the field trip form."
+      ],
+      answer: 0,
+      explain: "Use DURING for ongoing actions and BEFORE for completed actions."
+    },
+    {
+      scene: "Timeline Card T",
+      prompt: "Sort each sentence to the right timeline zone.",
+      options: [
+        "I was reviewing the clue when my phone rang.",
+        "The class packed supplies before dismissal.",
+        "The monitor was updating scores while teams debated answers.",
+        "The teacher ended the mission and collected reports."
+      ],
+      answer: 0,
+      explain: "Was/were + ing belongs in DURING. Completed simple past belongs in BEFORE."
+    }
+  ];
+
   function cloneRound(round) {
     return {
       scene: round.scene,
@@ -4001,6 +4244,7 @@
   }
 
   function resolveRoundBank(key, packId) {
+    if (key === "past-sort") return timelineSortRounds;
     var base = roundBanks[key] || fallbackRounds;
     var variant = packVariantBanks[key];
     if (variant && variant[packId]) return variant[packId].concat(base);
@@ -4799,7 +5043,7 @@
   }
 
   function sentenceClass(lineText) {
-    return /\b(am|is|are|was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
+    return /\b(was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
   }
 
   function showClassifyOptions(round) {
