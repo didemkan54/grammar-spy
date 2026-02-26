@@ -16,7 +16,7 @@
     '<a href="insights.html" data-i18n="nav_blog" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Blog</a>' +
     '<a href="pricing.html" data-i18n="nav_pricing" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Pricing</a>' +
     '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center;margin-left:8px;padding-left:12px;border-left:1px solid #d9dee6">' +
-    '<select id="gsLangSelect" aria-label="Language" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
+    '<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
     '<option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option><option value="fr">🇫🇷 Français</option>' +
     '<option value="am">🇪🇹 አማርኛ</option><option value="tr">🇹🇷 Türkçe</option><option value="ar">🇸🇦 العربية</option>' +
     '<option value="hi">🇮🇳 हिन्दी</option><option value="ur">🇵🇰 اردو</option><option value="ps">🇦🇫 پښتو</option>' +

@@ -28,7 +28,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   const linkStyle = "text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase";
   const links = navLinks.map(l => `<a href="${l.href}" style="${linkStyle}">${l.label}</a>`).join("");
 
-  const langSelect = `<select id="gsLangSelect" aria-label="Language" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +
+  const langSelect = `<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +
     `<option value="en">\u{1F1FA}\u{1F1F8} English</option><option value="es">\u{1F1EA}\u{1F1F8} Español</option><option value="fr">\u{1F1EB}\u{1F1F7} Français</option>` +
     `<option value="am">\u{1F1EA}\u{1F1F9} አማርኛ</option><option value="tr">\u{1F1F9}\u{1F1F7} Türkçe</option><option value="ar">\u{1F1F8}\u{1F1E6} العربية</option>` +
     `<option value="hi">\u{1F1EE}\u{1F1F3} हिन्दी</option><option value="ur">\u{1F1F5}\u{1F1F0} اردو</option><option value="ps">\u{1F1E6}\u{1F1EB} پښتو</option>` +
