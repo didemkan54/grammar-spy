@@ -68,6 +68,13 @@
 
       <section class="view active" id="viewCreate" aria-label="Create account">
         <div class="field">
+          <label>I am a…</label>
+          <div class="tabs" style="margin:0">
+            <button class="tab active" id="createRoleTeacher" type="button" onclick="document.getElementById('createRoleTeacher').classList.add('active');document.getElementById('createRoleStudent').classList.remove('active')">Teacher</button>
+            <button class="tab" id="createRoleStudent" type="button" onclick="document.getElementById('createRoleStudent').classList.add('active');document.getElementById('createRoleTeacher').classList.remove('active')">Student</button>
+          </div>
+        </div>
+        <div class="field">
           <label for="createName">Name</label>
           <input id="createName" type="text" placeholder="Your name" autocomplete="given-name" data-lpignore="true" data-form-type="other" />
         </div>
@@ -90,6 +97,13 @@
       </section>
 
       <section class="view" id="viewSignIn" aria-label="Sign in">
+        <div class="field">
+          <label>I am a…</label>
+          <div class="tabs" style="margin:0">
+            <button class="tab active" id="signinRoleTeacher" type="button" onclick="document.getElementById('signinRoleTeacher').classList.add('active');document.getElementById('signinRoleStudent').classList.remove('active')">Teacher</button>
+            <button class="tab" id="signinRoleStudent" type="button" onclick="document.getElementById('signinRoleStudent').classList.add('active');document.getElementById('signinRoleTeacher').classList.remove('active')">Student</button>
+          </div>
+        </div>
         <div class="field">
           <label for="signinEmail">Email</label>
           <input id="signinEmail" type="email" placeholder="you@school.edu" autocomplete="username" />
@@ -220,7 +234,9 @@
         const account = window.GS_BILLING.getAccount();
         if (account) await window.GS_BIOMETRIC.saveCredentials(account);
       }
-      location.href = nextHref('teacher-home.html');
+      const isCreateStudent = document.getElementById('createRoleStudent')?.classList.contains('active');
+      localStorage.setItem('gs_use_context_v3', isCreateStudent ? 'individual' : 'class');
+      location.href = nextHref(isCreateStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
     });
 
     document.getElementById('btnSignIn').addEventListener('click', async () => {
@@ -241,7 +257,9 @@
         const account = window.GS_BILLING.getAccount();
         if (account) await window.GS_BIOMETRIC.saveCredentials(account);
       }
-      location.href = nextHref('teacher-home.html');
+      const isSigninStudent = document.getElementById('signinRoleStudent')?.classList.contains('active');
+      localStorage.setItem('gs_use_context_v3', isSigninStudent ? 'individual' : 'class');
+      location.href = nextHref(isSigninStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
     });
 
     document.getElementById('btnBiometricSignIn').addEventListener('click', async () => {
