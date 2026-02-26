@@ -164,11 +164,17 @@
         }
       }
       renderJoinSection();
-      if (location.search.indexOf('join=1') >= 0 || location.hash === '#joinClassSection') {
-        setTimeout(function() {
-          var joinEl = document.getElementById('joinClassSection');
-          if (joinEl) joinEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
+      if (location.search.indexOf('join=1') >= 0 || location.hash.indexOf('joinClass') >= 0) {
+        var joinEl = document.getElementById('joinClassSection');
+        if (joinEl) {
+          joinEl.style.border = '2px solid #1f5f63';
+          joinEl.style.borderRadius = '16px';
+          joinEl.style.padding = '20px';
+          joinEl.style.background = '#e6f2f2';
+          setTimeout(function() { joinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+          setTimeout(function() { joinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 500);
+          setTimeout(function() { joinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 1000);
+        }
       }
       var FEATURED = [
         { id: 'pack01', num: '01', name: 'Retell What Happened', cover: 'assets/branding-images/packs/pack01-retell-what-happened.png' },
