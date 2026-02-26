@@ -18,6 +18,22 @@
     h1{margin:0;color:#0b1020;font-size:34px;line-height:1.1}
     p{margin:10px 0 0;color:#4a5568;line-height:1.6}
     .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .filter-panel{display:grid;gap:12px}
+    .filter-chip-row{display:flex;gap:8px;flex-wrap:wrap}
+    .filter-chip{
+      border:1px solid #d9dee6;
+      border-radius:999px;
+      background:#fff;
+      color:#304056;
+      padding:8px 12px;
+      font:700 11px Inter,Arial,sans-serif;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      cursor:pointer
+    }
+    .filter-chip.active{background:#1f5f63;color:#fff;border-color:#194f53}
+    .filter-select{max-width:260px;border:1px solid #d9dee6;border-radius:10px;padding:9px 12px;background:#fff;color:#16223a;font:700 13px Inter,Arial,sans-serif}
+    .filter-note{margin:0;font-size:12px;color:#4a5568}
     .pack-card{background:#fff;border:1px solid var(--cool);border-radius:16px;padding:12px;display:grid;gap:12px}
     .pack-thumb-link{display:block}
     .pack-card img,.pack-tile img{width:100%;border-radius:18px;box-shadow:0 20px 50px rgba(11,16,32,.12);transition:transform .3s ease, box-shadow .3s ease}
@@ -44,8 +60,31 @@
       <p data-i18n="packs_selectContent">Select content first. Choose difficulty in the next step.</p>
     </section>
 
-    <section class="grid" aria-label="Mission selection">
-      <article class="pack-card">
+    <section class="panel filter-panel" aria-label="Mission filters">
+      <p class="k">Filter by grammar focus</p>
+      <div class="filter-chip-row" id="missionFilterChips">
+        <button class="filter-chip active" type="button" data-filter="all">All Missions</button>
+        <button class="filter-chip" type="button" data-filter="past_tenses">Past Tenses</button>
+        <button class="filter-chip" type="button" data-filter="present_tenses">Present Tenses</button>
+        <button class="filter-chip" type="button" data-filter="auxiliary_verbs">Auxiliary Verbs</button>
+        <button class="filter-chip" type="button" data-filter="connectors">Connectors</button>
+        <button class="filter-chip" type="button" data-filter="reference_pronouns">Reference & Pronouns</button>
+        <button class="filter-chip" type="button" data-filter="questions">Questions</button>
+      </div>
+      <select id="missionFilterSelect" class="filter-select" aria-label="Mission grammar focus">
+        <option value="all">All Missions</option>
+        <option value="past_tenses">Past Tenses</option>
+        <option value="present_tenses">Present Tenses</option>
+        <option value="auxiliary_verbs">Auxiliary Verbs</option>
+        <option value="connectors">Connectors</option>
+        <option value="reference_pronouns">Reference & Pronouns</option>
+        <option value="questions">Questions</option>
+      </select>
+      <p class="filter-note" id="missionFilterCount">Showing 6 missions.</p>
+    </section>
+
+    <section class="grid" aria-label="Mission selection" id="missionGrid">
+      <article class="pack-card" data-focus="past_tenses">
         <a class="pack-thumb-link" href="pack.html?pack=pack01">
           <img src="assets/branding-images/packs/pack01-retell-what-happened.png" alt="Mission 01 Retell What Happened cover">
         </a>
@@ -58,7 +97,7 @@
         </div>
       </article>
 
-      <article class="pack-card">
+      <article class="pack-card" data-focus="present_tenses">
         <a class="pack-thumb-link" href="pack.html?pack=pack02">
           <img src="assets/branding-images/packs/pack02-speak-in-the-moment.png" alt="Mission 02 Speak In The Moment cover">
         </a>
@@ -69,7 +108,7 @@
         </div>
       </article>
 
-      <article class="pack-card">
+      <article class="pack-card" data-focus="auxiliary_verbs">
         <a class="pack-thumb-link" href="pack.html?pack=pack03">
           <img src="assets/branding-images/packs/pack03-sentence-confidence-missions.png" alt="Mission 03 Sentence Confidence Missions cover">
         </a>
@@ -82,7 +121,7 @@
         </div>
       </article>
 
-      <article class="pack-card">
+      <article class="pack-card" data-focus="connectors">
         <a class="pack-thumb-link" href="pack.html?pack=pack04">
           <img src="assets/branding-images/packs/pack04-link-ideas-clearly.png" alt="Mission 04 Link Ideas Clearly cover">
         </a>
@@ -95,7 +134,7 @@
         </div>
       </article>
 
-      <article class="pack-card">
+      <article class="pack-card" data-focus="reference_pronouns">
         <a class="pack-thumb-link" href="pack.html?pack=pack05">
           <img src="assets/branding-images/packs/pack05-reference-smartly.png" alt="Mission 05 Reference Smartly cover">
         </a>
@@ -108,7 +147,7 @@
         </div>
       </article>
 
-      <article class="pack-card">
+      <article class="pack-card" data-focus="questions">
         <a class="pack-thumb-link" href="pack.html?pack=pack06">
           <img src="assets/branding-images/packs/pack06-question-flow-missions.png" alt="Mission 06 Question Flow Missions cover">
         </a>
@@ -127,5 +166,60 @@
   <script src="auth-scaffold.js"></script>
   <script src="layout-loader.js"></script>
   <script src="app-shell.js"></script>
+  <script>
+    (function(){
+      var chips = Array.prototype.slice.call(document.querySelectorAll('#missionFilterChips .filter-chip'));
+      var select = document.getElementById('missionFilterSelect');
+      var cards = Array.prototype.slice.call(document.querySelectorAll('#missionGrid .pack-card'));
+      var countText = document.getElementById('missionFilterCount');
+
+      function titleCase(filter){
+        var labels = {
+          past_tenses: 'Past Tenses',
+          present_tenses: 'Present Tenses',
+          auxiliary_verbs: 'Auxiliary Verbs',
+          connectors: 'Connectors',
+          reference_pronouns: 'Reference & Pronouns',
+          questions: 'Questions'
+        };
+        return labels[filter] || 'All Missions';
+      }
+
+      function syncUi(filter){
+        chips.forEach(function(chip){
+          chip.classList.toggle('active', chip.getAttribute('data-filter') === filter);
+        });
+        if (select) select.value = filter;
+      }
+
+      function applyFilter(filter){
+        var visible = 0;
+        cards.forEach(function(card){
+          var focus = card.getAttribute('data-focus');
+          var show = (filter === 'all') || (focus === filter);
+          card.hidden = !show;
+          if (show) visible++;
+        });
+        if (countText){
+          countText.textContent = filter === 'all'
+            ? ('Showing ' + visible + ' missions.')
+            : ('Showing ' + visible + ' mission' + (visible === 1 ? '' : 's') + ' for ' + titleCase(filter) + '.');
+        }
+        syncUi(filter);
+      }
+
+      chips.forEach(function(chip){
+        chip.addEventListener('click', function(){
+          applyFilter(chip.getAttribute('data-filter') || 'all');
+        });
+      });
+      if (select){
+        select.addEventListener('change', function(){
+          applyFilter(select.value || 'all');
+        });
+      }
+      applyFilter('all');
+    })();
+  </script>
 </body>
 </html>
