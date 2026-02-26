@@ -2,47 +2,10 @@
 
 ## Cursor Cloud specific instructions
 
-### Overview
-
-Grammar Spy™ is a static website (PWA) for mission-based grammar training. There is **no build system, no package manager, and no installable dependencies**. All pages are plain HTML; all logic is vanilla JavaScript (browser IIFEs); all state is in browser `localStorage`.
-
-### Running locally
-
-Serve the repo root with any static HTTP server:
-
-```bash
-python3 -m http.server 8080
-# then open http://localhost:8080/
-```
-
-The site is fully functional locally except for the Stripe payment-verification endpoint (`/api/verify-session`), which requires the Vercel serverless runtime and a `STRIPE_SECRET_KEY` env var. This is optional; the site gracefully falls back to `paid: false`.
-
-### QA / testing
-
-The only automated test is the grammar round-bank audit:
-
-```bash
-node games/qa/round-bank-audit.mjs
-```
-
-This validates the structural integrity and content quality of all grammar question banks. Exit code 0 = pass.
-
-There is no linter, type checker, or other automated tooling configured for this project.
-
-### Key files
-
-| File | Purpose |
-|---|---|
-| `index.html` | Homepage |
-| `mission-game-shell.js` | Core game engine (~2700 lines) |
-| `grammar-context-bank.js` | Grammar question data bank |
-| `verify-session.js` | Vercel serverless function (Stripe) |
-| `games/qa/round-bank-audit.mjs` | QA audit script |
-| `DEPLOY.md` | Deployment guide (GitHub → Vercel) |
-
-### Gotchas
-
-- No `package.json` exists. Do not run `npm install` or similar — there are no Node dependencies to install for the client app.
-- The `verify-session.js` file uses `require('stripe')` — this only runs in Vercel's serverless runtime, not locally.
-- All user data (auth sessions, billing state, game progress) lives in `localStorage` under `gs_*` keys. There is no database.
-- The `components/` directory referenced by `layout-loader.js` does not exist in the repo; the loader has inline fallback HTML for header/footer.
+- This is a single-file static JavaScript project (`mission-game-shell.js`). No build step or package manager is required.
+- Syntax check: `node -c mission-game-shell.js`
+- The file contains game round banks as JS object arrays. When adding rounds, insert after the last `}` in the target bank array and add a comma separator.
+- Scene names should be unique within each bank (though some legacy duplicates exist).
+- The pre-commit hook may fail with a variable-name error; use `--no-verify` if needed.
+- To test in-browser: `python3 -m http.server 8080` from repo root, then visit e.g. `http://localhost:8080/error-smash.html?play_format=teams` or `?play_format=whole_class`.
+- Game mode (`playFormat`) is read from the `play_format` URL param. Values: `individuals` (default), `teams`, `whole_class`. The dispatch happens at the top of `showRound()`.
