@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Grammar Spy™ — CLUES Intel Archive</title>
+<meta name="description" content="Context-based grammar intel archive. 32 field-tested CLUE cards covering tense, agreement, articles, and clauses."/>
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg"/>
+<style>
+:root{--bg:#f6fafa;--panel:#fff;--text:#1a2b2c;--muted:#5e7172;--teal:#1f5f63;--teal-2:#e6f2f2;--teal-3:#cce5e6;--gold:#c9a227;--gold-2:#fdf8eb;--red:#b04444;--red-2:#fff0f0;--green:#1f8f63;--green-2:#eaf8ef;--border:#d4e0e0;--shadow:0 4px 20px rgba(20,60,62,.06);--radius:14px;--focus:0 0 0 3px rgba(31,95,99,.35)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.clue-card,.reveal{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",system-ui,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+::selection{background:var(--teal-2);color:var(--teal)}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-weight:800;font-size:16px;color:var(--teal);text-decoration:none;display:flex;align-items:center;gap:7px}
+.nav-brand svg{width:24px;height:24px}
+.nav-right{display:flex;gap:8px;align-items:center}
+.nav-link{padding:5px 10px;font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;border-radius:6px;transition:color .2s,background .2s}
+.nav-link:hover{color:var(--teal);background:var(--teal-2)}
+
+/* HERO */
+.hero{padding:56px 24px 36px;text-align:center}
+.hero h1{font-size:clamp(28px,4.5vw,42px);font-weight:800;line-height:1.12;color:var(--text);letter-spacing:-.02em}
+.hero .sub{font-size:16px;color:var(--muted);margin:12px auto 0;max-width:52ch}
+.kicker{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+
+/* TOOLBAR */
+.toolbar{max-width:1120px;margin:0 auto;padding:0 24px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search-wrap{flex:1;min-width:200px;position:relative}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted);pointer-events:none}
+.search{width:100%;padding:10px 12px 10px 36px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:14px;color:var(--text);background:var(--panel)}
+.search:focus{border-color:var(--teal);box-shadow:var(--focus)}
+.filter-btn{padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:var(--panel);font:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.filter-btn:hover,.filter-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.saved-toggle{margin-left:auto;padding:7px 12px;border:1px solid var(--border);border-radius:8px;background:var(--panel);font:inherit;font-size:12px;font-weight:600;color:var(--gold);cursor:pointer;display:flex;align-items:center;gap:5px}
+.saved-toggle svg{width:14px;height:14px}
+.saved-toggle.active{background:var(--gold-2);border-color:var(--gold)}
+.count-label{font-size:12px;color:var(--muted);font-weight:600;padding:0 4px}
+
+/* GRID */
+.grid{max-width:1120px;margin:0 auto;padding:0 24px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+@media(max-width:400px){.grid{grid-template-columns:1fr}}
+
+/* CARD */
+.clue-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .2s,box-shadow .2s;position:relative}
+.clue-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(20,60,62,.1)}
+.card-cat{padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:0 0 8px 0;position:absolute;top:0;left:0}
+.cat-tense{background:#e0f0ff;color:#1a5fa0}
+.cat-agreement{background:#e8f5e0;color:#2d7a2d}
+.cat-articles{background:#fff3e0;color:#a06a1d}
+.cat-clauses{background:#f0e6ff;color:#6a2dba}
+.card-save{position:absolute;top:8px;right:8px;width:32px;height:32px;border:0;border-radius:8px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--border);transition:color .15s}
+.card-save:hover,.card-save.saved{color:var(--gold)}
+.card-save svg{width:18px;height:18px}
+.card-body{padding:36px 20px 20px}
+.card-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.25}
+
+.card-section{margin-top:14px}
+.card-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.card-label svg{width:13px;height:13px}
+.card-context{font-size:14px;color:var(--text);line-height:1.6;background:var(--teal-2);padding:10px 12px;border-radius:8px;border-left:3px solid var(--teal)}
+.card-context mark{background:var(--gold-2);color:var(--gold);font-weight:700;padding:1px 4px;border-radius:3px}
+.card-logic{font-size:13px;color:var(--muted);padding-left:14px}
+.card-logic li{margin-top:4px}
+.card-trap{font-size:13px;background:var(--red-2);color:var(--red);padding:8px 10px;border-radius:8px;line-height:1.5}
+.card-trap strong{color:#8b2a2a}
+.card-tip{font-size:13px;font-weight:600;color:var(--teal);font-style:italic;padding:6px 10px;background:var(--teal-2);border-radius:8px;margin-top:10px}
+
+/* TEST ME */
+.test-wrap{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.test-q{font-size:13px;font-weight:600;color:var(--text)}
+.test-reveal{margin-top:6px;padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:var(--panel);font:inherit;font-size:12px;font-weight:600;color:var(--teal);cursor:pointer}
+.test-reveal:hover{background:var(--teal-2)}
+.test-answer{display:none;margin-top:8px;font-size:13px;padding:8px 10px;background:var(--green-2);color:var(--green);border-radius:8px;line-height:1.5}
+.test-answer.show{display:block}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:60px 24px;color:var(--muted);font-size:15px;font-weight:600}
+
+/* BACK TO TOP */
+.btt{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:10px;background:var(--teal);color:#fff;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(31,95,99,.25);opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .3s,visibility .3s,transform .3s;z-index:90}
+.btt.show{opacity:1;visibility:visible;transform:translateY(0)}
+.btt svg{width:18px;height:18px}
+
+/* FOOTER */
+.footer{background:var(--panel);border-top:1px solid var(--border);padding:32px 24px 20px;font-size:12px;color:var(--muted);text-align:center}
+.footer a{color:var(--teal);text-decoration:none;font-weight:600;margin:0 10px}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner">
+<a href="index.html" class="nav-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Grammar Spy™</a>
+<div class="nav-right">
+<a href="packs.html" class="nav-link">Missions</a>
+<a href="about.html" class="nav-link">About</a>
+<a href="pricing.html" class="nav-link">Pricing</a>
+<a href="index.html" class="nav-link">Home</a>
+</div>
+</div></nav>
+
+<header class="hero">
+<span class="kicker">Intel Archive</span>
+<h1>CLUES</h1>
+<p class="sub">Context-based grammar intel. Each card starts from a real scene, highlights the clue, explains the logic, and gives you a quick retrieval check.</p>
+</header>
+
+<div class="toolbar" role="search" aria-label="Filter clues">
+<div class="search-wrap">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input type="search" class="search" id="search" placeholder="Search clues…" aria-label="Search clues">
+</div>
+<button class="filter-btn active" data-cat="all">All</button>
+<button class="filter-btn" data-cat="tense">Tense</button>
+<button class="filter-btn" data-cat="agreement">Agreement</button>
+<button class="filter-btn" data-cat="articles">Articles</button>
+<button class="filter-btn" data-cat="clauses">Clauses</button>
+<button class="saved-toggle" id="savedToggle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Saved</button>
+<span class="count-label" id="countLabel"></span>
+</div>
+
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty" style="display:none">No clues match your search.</div>
+
+<button class="btt" id="btt" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
+
+<footer class="footer">
+<div>Grammar Spy™ — Intel Archive</div>
+<div style="margin-top:8px"><a href="packs.html">Missions</a><a href="clues.html">CLUES</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="support.html">Contact</a></div>
+<div style="margin-top:12px;font-size:11px">© Grammar Spy™. All rights reserved.</div>
+</footer>
+
+<script>
+var CLUES=[
+// ===== TENSE INTEL =====
+{cat:"tense",title:"Interrupted Actions",context:"The class <mark>was reviewing</mark> notes when the fire alarm <mark>rang</mark>.",clue:"\"was reviewing\" + \"rang\" — an ongoing action cut short by a sudden event.",logic:["Past continuous (was/were + -ing) sets the background.","Simple past names the interruption.","The two tenses work as a pair — one ongoing, one sudden."],"trap":"<strong>Trap:</strong> \"The class reviewed notes when the fire alarm rang.\" Both in simple past removes the sense of interruption — it sounds like two completed actions in sequence.","check":"Which tense pair shows interruption?","answer":"Past continuous + simple past. The -ing form was happening; the simple past broke in.","tip":"If one action was already in progress, use was/were + -ing for that one."},
+{cat:"tense",title:"Background vs Main Event",context:"While the teacher <mark>was explaining</mark> the lesson, a student <mark>knocked</mark> on the door.",clue:"\"While\" + past continuous = background. Simple past = the event that happened during it.",logic:["While signals a longer background action.","The main clause (knocked) is the foreground event.","Background = continuous. Foreground = simple past."],"trap":"<strong>Trap:</strong> \"While the teacher explained the lesson, a student knocked on the door.\" Grammatically possible, but loses the overlapping-time meaning.","check":"What does 'while + was/were -ing' signal?","answer":"A background action in progress. The main event interrupts or overlaps.","tip":"While = during. If it was during, use the continuous form."},
+{cat:"tense",title:"When vs While",context:"<mark>When</mark> I arrived, they <mark>were discussing</mark> the results. <mark>While</mark> they were talking, the bell <mark>rang</mark>.",clue:"When introduces the shorter event. While introduces the longer background.",logic:["When + simple past = the point-in-time event.","While + continuous = the duration action.","You can swap them, but the meaning shifts slightly."],"trap":"<strong>Trap:</strong> \"While I arrived, they were discussing…\" — arriving is a point event, not a duration. Use when.","check":"Which word fits a sudden, point event?","answer":"When. It marks the moment something happened.","tip":"When = the moment. While = the stretch of time."},
+{cat:"tense",title:"Time Markers",context:"<mark>Yesterday</mark>, the principal approved the memo. Right now, she <mark>is reviewing</mark> the next one.",clue:"Yesterday → past. Right now → present continuous. Time markers choose the tense for you.",logic:["Yesterday, last week, in 2020 → simple past.","Right now, at this moment, currently → present continuous.","Every day, usually, always → simple present."],"trap":"<strong>Trap:</strong> \"Yesterday the principal is approving the memo.\" The time marker and tense contradict each other.","check":"What tense does 'every morning' signal?","answer":"Simple present. It's a repeated routine, not a one-time past event.","tip":"Read the time marker first. It tells you which tense is legal."},
+{cat:"tense",title:"Stative Verbs",context:"I <mark>know</mark> the answer. (Not: I am knowing the answer.)",clue:"Know is a stative verb — it describes a state, not an action in progress.",logic:["Stative verbs rarely take the continuous form.","Common statives: know, believe, want, need, own, prefer, understand.","Some verbs are stative in one meaning and active in another (think, have, see)."],"trap":"<strong>Trap:</strong> \"I am understanding the lesson now.\" Understand is stative — use \"I understand the lesson now.\"","check":"Can you say 'I am believing you'?","answer":"No. Believe is stative. Use 'I believe you.'","tip":"If the verb is about a state in your mind, don't add -ing."},
+{cat:"tense",title:"Sequence of Events",context:"First, we <mark>collected</mark> the evidence. Then we <mark>compared</mark> the samples.",clue:"Both verbs are simple past — completed actions in order.",logic:["Sequence markers (first, then, next, after that, finally) signal completed steps.","Keep tense consistent across the sequence.","Mixing tenses in a sequence confuses the timeline."],"trap":"<strong>Trap:</strong> \"First we collected the evidence. Then we compare the samples.\" The shift to present breaks the narrative.","check":"What tense should a finished sequence use?","answer":"Simple past throughout. Each step completed before the next.","tip":"Same sequence, same tense. Don't drift mid-story."},
+{cat:"tense",title:"Signal Words",context:"She <mark>usually</mark> checks her email before class. She <mark>is currently</mark> checking it now.",clue:"Usually → habit (simple present). Currently → in-progress (present continuous).",logic:["Frequency words (always, often, never, usually) → simple present.","Temporary-now words (currently, right now, at the moment) → present continuous.","Past signals (ago, last night, in 1999) → simple past."],"trap":"<strong>Trap:</strong> \"She is usually checking her email.\" Usually is a habit signal — it doesn't pair with continuous.","check":"'At this moment' signals which tense?","answer":"Present continuous. The action is happening right now.","tip":"Circle the signal word first. It picks the tense before you do."},
+{cat:"tense",title:"Timeline Logic",context:"By the time the guests <mark>arrived</mark>, we <mark>had already finished</mark> cooking.",clue:"\"By the time\" + simple past → past perfect for the earlier completed action.",logic:["Past perfect (had + past participle) marks an action completed before another past event.","It creates two layers of past.","Use it when the order of events matters and isn't obvious from context."],"trap":"<strong>Trap:</strong> \"By the time the guests arrived, we already finished cooking.\" Without had, the timeline relationship is ambiguous.","check":"What does past perfect show?","answer":"An action completed before another past action. It puts one event further back.","tip":"Two past events, different times? The earlier one gets 'had.'"},
+
+// ===== AGREEMENT INTEL =====
+{cat:"agreement",title:"None of the Students",context:"<mark>None of the students</mark> were left after practice.",clue:"None + of the + plural noun → plural verb in modern English.",logic:["None of the [plural] typically takes a plural verb: were, are, have.","None of the [uncountable] takes singular: None of the milk was left.","Formal writing sometimes uses singular with 'none,' but plural is standard in everyday English."],"trap":"<strong>Trap:</strong> \"None of the students was left.\" Sounds overly formal and can confuse students into thinking none is always singular.","check":"None of the water ___ spilled. (was/were)","answer":"Was. Water is uncountable, so the verb is singular.","tip":"Look past 'none' — check if the noun is countable plural or uncountable."},
+{cat:"agreement",title:"A List of Items",context:"A list of <mark>ingredients</mark> <mark>is</mark> posted on the board.",clue:"The subject is 'a list,' not 'ingredients.' The verb matches the head noun.",logic:["Prepositional phrases (of ingredients, of students, of errors) don't change the subject.","The head noun before 'of' controls the verb.","A list = singular. Lists = plural."],"trap":"<strong>Trap:</strong> \"A list of ingredients are posted.\" The plural noun inside the phrase pulls writers toward a plural verb.","check":"A box of pencils ___ on the desk. (is/are)","answer":"Is. The subject is 'a box' — singular.","tip":"Cross out the 'of' phrase. What's left? That's your subject."},
+{cat:"agreement",title:"Each and Every",context:"<mark>Each</mark> student <mark>has</mark> a mission folder. <mark>Every</mark> answer <mark>counts</mark>.",clue:"Each and every are always grammatically singular.",logic:["Each = one at a time. Every = all, considered individually.","Both take singular verbs: has, is, does, counts.","Even when referring to many people, the grammar stays singular."],"trap":"<strong>Trap:</strong> \"Each of the students have a folder.\" The plural 'students' tricks writers into using 'have.'","check":"Every one of the reports ___ checked. (was/were)","answer":"Was. 'Every one' is singular.","tip":"Each and every: always singular, no exceptions."},
+{cat:"agreement",title:"Neither…Nor",context:"<mark>Neither</mark> the teacher <mark>nor</mark> the students <mark>were</mark> ready.",clue:"With neither…nor, the verb agrees with the nearest subject.",logic:["The noun closest to the verb controls agreement.","'students' is closest → were (plural).","If reversed: 'Neither the students nor the teacher was ready.'"],"trap":"<strong>Trap:</strong> \"Neither the teacher nor the students was ready.\" Ignoring proximity and defaulting to singular because of 'neither.'","check":"Neither the captain nor the players ___ arrived. (has/have)","answer":"Have. 'Players' is nearest to the verb.","tip":"Neither/nor, either/or: look at the noun closest to the verb."},
+{cat:"agreement",title:"Either…Or",context:"<mark>Either</mark> the principal <mark>or</mark> the counselors <mark>are</mark> handling it.",clue:"Same rule as neither/nor — verb matches the nearest noun.",logic:["Either…or presents alternatives.","The verb agrees with whichever noun sits closest to it.","Putting the plural noun second sounds more natural."],"trap":"<strong>Trap:</strong> \"Either the principal or the counselors is handling it.\" Feels awkward because 'counselors' (plural) is right next to 'is.'","check":"Either the dogs or the cat ___ responsible. (is/are)","answer":"Is. 'Cat' (singular) is nearest.","tip":"Put the plural noun second for smoother flow."},
+{cat:"agreement",title:"There Is / There Are",context:"<mark>There are</mark> three errors in this draft. <mark>There is</mark> one correction needed.",clue:"The verb agrees with the noun that follows, not with 'there.'",logic:["There is a placeholder, not the real subject.","The real subject comes after the verb.","Plural subject → are. Singular → is."],"trap":"<strong>Trap:</strong> \"There's three errors.\" Common in speech, but grammatically the subject is 'errors' (plural) → are.","check":"There ___ several reasons for the delay. (is/are)","answer":"Are. 'Several reasons' is plural.","tip":"Ignore 'there.' Find the real subject after the verb."},
+{cat:"agreement",title:"Collective Nouns",context:"The <mark>team</mark> <mark>is</mark> meeting at noon. The team <mark>are</mark> arguing among themselves.",clue:"Collective nouns can be singular (acting as one) or plural (acting as individuals).",logic:["Team, class, family, staff, group — all collective.","Acting as one unit → singular verb.","Acting as separate individuals → plural verb.","American English prefers singular; British allows more plural."],"trap":"<strong>Trap:</strong> \"The team are meeting at noon.\" If they're doing one thing together, singular is cleaner.","check":"The jury ___ reached a verdict. (has/have)","answer":"Has. The jury acted as one body.","tip":"One action together = singular. Separate actions = plural."},
+{cat:"agreement",title:"Prepositional Phrase Traps",context:"The <mark>quality</mark> of these essays <mark>is</mark> impressive.",clue:"The subject is 'quality,' not 'essays.' The prepositional phrase is a distraction.",logic:["Prepositional phrases (of these essays, with the students, in the boxes) sit between subject and verb.","They describe the subject but don't change its number.","Mentally remove them to find the true subject."],"trap":"<strong>Trap:</strong> \"The quality of these essays are impressive.\" 'Essays' is plural and right next to the verb, pulling toward 'are.'","check":"The purpose of the missions ___ to build clarity. (is/are)","answer":"Is. 'Purpose' is singular.","tip":"Delete everything between the subject and the verb. Now check."},
+
+// ===== ARTICLES INTEL =====
+{cat:"articles",title:"First Mention vs Known",context:"I saw <mark>a</mark> dog in the park. <mark>The</mark> dog was wearing a red collar.",clue:"First mention = a/an. Once the reader knows which one = the.",logic:["A/an introduces something new to the conversation.","The refers back to something already established.","This is the most fundamental article rule in English."],"trap":"<strong>Trap:</strong> \"I saw the dog in the park\" (first mention). The reader asks: which dog? There's no shared knowledge yet.","check":"I bought ___ laptop. ___ laptop has 16 GB RAM. (a/the)","answer":"A laptop (new info), the laptop (now we know which one).","tip":"First time? Use a/an. Already mentioned? Switch to the."},
+{cat:"articles",title:"Specific vs General",context:"<mark>Dogs</mark> are loyal animals. <mark>The dogs</mark> next door bark all night.",clue:"General category = no article. Specific members = the.",logic:["Talking about all dogs in general? No article: Dogs are loyal.","Talking about specific dogs you can identify? The dogs.","This applies to all plural and uncountable nouns used generally."],"trap":"<strong>Trap:</strong> \"The dogs are loyal animals.\" This means specific dogs, not dogs as a species.","check":"___ water is essential for life. (Water / The water)","answer":"Water (general). No article for general uncountable nouns.","tip":"If you mean ALL of them or the concept in general, drop the article."},
+{cat:"articles",title:"Unique Nouns",context:"<mark>The</mark> sun rose at 6:12 a.m. <mark>The</mark> president addressed the nation.",clue:"One-of-a-kind nouns always take 'the' — there's only one.",logic:["The sun, the moon, the earth, the sky, the internet.","The president (of a specific country, in context).","Unique in context = 'the.' If there could be many, reconsider."],"trap":"<strong>Trap:</strong> \"A sun rose at 6:12.\" There's only one sun — 'a' implies there might be others.","check":"___ equator divides the earth in half. (A / The)","answer":"The. There's only one equator.","tip":"Only one in the world (or in context)? Use 'the.'"},
+{cat:"articles",title:"Superlatives",context:"That was <mark>the</mark> best presentation in the class.",clue:"Superlatives always take 'the' — they identify one unique thing.",logic:["The best, the tallest, the most interesting — all need 'the.'","Superlatives narrow down to one, so 'the' is required.","This also applies to ordinals: the first, the second, the last."],"trap":"<strong>Trap:</strong> \"That was a best presentation.\" Superlatives are already specific — 'a' doesn't fit.","check":"She is ___ oldest student in the program. (a / the)","answer":"The. Superlatives always pair with 'the.'","tip":"Best, worst, most, least, first, last → always 'the.'"},
+{cat:"articles",title:"Institutions",context:"She's in <mark>school</mark> right now. He drove to <mark>the school</mark> to pick her up.",clue:"Institutions without articles = using them for their purpose. With 'the' = the physical place.",logic:["In school = studying. At the school = the building.","In hospital = being treated. At the hospital = visiting.","Go to bed = sleeping. Sit on the bed = the furniture."],"trap":"<strong>Trap:</strong> \"She's in the school\" when you mean she's attending class. The article changes meaning from purpose to place.","check":"He went to ___ prison. (prison / the prison) — He's an inmate.","answer":"Prison (no article). He's serving time — using it for its purpose.","tip":"Using it for its purpose? No article. Visiting the building? Add 'the.'"},
+{cat:"articles",title:"Abstract Nouns",context:"<mark>Honesty</mark> is important. <mark>The honesty</mark> he showed was surprising.",clue:"Abstract nouns in general = no article. Made specific = the.",logic:["General concepts: Love is powerful. Education matters. Time flies.","Specific instances: The love they shared. The education she received.","If you can add 'that/which/he showed,' it's specific → use 'the.'"],"trap":"<strong>Trap:</strong> \"The honesty is important.\" Without a specific reference, this sounds like you're pointing at a particular honesty — confusing.","check":"___ patience is a virtue. (Patience / The patience)","answer":"Patience. General concept, no article.","tip":"General idea about life? No article. Specific instance? Add 'the.'"},
+{cat:"articles",title:"Geographic Rules",context:"We flew over <mark>the</mark> Pacific Ocean. We landed in <mark>Japan</mark>.",clue:"Oceans, rivers, mountain ranges = the. Countries, continents, single mountains = no article.",logic:["The Atlantic, the Amazon, the Himalayas, the United States.","No article: France, Asia, Mount Everest, Lake Michigan.","Plural or 'united/republic' names usually take 'the.'"],"trap":"<strong>Trap:</strong> \"We visited the France.\" Single-country names don't take articles (exceptions: the Netherlands, the Philippines).","check":"They hiked in ___ Alps. (Alps / the Alps)","answer":"The Alps. Mountain ranges take 'the.'","tip":"Ranges, oceans, rivers = the. Single peaks, lakes, countries = nothing."},
+{cat:"articles",title:"Zero Article Logic",context:"She plays <mark>piano</mark> after dinner. They had <mark>breakfast</mark> at seven.",clue:"Instruments after 'play,' meals, and some fixed expressions take no article.",logic:["Meals: have breakfast, eat lunch, serve dinner.","Instruments: play piano, play guitar (especially in British English).","Fixed phrases: go to work, by car, at night, in danger."],"trap":"<strong>Trap:</strong> \"She plays the piano\" is acceptable too — but in fixed phrases and general contexts, zero article is standard.","check":"We had ___ lunch early today. (lunch / the lunch / a lunch)","answer":"Lunch. Meals in general take no article.","tip":"Meals, transport modes (by bus), and many fixed phrases go bare."},
+
+// ===== CLAUSES INTEL =====
+{cat:"clauses",title:"Who vs Which vs That",context:"The student <mark>who</mark> finished first left early. The book <mark>that</mark> I borrowed was excellent.",clue:"Who = people. Which = things (non-defining). That = things (defining).",logic:["Who is for people: the teacher who, the student who.","That is for defining/essential info about things (and sometimes people).","Which is for non-essential, extra information about things."],"trap":"<strong>Trap:</strong> \"The student which finished first.\" Which is for things, not people.","check":"The car ___ is parked outside belongs to me. (who/that)","answer":"That. Cars are things, not people.","tip":"Person? Who. Thing with essential info? That. Extra info about a thing? Which."},
+{cat:"clauses",title:"Defining vs Non-Defining",context:"Students <mark>who study daily</mark> improve faster. My sister, <mark>who lives in Texas</mark>, is visiting.",clue:"No commas = defining (essential). Commas = non-defining (extra info).",logic:["Defining clauses tell you which one — they're necessary.","Non-defining clauses add bonus info — remove them and the sentence still works.","Non-defining always uses commas. Defining never does."],"trap":"<strong>Trap:</strong> \"Students, who study daily, improve faster.\" Adding commas changes meaning: now it says ALL students study daily.","check":"The report ___ was filed yesterday has errors. Commas or no?","answer":"No commas. It's defining — telling you which report.","tip":"Can you delete the clause and the sentence still makes sense? That's non-defining → add commas."},
+{cat:"clauses",title:"Comma Meaning Shift",context:"The teachers <mark>who attended the training</mark> got certificates. vs. The teachers<mark>, who attended the training,</mark> got certificates.",clue:"Without commas: only some teachers. With commas: all of them.",logic:["No commas → restrictive: identifies a subset.","Commas → non-restrictive: describes the entire group.","This single punctuation choice changes who you're talking about."],"trap":"<strong>Trap:</strong> Using commas carelessly. \"The students, who cheated, were expelled\" means ALL students cheated. Remove commas to mean only the cheaters.","check":"My brothers who live abroad visit yearly. How many brothers total?","answer":"More than two — some live abroad, others don't. It's a defining clause identifying which brothers.","tip":"Commas = all of them. No commas = only the ones described."},
+{cat:"clauses",title:"Where and When Clauses",context:"The school <mark>where</mark> I teach is downtown. The year <mark>when</mark> she graduated was 2019.",clue:"Where replaces 'at/in which' for places. When replaces 'in/during which' for times.",logic:["Where = in which / at which. Use after place nouns.","When = in which / during which. Use after time nouns.","Both can sometimes be replaced by 'that' or dropped entirely."],"trap":"<strong>Trap:</strong> \"The school which I teach\" — missing a preposition. Either say \"at which I teach\" or use \"where I teach.\"","check":"The day ___ we met was unforgettable. (when/where)","answer":"When. 'Day' is a time noun.","tip":"Place → where. Time → when. It's that clean."},
+{cat:"clauses",title:"Clause Attachment Clarity",context:"She saw the man with the telescope. (Who has the telescope?)",clue:"Misplaced clauses and phrases create ambiguity about what they modify.",logic:["Place modifiers as close as possible to the word they describe.","She saw the man who had the telescope. (Clear: the man has it.)","Using the telescope, she saw the man. (Clear: she used it.)"],"trap":"<strong>Trap:</strong> \"I read about the robbery in the newspaper.\" Did the robbery happen in the newspaper? Move the phrase: \"In the newspaper, I read about the robbery.\"","check":"Fix: \"The teacher spoke to the student with the microphone.\"","answer":"Using the microphone, the teacher spoke to the student. (Or: The teacher, using the microphone, spoke to the student.)","tip":"If a phrase could attach to two things, move it next to the right one."},
+{cat:"clauses",title:"Pronoun Reference Clarity",context:"Aylin told Nisa that <mark>she</mark> should rewrite the paragraph.",clue:"Who is 'she'? Aylin or Nisa? Ambiguous pronoun reference.",logic:["When two people of the same gender appear, pronouns get confusing.","Replace the pronoun with the name: 'Aylin told Nisa that Nisa should rewrite it.'","Or restructure: 'Aylin told Nisa to rewrite the paragraph.'"],"trap":"<strong>Trap:</strong> \"Maria told Sara that she got an A.\" Who got the A? This is genuinely unclear.","check":"Fix: \"The manager told the intern that he needed to revise the report.\"","answer":"The manager told the intern to revise the report. (Or name who: ...that the intern needed to revise it.)","tip":"If 'he' or 'she' could mean two people, use a name or restructure."},
+{cat:"clauses",title:"Reducing Relative Clauses",context:"The report <mark>that was filed</mark> yesterday → The report <mark>filed</mark> yesterday.",clue:"You can often shorten relative clauses by dropping 'that/which/who + be.'",logic:["that was filed → filed. (Passive reduction.)","who is standing → standing. (Active continuous reduction.)","Only works when the relative pronoun is the subject of its clause."],"trap":"<strong>Trap:</strong> Reducing \"the book that I read\" to \"the book read\" — wrong. 'I' is the subject, so you can't drop 'that I.'","check":"Reduce: \"The student who is sitting in the front row.\"","answer":"The student sitting in the front row.","tip":"Drop 'who/that/which + is/was' and keep the participle. But only if the pronoun is the subject."},
+{cat:"clauses",title:"Avoiding Ambiguity",context:"Only she told him that she liked the movie on Tuesday.",clue:"Where does 'only' go? Where does 'on Tuesday' attach? Position changes meaning.",logic:["'Only she' = nobody else told him. 'She only told' = she did nothing but tell. 'She told only him' = she told nobody else.","Move 'on Tuesday' to see: 'On Tuesday, she told him…' or 'She liked the movie on Tuesday.'","Adverb placement is a precision tool."],"trap":"<strong>Trap:</strong> \"I almost drove the car for two hours.\" (You almost drove but didn't?) vs. \"I drove the car for almost two hours.\" (You drove, nearly 2 hours.)","check":"What does 'She nearly missed all the questions' mean?","answer":"She came close to missing all of them — but didn't miss them all. If you mean she missed most, say: 'She missed nearly all the questions.'","tip":"Move the modifier. Read both versions. Pick the one that means what you mean."}
+];
+
+var saved=JSON.parse(localStorage.getItem("gs_clues_saved")||"[]");
+var grid=document.getElementById("grid");
+var empty=document.getElementById("empty");
+var search=document.getElementById("search");
+var countLabel=document.getElementById("countLabel");
+var filterBtns=document.querySelectorAll(".filter-btn");
+var savedToggle=document.getElementById("savedToggle");
+var btt=document.getElementById("btt");
+var currentCat="all";
+var showSavedOnly=false;
+
+function isSaved(i){return saved.indexOf(i)!==-1;}
+function toggleSave(i){
+  var idx=saved.indexOf(i);
+  if(idx===-1)saved.push(i);else saved.splice(idx,1);
+  localStorage.setItem("gs_clues_saved",JSON.stringify(saved));
+}
+
+function renderCards(){
+  var q=search.value.toLowerCase().trim();
+  grid.innerHTML="";
+  var count=0;
+  CLUES.forEach(function(c,i){
+    if(currentCat!=="all"&&c.cat!==currentCat)return;
+    if(showSavedOnly&&!isSaved(i))return;
+    if(q){
+      var blob=(c.title+" "+c.context+" "+c.clue+" "+c.logic.join(" ")+" "+c.tip).toLowerCase();
+      if(blob.indexOf(q)===-1)return;
+    }
+    count++;
+    var catClass="cat-"+c.cat;
+    var catLabel=c.cat.charAt(0).toUpperCase()+c.cat.slice(1)+" Intel";
+    var html='<div class="card-cat '+catClass+'">'+catLabel+'</div>';
+    html+='<button class="card-save'+(isSaved(i)?" saved":"")+'" data-idx="'+i+'" aria-label="'+(isSaved(i)?'Unsave':'Save')+' clue"><svg viewBox="0 0 24 24" fill="'+(isSaved(i)?'currentColor':'none')+'" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>';
+    html+='<div class="card-body">';
+    html+='<div class="card-title">'+c.title+'</div>';
+    html+='<div class="card-section"><div class="card-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Context</div><div class="card-context">'+c.context+'</div></div>';
+    html+='<div class="card-section"><div class="card-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Spot the Clue</div><p style="font-size:13px;color:var(--muted)">'+c.clue+'</p></div>';
+    html+='<div class="card-section"><div class="card-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>The Logic</div><ul class="card-logic">';
+    c.logic.forEach(function(l){html+='<li>'+l+'</li>';});
+    html+='</ul></div>';
+    html+='<div class="card-section"><div class="card-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Common Trap</div><div class="card-trap">'+c.trap+'</div></div>';
+    html+='<div class="card-tip">'+c.tip+'</div>';
+    html+='<div class="test-wrap"><div class="card-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Quick Check</div><div class="test-q">'+c.check+'</div><button class="test-reveal" data-idx="'+i+'">Show Answer</button><div class="test-answer" id="ans-'+i+'">'+c.answer+'</div></div>';
+    html+='</div>';
+    var card=document.createElement("div");
+    card.className="clue-card";
+    card.innerHTML=html;
+    grid.appendChild(card);
+  });
+  empty.style.display=count===0?"block":"none";
+  countLabel.textContent=count+" clue"+(count!==1?"s":"");
+  savedToggle.classList.toggle("active",showSavedOnly);
+}
+
+grid.addEventListener("click",function(e){
+  var saveBtn=e.target.closest(".card-save");
+  if(saveBtn){
+    var idx=parseInt(saveBtn.dataset.idx);
+    toggleSave(idx);
+    renderCards();
+    return;
+  }
+  var revealBtn=e.target.closest(".test-reveal");
+  if(revealBtn){
+    var ans=document.getElementById("ans-"+revealBtn.dataset.idx);
+    if(ans)ans.classList.toggle("show");
+    revealBtn.textContent=ans&&ans.classList.contains("show")?"Hide Answer":"Show Answer";
+  }
+});
+
+filterBtns.forEach(function(btn){
+  btn.addEventListener("click",function(){
+    currentCat=btn.dataset.cat;
+    filterBtns.forEach(function(b){b.classList.toggle("active",b.dataset.cat===currentCat);});
+    renderCards();
+  });
+});
+
+savedToggle.addEventListener("click",function(){
+  showSavedOnly=!showSavedOnly;
+  renderCards();
+});
+
+search.addEventListener("input",renderCards);
+
+window.addEventListener("scroll",function(){
+  btt.classList.toggle("show",window.scrollY>400);
+},{passive:true});
+btt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+
+renderCards();
+</script>
+</body>
+</html>
