@@ -4345,18 +4345,22 @@
       + ".builder-bar-chip:hover{background:" + accent + "22;}"
       + ".builder-bar-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
       + ".builder-bar-placeholder{margin:0;font-size:13px;color:#a0aec0;font-style:italic;}"
-      + ".dialogue-wrap{display:grid;gap:14px;max-width:560px;margin:0 auto;}"
-      + ".dialogue-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc;}"
-      + ".dialogue-tag{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
-      + ".dialogue-scene-name{font:600 12px Inter,Arial,sans-serif;color:#4a5568;}"
-      + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:85%;font-size:14px;line-height:1.5;position:relative;}"
-      + ".dialogue-bubble-left{background:#e8edf5;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
-      + ".dialogue-bubble-right{background:" + accent + "18;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
-      + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#a0aec0;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:48px;display:flex;align-items:center;}"
+      + ".dialogue-wrap{display:grid;gap:14px;max-width:760px;margin:0 auto;padding:18px;border:1px solid #d9dee6;border-radius:20px;background:linear-gradient(180deg,#f7fbff 0%,#ffffff 100%);box-shadow:0 10px 24px rgba(11,16,32,.08);}"
+      + ".dialogue-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid #d9dee6;border-radius:999px;background:#ffffff;}"
+      + ".dialogue-tag{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";background:" + accent + "14;padding:4px 9px;border-radius:999px;}"
+      + ".dialogue-scene-name{font:700 12px Inter,Arial,sans-serif;color:#4a5568;}"
+      + ".dialogue-thread{display:grid;gap:10px;padding:2px;}"
+      + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:88%;font-size:14px;line-height:1.55;position:relative;box-shadow:0 5px 14px rgba(11,16,32,.08);}"
+      + ".dialogue-bubble-left{background:#edf2f8;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
+      + ".dialogue-bubble-right{background:" + accent + "1e;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
+      + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#8f9aac;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:56px;display:flex;align-items:center;box-shadow:none;}"
       + ".dialogue-speaker{font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + accent + ";margin-bottom:4px;display:block;}"
-      + ".dialogue-objective{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4a5568;text-align:center;}"
-      + ".dialogue-choices{display:grid;gap:8px;}"
-      + ".dialogue-choice-btn{text-align:left;}"
+      + ".dialogue-draft{display:inline-block;margin-top:6px;padding:7px 10px;border-radius:10px;background:#fff2f2;border:1px solid #f1c7c7;color:#7f2a2a;font-weight:600;line-height:1.45;}"
+      + ".dialogue-objective{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#3f516a;text-align:center;background:#f3f7fc;border:1px solid #d9e3ef;border-radius:12px;padding:10px 12px;}"
+      + ".dialogue-choices{display:grid;gap:10px;}"
+      + ".dialogue-choice-btn{text-align:left;border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:12px 14px;display:grid;gap:4px;box-shadow:0 3px 10px rgba(11,16,32,.05);}"
+      + ".dialogue-choice-btn:hover{transform:translateY(-1px);box-shadow:0 7px 16px rgba(11,16,32,.11);}"
+      + ".dialogue-choice-label{font:700 10px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
       + ".rewrite-wrap{display:grid;gap:14px;}"
       + ".rewrite-original{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:14px;text-decoration:line-through;color:#8b96a9;font-size:15px;line-height:1.5;}"
       + ".rewrite-original b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a0aec0;text-decoration:none;display:block;margin-bottom:6px;}"
@@ -4725,6 +4729,17 @@
       "Let's replace that draft with the strongest corrected line.",
       "Pick the revision that keeps the meaning and fixes the grammar."
     ], roundIndex, "Choose the best revision to replace that draft.");
+  }
+
+  function formatDialogueLine(line) {
+    var text = String(line || "");
+    var marker = " Draft: ";
+    var markerIdx = text.indexOf(marker);
+    if (markerIdx < 0) return text;
+    var prefix = text.slice(0, markerIdx);
+    var draft = text.slice(markerIdx + marker.length);
+    if (!draft) return text;
+    return prefix + "<span class=\"dialogue-draft\">Draft: " + draft + "</span>";
   }
 
   function buildDialogueThread(round, roundIndex, wrongLine) {
@@ -5705,16 +5720,6 @@
     meta.innerHTML = "<span class=\"dialogue-tag\">Chat Thread</span><span class=\"dialogue-scene-name\">" + thread.scene + "</span>";
     wrap.appendChild(meta);
 
-    var bubbleA = document.createElement("div");
-    bubbleA.className = "dialogue-bubble dialogue-bubble-left";
-    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerA + "</span>" + thread.lineA;
-    wrap.appendChild(bubbleA);
-
-    var bubbleContext = document.createElement("div");
-    bubbleContext.className = "dialogue-bubble dialogue-bubble-right";
-    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + thread.lineB;
-    wrap.appendChild(bubbleContext);
-
     var objective = document.createElement("p");
     objective.className = "dialogue-objective";
     var objectiveText = modeScenarioPrompt("dialogue", round, idx);
@@ -5724,10 +5729,24 @@
     objective.textContent = objectiveText;
     wrap.appendChild(objective);
 
+    var threadBody = document.createElement("div");
+    threadBody.className = "dialogue-thread";
+
+    var bubbleA = document.createElement("div");
+    bubbleA.className = "dialogue-bubble dialogue-bubble-left";
+    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerA + "</span>" + formatDialogueLine(thread.lineA);
+    threadBody.appendChild(bubbleA);
+
+    var bubbleContext = document.createElement("div");
+    bubbleContext.className = "dialogue-bubble dialogue-bubble-right";
+    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + thread.lineB;
+    threadBody.appendChild(bubbleContext);
+
     var bubbleBlank = document.createElement("div");
     bubbleBlank.className = "dialogue-bubble dialogue-bubble-blank";
     bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>[Pick " + thread.replySpeaker + "'s revised line\u2026]";
-    wrap.appendChild(bubbleBlank);
+    threadBody.appendChild(bubbleBlank);
+    wrap.appendChild(threadBody);
 
     var choices = [round.answer];
     var distractorPool = [];
@@ -5742,11 +5761,11 @@
 
     var choicesWrap = document.createElement("div");
     choicesWrap.className = "dialogue-choices";
-    shuffledChoices.forEach(function (item) {
+    shuffledChoices.forEach(function (item, choiceIdx) {
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt dialogue-choice-btn dialogue-reply";
-      btn.innerHTML = "<span>" + item.text + "</span>";
+      btn.innerHTML = "<span class=\"dialogue-choice-label\">Option " + String.fromCharCode(65 + choiceIdx) + "</span><span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>" + item.text;
