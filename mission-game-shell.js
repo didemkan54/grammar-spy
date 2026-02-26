@@ -3255,6 +3255,7 @@
       + ".classify-zone-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;}"
       + ".classify-card{padding:11px 14px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:grab;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,opacity .15s;touch-action:none;}"
       + ".classify-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(11,16,32,.12);border-color:#c9a227;}"
+      + ".classify-card.selected{border-color:#c9a227;background:#fffdf5;box-shadow:0 0 0 3px rgba(201,162,39,.3);transform:translateY(-2px);}"
       + ".classify-card:active,.classify-card.dragging{cursor:grabbing;opacity:.7;transform:scale(.97);}"
       + ".classify-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.85;box-shadow:0 12px 28px rgba(11,16,32,.2);transform:rotate(2deg);}"
       + "@media(max-width:620px){.classify-zones{grid-template-columns:1fr;}}"
@@ -3642,6 +3643,16 @@
     currentRoundState = { mode: "classify", round: round, assignments: assignments, rows: rowControllers };
 
     var dragState = { el: null, optionIdx: -1, ghost: null, offsetX: 0, offsetY: 0 };
+    var selected = { el: null, optionIdx: -1 };
+
+    function selectCard(cardEl, optIdx) {
+      if (locked) return;
+      if (selected.el) selected.el.classList.remove("selected");
+      if (selected.el === cardEl) { selected.el = null; selected.optionIdx = -1; return; }
+      selected.el = cardEl;
+      selected.optionIdx = optIdx;
+      cardEl.classList.add("selected");
+    }
 
     var wrapper = document.createElement("div");
     wrapper.className = "classify-drag-wrapper";
@@ -3650,7 +3661,7 @@
     pool.className = "classify-pool";
     var poolLabel = document.createElement("p");
     poolLabel.className = "classify-zone-label";
-    poolLabel.textContent = "Drag each sentence to the correct zone";
+    poolLabel.textContent = "Drag or tap each sentence, then tap a zone";
     pool.appendChild(poolLabel);
 
     var zones = document.createElement("div");
@@ -3682,6 +3693,10 @@
       card.dataset.idx = item.optionIdx;
       card.textContent = item.lineText;
       card.setAttribute("touch-action", "none");
+
+      card.addEventListener("click", function () {
+        selectCard(card, item.optionIdx);
+      });
 
       card.addEventListener("dragstart", function (e) {
         if (locked) { e.preventDefault(); return; }
@@ -3781,6 +3796,13 @@
     }
 
     [completedZone, ongoingZone].forEach(function (zone) {
+      zone.addEventListener("click", function () {
+        if (locked || !selected.el) return;
+        placeCard(selected.el, selected.optionIdx, zone.dataset.zone);
+        selected.el.classList.remove("selected");
+        selected.el = null;
+        selected.optionIdx = -1;
+      });
       zone.addEventListener("dragover", function (e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
