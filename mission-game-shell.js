@@ -639,7 +639,7 @@
           "Because the clue were weak, we tried another idea."
         ],
         answer: 0,
-        explain: "Cause and result lines should be complete and clear."
+        explain: "Use one connector and keep past tense clear in both clauses."
       },
       {
         scene: "Story Step 3",
@@ -723,7 +723,7 @@
           "Because the plan were clear, the team moved forward."
         ],
         answer: 0,
-        explain: "Use one complete cause/result sentence."
+        explain: "Use one connector and keep past tense consistent across clauses."
       },
       {
         scene: "Story Step 10",
