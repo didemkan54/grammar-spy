@@ -10,86 +10,86 @@
 
   var games = {
     "error-smash": {
-      title: "Error Smash",
-      subtitle: "Scan fast and choose the best correction.",
-      howTo: "Read the sentence evidence, then choose the strongest correction. Score rises with accuracy and streak."
+      title: "Error Detector",
+      subtitle: "Scan the sentence and click the word that breaks the grammar rule.",
+      howTo: "A sentence with an error is displayed. Read carefully, then click on the exact word or phrase that contains the mistake. The correct version appears after you click."
     },
     "past-sort": {
-      title: "Past Sort",
-      subtitle: "Sort timeline meaning by selecting the best tense line.",
-      howTo: "Read each context clue and choose the sentence that best matches completed versus ongoing past action."
+      title: "Timeline Sort",
+      subtitle: "Drag each sentence to the correct timeline zone.",
+      howTo: "Sentences appear in a pool. Drag or tap each one into the 'Completed Event' or 'Ongoing Background' zone based on the verb tense."
     },
     "narrative-builder": {
-      title: "Narrative Builder",
-      subtitle: "Build story flow with accurate grammar choices.",
-      howTo: "Pick the sentence that keeps the narrative sequence clear and grammatically correct."
+      title: "Sentence Forge",
+      subtitle: "Drag word tiles to build the grammatically correct sentence.",
+      howTo: "Word tiles are scattered below. Tap tiles in order to build the correct sentence. Watch out for distractor words that don't belong!"
     },
     "dialogue-repair": {
-      title: "Dialogue Repair",
-      subtitle: "Repair spoken lines to make classroom meaning clear.",
-      howTo: "Each witness line has one best repair. Choose it to keep dialogue natural and accurate."
+      title: "Dialogue Builder",
+      subtitle: "Read the conversation and choose the best reply.",
+      howTo: "A conversation is in progress. One speaker needs to respond. Read the context and pick the reply that's grammatically correct and fits the conversation naturally."
     },
     "rewrite-studio": {
-      title: "Rewrite Studio",
-      subtitle: "Rewrite weak lines into strong mission-ready grammar.",
-      howTo: "Select the strongest rewrite for each original line. Focus on clarity, tense, and agreement."
+      title: "Rewrite Duel",
+      subtitle: "The original has a problem. Pick the stronger rewrite.",
+      howTo: "Read the original sentence with its issue. Two rewrites are offered — choose the one that fixes the grammar while keeping the meaning clear."
     },
     "rule-sprint-present": {
-      title: "Rule Sprint (Present)",
-      subtitle: "Apply present tense rules under pressure.",
-      howTo: "Read each present-tense context and choose the grammatically strongest sentence."
+      title: "Error Detector",
+      subtitle: "Scan the sentence and click the word that breaks the grammar rule.",
+      howTo: "A sentence with a present-tense error is displayed. Click on the exact word that's wrong."
     },
     "signal-decoder-present": {
-      title: "Signal Decoder (Present)",
-      subtitle: "Decode clue signals and match the correct present form.",
-      howTo: "Use context signals like now, usually, and right now to choose the best verb form."
+      title: "Context Match",
+      subtitle: "Read the scene, then pick the sentence that fits the context.",
+      howTo: "A scenario is described with a key signal word highlighted. Four sentences are offered — choose the one where the grammar matches the context clue."
     },
     "present-case-interview": {
-      title: "Case Interview (Present)",
-      subtitle: "Interview evidence and lock the best present-tense line.",
-      howTo: "Treat each item like an interview clue. Choose the line that best matches present-time meaning."
+      title: "Case Judge",
+      subtitle: "Read the evidence and decide: is the grammar correct or not?",
+      howTo: "A sentence is presented as evidence. Study it carefully and make your call — press Correct if the grammar holds up, or Incorrect if it doesn't. Explain your reasoning!"
     },
     "be-verb-rule-sprint": {
-      title: "Be-Verb Rule Sprint",
-      subtitle: "Use am/is/are with clean subject matching.",
-      howTo: "Check subject clues and choose the best be-verb form with agreement."
+      title: "Error Detector",
+      subtitle: "Scan the sentence and click the be-verb error.",
+      howTo: "A sentence with a be-verb agreement error is displayed. Click on the exact word that doesn't match its subject."
     },
     "be-verb-agreement-sweep": {
-      title: "Agreement Sweep",
-      subtitle: "Sweep for agreement errors and fix them quickly.",
-      howTo: "Focus on singular/plural agreement and choose the line with correct subject-verb matching."
+      title: "Evidence Sort",
+      subtitle: "Review each sentence and sort it: correct grammar or needs revision.",
+      howTo: "Evidence cards appear one by one. For each sentence, label it as 'Strong Grammar' or 'Needs Revision', then submit your full board for scoring."
     },
     "be-verb-case-interview": {
-      title: "Case Interview (Be-Verb)",
-      subtitle: "Interview evidence to secure agreement accuracy.",
-      howTo: "Read the scene and pick the sentence with the strongest be-verb agreement."
+      title: "Case Judge",
+      subtitle: "Evaluate the be-verb agreement. Is the evidence solid?",
+      howTo: "A sentence is presented. Study the subject and verb — do they agree? Press Correct or Incorrect."
     },
     "mission-sequence-lab": {
-      title: "Mission Sequence Lab",
-      subtitle: "Sequence sentence logic with grammar precision.",
-      howTo: "Choose the line that keeps sequence logic and grammar accurate from one step to the next."
+      title: "Sequence Order",
+      subtitle: "Drag the sentences into the correct narrative order.",
+      howTo: "Four sentences from a story are scrambled. Tap to select a sentence, then tap the position where it belongs. Get them in the right order and submit!"
     },
     "evidence-sort-board": {
-      title: "Evidence Sort Board",
-      subtitle: "Sort evidence lines by the strongest grammar choice.",
-      howTo: "Each option is evidence. Select the sentence that best secures meaning and correctness."
+      title: "Evidence Sort",
+      subtitle: "Review each sentence and sort it: correct grammar or needs revision.",
+      howTo: "Evidence cards appear one by one. For each sentence, label it as 'Strong Grammar' or 'Needs Revision', then submit your full board for scoring."
     }
   };
 
   var gameUx = {
-    "error-smash": { accent: "#1f8f63", columns: 2, modeLabel: "Spot the Correct Form", sceneLabel: "Grammar Card", startText: "Start Spotting", replayText: "Play Again", endText: "End Game", playMode: "smash" },
+    "error-smash": { accent: "#b04444", columns: 1, modeLabel: "Click the Error", sceneLabel: "Grammar Card", startText: "Start Detecting", replayText: "Play Again", endText: "End Game", playMode: "detect" },
     "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Sort the Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Story", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "sequence" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Choose the Best Line", sceneLabel: "Dialogue Line", startText: "Start Mission", replayText: "Play Again", endText: "End Mission", playMode: "repair" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick the Rewrite", sceneLabel: "Writing Prompt", startText: "Start Rewriting", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
-    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Match the Rule", sceneLabel: "Rule Card", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
-    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Check the Grammar", sceneLabel: "Signal Card", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
-    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Judge the Sentence", sceneLabel: "Case Card", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
-    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Match the Agreement", sceneLabel: "Agreement Card", startText: "Start Matching", replayText: "Match Again", endText: "End Match", playMode: "smash" },
-    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Sort the Board", sceneLabel: "Grammar Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" },
-    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Judge the Agreement", sceneLabel: "Case Card", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
-    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Order the Sequence", sceneLabel: "Sequence Card", startText: "Start Lab", replayText: "Run Again", endText: "End Lab", playMode: "binary" },
-    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "sweep" }
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Sentence", sceneLabel: "Story Step", startText: "Start Building", replayText: "Build Again", endText: "End Build", playMode: "forge" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Continue the Conversation", sceneLabel: "Dialogue", startText: "Start Chat", replayText: "Play Again", endText: "End Chat", playMode: "dialogue" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick the Best Rewrite", sceneLabel: "Writing Prompt", startText: "Start Rewriting", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
+    "rule-sprint-present": { accent: "#d84f7f", columns: 1, modeLabel: "Click the Error", sceneLabel: "Rule Card", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "detect" },
+    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Read the Context, Pick the Match", sceneLabel: "Signal Card", startText: "Start Decoding", replayText: "Decode Again", endText: "End Decode", playMode: "best" },
+    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Judge the Evidence", sceneLabel: "Case File", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
+    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 1, modeLabel: "Click the Error", sceneLabel: "Agreement Card", startText: "Start Detecting", replayText: "Detect Again", endText: "End Detection", playMode: "detect" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" },
+    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Judge the Evidence", sceneLabel: "Case File", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
+    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Put in Order", sceneLabel: "Sequence Card", startText: "Start Ordering", replayText: "Reorder", endText: "End Lab", playMode: "order" },
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" }
   };
 
   var fallbackRounds = [
@@ -900,9 +900,9 @@
         prompt: "Select the clearest spoken line.",
         options: [
           "After she read it, she gave it to her.",
-          "After Elena read the draft, she gave it to Ada.",
+          "After Elif read the draft, she gave it to Ada.",
           "After she read it, gave it to her.",
-          "After Elena read it, she give it to Ada."
+          "After Elif read it, she give it to Ada."
         ],
         answer: 1,
         explain: "Replacing ambiguous pronouns makes dialogue clearer."
@@ -1371,10 +1371,10 @@
         scene: "Schedule Check",
         prompt: "Select the strongest third-person present sentence.",
         options: [
-          "Maya write the summary after lunch.",
-          "Maya writes the summary after lunch.",
-          "Maya is write the summary after lunch.",
-          "Maya wrote the summary after lunch usually."
+          "Mina write the summary after lunch.",
+          "Mina writes the summary after lunch.",
+          "Mina is write the summary after lunch.",
+          "Mina wrote the summary after lunch usually."
         ],
         answer: 1,
         explain: "Third-person singular takes writes."
@@ -2121,10 +2121,10 @@
         scene: "Dual Subject",
         prompt: "Select the sentence with correct plural agreement.",
         options: [
-          "Maya and Sude is in the hallway.",
-          "Maya and Sude are in the hallway.",
-          "Maya and Sude am in the hallway.",
-          "Maya and Sude was in the hallway."
+          "Mina and Sude is in the hallway.",
+          "Mina and Sude are in the hallway.",
+          "Mina and Sude am in the hallway.",
+          "Mina and Sude was in the hallway."
         ],
         answer: 1,
         explain: "Two names form a plural subject, so use are."
@@ -3053,10 +3053,10 @@
         scene: "Evidence Card B",
         prompt: "Pick the line with clear reference.",
         options: [
-          "Sarah shared the note with Rana after Sarah verified it.",
-          "Sarah shared the note with Rana after she verified it.",
-          "Sarah shared the note with Rana after it verified it.",
-          "Sarah shared note with Rana after she were verify it."
+          "Selin shared the note with Rana after Selin verified it.",
+          "Selin shared the note with Rana after she verified it.",
+          "Selin shared the note with Rana after it verified it.",
+          "Selin shared note with Rana after she were verify it."
         ],
         answer: 0,
         explain: "Explicit noun naming avoids pronoun-reference ambiguity in evidence logs."
@@ -3439,10 +3439,10 @@
           scene: "Reference Dialogue 1",
           prompt: "Repair the line for clear pronoun reference.",
           options: [
-            "Aylin gave Ella the file after Aylin checked it.",
-            "Aylin gave Ella the file after she checked it.",
-            "Aylin gave Ella the file after it checked it.",
-            "Aylin gave Ella file after she were checking it."
+            "Aylin gave Ece the file after Aylin checked it.",
+            "Aylin gave Ece the file after she checked it.",
+            "Aylin gave Ece the file after it checked it.",
+            "Aylin gave Ece file after she were checking it."
           ],
           answer: 0,
           explain: "Repeating the subject name avoids ambiguity."
@@ -3451,10 +3451,10 @@
           scene: "Reference Dialogue 2",
           prompt: "Choose the line with explicit ownership.",
           options: [
-            "Maya told Sofia that Maya would present first.",
-            "Maya told Sofia that she would present first.",
-            "Maya told Sofia that it would present first.",
-            "Maya told Sofia she were presenting first."
+            "Mina told Defne that Mina would present first.",
+            "Mina told Defne that she would present first.",
+            "Mina told Defne that it would present first.",
+            "Mina told Defne she were presenting first."
           ],
           answer: 0,
           explain: "Explicit noun naming keeps pronoun reference and meaning precise."
@@ -3669,10 +3669,10 @@
           scene: "Reference Rewrite 1",
           prompt: "Choose the clearest rewrite.",
           options: [
-            "Maya gave Ella the report after Maya checked it.",
-            "Maya gave Ella the report after she checked it.",
-            "Maya gave Ella the report after it checked it.",
-            "Maya gave Ella report after she were checking it."
+            "Mina gave Ece the report after Mina checked it.",
+            "Mina gave Ece the report after she checked it.",
+            "Mina gave Ece the report after it checked it.",
+            "Mina gave Ece report after she were checking it."
           ],
           answer: 0,
           explain: "Explicit naming removes pronoun confusion."
@@ -3681,10 +3681,10 @@
           scene: "Reference Rewrite 2",
           prompt: "Pick the strongest reference rewrite.",
           options: [
-            "Kerem told Alex that Kerem would speak first.",
-            "Kerem told Alex that he would speak first.",
-            "Kerem told Alex that it would speak first.",
-            "Kerem told Alex he were speaking first."
+            "Kerem told Arda that Kerem would speak first.",
+            "Kerem told Arda that he would speak first.",
+            "Kerem told Arda that it would speak first.",
+            "Kerem told Arda he were speaking first."
           ],
           answer: 0,
           explain: "Clear repeated subject preserves meaning."
@@ -3785,10 +3785,10 @@
           scene: "Reference Sequence 1",
           prompt: "Choose the sequence line with clear reference.",
           options: [
-            "Maya reviewed the script, then Maya sent it to Ella.",
-            "Maya reviewed the script, then she sent it to Ella.",
-            "Maya reviewed script, then sent it to Ella.",
-            "Maya reviewed the script, then she were sending it to Ella."
+            "Mina reviewed the script, then Mina sent it to Ece.",
+            "Mina reviewed the script, then she sent it to Ece.",
+            "Mina reviewed script, then sent it to Ece.",
+            "Mina reviewed the script, then she were sending it to Ece."
           ],
           answer: 0,
           explain: "Explicit subject naming keeps sequence reference clear."
@@ -3809,10 +3809,10 @@
           scene: "Reference Sequence 3",
           prompt: "Select the best timeline sentence with clear names.",
           options: [
-            "Elena called Duru, and Elena explained the correction.",
-            "Elena called Duru, and she explained the correction.",
-            "Elena called Duru and explained correction.",
-            "Elena called Duru, and she were explaining the correction."
+            "Elif called Duru, and Elif explained the correction.",
+            "Elif called Duru, and she explained the correction.",
+            "Elif called Duru and explained correction.",
+            "Elif called Duru, and she were explaining the correction."
           ],
           answer: 0,
           explain: "Explicit reference avoids ambiguity across steps."
@@ -3925,10 +3925,10 @@
           scene: "Reference Evidence 3",
           prompt: "Select the option with no unclear pronoun.",
           options: [
-            "Maya called Ella after Maya reviewed the notes.",
-            "Maya called Ella after she reviewed the notes.",
-            "Maya called Ella after it reviewed the notes.",
-            "Maya called Ella after she were reviewing the notes."
+            "Mina called Ece after Mina reviewed the notes.",
+            "Mina called Ece after she reviewed the notes.",
+            "Mina called Ece after it reviewed the notes.",
+            "Mina called Ece after she were reviewing the notes."
           ],
           answer: 0,
           explain: "Explicit subject naming keeps reference accurate."
@@ -4080,7 +4080,83 @@
       + ".action-bar p{margin:0;font-size:13px;line-height:1.45;color:#34455f;}"
       + ".action-progress{height:8px;background:#e8edf5;border-radius:99px;overflow:hidden;}"
       + ".action-progress > span{display:block;height:100%;width:100%;background:" + accent + ";transition:width .2s ease;}"
-      + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}";
+      + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}"
+      + ".spotlight-wrap{display:grid;gap:12px;}"
+      + ".spotlight-instruction{margin:0;font:700 13px Inter,Arial,sans-serif;color:#4a5568;text-align:center;letter-spacing:.04em;}"
+      + ".spotlight-opt{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;}"
+      + ".spotlight-opt.spotlight-visible{opacity:1;transform:translateY(0);}"
+      + ".spotlight-opt.spotlight-active{box-shadow:0 0 0 3px " + accent + "44,0 4px 16px rgba(0,0,0,.10);border-color:" + accent + ";}"
+      + "@keyframes spotlightPulse{0%{box-shadow:0 0 0 3px " + accent + "44;}50%{box-shadow:0 0 0 6px " + accent + "22;}100%{box-shadow:0 0 0 3px " + accent + "44;}}"
+      + ".spotlight-opt.spotlight-active{animation:spotlightPulse 1.5s infinite;}"
+      + ".builder-wrap{display:grid;gap:16px;}"
+      + ".builder-chips{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;}"
+      + ".builder-chip{padding:8px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;font-size:14px;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,background .15s;}"
+      + ".builder-chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(11,16,32,.1);border-color:" + accent + ";}"
+      + ".builder-chip.used{opacity:.35;pointer-events:none;}"
+      + ".builder-bar{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;border:2px solid " + accent + "44;border-radius:14px;background:#fffdf5;}"
+      + ".builder-bar-chip{padding:8px 14px;border:1px solid " + accent + ";border-radius:8px;background:" + accent + "11;font-size:14px;color:#16223a;cursor:pointer;transition:transform .15s;}"
+      + ".builder-bar-chip:hover{background:" + accent + "22;}"
+      + ".builder-bar-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
+      + ".builder-bar-placeholder{margin:0;font-size:13px;color:#a0aec0;font-style:italic;}"
+      + ".dialogue-wrap{display:grid;gap:14px;max-width:520px;margin:0 auto;}"
+      + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:85%;font-size:14px;line-height:1.5;position:relative;}"
+      + ".dialogue-bubble-left{background:#e8edf5;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
+      + ".dialogue-bubble-right{background:" + accent + "18;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
+      + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#a0aec0;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:48px;display:flex;align-items:center;}"
+      + ".dialogue-speaker{font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + accent + ";margin-bottom:4px;display:block;}"
+      + ".dialogue-choices{display:grid;gap:8px;}"
+      + ".dialogue-choice-btn{text-align:left;}"
+      + ".rewrite-wrap{display:grid;gap:14px;}"
+      + ".rewrite-original{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:14px;text-decoration:line-through;color:#8b96a9;font-size:15px;line-height:1.5;}"
+      + ".rewrite-original b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a0aec0;text-decoration:none;display:block;margin-bottom:6px;}"
+      + ".rewrite-vs{text-align:center;font:700 13px Inter,Arial,sans-serif;color:#a0aec0;letter-spacing:.1em;}"
+      + ".rewrite-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}"
+      + ".rewrite-cards .opt{min-height:72px;text-align:left;}"
+      + "@media(max-width:620px){.rewrite-cards{grid-template-columns:1fr;}}"
+      + ".signal-wrap{display:grid;gap:16px;text-align:center;}"
+      + ".signal-badge{display:inline-block;padding:14px 28px;border-radius:99px;background:" + accent + ";color:#fff;font:700 22px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}"
+      + ".signal-sentence{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:16px;font-size:16px;line-height:1.5;color:#16223a;}"
+      + ".signal-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;}"
+      + ".signal-btns .opt{min-height:56px;}"
+      + "@media(max-width:620px){.signal-btns{grid-template-columns:1fr;}}"
+      + ".evidence-wrap{display:grid;gap:12px;}"
+      + ".evidence-card{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:12px;display:grid;gap:8px;}"
+      + ".evidence-card p{margin:0;font-size:14px;line-height:1.45;color:#16223a;}"
+      + ".evidence-actions{display:flex;gap:8px;}"
+      + ".evidence-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 12px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;transition:background .15s,border-color .15s;}"
+      + ".evidence-pick.active-strong{background:#eaf8ef;border-color:#4fb28c;color:#176a49;}"
+      + ".evidence-pick.active-weak{background:#fff0f0;border-color:#d47f7f;color:#8b2f2f;}"
+      + ".interrogation-wrap{display:grid;gap:16px;}"
+      + ".interrogation-quote{border-left:4px solid " + accent + ";background:#f8fafc;padding:16px 20px;border-radius:0 12px 12px 0;font-size:15px;line-height:1.55;color:#16223a;font-style:italic;position:relative;}"
+      + ".interrogation-quote::before{content:'\\201C';font-size:36px;color:" + accent + ";position:absolute;top:4px;left:8px;line-height:1;}"
+      + ".interrogation-quote-label{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";margin-bottom:6px;display:block;font-style:normal;}"
+      + ".interrogation-reports{display:grid;gap:10px;}"
+      + ".interrogation-report{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:14px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s;}"
+      + ".interrogation-report:hover{border-color:" + accent + ";box-shadow:0 4px 12px rgba(11,16,32,.08);}"
+      + ".interrogation-report b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";display:block;margin-bottom:4px;}"
+      + ".interrogation-report span{font-size:14px;line-height:1.45;color:#16223a;}"
+      + ".dialogue-reply{border-radius:16px;}"
+      + ".forge-wrap{display:grid;gap:14px;}"
+      + ".forge-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;}"
+      + ".forge-zone{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;border:2px solid " + accent + "44;border-radius:14px;background:#fffdf5;}"
+      + ".forge-tile{padding:8px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;font-size:14px;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,background .15s;}"
+      + ".forge-tile:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(11,16,32,.1);border-color:" + accent + ";}"
+      + ".forge-tile.placed{opacity:.35;pointer-events:none;}"
+      + ".forge-tile.selected{border-color:" + accent + ";background:" + accent + "11;box-shadow:0 0 0 3px " + accent + "33;}"
+      + ".detect-wrap{display:grid;gap:14px;}"
+      + ".detect-sentence{display:flex;flex-wrap:wrap;gap:6px;padding:16px;border:1px solid #d9dee6;border-radius:12px;background:#fff;min-height:48px;}"
+      + ".detect-word{padding:6px 10px;border-radius:6px;cursor:pointer;font-size:15px;color:#16223a;transition:background .15s,color .15s;user-select:none;-webkit-user-select:none;}"
+      + ".detect-word:hover{background:#e8edf5;}"
+      + ".detect-word.clicked{background:#ffeaa7;border-bottom:2px solid #f39c12;}"
+      + ".detect-word.error{background:#ffcccc;color:#c0392b;text-decoration:line-through;}"
+      + ".detect-word.ok{background:#d4edda;color:#155724;}"
+      + ".order-wrap{display:grid;gap:14px;}"
+      + ".order-list{display:grid;gap:8px;}"
+      + ".order-item{padding:12px 16px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,border-color .15s;}"
+      + ".order-item:hover{border-color:" + accent + ";box-shadow:0 4px 12px rgba(11,16,32,.08);}"
+      + ".order-item.selected{border-color:" + accent + ";background:" + accent + "11;box-shadow:0 0 0 3px " + accent + "33;transform:translateY(-2px);}"
+      + ".order-item b{color:" + accent + ";margin-right:6px;}"
+      + ".order-slot{min-height:48px;border:2px dashed #d9dee6;border-radius:10px;background:#f8fafc;}";
     document.head.appendChild(style);
   }
 
@@ -4141,38 +4217,71 @@
   }
 
   function modeHelperText(mode) {
-    if (mode === "smash") return "Mode rule: find the line with the correct grammar form.";
-    if (mode === "binary") return "Mode rule: decide if the highlighted sentence is correct or incorrect.";
-    if (mode === "classify") return "Mode rule: classify the sentence — is it a completed action or ongoing background?";
-    if (mode === "repair") return "Mode rule: pick the strongest version of this sentence.";
-    if (mode === "duel") return "Mode rule: compare two rewrites and pick the stronger one.";
-    if (mode === "sequence") return "Mode rule: choose the strongest next line for story flow.";
+    if (mode === "spotlight") return "4 options appear one at a time. Read carefully and click the ONE correct sentence.";
+    if (mode === "timeline") return "Drag each sentence to BEFORE (completed) or DURING (ongoing) on the timeline.";
+    if (mode === "builder") return "Drag the word chips into the correct order to build the sentence.";
+    if (mode === "dialogue") return "Read the conversation and pick the reply that fills the blank speech bubble.";
+    if (mode === "rewrite") return "The original is struck through. Compare the two rewrites and pick the better one.";
+    if (mode === "signal") return "A signal word is shown. Decide: does the sentence MATCH the signal?";
+    if (mode === "evidence") return "Mark each evidence card as Strong (correct) or Weak (has errors), then submit.";
+    if (mode === "interrogation") return "Read the witness statement and pick the report that captures it with correct grammar.";
+    if (mode === "smash") return "3 sentences are correct. Find the ONE with the error.";
+    if (mode === "binary") return "A signal word is highlighted. Decide: does the verb tense MATCH or MISMATCH?";
+    if (mode === "classify") return "Drag each sentence to BEFORE (completed) or DURING (ongoing) on the timeline.";
+    if (mode === "repair") return "One message in the chat has a grammar error. Pick the corrected reply.";
+    if (mode === "duel") return "The original has a weakness underlined. Pick the stronger rewrite to fill the meter.";
+    if (mode === "sequence") return "A paragraph has a blank. Pick the sentence that fills the gap.";
     if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
-    if (mode === "sweep") return "Mode rule: mark each line Correct or Incorrect, then submit the board.";
+    if (mode === "sweep") return "Pin each evidence card as VERIFIED (correct) or FLAGGED (error), then submit.";
+    if (mode === "forge") return "Build the correct sentence by clicking word tiles in order. Watch out for distractor words!";
+    if (mode === "detect") return "A sentence has an error. Click the specific word that is wrong.";
+    if (mode === "order") return "Arrange the sentences in the correct sequence: best answer first.";
     return "Mode rule: choose the single strongest line.";
   }
 
   function modePrompt(mode) {
-    if (mode === "smash") return "Find the line with the correct grammar.";
-    if (mode === "binary") return "Read the highlighted line and decide: is it correct or incorrect?";
-    if (mode === "classify") return "Classify each line: Completed Event or Ongoing Background.";
-    if (mode === "repair") return "Choose the best version of this line.";
-    if (mode === "duel") return "Compare the two options and choose the stronger rewrite.";
-    if (mode === "sequence") return "Choose the strongest next line for the sequence.";
+    if (mode === "spotlight") return "Read each option carefully, then click the correct sentence.";
+    if (mode === "timeline") return "Drag each sentence to the correct zone on the timeline.";
+    if (mode === "builder") return "Arrange the word chips to build the correct sentence.";
+    if (mode === "dialogue") return "Read the conversation and pick the reply for the blank bubble.";
+    if (mode === "rewrite") return "The original is struck through. Pick the better rewrite.";
+    if (mode === "signal") return "Does this sentence match the signal? \u2713 Matches or \u2717 Doesn\u2019t Match";
+    if (mode === "evidence") return "Mark each card as Strong or Weak evidence, then submit.";
+    if (mode === "interrogation") return "Read the witness statement. Pick the accurate report.";
+    if (mode === "smash") return "3 sentences are correct. Find the one with the error.";
+    if (mode === "binary") return "Does the verb tense match the signal word? \u2713 MATCH or \u2717 MISMATCH";
+    if (mode === "classify") return "Drag each sentence to the correct zone on the timeline.";
+    if (mode === "repair") return "One message has an error. Pick the corrected reply.";
+    if (mode === "duel") return "Compare the two rewrites. Pick the stronger one.";
+    if (mode === "sequence") return "Read the paragraph and pick the sentence that fills the blank.";
     if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
-    if (mode === "sweep") return "Mark each line correct or incorrect, then submit.";
+    if (mode === "sweep") return "Mark each card VERIFIED or FLAGGED, then submit the board.";
+    if (mode === "forge") return "Click word tiles to build the correct sentence, then submit.";
+    if (mode === "detect") return "Read the sentence and click the word that contains the error.";
+    if (mode === "order") return "Drag sentences into the best order, then submit.";
     return "Choose the single strongest line.";
   }
 
   function modeHowTo(mode, fallback) {
-    if (mode === "smash") return "Read all the options and pick the one with the correct grammar form.";
-    if (mode === "binary") return "Read the sentence and decide — is the grammar correct or does it need a fix?";
-    if (mode === "classify") return "Sort each sentence into the right category: completed action or ongoing background.";
-    if (mode === "repair") return "Read the sentence and choose the best version from the options.";
-    if (mode === "duel") return "Compare two versions and choose the stronger, more natural sentence.";
-    if (mode === "sequence") return "Pick the line that best continues the story in the right order.";
-    if (mode === "eliminate") return "Cross out the weaker options and keep only the strongest sentence.";
-    if (mode === "sweep") return "Go through each sentence and mark it correct or incorrect, then submit.";
+    if (mode === "spotlight") return "4 options appear one at a time with a spotlight. Read each carefully, then click the ONE correct sentence.";
+    if (mode === "timeline") return "Sort sentences onto the timeline: completed events go BEFORE, ongoing actions go DURING.";
+    if (mode === "builder") return "The correct sentence is split into word chips. Drag or click them into order, then submit.";
+    if (mode === "dialogue") return "A conversation has a blank speech bubble. Read the flow and pick the reply that fits.";
+    if (mode === "rewrite") return "The original sentence is struck through. Compare two rewrites side by side and pick the better one.";
+    if (mode === "signal") return "A signal word is shown as a badge. A sentence appears below. Decide if the sentence matches the signal.";
+    if (mode === "evidence") return "Review each evidence card. Mark correct grammar as Strong Evidence and errors as Weak Evidence, then submit.";
+    if (mode === "interrogation") return "A witness statement appears as a quote. Pick the report that captures it with correct grammar.";
+    if (mode === "smash") return "All four sentences are shown. Three are correct. Click the one that contains a grammar error.";
+    if (mode === "binary") return "A signal word is highlighted in the sentence. Decide if the verb tense matches the signal \u2014 press MATCH or MISMATCH.";
+    if (mode === "classify") return "Sort sentences onto the timeline: completed events go BEFORE, ongoing actions go DURING.";
+    if (mode === "repair") return "A conversation thread has one broken message. Pick the corrected version from the reply suggestions.";
+    if (mode === "duel") return "The original sentence has a problem underlined. Compare two rewrites and choose the stronger one.";
+    if (mode === "sequence") return "A short paragraph has a gap. Pick the sentence that fits the blank and completes the meaning.";
+    if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
+    if (mode === "sweep") return "Review each evidence card. Mark correct grammar as VERIFIED and errors as FLAGGED, then submit.";
+    if (mode === "forge") return "The correct sentence is split into word tiles with distractors mixed in. Click tiles in order to build the sentence, then submit.";
+    if (mode === "detect") return "A wrong sentence is displayed word by word. Click the word that contains the error to reveal the correct version.";
+    if (mode === "order") return "Four sentences are shuffled. Click to select and move them into the best order, then submit.";
     return fallback || "Choose the strongest line.";
   }
 
@@ -4293,18 +4402,13 @@
       score += award;
       if (btn) btn.classList.add("good");
       html("feedback", "<span class=\"ok\"><b>CORRECT.</b> " + successMsg + " +" + award + " pts</span>");
-      if (window.GSSound) {
-        if (streak > 2 && window.GSSound.streak) { window.GSSound.streak(streak); }
-        else if (combo > 1 && window.GSSound.combo) { window.GSSound.combo(); }
-        else if (window.GSSound.correct) { window.GSSound.correct(); }
-      }
+      if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
     } else {
       streak = 0;
       combo = 1;
       score = Math.max(0, score - 20);
       if (btn) btn.classList.add("bad");
       html("feedback", "<span class=\"bad\"><b>WRONG.</b> " + failMsg + " -20 pts</span>");
-      if (window.GSSound && window.GSSound.wrong) window.GSSound.wrong();
     }
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
@@ -4324,7 +4428,7 @@
       updateHud();
       if (shotClock <= 0) {
         clearInterval(shotTimer);
-        finishRound(false, "", "Time's up! " + round.explain);
+        finishRound(false, "", "Time breach: no decision submitted. " + round.explain);
       }
     }, 1000);
   }
@@ -4333,16 +4437,31 @@
     optionsEl.style.gridTemplateColumns = ux.columns === 1 ? "1fr" : "1fr 1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: activeMode, round: round };
+
+    if (activeMode === "smash") {
+      var smashLabel = document.createElement("p");
+      smashLabel.className = "smash-instruction";
+      smashLabel.textContent = "3 sentences are correct. Find the one with the error.";
+      optionsEl.appendChild(smashLabel);
+    }
+
     shuffle(round.options.map(function (lineText, optionIdx) {
       return { lineText: lineText, optionIdx: optionIdx };
     })).forEach(function (item, displayIdx) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "opt";
-      btn.setAttribute("data-label", String.fromCharCode(65 + displayIdx)); btn.textContent = item.lineText;
+      btn.className = activeMode === "smash" ? "opt smash-opt" : "opt";
+      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
       var isTarget = activeMode === "smash" ? item.optionIdx !== round.answer : item.optionIdx === round.answer;
       btn.dataset.target = isTarget ? "1" : "0";
       btn.addEventListener("click", function () {
+        if (activeMode === "smash" && item.optionIdx !== round.answer) {
+          btn.classList.add("smash-error-found");
+          var flash = document.createElement("span");
+          flash.className = "smash-error-badge";
+          flash.textContent = "ERROR FOUND";
+          btn.appendChild(flash);
+        }
         selectOption(item.optionIdx, item.lineText, round, btn);
       });
       optionsEl.appendChild(btn);
@@ -4365,15 +4484,30 @@
     var brokenLine = round.options[brokenIdx];
     var rightLine = round.options[round.answer];
 
-    var card = document.createElement("div");
-    card.className = "binary-card";
-    var cardK = document.createElement("b");
-    cardK.textContent = "Broken line";
-    var cardText = document.createElement("p");
-    cardText.textContent = brokenLine;
-    card.appendChild(cardK);
-    card.appendChild(cardText);
-    optionsEl.appendChild(card);
+    var chatThread = document.createElement("div");
+    chatThread.className = "chat-thread";
+
+    var systemMsg = document.createElement("div");
+    systemMsg.className = "chat-bubble chat-system";
+    systemMsg.innerHTML = "<span class=\"chat-sender\">Grammar Bot</span><p>Review this conversation. One message has a grammar error.</p>";
+    chatThread.appendChild(systemMsg);
+
+    var correctMsg = document.createElement("div");
+    correctMsg.className = "chat-bubble chat-received";
+    correctMsg.innerHTML = "<span class=\"chat-sender\">Speaker A</span><p>" + round.options[round.answer] + "</p>";
+    chatThread.appendChild(correctMsg);
+
+    var brokenMsg = document.createElement("div");
+    brokenMsg.className = "chat-bubble chat-received chat-error";
+    brokenMsg.innerHTML = "<span class=\"chat-sender\">Speaker B</span><span class=\"chat-error-tag\">\u26A0 Error</span><p>" + brokenLine + "</p>";
+    chatThread.appendChild(brokenMsg);
+
+    optionsEl.appendChild(chatThread);
+
+    var replyLabel = document.createElement("p");
+    replyLabel.className = "chat-reply-label";
+    replyLabel.textContent = "Pick the corrected reply:";
+    optionsEl.appendChild(replyLabel);
 
     var choices = [round.answer];
     var distractorPool = [];
@@ -4387,18 +4521,18 @@
     choices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
 
     var choicesWrap = document.createElement("div");
-    choicesWrap.className = "duel-actions";
+    choicesWrap.className = "chat-replies";
     choices.forEach(function (item, i) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "opt";
-      btn.setAttribute("data-label", String.fromCharCode(65 + i)); btn.textContent = item.text;
+      btn.className = "opt chat-reply-btn";
+      btn.innerHTML = "<span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
           item.idx === round.answer,
-          "Nice! You picked the strongest correction. " + round.explain,
-          "Not quite — the best fix is \"" + rightLine + "\". " + round.explain,
+          "Great fix! That corrects the conversation. " + round.explain,
+          "Not quite \u2014 the best fix is \"" + rightLine + "\". " + round.explain,
           btn
         );
       });
@@ -4407,27 +4541,50 @@
     optionsEl.appendChild(choicesWrap);
   }
 
+  function underlineWeakness(wrongText, correctText) {
+    var wrongWords = wrongText.split(/\s+/);
+    var correctWords = correctText.split(/\s+/);
+    var diffParts = [];
+    var maxLen = Math.max(wrongWords.length, correctWords.length);
+    for (var w = 0; w < wrongWords.length; w++) {
+      if (w < correctWords.length && wrongWords[w] !== correctWords[w]) {
+        diffParts.push('<span class="duel-underline">' + wrongWords[w] + '</span>');
+      } else {
+        diffParts.push(wrongWords[w]);
+      }
+    }
+    return diffParts.join(" ");
+  }
+
   function showDuelOptions(round, duelLabel) {
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: activeMode, round: round };
     var wrongIdx = pickWrongIndex(round);
+    var wrongText = round.options[wrongIdx];
+    var correctText = round.options[round.answer];
     var duel = shuffle([
-      { idx: round.answer, text: round.options[round.answer] },
-      { idx: wrongIdx, text: round.options[wrongIdx] }
+      { idx: round.answer, text: correctText },
+      { idx: wrongIdx, text: wrongText }
     ]);
 
     var wrap = document.createElement("div");
     wrap.className = "duel-wrap";
+
     var card = document.createElement("div");
-    card.className = "binary-card";
+    card.className = "binary-card duel-original";
     var cardK = document.createElement("b");
-    cardK.textContent = duelLabel;
+    cardK.textContent = "Original (with weakness)";
     var cardText = document.createElement("p");
-    cardText.textContent = "Choose the stronger sentence.";
+    cardText.innerHTML = underlineWeakness(wrongText, correctText);
     card.appendChild(cardK);
     card.appendChild(cardText);
     wrap.appendChild(card);
+
+    var meter = document.createElement("div");
+    meter.className = "strength-meter";
+    meter.innerHTML = '<span class="strength-label">Strength</span><div class="strength-track"><div class="strength-fill" id="strengthFill"></div></div>';
+    wrap.appendChild(meter);
 
     var actions = document.createElement("div");
     actions.className = "duel-actions";
@@ -4435,13 +4592,20 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.setAttribute("data-label", String.fromCharCode(65 + i)); btn.textContent = item.text;
+      btn.innerHTML = "<b>Rewrite " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
-        var correctText = round.options[round.answer];
+        var isCorrect = item.idx === round.answer;
+        if (isCorrect) {
+          var fill = document.getElementById("strengthFill");
+          if (fill) {
+            var cur = parseInt(fill.style.width, 10) || 0;
+            fill.style.width = Math.min(100, cur + 25) + "%";
+          }
+        }
         finishRound(
-          item.idx === round.answer,
-          "Strong choice secured. " + round.explain,
+          isCorrect,
+          "Strong rewrite selected! Strength meter rising. " + round.explain,
           "Weaker option selected. Correct line: \"" + correctText + "\". " + round.explain,
           btn
         );
@@ -4485,6 +4649,10 @@
     poolLabel.textContent = "Drag or tap each sentence, then tap a zone";
     pool.appendChild(poolLabel);
 
+    var timelineBar = document.createElement("div");
+    timelineBar.className = "timeline-bar";
+    timelineBar.innerHTML = '<span class="timeline-marker">BEFORE</span><span class="timeline-line"></span><span class="timeline-marker timeline-marker-mid">DURING</span><span class="timeline-line"></span><span class="timeline-marker">AFTER</span>';
+
     var zones = document.createElement("div");
     zones.className = "classify-zones";
 
@@ -4493,7 +4661,7 @@
     completedZone.dataset.zone = "completed";
     var completedLabel = document.createElement("p");
     completedLabel.className = "classify-zone-label";
-    completedLabel.textContent = "Completed Event";
+    completedLabel.innerHTML = "\u2714 Completed Event <small>(BEFORE)</small>";
     completedZone.appendChild(completedLabel);
 
     var ongoingZone = document.createElement("div");
@@ -4501,7 +4669,7 @@
     ongoingZone.dataset.zone = "ongoing";
     var ongoingLabel = document.createElement("p");
     ongoingLabel.className = "classify-zone-label";
-    ongoingLabel.textContent = "Ongoing Background";
+    ongoingLabel.innerHTML = "\u25B6 Ongoing Background <small>(DURING)</small>";
     ongoingZone.appendChild(ongoingLabel);
 
     zones.appendChild(completedZone);
@@ -4692,9 +4860,31 @@
     });
 
     wrapper.appendChild(pool);
+    wrapper.appendChild(timelineBar);
     wrapper.appendChild(zones);
     wrapper.appendChild(submitBtn);
     optionsEl.appendChild(wrapper);
+  }
+
+  var signalWords = ["yesterday", "right now", "now", "usually", "every day", "always", "currently", "at the moment", "last week", "last night", "tomorrow", "today", "often", "sometimes", "already", "just", "recently", "soon", "never", "rarely", "ago", "while", "when", "before", "after", "still", "yet", "since", "for a long time", "these days", "this week", "every morning", "at present", "in the past", "so far", "once"];
+
+  function highlightSignalWord(text) {
+    var lower = text.toLowerCase();
+    var found = null;
+    for (var s = 0; s < signalWords.length; s++) {
+      var sw = signalWords[s];
+      var pos = lower.indexOf(sw);
+      if (pos !== -1) {
+        var before = text.substring(0, pos);
+        var match = text.substring(pos, pos + sw.length);
+        var after = text.substring(pos + sw.length);
+        if (!found || sw.length > found.length) {
+          found = sw;
+          var result = before + '<span class="signal-chip">' + match + '</span>' + after;
+        }
+      }
+    }
+    return found ? result : '<span class="signal-chip">' + text.split(" ")[0] + '</span>' + text.substring(text.split(" ")[0].length);
   }
 
   function showBinaryOptions(round) {
@@ -4706,28 +4896,34 @@
     currentRoundState = { mode: "binary", round: round, candidateCorrect: candidateCorrect };
 
     var card = document.createElement("div");
-    card.className = "binary-card";
+    card.className = "binary-card signal-card";
     var cardK = document.createElement("b");
-    cardK.textContent = "Line under review";
+    cardK.textContent = "Signal Decoder";
     var cardText = document.createElement("p");
-    cardText.textContent = candidateText;
+    cardText.innerHTML = highlightSignalWord(candidateText);
     card.appendChild(cardK);
     card.appendChild(cardText);
 
     var actions = document.createElement("div");
-    actions.className = "binary-actions";
-    var secureBtn = buildOptionButton("Correct", "This line is grammatically correct.");
-    var repairBtn = buildOptionButton("Incorrect", "This line has an error.");
+    actions.className = "binary-actions signal-actions";
+    var matchBtn = document.createElement("button");
+    matchBtn.type = "button";
+    matchBtn.className = "opt signal-match-btn";
+    matchBtn.innerHTML = "<b>\u2713 MATCH</b><span>Verb tense matches the signal</span>";
+    var mismatchBtn = document.createElement("button");
+    mismatchBtn.type = "button";
+    mismatchBtn.className = "opt signal-mismatch-btn";
+    mismatchBtn.innerHTML = "<b>\u2717 MISMATCH</b><span>Verb tense does NOT match</span>";
 
-    secureBtn.addEventListener("click", function () {
-      selectBinaryVerdict(true, candidateCorrect, round, secureBtn);
+    matchBtn.addEventListener("click", function () {
+      selectBinaryVerdict(true, candidateCorrect, round, matchBtn);
     });
-    repairBtn.addEventListener("click", function () {
-      selectBinaryVerdict(false, candidateCorrect, round, repairBtn);
+    mismatchBtn.addEventListener("click", function () {
+      selectBinaryVerdict(false, candidateCorrect, round, mismatchBtn);
     });
 
-    actions.appendChild(secureBtn);
-    actions.appendChild(repairBtn);
+    actions.appendChild(matchBtn);
+    actions.appendChild(mismatchBtn);
     optionsEl.appendChild(card);
     optionsEl.appendChild(actions);
   }
@@ -4745,7 +4941,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.setAttribute("data-label", String.fromCharCode(65 + displayIdx)); btn.textContent = item.lineText;
+      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
       btn.addEventListener("click", function () {
         if (locked || btn.classList.contains("eliminated")) return;
         if (item.optionIdx === round.answer) {
@@ -4794,7 +4990,7 @@
       var repairBtn = document.createElement("button");
       repairBtn.type = "button";
       repairBtn.className = "sweep-pick";
-      repairBtn.textContent = "Incorrect";
+      repairBtn.textContent = "Needs Repair";
 
       function setChoice(isSecure) {
         selections[item.optionIdx] = isSecure;
@@ -4853,6 +5049,760 @@
     optionsEl.appendChild(submitBtn);
   }
 
+  function showSpotlightOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "spotlight", round: round };
+
+    var wrap = document.createElement("div");
+    wrap.className = "spotlight-wrap";
+
+    var instruction = document.createElement("p");
+    instruction.className = "spotlight-instruction";
+    instruction.textContent = "Read each option carefully, then click the correct sentence.";
+    wrap.appendChild(instruction);
+
+    var items = shuffle(round.options.map(function (lineText, optionIdx) {
+      return { lineText: lineText, optionIdx: optionIdx };
+    }));
+
+    items.forEach(function (item, displayIdx) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt spotlight-opt";
+      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      btn.dataset.target = item.optionIdx === round.answer ? "1" : "0";
+      btn.addEventListener("click", function () {
+        if (!btn.classList.contains("spotlight-visible")) return;
+        finishRound(
+          item.optionIdx === round.answer,
+          "Correct! " + round.explain,
+          "Not quite \u2014 the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
+          btn
+        );
+      });
+      wrap.appendChild(btn);
+
+      setTimeout(function () {
+        btn.classList.add("spotlight-visible");
+        btn.classList.add("spotlight-active");
+        setTimeout(function () {
+          btn.classList.remove("spotlight-active");
+        }, 800);
+      }, (displayIdx + 1) * 1000);
+    });
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showBuilderOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "builder", round: round };
+
+    var correctSentence = round.options[round.answer];
+    var words = correctSentence.split(/\s+/);
+    var shuffledWords = shuffle(words.slice());
+    var placed = [];
+
+    var wrap = document.createElement("div");
+    wrap.className = "builder-wrap";
+
+    var barLabel = document.createElement("p");
+    barLabel.className = "builder-bar-label";
+    barLabel.textContent = "Your Sentence";
+    wrap.appendChild(barLabel);
+
+    var bar = document.createElement("div");
+    bar.className = "builder-bar";
+    var placeholder = document.createElement("p");
+    placeholder.className = "builder-bar-placeholder";
+    placeholder.textContent = "Click words below to build the sentence\u2026";
+    bar.appendChild(placeholder);
+    wrap.appendChild(bar);
+
+    var chipsLabel = document.createElement("p");
+    chipsLabel.className = "builder-bar-label";
+    chipsLabel.textContent = "Word Chips";
+    wrap.appendChild(chipsLabel);
+
+    var chipsContainer = document.createElement("div");
+    chipsContainer.className = "builder-chips";
+
+    var chipEls = [];
+
+    function updateBar() {
+      bar.innerHTML = "";
+      if (placed.length === 0) {
+        var ph = document.createElement("p");
+        ph.className = "builder-bar-placeholder";
+        ph.textContent = "Click words below to build the sentence\u2026";
+        bar.appendChild(ph);
+      } else {
+        placed.forEach(function (entry, i) {
+          var barChip = document.createElement("span");
+          barChip.className = "builder-bar-chip";
+          barChip.textContent = entry.word;
+          barChip.addEventListener("click", function () {
+            if (locked) return;
+            placed.splice(i, 1);
+            chipEls[entry.chipIdx].classList.remove("used");
+            updateBar();
+          });
+          bar.appendChild(barChip);
+        });
+      }
+    }
+
+    shuffledWords.forEach(function (word, chipIdx) {
+      var chip = document.createElement("span");
+      chip.className = "builder-chip";
+      chip.textContent = word;
+      chip.addEventListener("click", function () {
+        if (locked || chip.classList.contains("used")) return;
+        chip.classList.add("used");
+        placed.push({ word: word, chipIdx: chipIdx });
+        updateBar();
+      });
+      chipsContainer.appendChild(chip);
+      chipEls.push(chip);
+    });
+
+    wrap.appendChild(chipsContainer);
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary";
+    submitBtn.textContent = "Submit Sentence";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      if (placed.length !== words.length) {
+        html("feedback", "<span class=\"bad\">Place all word chips before submitting.</span>");
+        return;
+      }
+      var built = placed.map(function (e) { return e.word; }).join(" ");
+      var isCorrect = built === correctSentence;
+      finishRound(
+        isCorrect,
+        "Sentence built correctly! " + round.explain,
+        "Not quite \u2014 the correct sentence is \"" + correctSentence + "\". " + round.explain,
+        submitBtn
+      );
+    });
+    wrap.appendChild(submitBtn);
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showDialogueOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "dialogue", round: round };
+
+    var wrap = document.createElement("div");
+    wrap.className = "dialogue-wrap";
+
+    var bubbleA = document.createElement("div");
+    bubbleA.className = "dialogue-bubble dialogue-bubble-left";
+    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">Speaker A</span>" + round.scene;
+    wrap.appendChild(bubbleA);
+
+    var bubbleContext = document.createElement("div");
+    bubbleContext.className = "dialogue-bubble dialogue-bubble-right";
+    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>" + round.prompt;
+    wrap.appendChild(bubbleContext);
+
+    var bubbleBlank = document.createElement("div");
+    bubbleBlank.className = "dialogue-bubble dialogue-bubble-blank";
+    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>[Pick a reply\u2026]";
+    wrap.appendChild(bubbleBlank);
+
+    var choices = [round.answer];
+    var distractorPool = [];
+    for (var d = 0; d < round.options.length; d++) {
+      if (d !== round.answer) distractorPool.push(d);
+    }
+    distractorPool = shuffle(distractorPool);
+    while (choices.length < 3 && distractorPool.length > 0) {
+      choices.push(distractorPool.pop());
+    }
+    var shuffledChoices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
+
+    var choicesWrap = document.createElement("div");
+    choicesWrap.className = "dialogue-choices";
+    shuffledChoices.forEach(function (item) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt dialogue-choice-btn dialogue-reply";
+      btn.innerHTML = "<span>" + item.text + "</span>";
+      btn.dataset.target = item.idx === round.answer ? "1" : "0";
+      btn.addEventListener("click", function () {
+        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>" + item.text;
+        bubbleBlank.className = "dialogue-bubble dialogue-bubble-right";
+        finishRound(
+          item.idx === round.answer,
+          "Great reply! That fits the conversation. " + round.explain,
+          "Not quite \u2014 the best reply is \"" + round.options[round.answer] + "\". " + round.explain,
+          btn
+        );
+      });
+      choicesWrap.appendChild(btn);
+    });
+    wrap.appendChild(choicesWrap);
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showRewriteOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "rewrite", round: round };
+
+    var wrongIdx = pickWrongIndex(round);
+    var wrongText = round.options[wrongIdx];
+    var correctText = round.options[round.answer];
+
+    var wrap = document.createElement("div");
+    wrap.className = "rewrite-wrap";
+
+    var original = document.createElement("div");
+    original.className = "rewrite-original";
+    original.innerHTML = "<b>Original</b>" + wrongText;
+    wrap.appendChild(original);
+
+    var vs = document.createElement("p");
+    vs.className = "rewrite-vs";
+    vs.textContent = "\u2014 VS \u2014";
+    wrap.appendChild(vs);
+
+    var duel = shuffle([
+      { idx: round.answer, text: correctText },
+      { idx: wrongIdx, text: wrongText }
+    ]);
+
+    var cards = document.createElement("div");
+    cards.className = "rewrite-cards";
+    duel.forEach(function (item, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt";
+      btn.innerHTML = "<b>Rewrite " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.dataset.target = item.idx === round.answer ? "1" : "0";
+      btn.addEventListener("click", function () {
+        finishRound(
+          item.idx === round.answer,
+          "Strong rewrite selected! " + round.explain,
+          "Weaker option selected. Correct line: \"" + correctText + "\". " + round.explain,
+          btn
+        );
+      });
+      cards.appendChild(btn);
+    });
+    wrap.appendChild(cards);
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showSignalOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+
+    var signalText = "";
+    var sceneText = round.scene || "";
+    var signalMatch = sceneText.match(/^Signal:\s*(.+)$/i);
+    if (signalMatch) {
+      signalText = signalMatch[1].trim();
+    } else {
+      var lower = sceneText.toLowerCase();
+      for (var s = 0; s < signalWords.length; s++) {
+        if (lower.indexOf(signalWords[s]) !== -1) {
+          signalText = signalWords[s];
+          break;
+        }
+      }
+      if (!signalText) signalText = sceneText.split(" ")[0] || "signal";
+    }
+
+    var candidateIdx = Math.floor(Math.random() * round.options.length);
+    var candidateText = round.options[candidateIdx];
+    var candidateCorrect = candidateIdx === round.answer;
+    currentRoundState = { mode: "signal", round: round, candidateCorrect: candidateCorrect };
+
+    var wrap = document.createElement("div");
+    wrap.className = "signal-wrap";
+
+    var badge = document.createElement("span");
+    badge.className = "signal-badge";
+    badge.textContent = signalText;
+    wrap.appendChild(badge);
+
+    var sentence = document.createElement("div");
+    sentence.className = "signal-sentence";
+    sentence.textContent = candidateText;
+    wrap.appendChild(sentence);
+
+    var btns = document.createElement("div");
+    btns.className = "signal-btns";
+
+    var matchBtn = document.createElement("button");
+    matchBtn.type = "button";
+    matchBtn.className = "opt";
+    matchBtn.innerHTML = "<b>\u2713 Matches</b><span>Sentence matches the signal</span>";
+
+    var noMatchBtn = document.createElement("button");
+    noMatchBtn.type = "button";
+    noMatchBtn.className = "opt";
+    noMatchBtn.innerHTML = "<b>\u2717 Doesn\u2019t Match</b><span>Sentence does NOT match</span>";
+
+    matchBtn.addEventListener("click", function () {
+      var userCorrect = candidateCorrect;
+      finishRound(
+        userCorrect,
+        "Correct! " + (candidateCorrect ? "This sentence matches the signal. " : "This sentence does not match. ") + round.explain,
+        "Not quite. " + (candidateCorrect ? "This sentence actually matches the signal. " : "This sentence does not match the signal. ") + round.explain,
+        matchBtn
+      );
+    });
+    noMatchBtn.addEventListener("click", function () {
+      var userCorrect = !candidateCorrect;
+      finishRound(
+        userCorrect,
+        "Correct! " + (!candidateCorrect ? "This sentence doesn\u2019t match the signal. " : "This sentence actually matches. ") + round.explain,
+        "Not quite. " + (!candidateCorrect ? "This sentence doesn\u2019t match the signal. " : "This sentence actually matches. ") + round.explain,
+        noMatchBtn
+      );
+    });
+
+    btns.appendChild(matchBtn);
+    btns.appendChild(noMatchBtn);
+    wrap.appendChild(btns);
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showEvidenceOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    var selections = {};
+    var rowControllers = [];
+    currentRoundState = { mode: "evidence", round: round, selections: selections, rows: rowControllers };
+
+    var wrap = document.createElement("div");
+    wrap.className = "evidence-wrap";
+
+    shuffle(round.options.map(function (lineText, optionIdx) {
+      return { lineText: lineText, optionIdx: optionIdx };
+    })).forEach(function (item) {
+      var card = document.createElement("div");
+      card.className = "evidence-card";
+
+      var line = document.createElement("p");
+      line.textContent = item.lineText;
+
+      var actions = document.createElement("div");
+      actions.className = "evidence-actions";
+
+      var strongBtn = document.createElement("button");
+      strongBtn.type = "button";
+      strongBtn.className = "evidence-pick";
+      strongBtn.textContent = "Strong Evidence";
+
+      var weakBtn = document.createElement("button");
+      weakBtn.type = "button";
+      weakBtn.className = "evidence-pick";
+      weakBtn.textContent = "Weak Evidence";
+
+      function setChoice(isStrong) {
+        selections[item.optionIdx] = isStrong;
+        strongBtn.classList.toggle("active-strong", isStrong);
+        weakBtn.classList.toggle("active-weak", !isStrong);
+      }
+
+      rowControllers.push({
+        optionIdx: item.optionIdx,
+        hasPick: function () { return typeof selections[item.optionIdx] !== "undefined"; },
+        pickCorrect: function () { setChoice(item.optionIdx === round.answer); }
+      });
+
+      strongBtn.addEventListener("click", function () {
+        if (locked) return;
+        setChoice(true);
+      });
+      weakBtn.addEventListener("click", function () {
+        if (locked) return;
+        setChoice(false);
+      });
+
+      actions.appendChild(strongBtn);
+      actions.appendChild(weakBtn);
+      card.appendChild(line);
+      card.appendChild(actions);
+      wrap.appendChild(card);
+    });
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary sweep-submit";
+    submitBtn.textContent = "Submit Evidence Board";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      if (Object.keys(selections).length < round.options.length) {
+        html("feedback", "<span class=\"bad\">Mark every card before submitting.</span>");
+        return;
+      }
+      var allCorrect = true;
+      for (var i = 0; i < round.options.length; i++) {
+        var shouldBeStrong = i === round.answer;
+        if (selections[i] !== shouldBeStrong) {
+          allCorrect = false;
+          break;
+        }
+      }
+      finishRound(
+        allCorrect,
+        "Evidence board verified! Strong evidence identified. " + round.explain,
+        "Evidence mismatch: one or more cards are incorrectly marked. " + round.explain,
+        submitBtn
+      );
+    });
+
+    optionsEl.appendChild(wrap);
+    optionsEl.appendChild(submitBtn);
+  }
+
+  function showInterrogationOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "interrogation", round: round };
+
+    var wrap = document.createElement("div");
+    wrap.className = "interrogation-wrap";
+
+    var quote = document.createElement("div");
+    quote.className = "interrogation-quote";
+    quote.innerHTML = "<span class=\"interrogation-quote-label\">Witness Statement</span>" + round.prompt;
+    wrap.appendChild(quote);
+
+    var choices = [round.answer];
+    var distractorPool = [];
+    for (var d = 0; d < round.options.length; d++) {
+      if (d !== round.answer) distractorPool.push(d);
+    }
+    distractorPool = shuffle(distractorPool);
+    while (choices.length < 3 && distractorPool.length > 0) {
+      choices.push(distractorPool.pop());
+    }
+    var shuffledChoices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
+
+    var reports = document.createElement("div");
+    reports.className = "interrogation-reports";
+    shuffledChoices.forEach(function (item, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt interrogation-report";
+      btn.innerHTML = "<b>Report " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.dataset.target = item.idx === round.answer ? "1" : "0";
+      btn.addEventListener("click", function () {
+        finishRound(
+          item.idx === round.answer,
+          "Correct report selected! " + round.explain,
+          "Incorrect report. The accurate report is: \"" + round.options[round.answer] + "\". " + round.explain,
+          btn
+        );
+      });
+      reports.appendChild(btn);
+    });
+    wrap.appendChild(reports);
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showForgeOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "forge", round: round };
+
+    var correctSentence = round.options[round.answer];
+    var correctWords = correctSentence.split(/\s+/);
+
+    var distractorWords = [];
+    for (var w = 0; w < round.options.length; w++) {
+      if (w !== round.answer) {
+        var parts = round.options[w].split(/\s+/);
+        for (var p = 0; p < parts.length; p++) {
+          if (correctWords.indexOf(parts[p]) === -1 && distractorWords.indexOf(parts[p]) === -1) {
+            distractorWords.push(parts[p]);
+          }
+        }
+      }
+    }
+    distractorWords = shuffle(distractorWords).slice(0, Math.min(3, distractorWords.length));
+
+    var allTiles = shuffle(correctWords.slice().concat(distractorWords));
+    var placed = [];
+
+    var wrap = document.createElement("div");
+    wrap.className = "forge-wrap";
+
+    var sceneP = document.createElement("p");
+    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
+    sceneP.textContent = round.scene;
+    wrap.appendChild(sceneP);
+
+    var promptP = document.createElement("p");
+    promptP.style.cssText = "margin:0;font:700 14px Inter,Arial,sans-serif;color:#16223a;";
+    promptP.textContent = round.prompt;
+    wrap.appendChild(promptP);
+
+    var zoneLabel = document.createElement("p");
+    zoneLabel.style.cssText = "margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;";
+    zoneLabel.textContent = "Your Sentence";
+    wrap.appendChild(zoneLabel);
+
+    var zone = document.createElement("div");
+    zone.className = "forge-zone";
+    var zonePlaceholder = document.createElement("p");
+    zonePlaceholder.className = "builder-bar-placeholder";
+    zonePlaceholder.textContent = "Click words below to build the sentence\u2026";
+    zone.appendChild(zonePlaceholder);
+    wrap.appendChild(zone);
+
+    var poolLabel = document.createElement("p");
+    poolLabel.style.cssText = "margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;";
+    poolLabel.textContent = "Word Tiles";
+    wrap.appendChild(poolLabel);
+
+    var pool = document.createElement("div");
+    pool.className = "forge-pool";
+
+    var tileEls = [];
+
+    function updateZone() {
+      zone.innerHTML = "";
+      if (placed.length === 0) {
+        var ph = document.createElement("p");
+        ph.className = "builder-bar-placeholder";
+        ph.textContent = "Click words below to build the sentence\u2026";
+        zone.appendChild(ph);
+      } else {
+        placed.forEach(function (entry, i) {
+          var chip = document.createElement("span");
+          chip.className = "forge-tile placed";
+          chip.textContent = entry.word;
+          chip.style.opacity = "1";
+          chip.style.pointerEvents = "auto";
+          chip.addEventListener("click", function () {
+            if (locked) return;
+            placed.splice(i, 1);
+            tileEls[entry.tileIdx].classList.remove("placed");
+            tileEls[entry.tileIdx].classList.remove("selected");
+            updateZone();
+          });
+          zone.appendChild(chip);
+        });
+      }
+    }
+
+    allTiles.forEach(function (word, tileIdx) {
+      var tile = document.createElement("span");
+      tile.className = "forge-tile";
+      tile.textContent = word;
+      tile.addEventListener("click", function () {
+        if (locked || tile.classList.contains("placed")) return;
+        tile.classList.add("placed");
+        placed.push({ word: word, tileIdx: tileIdx });
+        updateZone();
+      });
+      pool.appendChild(tile);
+      tileEls.push(tile);
+    });
+
+    wrap.appendChild(pool);
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary";
+    submitBtn.textContent = "Submit";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      if (placed.length === 0) {
+        html("feedback", "<span class=\"bad\">Place word tiles before submitting.</span>");
+        return;
+      }
+      var built = placed.map(function (e) { return e.word; }).join(" ");
+      var isCorrect = built === correctSentence;
+      finishRound(
+        isCorrect,
+        "Sentence forged correctly! " + round.explain,
+        "Not quite \u2014 the correct sentence is \"" + correctSentence + "\". " + round.explain,
+        submitBtn
+      );
+    });
+    wrap.appendChild(submitBtn);
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showDetectOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "detect", round: round };
+
+    var wrongIdx = pickWrongIndex(round);
+    var wrongSentence = round.options[wrongIdx];
+    var correctSentence = round.options[round.answer];
+    var wrongWords = wrongSentence.split(/\s+/);
+    var correctWords = correctSentence.split(/\s+/);
+
+    var errorIndices = [];
+    for (var ei = 0; ei < wrongWords.length; ei++) {
+      if (ei >= correctWords.length || wrongWords[ei] !== correctWords[ei]) {
+        errorIndices.push(ei);
+      }
+    }
+    if (errorIndices.length === 0) errorIndices.push(0);
+
+    var wrap = document.createElement("div");
+    wrap.className = "detect-wrap";
+
+    var sceneP = document.createElement("p");
+    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
+    sceneP.textContent = round.scene;
+    wrap.appendChild(sceneP);
+
+    var instruction = document.createElement("p");
+    instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
+    instruction.textContent = "Click the word that contains the error:";
+    wrap.appendChild(instruction);
+
+    var sentenceDiv = document.createElement("div");
+    sentenceDiv.className = "detect-sentence";
+
+    var clicked = false;
+    wrongWords.forEach(function (word, wIdx) {
+      var span = document.createElement("span");
+      span.className = "detect-word";
+      span.textContent = word;
+      span.addEventListener("click", function () {
+        if (locked || clicked) return;
+        clicked = true;
+        var isError = errorIndices.indexOf(wIdx) !== -1;
+        span.classList.add("clicked");
+
+        wrongWords.forEach(function (_, j) {
+          var allSpans = sentenceDiv.querySelectorAll(".detect-word");
+          if (errorIndices.indexOf(j) !== -1) {
+            allSpans[j].classList.add("error");
+          } else {
+            allSpans[j].classList.add("ok");
+          }
+        });
+
+        var comparison = document.createElement("div");
+        comparison.style.cssText = "margin-top:12px;padding:12px;border:1px solid #d9dee6;border-radius:10px;background:#f8fafc;";
+        comparison.innerHTML = "<p style=\"margin:0 0 4px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;\">Correct version:</p><p style=\"margin:0;font-size:15px;color:#176a49;\">" + correctSentence + "</p>";
+        wrap.appendChild(comparison);
+
+        finishRound(
+          isError,
+          "Error detected! " + round.explain,
+          "That word is fine. The error is elsewhere. " + round.explain,
+          span
+        );
+      });
+      sentenceDiv.appendChild(span);
+    });
+
+    wrap.appendChild(sentenceDiv);
+    optionsEl.appendChild(wrap);
+  }
+
+  function showOrderOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "order", round: round };
+
+    var correctOrder = [round.answer];
+    for (var oi = 0; oi < round.options.length; oi++) {
+      if (oi !== round.answer) correctOrder.push(oi);
+    }
+
+    var items = shuffle(round.options.map(function (text, idx) {
+      return { text: text, idx: idx };
+    }));
+
+    var selectedIdx = -1;
+
+    var wrap = document.createElement("div");
+    wrap.className = "order-wrap";
+
+    var sceneP = document.createElement("p");
+    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
+    sceneP.textContent = round.scene;
+    wrap.appendChild(sceneP);
+
+    var instruction = document.createElement("p");
+    instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
+    instruction.textContent = "Arrange the sentences in the best order (click to select, click a position to move):";
+    wrap.appendChild(instruction);
+
+    var list = document.createElement("div");
+    list.className = "order-list";
+
+    function renderList() {
+      list.innerHTML = "";
+      items.forEach(function (item, i) {
+        var el = document.createElement("div");
+        el.className = "order-item" + (i === selectedIdx ? " selected" : "");
+        el.innerHTML = "<b>" + (i + 1) + ".</b> " + item.text;
+        el.addEventListener("click", function () {
+          if (locked) return;
+          if (selectedIdx === -1) {
+            selectedIdx = i;
+            renderList();
+          } else if (selectedIdx === i) {
+            selectedIdx = -1;
+            renderList();
+          } else {
+            var moved = items.splice(selectedIdx, 1)[0];
+            items.splice(i, 0, moved);
+            selectedIdx = -1;
+            renderList();
+          }
+        });
+        list.appendChild(el);
+      });
+    }
+
+    renderList();
+    wrap.appendChild(list);
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary";
+    submitBtn.textContent = "Submit Order";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      var userOrder = items.map(function (item) { return item.idx; });
+      var isCorrect = true;
+      for (var c = 0; c < correctOrder.length; c++) {
+        if (userOrder[c] !== correctOrder[c]) {
+          isCorrect = false;
+          break;
+        }
+      }
+      finishRound(
+        isCorrect,
+        "Sequence correct! " + round.explain,
+        "Not quite \u2014 the best order starts with \"" + round.options[round.answer] + "\". " + round.explain,
+        submitBtn
+      );
+    });
+    wrap.appendChild(submitBtn);
+
+    optionsEl.appendChild(wrap);
+  }
+
   function showRound() {
     if (idx >= rounds.length) {
       endGame();
@@ -4865,32 +5815,46 @@
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
     text("scene", round.scene);
-    if (activeMode === "smash") {
-      text("prompt", modePrompt(activeMode));
+    text("prompt", modePrompt(activeMode));
+    if (activeMode === "spotlight") {
+      showSpotlightOptions(round);
+    } else if (activeMode === "timeline") {
+      showClassifyOptions(round);
+    } else if (activeMode === "builder") {
+      showBuilderOptions(round);
+    } else if (activeMode === "dialogue") {
+      showDialogueOptions(round);
+    } else if (activeMode === "rewrite") {
+      showRewriteOptions(round);
+    } else if (activeMode === "signal") {
+      showSignalOptions(round);
+    } else if (activeMode === "evidence") {
+      showEvidenceOptions(round);
+    } else if (activeMode === "interrogation") {
+      showInterrogationOptions(round);
+    } else if (activeMode === "smash") {
       showChoiceOptions(round);
     } else if (activeMode === "binary") {
-      text("prompt", modePrompt(activeMode));
       showBinaryOptions(round);
     } else if (activeMode === "classify") {
-      text("prompt", modePrompt(activeMode));
       showClassifyOptions(round);
     } else if (activeMode === "repair") {
-      text("prompt", modePrompt(activeMode));
       showRepairOptions(round);
     } else if (activeMode === "duel") {
-      text("prompt", modePrompt(activeMode));
       showDuelOptions(round, "Rewrite Duel");
     } else if (activeMode === "sequence") {
-      text("prompt", modePrompt(activeMode));
       showDuelOptions(round, "Next-line Duel");
     } else if (activeMode === "eliminate") {
-      text("prompt", modePrompt(activeMode));
       showEliminateOptions(round);
     } else if (activeMode === "sweep") {
-      text("prompt", modePrompt(activeMode));
       showSweepOptions(round);
+    } else if (activeMode === "forge") {
+      showForgeOptions(round);
+    } else if (activeMode === "detect") {
+      showDetectOptions(round);
+    } else if (activeMode === "order") {
+      showOrderOptions(round);
     } else {
-      text("prompt", modePrompt(activeMode));
       showChoiceOptions(round);
     }
     startShotClock(round);
@@ -4902,11 +5866,11 @@
     finishRound(
       userCorrect,
       activeMode === "smash"
-        ? "Nice catch! You spotted the right form. " + round.explain
+        ? "Error spotted! That sentence has a grammar mistake. " + round.explain
         : "Correct! " + round.explain,
       activeMode === "smash"
-        ? "Not quite — that one has an error. Look for the correct form. " + round.explain
-        : "Not quite — the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
+        ? "That sentence is actually correct. The error is in a different one. " + round.explain
+        : "Not quite \u2014 the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
       btn
     );
   }
@@ -4915,8 +5879,8 @@
     var userCorrect = markSecure ? candidateCorrect : !candidateCorrect;
     finishRound(
       userCorrect,
-      "Correct! " + (candidateCorrect ? "This line is grammatically correct. " : "Good eye — this line has an error. ") + round.explain,
-      "Not quite — this line is actually " + (candidateCorrect ? "correct. " : "incorrect. ") + round.explain,
+      "Verdict confirmed: " + (candidateCorrect ? "this line is secure. " : "this line needs repair. ") + round.explain,
+      "Verdict mismatch: this line is " + (candidateCorrect ? "secure. " : "not secure. ") + round.explain,
       btn
     );
   }
@@ -4930,7 +5894,7 @@
     hintsLeft -= 1;
     var used = false;
 
-    if (currentRoundState.mode === "classify" || currentRoundState.mode === "sweep") {
+    if (currentRoundState.mode === "classify" || currentRoundState.mode === "sweep" || currentRoundState.mode === "timeline" || currentRoundState.mode === "evidence") {
       var rows = currentRoundState.rows || [];
       for (var i = 0; i < rows.length; i++) {
         if (!rows[i].hasPick()) {
@@ -4940,9 +5904,9 @@
         }
       }
       if (used) html("feedback", "<span class=\"ok\">Hint applied: one line was auto-classified.</span>");
-    } else if (currentRoundState.mode === "binary") {
+    } else if (currentRoundState.mode === "binary" || currentRoundState.mode === "signal") {
       used = true;
-      html("feedback", "<span class=\"ok\">Hint: the highlighted line is " + (currentRoundState.candidateCorrect ? "correct" : "incorrect") + ".</span>");
+      html("feedback", "<span class=\"ok\">Hint: the sentence " + (currentRoundState.candidateCorrect ? "matches the signal" : "does not match") + ".</span>");
     } else {
       var decoys = Array.prototype.slice.call(optionsEl.querySelectorAll(".opt")).filter(function (btn) {
         return btn.dataset.target === "0" && !btn.classList.contains("eliminated");
@@ -4975,14 +5939,13 @@
     streak = 0;
     combo = 1;
     score = Math.max(0, score - 15);
-    html("feedback", "<span class=\"bad\"><b>Skipped.</b> No worries — moving on. -15 pts</span>");
+    html("feedback", "<span class=\"bad\"><b>SKIPPED.</b> Click Next to continue. -15 pts</span>");
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
   }
 
   function goNext() {
     if (!awaitingNext) return;
-    if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
     if (idx >= rounds.length) {
       endGame();
       return;
@@ -4999,7 +5962,6 @@
     text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
     var report = document.getElementById("reportOverlay");
     if (report) report.classList.add("show");
-    if (window.GSSound && window.GSSound.missionComplete) window.GSSound.missionComplete();
   }
 
   function startTimer() {
