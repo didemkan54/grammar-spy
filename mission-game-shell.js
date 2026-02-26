@@ -2094,6 +2094,126 @@
         ],
         answer: 1,
         explain: "Information is uncountable and singular, requiring is."
+      },
+      {
+        scene: "Sweep 11",
+        prompt: "Find the line with correct subject-be agreement.",
+        options: [
+          "There is many reasons for the delay.",
+          "There are many reasons for the delay.",
+          "There am many reasons for the delay.",
+          "There be many reasons for the delay."
+        ],
+        answer: 1,
+        explain: "There are pairs with the plural noun reasons."
+      },
+      {
+        scene: "Sweep 12",
+        prompt: "Choose the sentence that matches the subject.",
+        options: [
+          "The committee are meeting at noon today.",
+          "The committee is meeting at noon today.",
+          "The committee am meeting at noon today.",
+          "The committee were meeting at noon today now."
+        ],
+        answer: 1,
+        explain: "Collective noun committee is treated as singular."
+      },
+      {
+        scene: "Sweep 13",
+        prompt: "Select the strongest agreement line.",
+        options: [
+          "My brother and his friend was at the park yesterday.",
+          "My brother and his friend am at the park yesterday.",
+          "My brother and his friend were at the park yesterday.",
+          "My brother and his friend is at the park yesterday."
+        ],
+        answer: 2,
+        explain: "Compound subject in past takes were."
+      },
+      {
+        scene: "Sweep 14",
+        prompt: "Pick the correct sentence for present context.",
+        options: [
+          "Every seat in the auditorium is taken.",
+          "Every seat in the auditorium are taken.",
+          "Every seat in the auditorium am taken.",
+          "Every seat in the auditorium were taken now."
+        ],
+        answer: 0,
+        explain: "Every makes the subject singular, requiring is."
+      },
+      {
+        scene: "Sweep 15",
+        prompt: "Choose the line with correct question agreement.",
+        options: [
+          "Is the players ready for the match?",
+          "Am the players ready for the match?",
+          "Are the players ready for the match?",
+          "Be the players ready for the match?"
+        ],
+        answer: 2,
+        explain: "Plural subject players requires are in a question."
+      },
+      {
+        scene: "Sweep 16",
+        prompt: "Find the line with correct subject-be agreement.",
+        options: [
+          "There is three apples on the counter.",
+          "There am three apples on the counter.",
+          "There are three apples on the counter.",
+          "There be three apples on the counter."
+        ],
+        answer: 2,
+        explain: "There are pairs with the plural noun apples."
+      },
+      {
+        scene: "Sweep 17",
+        prompt: "Select the accurate negative agreement sentence.",
+        options: [
+          "He were not absent from class last Monday.",
+          "He was not absent from class last Monday.",
+          "He are not absent from class last Monday.",
+          "He am not absent from class last Monday."
+        ],
+        answer: 1,
+        explain: "Singular he in the past takes was not."
+      },
+      {
+        scene: "Sweep 18",
+        prompt: "Choose the sentence that matches the subject.",
+        options: [
+          "Each of the experiments are documented in the log.",
+          "Each of the experiments were documented in the log now.",
+          "Each of the experiments is documented in the log.",
+          "Each of the experiments am documented in the log."
+        ],
+        answer: 2,
+        explain: "Each is singular, requiring is."
+      },
+      {
+        scene: "Sweep 19",
+        prompt: "Pick the correct sentence for past context.",
+        options: [
+          "The dogs in the yard is barking all night.",
+          "The dogs in the yard were barking all night.",
+          "The dogs in the yard am barking all night.",
+          "The dogs in the yard be barking all night."
+        ],
+        answer: 1,
+        explain: "Plural dogs in past takes were."
+      },
+      {
+        scene: "Sweep 20",
+        prompt: "Select the strongest agreement line.",
+        options: [
+          "Was the instructions clear enough for everyone?",
+          "Am the instructions clear enough for everyone?",
+          "Were the instructions clear enough for everyone?",
+          "Be the instructions clear enough for everyone?"
+        ],
+        answer: 2,
+        explain: "Plural instructions in a past question takes were."
       }
     ],
     "be-verb-case-interview": [
@@ -2216,6 +2336,126 @@
         ],
         answer: 1,
         explain: "Singular answer requires is not."
+      },
+      {
+        scene: "Interview K",
+        prompt: "Witness describes one laptop in the present. Choose the line.",
+        options: [
+          "The laptop are on the desk right now.",
+          "The laptop is on the desk right now.",
+          "The laptop am on the desk right now.",
+          "The laptop be on the desk right now."
+        ],
+        answer: 1,
+        explain: "Singular laptop pairs with is."
+      },
+      {
+        scene: "Interview L",
+        prompt: "Witness refers to several witnesses in the past. Select the sentence.",
+        options: [
+          "The witnesses was questioned after the event.",
+          "The witnesses were questioned after the event.",
+          "The witnesses is questioned after the event.",
+          "The witnesses am questioned after the event."
+        ],
+        answer: 1,
+        explain: "Plural witnesses in past takes were."
+      },
+      {
+        scene: "Interview M",
+        prompt: "Choose the line with correct second-person agreement.",
+        options: [
+          "You is expected to arrive before nine.",
+          "You am expected to arrive before nine.",
+          "You are expected to arrive before nine.",
+          "You was expected to arrive before nine."
+        ],
+        answer: 2,
+        explain: "Subject you always takes are in present tense."
+      },
+      {
+        scene: "Interview N",
+        prompt: "Witness describes a compound subject. Pick the strongest line.",
+        options: [
+          "The principal and the counselor was present during the meeting.",
+          "The principal and the counselor is present during the meeting.",
+          "The principal and the counselor were present during the meeting.",
+          "The principal and the counselor am present during the meeting."
+        ],
+        answer: 2,
+        explain: "Compound subject in past takes were."
+      },
+      {
+        scene: "Interview O",
+        prompt: "Pick the strongest be-verb question.",
+        options: [
+          "Was the documents stored in the cabinet last week?",
+          "Were the documents stored in the cabinet last week?",
+          "Am the documents stored in the cabinet last week?",
+          "Be the documents stored in the cabinet last week?"
+        ],
+        answer: 1,
+        explain: "Plural documents in a past question takes were."
+      },
+      {
+        scene: "Interview P",
+        prompt: "Witness refers to one piece of evidence. Choose the line.",
+        options: [
+          "The fingerprint are still visible on the glass.",
+          "The fingerprint is still visible on the glass.",
+          "The fingerprint am still visible on the glass.",
+          "The fingerprint were still visible on the glass now."
+        ],
+        answer: 1,
+        explain: "Singular fingerprint requires is."
+      },
+      {
+        scene: "Interview Q",
+        prompt: "Select the sentence with the cleanest past-tense agreement.",
+        options: [
+          "I were in the hallway when the alarm rang.",
+          "I was in the hallway when the alarm rang.",
+          "I are in the hallway when the alarm rang.",
+          "I is in the hallway when the alarm rang."
+        ],
+        answer: 1,
+        explain: "Subject I in past tense takes was."
+      },
+      {
+        scene: "Interview R",
+        prompt: "Witness describes a negative statement. Pick the best line.",
+        options: [
+          "The cameras was not recording during the outage.",
+          "The cameras were not recording during the outage.",
+          "The cameras am not recording during the outage.",
+          "The cameras is not recording during the outage."
+        ],
+        answer: 1,
+        explain: "Plural cameras in past takes were not."
+      },
+      {
+        scene: "Interview S",
+        prompt: "Choose the line with correct third-person singular agreement.",
+        options: [
+          "She are the only witness available today.",
+          "She am the only witness available today.",
+          "She is the only witness available today.",
+          "She were the only witness available today."
+        ],
+        answer: 2,
+        explain: "Third-person singular she takes is in present."
+      },
+      {
+        scene: "Interview T",
+        prompt: "Witness describes plural items in present. Select the sentence.",
+        options: [
+          "The files on the server is encrypted.",
+          "The files on the server am encrypted.",
+          "The files on the server are encrypted.",
+          "The files on the server was encrypted now."
+        ],
+        answer: 2,
+        explain: "Plural files requires are."
       }
     ],
     "mission-sequence-lab": [
@@ -2338,6 +2578,126 @@
         ],
         answer: 0,
         explain: "Sequence markers like next pair with consistent simple past verbs."
+      },
+      {
+        scene: "Sequence Draft 11",
+        prompt: "Choose the sentence with clear cause-result markers.",
+        options: [
+          "The power went out, so the lab lost all unsaved data.",
+          "The power went out, so because the lab lost all unsaved data.",
+          "The power went out, so the lab loses all unsaved data yesterday.",
+          "Power went out so lost unsaved data."
+        ],
+        answer: 0,
+        explain: "One cause-result connector with consistent past tense is correct."
+      },
+      {
+        scene: "Sequence Draft 12",
+        prompt: "Pick the strongest contrast sequence line.",
+        options: [
+          "The team expected rain; however, the sky stayed clear all afternoon.",
+          "The team expected rain; however but the sky stayed clear all afternoon.",
+          "The team expected rain; however, the sky stays clear all afternoon yesterday.",
+          "Team expected rain however sky stayed clear."
+        ],
+        answer: 0,
+        explain: "However with a semicolon before and comma after links contrast correctly."
+      },
+      {
+        scene: "Sequence Draft 13",
+        prompt: "Select the line that uses time order correctly.",
+        options: [
+          "Before the briefing started, the agent reviewed the case files.",
+          "Before the briefing started, the agent reviews the case files yesterday.",
+          "Before the briefing start, the agent reviewed the case files.",
+          "Before briefing started reviewed case files."
+        ],
+        answer: 0,
+        explain: "Both clauses must use consistent past tense with a before connector."
+      },
+      {
+        scene: "Sequence Draft 14",
+        prompt: "Choose the best after-clause sentence.",
+        options: [
+          "After we collected the samples, we labeled each container carefully.",
+          "After we collected the samples, we label each container yesterday.",
+          "After we collect the samples, we labeled each container carefully.",
+          "After collected samples, labeled containers."
+        ],
+        answer: 0,
+        explain: "After-clauses need matching past tense in both parts."
+      },
+      {
+        scene: "Sequence Draft 15",
+        prompt: "Which line gives the clearest final step?",
+        options: [
+          "Finally, the detective sealed the evidence bag and signed the report.",
+          "Finally, the detective seal the evidence bag and signed the report.",
+          "Finally, the detective sealed the evidence bag and sign the report yesterday.",
+          "Finally sealed evidence bag signed report."
+        ],
+        answer: 0,
+        explain: "Final step markers pair with consistent simple past verbs."
+      },
+      {
+        scene: "Sequence Draft 16",
+        prompt: "Pick the sentence with the strongest therefore connector.",
+        options: [
+          "The data was corrupted; therefore, the team restarted the analysis.",
+          "The data was corrupted; therefore because the team restarted the analysis.",
+          "The data was corrupted; therefore, the team restarts the analysis yesterday.",
+          "Data corrupted therefore restarted analysis."
+        ],
+        answer: 0,
+        explain: "Therefore needs a semicolon before and a comma after, with matching past tense."
+      },
+      {
+        scene: "Sequence Draft 17",
+        prompt: "Select the line that avoids compound connector errors.",
+        options: [
+          "The alarm rang early, so the guards secured the perimeter.",
+          "The alarm rang early, so because the guards secured the perimeter.",
+          "The alarm rang early, because so the guards secured the perimeter.",
+          "The alarm rang early, so because guards secure perimeter."
+        ],
+        answer: 0,
+        explain: "Using two connectors together creates a compound connector error."
+      },
+      {
+        scene: "Sequence Draft 18",
+        prompt: "Choose the sentence with correct before-after logic.",
+        options: [
+          "The crew checked the engine before they cleared the runway.",
+          "The crew checked the engine before they clear the runway yesterday.",
+          "The crew check the engine before they cleared the runway.",
+          "Crew checked engine before cleared runway."
+        ],
+        answer: 0,
+        explain: "Both clauses need matching past tense with the before connector."
+      },
+      {
+        scene: "Sequence Draft 19",
+        prompt: "Pick the line with the clearest next-step marker.",
+        options: [
+          "Then the scientist recorded the temperature and noted the change.",
+          "Then the scientist record the temperature and noted the change.",
+          "Then the scientist recorded the temperature and note the change yesterday.",
+          "Then scientist was recorded temperature and was noted change."
+        ],
+        answer: 0,
+        explain: "Then pairs with consistent simple past verbs in sequence writing."
+      },
+      {
+        scene: "Sequence Draft 20",
+        prompt: "Select the line that uses because correctly.",
+        options: [
+          "Because the bridge was damaged, the convoy took the alternate route.",
+          "Because the bridge was damaged, so the convoy took the alternate route.",
+          "Because the bridge damaged, the convoy took the alternate route.",
+          "Because bridge was damaged convoy took alternate route."
+        ],
+        answer: 0,
+        explain: "Because introduces the cause; adding so creates a double connector."
       }
     ],
     "evidence-sort-board": [
@@ -2460,6 +2820,126 @@
         ],
         answer: 0,
         explain: "Plural subject takes are + verb-ing for present continuous."
+      },
+      {
+        scene: "Evidence Card K",
+        prompt: "Choose the strongest evidence sentence.",
+        options: [
+          "The guard confirmed that the gate was locked at midnight.",
+          "The guard confirmed that the gate were locked at midnight.",
+          "The guard confirm that the gate was locked at midnight.",
+          "The guard confirmed that the gate is locked at midnight yesterday."
+        ],
+        answer: 0,
+        explain: "Past tense confirmed and was keep the evidence statement consistent."
+      },
+      {
+        scene: "Evidence Card L",
+        prompt: "Pick the line with clear reference.",
+        options: [
+          "Agent Park forwarded the report to Director Ahn before Agent Park left the office.",
+          "Agent Park forwarded the report to Director Ahn before he left the office.",
+          "Agent Park forwarded the report to Director Ahn before they was leaving the office.",
+          "Agent Park forwarded report Director Ahn before left office."
+        ],
+        answer: 0,
+        explain: "Repeating the noun avoids ambiguous pronoun reference in evidence logs."
+      },
+      {
+        scene: "Evidence Card M",
+        prompt: "Select the best question evidence line.",
+        options: [
+          "Did the witness notice anything unusual near the entrance?",
+          "Did the witness noticed anything unusual near the entrance?",
+          "Does the witness noticed anything unusual near the entrance?",
+          "Witness did notice anything unusual entrance?"
+        ],
+        answer: 0,
+        explain: "Did pairs with the base form notice, not noticed."
+      },
+      {
+        scene: "Evidence Card N",
+        prompt: "Choose the sentence with valid cause and result.",
+        options: [
+          "The sensor triggered the alarm, so the team responded within minutes.",
+          "The sensor triggered the alarm, because so the team responded within minutes.",
+          "The sensor triggered the alarm, and because responded within minutes.",
+          "The sensor triggered alarm, so responded minutes."
+        ],
+        answer: 0,
+        explain: "A single correct connector keeps logic clean."
+      },
+      {
+        scene: "Evidence Card O",
+        prompt: "Pick the strongest past tense evidence statement.",
+        options: [
+          "The technician replaced the faulty cable before the system rebooted.",
+          "The technician replace the faulty cable before the system rebooted.",
+          "The technician replaced the faulty cable before the system reboot yesterday.",
+          "Technician replaced faulty cable before system rebooted."
+        ],
+        answer: 0,
+        explain: "Both verbs must be in past tense for a past evidence statement."
+      },
+      {
+        scene: "Evidence Card P",
+        prompt: "Select the line with accurate be-verb agreement.",
+        options: [
+          "The samples from the lab is contaminated.",
+          "The samples from the lab are contaminated.",
+          "The samples from the lab am contaminated.",
+          "The samples from the lab was contaminated now."
+        ],
+        answer: 1,
+        explain: "Plural samples requires are."
+      },
+      {
+        scene: "Evidence Card Q",
+        prompt: "Choose the sentence with correct subject-verb agreement.",
+        options: [
+          "The stack of papers on the desk need to be filed.",
+          "The stack of papers on the desk needs to be filed.",
+          "The stack of papers on the desk are needing to be filed.",
+          "The stack of papers on the desk were need to be filed."
+        ],
+        answer: 1,
+        explain: "The subject is stack (singular), so the verb must be needs."
+      },
+      {
+        scene: "Evidence Card R",
+        prompt: "Pick the line with the clearest pronoun reference.",
+        options: [
+          "Inspector Yoon compared the two samples and found that the first sample was altered.",
+          "Inspector Yoon compared the two samples and found that it was altered.",
+          "Inspector Yoon compared the two samples and found that they was altered.",
+          "Inspector Yoon compared two samples found first altered."
+        ],
+        answer: 0,
+        explain: "Specifying the first sample removes ambiguity from the pronoun reference."
+      },
+      {
+        scene: "Evidence Card S",
+        prompt: "Select the best question-form evidence line.",
+        options: [
+          "Were the suspects aware of the surveillance cameras?",
+          "Was the suspects aware of the surveillance cameras?",
+          "Am the suspects aware of the surveillance cameras?",
+          "Suspects were aware surveillance cameras?"
+        ],
+        answer: 0,
+        explain: "Plural suspects in a past question requires were."
+      },
+      {
+        scene: "Evidence Card T",
+        prompt: "Pick the strongest present continuous evidence statement.",
+        options: [
+          "The forensic team is analyzing the fingerprints right now.",
+          "The forensic team are analyzing the fingerprints right now.",
+          "The forensic team analyzing the fingerprints right now.",
+          "The forensic team is analyze the fingerprints right now."
+        ],
+        answer: 0,
+        explain: "Singular team takes is plus verb-ing for present continuous."
       }
     ]
   };
