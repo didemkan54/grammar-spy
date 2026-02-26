@@ -252,6 +252,54 @@
         ],
         answer: 1,
         explain: "A completed sequence in the past keeps both verbs in simple past."
+      },
+      {
+        scene: "Gym Locker",
+        prompt: "Choose the error-free sentence.",
+        options: [
+          "The coach was explaining the drill when the fire alarm rang.",
+          "The coach was explaining the drill when the fire alarm was ring.",
+          "The coach explaining the drill when the fire alarm rang.",
+          "The coach were explaining the drill when the fire alarm rings."
+        ],
+        answer: 0,
+        explain: "Past continuous with was plus simple past rang shows an interrupted action."
+      },
+      {
+        scene: "Library Return Log",
+        prompt: "Select the strongest correction.",
+        options: [
+          "She returned the books and then she goes to class.",
+          "She returned the books and then she went to class.",
+          "She returning the books and then she went to class.",
+          "She was returned the books and then she went to class."
+        ],
+        answer: 1,
+        explain: "Two completed actions in sequence both need simple past."
+      },
+      {
+        scene: "Nurse's Office",
+        prompt: "Which sentence is grammatically correct?",
+        options: [
+          "The student was waited in the nurse's office when the bell rang.",
+          "The student waiting in the nurse's office when the bell rang.",
+          "The student waited in the nurse's office when the bell rings.",
+          "The student was waiting in the nurse's office when the bell rang."
+        ],
+        answer: 3,
+        explain: "Was waiting shows an ongoing action interrupted by the bell."
+      },
+      {
+        scene: "Parking Lot Cam",
+        prompt: "Smash the error and pick the best sentence.",
+        options: [
+          "Did the buses left before the rain started?",
+          "Did the buses leave before the rain started?",
+          "Does the buses leave before the rain started?",
+          "The buses did left before the rain started?"
+        ],
+        answer: 1,
+        explain: "Did + base verb leave is the correct past question form."
       }
     ],
     "past-sort": [
@@ -814,6 +862,54 @@
         ],
         answer: 1,
         explain: "Does not is followed by the base verb walk."
+      },
+      {
+        scene: "Timer Alert",
+        prompt: "Choose the sentence about a routine.",
+        options: [
+          "The bell is ringing every hour.",
+          "The bell rings every hour.",
+          "The bell rung every hour.",
+          "The bell ring every hour."
+        ],
+        answer: 1,
+        explain: "Every hour signals a routine, requiring simple present rings."
+      },
+      {
+        scene: "Status Update",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The principal announces the results right now.",
+          "The principal is announcing the results right now.",
+          "The principal announced the results right now.",
+          "The principal announcing the results right now."
+        ],
+        answer: 1,
+        explain: "Right now requires present continuous is announcing."
+      },
+      {
+        scene: "Rule Board",
+        prompt: "Select the correct third-person present sentence.",
+        options: [
+          "Mr. Khan teach science on Tuesdays.",
+          "Mr. Khan teaches science on Tuesdays.",
+          "Mr. Khan is teach science on Tuesdays.",
+          "Mr. Khan teached science on Tuesdays usually."
+        ],
+        answer: 1,
+        explain: "Third-person singular routine takes teaches."
+      },
+      {
+        scene: "Quick Check",
+        prompt: "Choose the correct present question.",
+        options: [
+          "Does the printer works after lunch?",
+          "Do the printer work after lunch?",
+          "Does the printer work after lunch?",
+          "Printer does work after lunch?"
+        ],
+        answer: 2,
+        explain: "Singular printer takes does + base verb work."
       }
     ],
     "signal-decoder-present": [
@@ -936,6 +1032,54 @@
         ],
         answer: 1,
         explain: "Each morning signals a repeated routine using simple present unlocks."
+      },
+      {
+        scene: "Signal: at this moment",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The nurse checks the roster at this moment.",
+          "The nurse is checking the roster at this moment.",
+          "The nurse checked the roster at this moment.",
+          "The nurse check the roster at this moment."
+        ],
+        answer: 1,
+        explain: "At this moment signals present continuous is checking."
+      },
+      {
+        scene: "Signal: twice a week",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "They are practising drills twice a week.",
+          "They practise drills twice a week.",
+          "They practised drills twice a week now.",
+          "They practises drills twice a week."
+        ],
+        answer: 1,
+        explain: "Twice a week describes a routine, requiring simple present practise."
+      },
+      {
+        scene: "Signal: now",
+        prompt: "Pick the line that fits the signal.",
+        options: [
+          "The coach explains the strategy now.",
+          "The coach is explaining the strategy now.",
+          "The coach explained the strategy now.",
+          "The coach explaining the strategy now."
+        ],
+        answer: 1,
+        explain: "Now signals an action in progress, requiring present continuous."
+      },
+      {
+        scene: "Signal: always",
+        prompt: "Select the strongest habitual statement.",
+        options: [
+          "She is always bringing her notebook to class.",
+          "She always brings her notebook to class.",
+          "She always brought her notebook to class now.",
+          "She always bring her notebook to class."
+        ],
+        answer: 1,
+        explain: "Always describes a permanent habit, requiring simple present brings."
       }
     ],
     "present-case-interview": [
@@ -1058,6 +1202,54 @@
         ],
         answer: 2,
         explain: "Does not must pair with base verb believe."
+      },
+      {
+        scene: "Interview File 11",
+        prompt: "Witness describes a morning habit. Choose the best line.",
+        options: [
+          "The guard is locking the gate every morning.",
+          "The guard locks the gate every morning.",
+          "The guard locked the gate every morning now.",
+          "The guard lock the gate every morning."
+        ],
+        answer: 1,
+        explain: "Every morning signals a habit, requiring simple present locks."
+      },
+      {
+        scene: "Interview File 12",
+        prompt: "Witness says the action is happening now. Select the line.",
+        options: [
+          "The detective examines the evidence right now.",
+          "The detective is examining the evidence right now.",
+          "The detective examined the evidence right now.",
+          "The detective examining the evidence right now."
+        ],
+        answer: 1,
+        explain: "Right now requires present continuous is examining."
+      },
+      {
+        scene: "Interview File 13",
+        prompt: "Choose the strongest present question for the witness.",
+        options: [
+          "Does the alarm rings every night?",
+          "Do the alarm ring every night?",
+          "Does the alarm ring every night?",
+          "Alarm does ring every night?"
+        ],
+        answer: 2,
+        explain: "Singular alarm takes does + base verb ring."
+      },
+      {
+        scene: "Interview File 14",
+        prompt: "Pick the most accurate negative present form.",
+        options: [
+          "The witness do not recall the licence plate.",
+          "The witness does not recalls the licence plate.",
+          "The witness does not recall the licence plate.",
+          "The witness not recall the licence plate."
+        ],
+        answer: 2,
+        explain: "Does not must pair with base verb recall."
       }
     ],
     "be-verb-rule-sprint": [
@@ -1180,6 +1372,54 @@
         ],
         answer: 1,
         explain: "Singular uncountable evidence in past takes was not."
+      },
+      {
+        scene: "Question Form",
+        prompt: "Choose the correct be-verb question.",
+        options: [
+          "Are she ready for the presentation?",
+          "Is she ready for the presentation?",
+          "Am she ready for the presentation?",
+          "Be she ready for the presentation?"
+        ],
+        answer: 1,
+        explain: "Third-person singular she takes is in questions."
+      },
+      {
+        scene: "Classroom Roster",
+        prompt: "Select the line with correct agreement.",
+        options: [
+          "The students was excited about the field trip.",
+          "The students were excited about the field trip.",
+          "The students am excited about the field trip.",
+          "The students is excited about the field trip."
+        ],
+        answer: 1,
+        explain: "Plural students in past takes were."
+      },
+      {
+        scene: "There-Sentence",
+        prompt: "Pick the strongest be-verb form.",
+        options: [
+          "There is three books on the desk.",
+          "There are three books on the desk.",
+          "There am three books on the desk.",
+          "There be three books on the desk."
+        ],
+        answer: 1,
+        explain: "Plural books requires there are."
+      },
+      {
+        scene: "Tag Check",
+        prompt: "Choose the correct be-verb tag question.",
+        options: [
+          "He is your partner, aren't he?",
+          "He is your partner, isn't he?",
+          "He is your partner, wasn't he?",
+          "He is your partner, don't he?"
+        ],
+        answer: 1,
+        explain: "Present is matches the negative tag isn't he."
       }
     ],
     "be-verb-agreement-sweep": [
@@ -1376,6 +1616,54 @@
         ],
         answer: 1,
         explain: "Singular explanation requires is."
+      },
+      {
+        scene: "Interview G",
+        prompt: "Witness refers to one report in the past. Choose the line.",
+        options: [
+          "The report were incomplete.",
+          "The report was incomplete.",
+          "The report are incomplete yesterday.",
+          "The report be incomplete."
+        ],
+        answer: 1,
+        explain: "Singular report in past takes was."
+      },
+      {
+        scene: "Interview H",
+        prompt: "Witness describes two classrooms. Select the sentence.",
+        options: [
+          "Both classrooms is locked after hours.",
+          "Both classrooms are locked after hours.",
+          "Both classrooms am locked after hours.",
+          "Both classrooms was locked after hours now."
+        ],
+        answer: 1,
+        explain: "Plural classrooms requires are."
+      },
+      {
+        scene: "Interview I",
+        prompt: "Past-time clue: choose the best form.",
+        options: [
+          "The windows was open during the incident.",
+          "The windows were open during the incident.",
+          "The windows are open during the incident yesterday.",
+          "The windows be open during the incident."
+        ],
+        answer: 1,
+        explain: "Plural windows in past takes were."
+      },
+      {
+        scene: "Interview J",
+        prompt: "Pick the strongest negative be-verb line.",
+        options: [
+          "The answer are not correct.",
+          "The answer is not correct.",
+          "The answer am not correct.",
+          "The answer were not correct now."
+        ],
+        answer: 1,
+        explain: "Singular answer requires is not."
       }
     ],
     "mission-sequence-lab": [
@@ -2345,9 +2633,10 @@
   }
 
   function resolveRoundBank(key, packId) {
+    var base = roundBanks[key] || fallbackRounds;
     var variant = packVariantBanks[key];
-    if (variant && variant[packId]) return variant[packId];
-    return roundBanks[key] || fallbackRounds;
+    if (variant && variant[packId]) return variant[packId].concat(base);
+    return base;
   }
 
   function resolveGameConfig(key, packId, baseCfg) {
@@ -2512,8 +2801,12 @@
 
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
-    var target = Math.max(1, Math.min(20, desiredCount, source.length));
-    return shuffle(cloneRounds(source)).slice(0, target);
+    var target = Math.max(1, Math.min(20, desiredCount));
+    var pool = shuffle(cloneRounds(source));
+    while (pool.length < target) {
+      pool = pool.concat(shuffle(cloneRounds(source)));
+    }
+    return pool.slice(0, target);
   }
 
   function text(id, value) {
