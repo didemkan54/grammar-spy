@@ -81,7 +81,7 @@
       display:grid;
       grid-template-columns:1.2fr .8fr;
       gap:40px;
-      align-items:center;
+      align-items:start;
     }
     .mission-panel{
       margin-top:20px;
@@ -151,12 +151,14 @@
     .hero-visual{
       display:flex;
       justify-content:flex-end;
+      padding-top:32px;
     }
     .hero-visual img{
       width:100%;
       max-width:480px;
       border-radius:16px;
       box-shadow:0 20px 60px rgba(11,16,32,.15);
+      object-fit:contain;
     }
     .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:18px}
     .step{padding:12px 0;border-radius:0;background:transparent;border-bottom:1px solid #e4e8ef}
@@ -343,7 +345,7 @@
             <div class="hero-buttons">
               <a id="continueBtn" class="btn-primary btn-hero-primary" href="teacher-home.html" data-i18n="hero_continue">Continue</a>
               <a class="link-action" href="auth.html" id="signUpLink" data-i18n="hero_signUpFree">Sign up free</a>
-              <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=6&timer=off" data-i18n="hero_trySample">Try a sample mission</a>
+              <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=20&timer=off" data-i18n="hero_trySample">Try a sample mission</a>
               <a class="link-action" href="missions.html">Open Mission Library</a>
               <a class="link-action" href="teacher-welcome.html">Teacher welcome video</a>
               <a class="link-action" href="student-welcome.html">Student welcome video</a>

@@ -4,8 +4,8 @@
   var pack = params.get("pack") || "pack01";
   var difficulty = params.get("difficulty") || "field";
   var timerOn = (params.get("timer") || "on") !== "off";
-  var requestedCount = Number(params.get("count") || 10) || 10;
-  var count = Math.max(6, Math.min(20, requestedCount));
+  var requestedCount = Number(params.get("count") || 20) || 20;
+  var count = Math.max(6, Math.min(30, requestedCount));
   var playFormat = params.get("play_format") || "individuals";
 
   var games = {
@@ -204,6 +204,174 @@
         ],
         answer: 1,
         explain: "Did + base verb is the correct question pattern."
+      },
+      {
+        scene: "Briefing Room",
+        prompt: "Smash the incorrect draft and choose the best fix.",
+        options: [
+          "While the agent was reviewing the map, a message arrived.",
+          "While the agent reviewing the map, a message arrived.",
+          "While the agent is reviewing the map, a message arrived.",
+          "While the agent were reviewing the map, a message arrived."
+        ],
+        answer: 0,
+        explain: "Past continuous with was shows an ongoing past action interrupted by an event."
+      },
+      {
+        scene: "Supply Closet",
+        prompt: "Which sentence is error-free?",
+        options: [
+          "Someone take the last notebook before third period.",
+          "Someone took the last notebook before third period.",
+          "Someone is took the last notebook before third period.",
+          "Someone were taking the last notebook before third period."
+        ],
+        answer: 1,
+        explain: "A completed past event uses simple past took."
+      },
+      {
+        scene: "Detention Log",
+        prompt: "Choose the strongest correction.",
+        options: [
+          "The students was talking when the supervisor walked in.",
+          "The students talked when the supervisor walks in.",
+          "The students were talking when the supervisor walked in.",
+          "The students talking when the supervisor walked in."
+        ],
+        answer: 2,
+        explain: "Plural subject students takes were in past continuous."
+      },
+      {
+        scene: "Staff Memo",
+        prompt: "Select the corrected sentence.",
+        options: [
+          "The staff discussed the schedule and then they leaves.",
+          "The staff discussed the schedule and then they left.",
+          "The staff discuss the schedule and then they left yesterday.",
+          "The staff was discuss the schedule and then they left."
+        ],
+        answer: 1,
+        explain: "A completed sequence in the past keeps both verbs in simple past."
+      },
+      {
+        scene: "Gym Locker",
+        prompt: "Choose the error-free sentence.",
+        options: [
+          "The coach was explaining the drill when the fire alarm rang.",
+          "The coach was explaining the drill when the fire alarm was ring.",
+          "The coach explaining the drill when the fire alarm rang.",
+          "The coach were explaining the drill when the fire alarm rings."
+        ],
+        answer: 0,
+        explain: "Past continuous with was plus simple past rang shows an interrupted action."
+      },
+      {
+        scene: "Library Return Log",
+        prompt: "Select the strongest correction.",
+        options: [
+          "She returned the books and then she goes to class.",
+          "She returned the books and then she went to class.",
+          "She returning the books and then she went to class.",
+          "She was returned the books and then she went to class."
+        ],
+        answer: 1,
+        explain: "Two completed actions in sequence both need simple past."
+      },
+      {
+        scene: "Nurse's Office",
+        prompt: "Which sentence is grammatically correct?",
+        options: [
+          "The student was waited in the nurse's office when the bell rang.",
+          "The student waiting in the nurse's office when the bell rang.",
+          "The student waited in the nurse's office when the bell rings.",
+          "The student was waiting in the nurse's office when the bell rang."
+        ],
+        answer: 3,
+        explain: "Was waiting shows an ongoing action interrupted by the bell."
+      },
+      {
+        scene: "Parking Lot Cam",
+        prompt: "Smash the error and pick the best sentence.",
+        options: [
+          "Did the buses left before the rain started?",
+          "Did the buses leave before the rain started?",
+          "Does the buses leave before the rain started?",
+          "The buses did left before the rain started?"
+        ],
+        answer: 1,
+        explain: "Did + base verb leave is the correct past question form."
+      },
+      {
+        scene: "Witness Log",
+        prompt: "Smash the incorrect draft and choose the best fix.",
+        options: [
+          "The witness was describing the suspect when the officer arrived.",
+          "The witness describing the suspect when the officer arrived.",
+          "The witness were describing the suspect when the officer arrived.",
+          "The witness is describing the suspect when the officer arrived."
+        ],
+        answer: 0,
+        explain: "Singular subject takes was in past continuous; simple past arrived shows the interruption."
+      },
+      {
+        scene: "Morning Brief",
+        prompt: "Select the corrected sentence.",
+        options: [
+          "The captain reviewed the case notes before the meeting started.",
+          "The captain review the case notes before the meeting started.",
+          "The captain was review the case notes before the meeting started.",
+          "The captain reviews the case notes before the meeting started yesterday."
+        ],
+        answer: 0,
+        explain: "Two completed past actions use simple past reviewed and started."
+      },
+      {
+        scene: "Field Report",
+        prompt: "Which sentence is error-free?",
+        options: [
+          "The officers was searching the building when backup arrived.",
+          "The officers were searching the building when backup arrived.",
+          "The officers searched the building when backup arrives.",
+          "The officers searching the building when backup arrived."
+        ],
+        answer: 1,
+        explain: "Plural officers takes were in past continuous; arrived is simple past for the interruption."
+      },
+      {
+        scene: "Incident Record",
+        prompt: "Choose the strongest correction.",
+        options: [
+          "Did the team completed the report before midnight?",
+          "Did the team complete the report before midnight?",
+          "Does the team complete the report before midnight yesterday?",
+          "The team did completed the report before midnight?"
+        ],
+        answer: 1,
+        explain: "Did + base verb complete is the correct past question form."
+      },
+      {
+        scene: "Cafeteria Log",
+        prompt: "Smash the incorrect draft and choose the best fix.",
+        options: [
+          "While the students were eating lunch, the fire alarm sounded.",
+          "While the students was eating lunch, the fire alarm sounded.",
+          "While the students eating lunch, the fire alarm sounded.",
+          "While the students are eating lunch, the fire alarm sounded yesterday."
+        ],
+        answer: 0,
+        explain: "Plural students takes were in past continuous; sounded is simple past for the interruption."
+      },
+      {
+        scene: "Art Room Report",
+        prompt: "Select the corrected sentence.",
+        options: [
+          "The teacher collected the brushes after the students left the room.",
+          "The teacher collected the brushes after the students leaves the room.",
+          "The teacher was collected the brushes after the students left the room.",
+          "The teacher collect the brushes after the students left the room."
+        ],
+        answer: 0,
+        explain: "Two completed past actions in sequence both use simple past."
       }
     ],
     "past-sort": [
@@ -278,6 +446,174 @@
         ],
         answer: 0,
         explain: "Retelling a finished sequence works best in simple past."
+      },
+      {
+        scene: "Timeline Card G",
+        prompt: "Choose the sentence that shows a completed past action.",
+        options: [
+          "The principal announced the results after lunch.",
+          "The principal was announcing the results after lunch.",
+          "The principal announces the results after lunch yesterday.",
+          "The principal is announcing the results after lunch."
+        ],
+        answer: 0,
+        explain: "A completed single action in the past takes simple past announced."
+      },
+      {
+        scene: "Timeline Card H",
+        prompt: "Select the line that shows an ongoing action interrupted by an event.",
+        options: [
+          "We were organizing the files when the power went out.",
+          "We organized the files when the power goes out.",
+          "We are organizing the files when the power went out.",
+          "We organizing the files when the power went out."
+        ],
+        answer: 0,
+        explain: "Were organizing shows background action interrupted by went out."
+      },
+      {
+        scene: "Timeline Card I",
+        prompt: "Pick the sentence with correct timeline meaning.",
+        options: [
+          "She finished the report, saved it, and then she leave.",
+          "She finished the report, saved it, and then she left.",
+          "She was finish the report, saved it, and then she left.",
+          "She finishing the report, saving it, and then she left."
+        ],
+        answer: 1,
+        explain: "A sequence of completed actions uses consistent simple past verbs."
+      },
+      {
+        scene: "Timeline Card J",
+        prompt: "Which sentence matches the meaning: background action in progress?",
+        options: [
+          "The librarian sorted the returns while students studied quietly.",
+          "The librarian was sorting the returns while students were studying quietly.",
+          "The librarian sorts the returns while students were studying quietly.",
+          "The librarian was sorting the returns while students study quietly."
+        ],
+        answer: 1,
+        explain: "Two simultaneous ongoing past actions both use past continuous."
+      },
+      {
+        scene: "Timeline Card K",
+        prompt: "Choose the sentence that shows two simultaneous past actions.",
+        options: [
+          "The teacher was reading aloud while the students were taking notes.",
+          "The teacher read aloud while the students takes notes.",
+          "The teacher reads aloud while the students were taking notes.",
+          "The teacher was reading aloud while the students take notes."
+        ],
+        answer: 0,
+        explain: "Two simultaneous ongoing past actions both use past continuous."
+      },
+      {
+        scene: "Timeline Card L",
+        prompt: "Select the sentence for a completed past sequence.",
+        options: [
+          "The secretary filed the documents after the meeting ended.",
+          "The secretary was filing the documents after the meeting ended.",
+          "The secretary files the documents after the meeting ended yesterday.",
+          "The secretary filing the documents after the meeting ended."
+        ],
+        answer: 0,
+        explain: "A completed sequence in the past uses simple past for both actions."
+      },
+      {
+        scene: "Timeline Card M",
+        prompt: "Pick the line that shows an interrupted action.",
+        options: [
+          "We were reviewing the answers when the alarm sounded.",
+          "We reviewed the answers when the alarm sounds.",
+          "We are reviewing the answers when the alarm sounded.",
+          "We reviewing the answers when the alarm sounded."
+        ],
+        answer: 0,
+        explain: "Past continuous were reviewing shows the action interrupted by sounded."
+      },
+      {
+        scene: "Timeline Card N",
+        prompt: "Choose the sentence with correct past sequence.",
+        options: [
+          "After the coach blew the whistle, the players stop running.",
+          "After the coach blew the whistle, the players stopped running.",
+          "After the coach blows the whistle, the players stopped running.",
+          "After the coach was blew the whistle, the players stopped running."
+        ],
+        answer: 1,
+        explain: "A past sequence uses simple past in both clauses."
+      },
+      {
+        scene: "Timeline Card O",
+        prompt: "Choose the sentence that shows a completed past action.",
+        options: [
+          "The nurse checked the attendance sheet after the bell rang.",
+          "The nurse was checking the attendance sheet after the bell rang.",
+          "The nurse checks the attendance sheet after the bell rang yesterday.",
+          "The nurse checking the attendance sheet after the bell rang."
+        ],
+        answer: 0,
+        explain: "A completed sequence in the past uses simple past for both actions."
+      },
+      {
+        scene: "Timeline Card P",
+        prompt: "Select the line that shows an ongoing action interrupted by an event.",
+        options: [
+          "The students were presenting their project when the visitor arrived.",
+          "The students presented their project when the visitor arrives.",
+          "The students are presenting their project when the visitor arrived.",
+          "The students presenting their project when the visitor arrived."
+        ],
+        answer: 0,
+        explain: "Were presenting shows an ongoing past action interrupted by arrived."
+      },
+      {
+        scene: "Timeline Card Q",
+        prompt: "Pick the sentence with correct past sequence.",
+        options: [
+          "First the captain locked the door, and then she turned off the lights.",
+          "First the captain lock the door, and then she turned off the lights.",
+          "First the captain locked the door, and then she turns off the lights.",
+          "First the captain was locked the door, and then she turned off the lights."
+        ],
+        answer: 0,
+        explain: "A retold sequence of finished actions stays in simple past."
+      },
+      {
+        scene: "Timeline Card R",
+        prompt: "Choose the sentence that shows two simultaneous past actions.",
+        options: [
+          "While the chef was cooking dinner, the waiter was setting the tables.",
+          "While the chef cooked dinner, the waiter sets the tables.",
+          "While the chef was cooking dinner, the waiter set the tables yesterday now.",
+          "While the chef cooking dinner, the waiter was setting the tables."
+        ],
+        answer: 0,
+        explain: "Two simultaneous ongoing past actions both use past continuous."
+      },
+      {
+        scene: "Timeline Card S",
+        prompt: "Select the sentence for a completed past action.",
+        options: [
+          "By the end of the day, the crew finished all the repairs.",
+          "By the end of the day, the crew was finishing all the repairs.",
+          "By the end of the day, the crew finishes all the repairs.",
+          "By the end of the day, the crew finishing all the repairs."
+        ],
+        answer: 0,
+        explain: "By + past checkpoint points to completed simple past finished."
+      },
+      {
+        scene: "Timeline Card T",
+        prompt: "Pick the line that shows an interrupted action.",
+        options: [
+          "The librarian was shelving books when the phone rang.",
+          "The librarian shelved books when the phone rings.",
+          "The librarian is shelving books when the phone rang.",
+          "The librarian shelving books when the phone rang."
+        ],
+        answer: 0,
+        explain: "Past continuous was shelving shows the action interrupted by rang."
       }
     ],
     "narrative-builder": [
@@ -352,6 +688,174 @@
         ],
         answer: 1,
         explain: "After-clause and result are both completed in the past."
+      },
+      {
+        scene: "Story Step 7",
+        prompt: "Which line best continues the narrative?",
+        options: [
+          "Meanwhile, two agents were guarding the entrance while a third searched the office.",
+          "Meanwhile, two agents guarding the entrance while a third searched the office.",
+          "Meanwhile, two agents were guarding the entrance while a third searches the office.",
+          "Meanwhile, two agents was guarding the entrance while a third searched the office."
+        ],
+        answer: 0,
+        explain: "Parallel past actions need past continuous with correct subject-verb agreement."
+      },
+      {
+        scene: "Story Step 8",
+        prompt: "Pick the sentence that maintains story flow.",
+        options: [
+          "Next, the team gathered the clues and prepared a summary for the commander.",
+          "Next, the team gather the clues and prepared a summary for the commander.",
+          "Next, the team gathered the clues and prepares a summary for the commander.",
+          "Next, the team were gathered the clues and prepared a summary for the commander."
+        ],
+        answer: 0,
+        explain: "Sequence markers like next require consistent simple past verbs."
+      },
+      {
+        scene: "Story Step 9",
+        prompt: "Choose the strongest narrative transition.",
+        options: [
+          "Because the evidence was strong, the squad decided to move forward.",
+          "Because the evidence strong, the squad decided to move forward.",
+          "Because the evidence was strong, the squad decides to move forward yesterday.",
+          "Because the evidence were strong, the squad decided to move forward."
+        ],
+        answer: 0,
+        explain: "Cause and result clauses should keep tense consistent in past narrative."
+      },
+      {
+        scene: "Story Step 10",
+        prompt: "Select the best closing line for the story.",
+        options: [
+          "Finally, the captain reviewed the mission log and signed the report.",
+          "Finally, the captain review the mission log and signed the report.",
+          "Finally, the captain reviewed the mission log and signs the report.",
+          "Finally, the captain was review the mission log and signed the report."
+        ],
+        answer: 0,
+        explain: "A narrative conclusion uses simple past for completed actions in sequence."
+      },
+      {
+        scene: "Story Step 11",
+        prompt: "Which line continues the story with correct tense?",
+        options: [
+          "After the team gathered the evidence, the leader presents the plan.",
+          "After the team gathered the evidence, the leader presented the plan.",
+          "After the team was gather the evidence, the leader presented the plan.",
+          "After the team gathers the evidence, the leader presented the plan."
+        ],
+        answer: 1,
+        explain: "Both clauses in a past narrative need consistent simple past."
+      },
+      {
+        scene: "Story Step 12",
+        prompt: "Select the sentence that keeps the story flowing.",
+        options: [
+          "Meanwhile, the scout was mapping the trail while the others rested nearby.",
+          "Meanwhile, the scout mapping the trail while the others rested nearby.",
+          "Meanwhile, the scout was mapping the trail while the others rests nearby.",
+          "Meanwhile, the scout maps the trail while the others rested nearby."
+        ],
+        answer: 0,
+        explain: "Simultaneous past actions use past continuous and simple past together."
+      },
+      {
+        scene: "Story Step 13",
+        prompt: "Pick the best next story line.",
+        options: [
+          "The group decided to split up, and each member choose a different route.",
+          "The group decided to split up, and each member chose a different route.",
+          "The group decides to split up, and each member chose a different route.",
+          "The group decided to split up, and each member was choose a different route."
+        ],
+        answer: 1,
+        explain: "Parallel completed past actions both take simple past forms."
+      },
+      {
+        scene: "Story Step 14",
+        prompt: "Choose the line that wraps up the chapter correctly.",
+        options: [
+          "At last, the crew returned to base and files the final report.",
+          "At last, the crew returned to base and filed the final report.",
+          "At last, the crew returns to base and filed the final report.",
+          "At last, the crew was returned to base and filed the final report."
+        ],
+        answer: 1,
+        explain: "A past narrative closing needs consistent simple past verbs."
+      },
+      {
+        scene: "Story Step 15",
+        prompt: "Which line best continues the narrative?",
+        options: [
+          "Before the sun rose, the scouts prepared the trail markers.",
+          "Before the sun rose, the scouts prepare the trail markers.",
+          "Before the sun rises, the scouts prepared the trail markers.",
+          "Before the sun was rose, the scouts prepared the trail markers."
+        ],
+        answer: 0,
+        explain: "A past narrative uses simple past consistently in both clauses."
+      },
+      {
+        scene: "Story Step 16",
+        prompt: "Pick the sentence that maintains story flow.",
+        options: [
+          "The commander reviewed the map and assigned each team a zone.",
+          "The commander review the map and assigned each team a zone.",
+          "The commander reviewed the map and assigns each team a zone.",
+          "The commander was review the map and assigned each team a zone."
+        ],
+        answer: 0,
+        explain: "Parallel completed past actions both take simple past forms."
+      },
+      {
+        scene: "Story Step 17",
+        prompt: "Choose the strongest narrative transition.",
+        options: [
+          "While the medic was treating the wound, the radio crackled with a new message.",
+          "While the medic treating the wound, the radio crackled with a new message.",
+          "While the medic was treating the wound, the radio crackles with a new message.",
+          "While the medic were treating the wound, the radio crackled with a new message."
+        ],
+        answer: 0,
+        explain: "Past continuous background with was plus simple past interruption keeps the narrative clear."
+      },
+      {
+        scene: "Story Step 18",
+        prompt: "Select the best closing line for the chapter.",
+        options: [
+          "In the end, the team solved every puzzle and celebrated their victory.",
+          "In the end, the team solve every puzzle and celebrated their victory.",
+          "In the end, the team solved every puzzle and celebrates their victory.",
+          "In the end, the team was solved every puzzle and celebrated their victory."
+        ],
+        answer: 0,
+        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
+      },
+      {
+        scene: "Story Step 19",
+        prompt: "Which line best continues the narrative?",
+        options: [
+          "After the scouts returned, the leader assigned new roles to each member.",
+          "After the scouts returned, the leader assigns new roles to each member.",
+          "After the scouts returns, the leader assigned new roles to each member.",
+          "After the scouts was returned, the leader assigned new roles to each member."
+        ],
+        answer: 0,
+        explain: "Both clauses in a past narrative need consistent simple past."
+      },
+      {
+        scene: "Story Step 20",
+        prompt: "Select the best closing line for the story.",
+        options: [
+          "At last, the team packed the equipment and headed back to base.",
+          "At last, the team pack the equipment and headed back to base.",
+          "At last, the team packed the equipment and heads back to base.",
+          "At last, the team was packed the equipment and headed back to base."
+        ],
+        answer: 0,
+        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
       }
     ],
     "dialogue-repair": [
@@ -426,6 +930,174 @@
         ],
         answer: 1,
         explain: "Simple past is the cleanest form for a completed mission."
+      },
+      {
+        scene: "Science Lab Chat",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "We doesn't have enough test tubes for the experiment.",
+          "We don't have enough test tubes for the experiment.",
+          "We not have enough test tubes for the experiment.",
+          "We do not has enough test tubes for the experiment."
+        ],
+        answer: 1,
+        explain: "Plural subject we takes do not (don't) plus base verb."
+      },
+      {
+        scene: "Library Whisper",
+        prompt: "Choose the best repaired question.",
+        options: [
+          "Can you helped me find the reference book?",
+          "Can you help me find the reference book?",
+          "Can you helps me find the reference book?",
+          "Can you helping me find the reference book?"
+        ],
+        answer: 1,
+        explain: "Modal can must be followed by the base verb form."
+      },
+      {
+        scene: "Recess Recap",
+        prompt: "Select the clearest spoken line.",
+        options: [
+          "She told him that he need to finish the poster before lunch.",
+          "She told him that he needed to finish the poster before lunch.",
+          "She told he that he needed to finish the poster before lunch.",
+          "She told him that he needing to finish the poster before lunch."
+        ],
+        answer: 1,
+        explain: "Reported past speech uses past tense needed for correct sequence."
+      },
+      {
+        scene: "Morning Lineup",
+        prompt: "Which response sounds natural and correct?",
+        options: [
+          "The teacher asked why was we late to class.",
+          "The teacher asked why we were late to class.",
+          "The teacher asked why we was late to class.",
+          "The teacher asked why were we late to class."
+        ],
+        answer: 1,
+        explain: "Embedded questions keep statement order: subject before verb."
+      },
+      {
+        scene: "Cafeteria Check-in",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "She don't know where the meeting is.",
+          "She doesn't know where the meeting is.",
+          "She doesn't knows where the meeting is.",
+          "She not know where the meeting is."
+        ],
+        answer: 1,
+        explain: "Third-person singular she requires doesn't + base verb know."
+      },
+      {
+        scene: "Office Referral",
+        prompt: "Choose the best correction for the dialogue.",
+        options: [
+          "He asked me where did I put the folder.",
+          "He asked me where I putted the folder.",
+          "He asked me where I put the folder.",
+          "He asked me where I did put the folder."
+        ],
+        answer: 2,
+        explain: "Embedded questions use statement word order: subject before verb."
+      },
+      {
+        scene: "Study Hall Whisper",
+        prompt: "Select the natural, error-free dialogue.",
+        options: [
+          "We was supposed to finish this yesterday, but we didn't.",
+          "We were supposed to finish this yesterday, but we didn't.",
+          "We were suppose to finish this yesterday, but we don't.",
+          "We supposed to finish this yesterday, but we didn't."
+        ],
+        answer: 1,
+        explain: "Plural we takes were; supposed keeps the past participle form."
+      },
+      {
+        scene: "After-School Meetup",
+        prompt: "Which line repairs the dialogue correctly?",
+        options: [
+          "Can you helped me carry these books to the car?",
+          "Can you help I carry these books to the car?",
+          "Can you help me carry these books to the car?",
+          "Can you helps me carry these books to the car?"
+        ],
+        answer: 2,
+        explain: "Modal can is followed by the base verb help; object pronoun is me."
+      },
+      {
+        scene: "Exit Briefing",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "The officer said that he don't need more evidence.",
+          "The officer said that he didn't need more evidence.",
+          "The officer said that he doesn't needed more evidence.",
+          "The officer said that he not need more evidence."
+        ],
+        answer: 1,
+        explain: "Reported past speech uses didn't + base verb for negative statements."
+      },
+      {
+        scene: "Quick Check",
+        prompt: "Choose the best repaired question.",
+        options: [
+          "Have you saw the new schedule on the board?",
+          "Have you seen the new schedule on the board?",
+          "Have you see the new schedule on the board?",
+          "Did you have seen the new schedule on the board?"
+        ],
+        answer: 1,
+        explain: "Have + past participle seen is the correct present perfect form."
+      },
+      {
+        scene: "Lineup Review",
+        prompt: "Select the clearest spoken line.",
+        options: [
+          "The principal told us that we needs to arrive on time.",
+          "The principal told us that we needed to arrive on time.",
+          "The principal told us that we needing to arrive on time.",
+          "The principal told us that we need arrives on time."
+        ],
+        answer: 1,
+        explain: "Reported past speech uses needed for correct tense agreement."
+      },
+      {
+        scene: "Case Close",
+        prompt: "Which response sounds natural and correct?",
+        options: [
+          "They was already finished when the inspector arrived.",
+          "They already finish when the inspector arrived.",
+          "They had already finished when the inspector arrived.",
+          "They have already finish when the inspector arrived."
+        ],
+        answer: 2,
+        explain: "Had + past participle shows an action completed before another past event."
+      },
+      {
+        scene: "Morning Check",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "The teacher asked if everyone were ready for the quiz.",
+          "The teacher asked if everyone was ready for the quiz.",
+          "The teacher asked if everyone is ready for the quiz yesterday.",
+          "The teacher ask if everyone was ready for the quiz."
+        ],
+        answer: 1,
+        explain: "Reported past speech uses was for singular agreement in the embedded clause."
+      },
+      {
+        scene: "Peer Review",
+        prompt: "Choose the best repaired question.",
+        options: [
+          "Did you checked your partner's work before submitting?",
+          "Did you check your partner's work before submitting?",
+          "Does you check your partner's work before submitting?",
+          "You did checked your partner's work before submitting?"
+        ],
+        answer: 1,
+        explain: "Did + base verb check is the correct past question form."
       }
     ],
     "rewrite-studio": [
@@ -500,6 +1172,174 @@
         ],
         answer: 0,
         explain: "Clear noun references make the sentence easier to understand."
+      },
+      {
+        scene: "Original: They was working on the task when bell ring.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "They were working on the task when the bell rang.",
+          "They was working on the task when the bell rang.",
+          "They working on the task when bell ring.",
+          "They are working on the task when bell ring yesterday."
+        ],
+        answer: 0,
+        explain: "Plural they takes were; past interruption needs rang."
+      },
+      {
+        scene: "Original: The student not have the right answer.",
+        prompt: "Select the best rewrite.",
+        options: [
+          "The student did not have the right answer.",
+          "The student not has the right answer.",
+          "The student do not has the right answer.",
+          "The student not having the right answer."
+        ],
+        answer: 0,
+        explain: "Negative past requires did not + base verb have."
+      },
+      {
+        scene: "Original: Me and him went to class after we eats lunch.",
+        prompt: "Pick the best rewrite.",
+        options: [
+          "He and I went to class after we ate lunch.",
+          "Me and him went to class after we ate lunch.",
+          "Him and me went to class after we eats lunch.",
+          "He and I gone to class after we eats lunch."
+        ],
+        answer: 0,
+        explain: "Subject pronouns are He and I; ate is correct past of eat."
+      },
+      {
+        scene: "Original: She telled the teacher that them was ready.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "She told the teacher that they were ready.",
+          "She telled the teacher that they was ready.",
+          "She told the teacher that them were ready.",
+          "She telled the teacher that them was ready."
+        ],
+        answer: 0,
+        explain: "Told is the correct past of tell; they were is proper agreement."
+      },
+      {
+        scene: "Original: The students doesn't have they notebooks today.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "The students don't have their notebooks today.",
+          "The students doesn't have their notebooks today.",
+          "The students don't has they notebooks today.",
+          "The students doesn't has they notebooks today."
+        ],
+        answer: 0,
+        explain: "Plural students takes don't; possessive their replaces they."
+      },
+      {
+        scene: "Original: Me and her was working on the project when teacher came.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "She and I were working on the project when the teacher came.",
+          "Me and her were working on the project when teacher came.",
+          "Her and I was working on the project when the teacher came.",
+          "She and me was working on the project when teacher came."
+        ],
+        answer: 0,
+        explain: "Subject pronouns She and I with plural were; the teacher needs the article."
+      },
+      {
+        scene: "Original: He don't remember where did he left the keys.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "He doesn't remember where he left the keys.",
+          "He don't remember where he left the keys.",
+          "He doesn't remembers where did he left the keys.",
+          "He doesn't remember where did he leave the keys."
+        ],
+        answer: 0,
+        explain: "Singular he takes doesn't + base verb; embedded questions use statement order."
+      },
+      {
+        scene: "Original: Although it rained, but the game was not cancelled.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "Although it rained, but the game was not cancelled.",
+          "Although it rained, the game was not cancelled.",
+          "It rained, although but the game was not cancelled.",
+          "Although it raining, the game was not cancelled."
+        ],
+        answer: 1,
+        explain: "Use one connector only; although and but should not appear together."
+      },
+      {
+        scene: "Original: The students was excited about the results.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "The students were excited about the results.",
+          "The students was excited about the results.",
+          "The students is excited about the results.",
+          "The students excited about the results."
+        ],
+        answer: 0,
+        explain: "Plural students requires were for correct subject-verb agreement."
+      },
+      {
+        scene: "Original: He goed to the store and buyed some milk.",
+        prompt: "Select the best rewrite.",
+        options: [
+          "He went to the store and bought some milk.",
+          "He goed to the store and bought some milk.",
+          "He went to the store and buyed some milk.",
+          "He goes to the store and bought some milk."
+        ],
+        answer: 0,
+        explain: "Went and bought are the correct irregular past forms."
+      },
+      {
+        scene: "Original: The teacher ask us to opened our books.",
+        prompt: "Pick the best rewrite.",
+        options: [
+          "The teacher asked us to open our books.",
+          "The teacher ask us to open our books.",
+          "The teacher asked us to opened our books.",
+          "The teacher asking us to open our books."
+        ],
+        answer: 0,
+        explain: "Past tense asked plus infinitive to open is the correct pattern."
+      },
+      {
+        scene: "Original: Them don't know where is the library at.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "They don't know where the library is.",
+          "Them don't know where the library is.",
+          "They doesn't know where is the library.",
+          "They don't knows where the library is at."
+        ],
+        answer: 0,
+        explain: "Subject pronoun they with don't + base verb; embedded clause uses statement order."
+      },
+      {
+        scene: "Original: The students is ready for the test.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "The students are ready for the test.",
+          "The students is ready for the test.",
+          "The students be ready for the test.",
+          "The students was ready for the test now."
+        ],
+        answer: 0,
+        explain: "Plural students requires are for correct subject-verb agreement."
+      },
+      {
+        scene: "Original: We was waiting when the bus came.",
+        prompt: "Select the best rewrite.",
+        options: [
+          "We were waiting when the bus came.",
+          "We was waiting when the bus came.",
+          "We waiting when the bus came.",
+          "We are waiting when the bus came yesterday."
+        ],
+        answer: 0,
+        explain: "Plural we takes were in past continuous; came is simple past for the interruption."
       }
     ],
     "rule-sprint-present": [
@@ -574,6 +1414,174 @@
         ],
         answer: 0,
         explain: "At the moment signals present continuous."
+      },
+      {
+        scene: "Attendance Call",
+        prompt: "Choose the sentence that states a routine.",
+        options: [
+          "The teacher calls each name every morning.",
+          "The teacher is calling each name every morning.",
+          "The teacher called each name every morning now.",
+          "The teacher call each name every morning."
+        ],
+        answer: 0,
+        explain: "Every morning signals a habit, requiring simple present with calls."
+      },
+      {
+        scene: "Lab Station",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The students measure the liquid right now.",
+          "The students are measuring the liquid right now.",
+          "The students measured the liquid right now.",
+          "The students measuring the liquid right now."
+        ],
+        answer: 1,
+        explain: "Right now calls for present continuous with are measuring."
+      },
+      {
+        scene: "Cafeteria Line",
+        prompt: "Select the strongest third-person present sentence.",
+        options: [
+          "The lunch monitor watch the line every day.",
+          "The lunch monitor watches the line every day.",
+          "The lunch monitor is watch the line every day.",
+          "The lunch monitor watched the line every day usually."
+        ],
+        answer: 1,
+        explain: "Third-person singular routine takes watches."
+      },
+      {
+        scene: "Hallway Pass",
+        prompt: "Choose the best negative present sentence.",
+        options: [
+          "She does not walks in the hallway without a pass.",
+          "She does not walk in the hallway without a pass.",
+          "She do not walks in the hallway without a pass.",
+          "She not walk in the hallway without a pass."
+        ],
+        answer: 1,
+        explain: "Does not is followed by the base verb walk."
+      },
+      {
+        scene: "Timer Alert",
+        prompt: "Choose the sentence about a routine.",
+        options: [
+          "The bell is ringing every hour.",
+          "The bell rings every hour.",
+          "The bell rung every hour.",
+          "The bell ring every hour."
+        ],
+        answer: 1,
+        explain: "Every hour signals a routine, requiring simple present rings."
+      },
+      {
+        scene: "Status Update",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The principal announces the results right now.",
+          "The principal is announcing the results right now.",
+          "The principal announced the results right now.",
+          "The principal announcing the results right now."
+        ],
+        answer: 1,
+        explain: "Right now requires present continuous is announcing."
+      },
+      {
+        scene: "Rule Board",
+        prompt: "Select the correct third-person present sentence.",
+        options: [
+          "Mr. Khan teach science on Tuesdays.",
+          "Mr. Khan teaches science on Tuesdays.",
+          "Mr. Khan is teach science on Tuesdays.",
+          "Mr. Khan teached science on Tuesdays usually."
+        ],
+        answer: 1,
+        explain: "Third-person singular routine takes teaches."
+      },
+      {
+        scene: "Quick Check",
+        prompt: "Choose the correct present question.",
+        options: [
+          "Does the printer works after lunch?",
+          "Do the printer work after lunch?",
+          "Does the printer work after lunch?",
+          "Printer does work after lunch?"
+        ],
+        answer: 2,
+        explain: "Singular printer takes does + base verb work."
+      },
+      {
+        scene: "Attendance Log",
+        prompt: "Choose the sentence that states a routine.",
+        options: [
+          "The secretary is recording attendance every morning.",
+          "The secretary records attendance every morning.",
+          "The secretary recorded attendance every morning now.",
+          "The secretary record attendance every morning."
+        ],
+        answer: 1,
+        explain: "Every morning signals a routine, requiring simple present records."
+      },
+      {
+        scene: "Lab Monitor",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The student monitors the experiment right now.",
+          "The student is monitoring the experiment right now.",
+          "The student monitored the experiment right now.",
+          "The student monitoring the experiment right now."
+        ],
+        answer: 1,
+        explain: "Right now calls for present continuous is monitoring."
+      },
+      {
+        scene: "Daily Briefing",
+        prompt: "Select the strongest third-person present sentence.",
+        options: [
+          "The manager brief the team every afternoon.",
+          "The manager briefs the team every afternoon.",
+          "The manager is brief the team every afternoon.",
+          "The manager briefed the team every afternoon usually."
+        ],
+        answer: 1,
+        explain: "Third-person singular routine takes briefs."
+      },
+      {
+        scene: "Quick Poll",
+        prompt: "Choose the correct present question.",
+        options: [
+          "Does the class agrees with the new schedule?",
+          "Do the class agree with the new schedule?",
+          "Does the class agree with the new schedule?",
+          "Class does agree with the new schedule?"
+        ],
+        answer: 2,
+        explain: "Singular class takes does + base verb agree."
+      },
+      {
+        scene: "Science Lab",
+        prompt: "Choose the sentence that states a routine.",
+        options: [
+          "The lab assistant is preparing the equipment every morning.",
+          "The lab assistant prepares the equipment every morning.",
+          "The lab assistant prepared the equipment every morning now.",
+          "The lab assistant prepare the equipment every morning."
+        ],
+        answer: 1,
+        explain: "Every morning signals a routine, requiring simple present prepares."
+      },
+      {
+        scene: "Recess Monitor",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The monitor counts the students right now.",
+          "The monitor is counting the students right now.",
+          "The monitor counted the students right now.",
+          "The monitor counting the students right now."
+        ],
+        answer: 1,
+        explain: "Right now calls for present continuous is counting."
       }
     ],
     "signal-decoder-present": [
@@ -648,6 +1656,174 @@
         ],
         answer: 1,
         explain: "Currently signals present continuous verb structure for in-progress action."
+      },
+      {
+        scene: "Signal: at this moment",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The principal is addressing the assembly at this moment.",
+          "The principal addresses the assembly at this moment.",
+          "The principal addressed the assembly at this moment.",
+          "The principal address the assembly at this moment."
+        ],
+        answer: 0,
+        explain: "At this moment signals present continuous for an action in progress."
+      },
+      {
+        scene: "Signal: never",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "He is never finishing homework on time.",
+          "He never finishes homework on time.",
+          "He never finished homework on time now.",
+          "He never finish homework on time."
+        ],
+        answer: 1,
+        explain: "Never describes a general habit, requiring simple present finishes."
+      },
+      {
+        scene: "Signal: look",
+        prompt: "Pick the line that fits immediate observation.",
+        options: [
+          "Look, the screen is flickering again.",
+          "Look, the screen flickers again always.",
+          "Look, the screen flickered again.",
+          "Look, the screen flicker again."
+        ],
+        answer: 0,
+        explain: "Look draws attention to something happening now, requiring present continuous."
+      },
+      {
+        scene: "Signal: each morning",
+        prompt: "Select the strongest habitual statement.",
+        options: [
+          "The janitor is unlocking the doors each morning.",
+          "The janitor unlocks the doors each morning.",
+          "The janitor unlocked the doors each morning.",
+          "The janitor unlock the doors each morning."
+        ],
+        answer: 1,
+        explain: "Each morning signals a repeated routine using simple present unlocks."
+      },
+      {
+        scene: "Signal: at this moment",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The nurse checks the roster at this moment.",
+          "The nurse is checking the roster at this moment.",
+          "The nurse checked the roster at this moment.",
+          "The nurse check the roster at this moment."
+        ],
+        answer: 1,
+        explain: "At this moment signals present continuous is checking."
+      },
+      {
+        scene: "Signal: twice a week",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "They are practising drills twice a week.",
+          "They practise drills twice a week.",
+          "They practised drills twice a week now.",
+          "They practises drills twice a week."
+        ],
+        answer: 1,
+        explain: "Twice a week describes a routine, requiring simple present practise."
+      },
+      {
+        scene: "Signal: now",
+        prompt: "Pick the line that fits the signal.",
+        options: [
+          "The coach explains the strategy now.",
+          "The coach is explaining the strategy now.",
+          "The coach explained the strategy now.",
+          "The coach explaining the strategy now."
+        ],
+        answer: 1,
+        explain: "Now signals an action in progress, requiring present continuous."
+      },
+      {
+        scene: "Signal: always",
+        prompt: "Select the strongest habitual statement.",
+        options: [
+          "She is always bringing her notebook to class.",
+          "She always brings her notebook to class.",
+          "She always brought her notebook to class now.",
+          "She always bring her notebook to class."
+        ],
+        answer: 1,
+        explain: "Always describes a permanent habit, requiring simple present brings."
+      },
+      {
+        scene: "Signal: every evening",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The guard is locking the gates every evening.",
+          "The guard locks the gates every evening.",
+          "The guard locked the gates every evening now.",
+          "The guard lock the gates every evening."
+        ],
+        answer: 1,
+        explain: "Every evening signals a repeated routine using simple present locks."
+      },
+      {
+        scene: "Signal: these days",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "She works on the new project these days.",
+          "She is working on the new project these days.",
+          "She worked on the new project these days.",
+          "She work on the new project these days."
+        ],
+        answer: 1,
+        explain: "These days signals a temporary ongoing situation, requiring present continuous."
+      },
+      {
+        scene: "Signal: watch out",
+        prompt: "Pick the line that fits immediate action.",
+        options: [
+          "Watch out, the floor is getting slippery.",
+          "Watch out, the floor gets slippery always.",
+          "Watch out, the floor got slippery.",
+          "Watch out, the floor get slippery."
+        ],
+        answer: 0,
+        explain: "Watch out draws attention to something happening now, requiring present continuous."
+      },
+      {
+        scene: "Signal: on weekdays",
+        prompt: "Select the strongest habitual statement.",
+        options: [
+          "The bus is arriving at eight on weekdays.",
+          "The bus arrives at eight on weekdays.",
+          "The bus arrived at eight on weekdays.",
+          "The bus arrive at eight on weekdays."
+        ],
+        answer: 1,
+        explain: "On weekdays signals a regular schedule using simple present arrives."
+      },
+      {
+        scene: "Signal: twice a week",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The club is meeting twice a week.",
+          "The club meets twice a week.",
+          "The club met twice a week now.",
+          "The club meet twice a week."
+        ],
+        answer: 1,
+        explain: "Twice a week describes a routine, requiring simple present meets."
+      },
+      {
+        scene: "Signal: as we speak",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "The technician repairs the server as we speak.",
+          "The technician is repairing the server as we speak.",
+          "The technician repaired the server as we speak.",
+          "The technician repairing the server as we speak."
+        ],
+        answer: 1,
+        explain: "As we speak signals an action in progress, requiring present continuous."
       }
     ],
     "present-case-interview": [
@@ -722,6 +1898,174 @@
         ],
         answer: 1,
         explain: "Policy or rule statements use simple present."
+      },
+      {
+        scene: "Interview File 7",
+        prompt: "Witness says this is a weekly habit. Choose the best line.",
+        options: [
+          "She reviews the case notes every Friday.",
+          "She is reviewing the case notes every Friday.",
+          "She reviewed the case notes every Friday now.",
+          "She review the case notes every Friday."
+        ],
+        answer: 0,
+        explain: "Weekly habit uses simple present reviews."
+      },
+      {
+        scene: "Interview File 8",
+        prompt: "Witness says action is happening now. Select the line.",
+        options: [
+          "The suspect waits in the hallway now.",
+          "The suspect is waiting in the hallway now.",
+          "The suspect waited in the hallway now.",
+          "The suspect waiting in the hallway now."
+        ],
+        answer: 1,
+        explain: "Now signals present continuous is waiting."
+      },
+      {
+        scene: "Interview File 9",
+        prompt: "Choose the strongest present question.",
+        options: [
+          "Do he understand the instructions?",
+          "Does he understands the instructions?",
+          "Does he understand the instructions?",
+          "He does understand the instructions?"
+        ],
+        answer: 2,
+        explain: "Does + base verb understand is required for singular he."
+      },
+      {
+        scene: "Interview File 10",
+        prompt: "Pick the most accurate negative present form.",
+        options: [
+          "The officer do not believe the alibi.",
+          "The officer does not believes the alibi.",
+          "The officer does not believe the alibi.",
+          "The officer not believes the alibi."
+        ],
+        answer: 2,
+        explain: "Does not must pair with base verb believe."
+      },
+      {
+        scene: "Interview File 11",
+        prompt: "Witness describes a morning habit. Choose the best line.",
+        options: [
+          "The guard is locking the gate every morning.",
+          "The guard locks the gate every morning.",
+          "The guard locked the gate every morning now.",
+          "The guard lock the gate every morning."
+        ],
+        answer: 1,
+        explain: "Every morning signals a habit, requiring simple present locks."
+      },
+      {
+        scene: "Interview File 12",
+        prompt: "Witness says the action is happening now. Select the line.",
+        options: [
+          "The detective examines the evidence right now.",
+          "The detective is examining the evidence right now.",
+          "The detective examined the evidence right now.",
+          "The detective examining the evidence right now."
+        ],
+        answer: 1,
+        explain: "Right now requires present continuous is examining."
+      },
+      {
+        scene: "Interview File 13",
+        prompt: "Choose the strongest present question for the witness.",
+        options: [
+          "Does the alarm rings every night?",
+          "Do the alarm ring every night?",
+          "Does the alarm ring every night?",
+          "Alarm does ring every night?"
+        ],
+        answer: 2,
+        explain: "Singular alarm takes does + base verb ring."
+      },
+      {
+        scene: "Interview File 14",
+        prompt: "Pick the most accurate negative present form.",
+        options: [
+          "The witness do not recall the licence plate.",
+          "The witness does not recalls the licence plate.",
+          "The witness does not recall the licence plate.",
+          "The witness not recall the licence plate."
+        ],
+        answer: 2,
+        explain: "Does not must pair with base verb recall."
+      },
+      {
+        scene: "Interview File 15",
+        prompt: "Witness says action is happening now. Select the line.",
+        options: [
+          "The clerk files the reports right now.",
+          "The clerk is filing the reports right now.",
+          "The clerk filed the reports right now.",
+          "The clerk filing the reports right now."
+        ],
+        answer: 1,
+        explain: "Right now requires present continuous is filing."
+      },
+      {
+        scene: "Interview File 16",
+        prompt: "Witness describes a daily rule. Choose the best line.",
+        options: [
+          "The receptionist greets every visitor at the front desk.",
+          "The receptionist is greeting every visitor at the front desk.",
+          "The receptionist greeted every visitor at the front desk now.",
+          "The receptionist greet every visitor at the front desk."
+        ],
+        answer: 0,
+        explain: "A daily rule uses simple present with third-person singular greets."
+      },
+      {
+        scene: "Interview File 17",
+        prompt: "Choose the strongest present question for the witness.",
+        options: [
+          "Does the manager checks the inventory daily?",
+          "Do the manager check the inventory daily?",
+          "Does the manager check the inventory daily?",
+          "Manager does check the inventory daily?"
+        ],
+        answer: 2,
+        explain: "Singular manager takes does + base verb check."
+      },
+      {
+        scene: "Interview File 18",
+        prompt: "Pick the most accurate negative present form.",
+        options: [
+          "The guard do not patrol the east wing.",
+          "The guard does not patrols the east wing.",
+          "The guard does not patrol the east wing.",
+          "The guard not patrol the east wing."
+        ],
+        answer: 2,
+        explain: "Does not must pair with base verb patrol."
+      },
+      {
+        scene: "Interview File 19",
+        prompt: "Witness says this is a weekly habit. Choose the best line.",
+        options: [
+          "The team reviews the security footage every Wednesday.",
+          "The team is reviewing the security footage every Wednesday.",
+          "The team reviewed the security footage every Wednesday now.",
+          "The team review the security footage every Wednesday."
+        ],
+        answer: 0,
+        explain: "Weekly habit uses simple present with third-person singular reviews."
+      },
+      {
+        scene: "Interview File 20",
+        prompt: "Witness says the action is happening now. Select the line.",
+        options: [
+          "The inspector checks the equipment right now.",
+          "The inspector is checking the equipment right now.",
+          "The inspector checked the equipment right now.",
+          "The inspector checking the equipment right now."
+        ],
+        answer: 1,
+        explain: "Right now signals present continuous is checking."
       }
     ],
     "be-verb-rule-sprint": [
@@ -796,6 +2140,174 @@
         ],
         answer: 1,
         explain: "Plural subject uses are not."
+      },
+      {
+        scene: "Roll Call",
+        prompt: "Choose the correct be-verb sentence.",
+        options: [
+          "She am present today.",
+          "She is present today.",
+          "She are present today.",
+          "She be present today."
+        ],
+        answer: 1,
+        explain: "Third-person singular she takes is."
+      },
+      {
+        scene: "Field Report",
+        prompt: "Select the line with correct past agreement.",
+        options: [
+          "The suspects were near the library at noon.",
+          "The suspects was near the library at noon.",
+          "The suspects am near the library at noon.",
+          "The suspects is near the library at noon."
+        ],
+        answer: 0,
+        explain: "Plural suspects in past takes were."
+      },
+      {
+        scene: "Partner Pair",
+        prompt: "Pick the strongest be-verb form.",
+        options: [
+          "Leo and I am assigned to the same group.",
+          "Leo and I is assigned to the same group.",
+          "Leo and I are assigned to the same group.",
+          "Leo and I be assigned to the same group."
+        ],
+        answer: 2,
+        explain: "Compound subject with I takes are."
+      },
+      {
+        scene: "Closing Statement",
+        prompt: "Choose the accurate past negative be-verb sentence.",
+        options: [
+          "The evidence were not strong enough.",
+          "The evidence was not strong enough.",
+          "The evidence are not strong enough yesterday.",
+          "The evidence be not strong enough."
+        ],
+        answer: 1,
+        explain: "Singular uncountable evidence in past takes was not."
+      },
+      {
+        scene: "Question Form",
+        prompt: "Choose the correct be-verb question.",
+        options: [
+          "Are she ready for the presentation?",
+          "Is she ready for the presentation?",
+          "Am she ready for the presentation?",
+          "Be she ready for the presentation?"
+        ],
+        answer: 1,
+        explain: "Third-person singular she takes is in questions."
+      },
+      {
+        scene: "Classroom Roster",
+        prompt: "Select the line with correct agreement.",
+        options: [
+          "The students was excited about the field trip.",
+          "The students were excited about the field trip.",
+          "The students am excited about the field trip.",
+          "The students is excited about the field trip."
+        ],
+        answer: 1,
+        explain: "Plural students in past takes were."
+      },
+      {
+        scene: "There-Sentence",
+        prompt: "Pick the strongest be-verb form.",
+        options: [
+          "There is three books on the desk.",
+          "There are three books on the desk.",
+          "There am three books on the desk.",
+          "There be three books on the desk."
+        ],
+        answer: 1,
+        explain: "Plural books requires there are."
+      },
+      {
+        scene: "Tag Check",
+        prompt: "Choose the correct be-verb tag question.",
+        options: [
+          "He is your partner, aren't he?",
+          "He is your partner, isn't he?",
+          "He is your partner, wasn't he?",
+          "He is your partner, don't he?"
+        ],
+        answer: 1,
+        explain: "Present is matches the negative tag isn't he."
+      },
+      {
+        scene: "Contraction Check",
+        prompt: "Choose the correct be-verb contraction.",
+        options: [
+          "They're ready for the next drill.",
+          "They's ready for the next drill.",
+          "They'am ready for the next drill.",
+          "They is ready for the next drill."
+        ],
+        answer: 0,
+        explain: "Plural they contracts with are to form they're."
+      },
+      {
+        scene: "Mixed Subject",
+        prompt: "Pick the sentence with correct be-verb agreement for a mixed subject.",
+        options: [
+          "Neither the teacher nor the students is in the lab.",
+          "Neither the teacher nor the students are in the lab.",
+          "Neither the teacher nor the students am in the lab.",
+          "Neither the teacher nor the students was in the lab now."
+        ],
+        answer: 1,
+        explain: "With neither…nor the verb agrees with the nearer plural subject students, so use are."
+      },
+      {
+        scene: "Visitor Badge",
+        prompt: "Choose the correct be-verb sentence.",
+        options: [
+          "The visitor are waiting in the lobby.",
+          "The visitor is waiting in the lobby.",
+          "The visitor am waiting in the lobby.",
+          "The visitor be waiting in the lobby."
+        ],
+        answer: 1,
+        explain: "Singular visitor takes is."
+      },
+      {
+        scene: "Morning Count",
+        prompt: "Select the line with correct agreement.",
+        options: [
+          "All the chairs is arranged in a circle.",
+          "All the chairs are arranged in a circle.",
+          "All the chairs am arranged in a circle.",
+          "All the chairs was arranged in a circle now."
+        ],
+        answer: 1,
+        explain: "Plural chairs takes are."
+      },
+      {
+        scene: "Lab Safety",
+        prompt: "Pick the strongest past be-verb form.",
+        options: [
+          "The chemicals was stored in the cabinet yesterday.",
+          "The chemicals were stored in the cabinet yesterday.",
+          "The chemicals are stored in the cabinet yesterday.",
+          "The chemicals be stored in the cabinet yesterday."
+        ],
+        answer: 1,
+        explain: "Plural chemicals in past takes were."
+      },
+      {
+        scene: "End-of-Day Check",
+        prompt: "Choose the accurate be-verb sentence.",
+        options: [
+          "The reports is complete and ready for review.",
+          "The reports are complete and ready for review.",
+          "The reports am complete and ready for review.",
+          "The reports was complete and ready for review now."
+        ],
+        answer: 1,
+        explain: "Plural reports requires are."
       }
     ],
     "be-verb-agreement-sweep": [
@@ -870,6 +2382,174 @@
         ],
         answer: 1,
         explain: "Plural pages requires are not."
+      },
+      {
+        scene: "Sweep 07",
+        prompt: "Find the line with correct subject-be agreement.",
+        options: [
+          "The homework are due tomorrow.",
+          "The homework is due tomorrow.",
+          "The homework am due tomorrow.",
+          "The homework were due tomorrow now."
+        ],
+        answer: 1,
+        explain: "Homework is uncountable and singular, requiring is."
+      },
+      {
+        scene: "Sweep 08",
+        prompt: "Choose the sentence that matches the subject.",
+        options: [
+          "All of the pencils is sharpened.",
+          "All of the pencils are sharpened.",
+          "All of the pencils am sharpened.",
+          "All of the pencils was sharpened now."
+        ],
+        answer: 1,
+        explain: "Plural pencils requires are."
+      },
+      {
+        scene: "Sweep 09",
+        prompt: "Select the strongest agreement line.",
+        options: [
+          "Neither the teacher nor the students is happy about the delay.",
+          "Neither the teacher nor the students are happy about the delay.",
+          "Neither the teacher nor the students am happy about the delay.",
+          "Neither the teacher nor the students was happy about the delay now."
+        ],
+        answer: 1,
+        explain: "With neither...nor the verb agrees with the nearer subject students, so use are."
+      },
+      {
+        scene: "Sweep 10",
+        prompt: "Pick the correct sentence for present context.",
+        options: [
+          "The information are helpful for the test.",
+          "The information is helpful for the test.",
+          "The information am helpful for the test.",
+          "The information were helpful for the test now."
+        ],
+        answer: 1,
+        explain: "Information is uncountable and singular, requiring is."
+      },
+      {
+        scene: "Sweep 11",
+        prompt: "Find the line with correct subject-be agreement.",
+        options: [
+          "There is many reasons for the delay.",
+          "There are many reasons for the delay.",
+          "There am many reasons for the delay.",
+          "There be many reasons for the delay."
+        ],
+        answer: 1,
+        explain: "There are pairs with the plural noun reasons."
+      },
+      {
+        scene: "Sweep 12",
+        prompt: "Choose the sentence that matches the subject.",
+        options: [
+          "The committee are meeting at noon today.",
+          "The committee is meeting at noon today.",
+          "The committee am meeting at noon today.",
+          "The committee were meeting at noon today now."
+        ],
+        answer: 1,
+        explain: "Collective noun committee is treated as singular."
+      },
+      {
+        scene: "Sweep 13",
+        prompt: "Select the strongest agreement line.",
+        options: [
+          "My brother and his friend was at the park yesterday.",
+          "My brother and his friend am at the park yesterday.",
+          "My brother and his friend were at the park yesterday.",
+          "My brother and his friend is at the park yesterday."
+        ],
+        answer: 2,
+        explain: "Compound subject in past takes were."
+      },
+      {
+        scene: "Sweep 14",
+        prompt: "Pick the correct sentence for present context.",
+        options: [
+          "Every seat in the auditorium is taken.",
+          "Every seat in the auditorium are taken.",
+          "Every seat in the auditorium am taken.",
+          "Every seat in the auditorium were taken now."
+        ],
+        answer: 0,
+        explain: "Every makes the subject singular, requiring is."
+      },
+      {
+        scene: "Sweep 15",
+        prompt: "Choose the line with correct question agreement.",
+        options: [
+          "Is the players ready for the match?",
+          "Am the players ready for the match?",
+          "Are the players ready for the match?",
+          "Be the players ready for the match?"
+        ],
+        answer: 2,
+        explain: "Plural subject players requires are in a question."
+      },
+      {
+        scene: "Sweep 16",
+        prompt: "Find the line with correct subject-be agreement.",
+        options: [
+          "There is three apples on the counter.",
+          "There am three apples on the counter.",
+          "There are three apples on the counter.",
+          "There be three apples on the counter."
+        ],
+        answer: 2,
+        explain: "There are pairs with the plural noun apples."
+      },
+      {
+        scene: "Sweep 17",
+        prompt: "Select the accurate negative agreement sentence.",
+        options: [
+          "He were not absent from class last Monday.",
+          "He was not absent from class last Monday.",
+          "He are not absent from class last Monday.",
+          "He am not absent from class last Monday."
+        ],
+        answer: 1,
+        explain: "Singular he in the past takes was not."
+      },
+      {
+        scene: "Sweep 18",
+        prompt: "Choose the sentence that matches the subject.",
+        options: [
+          "Each of the experiments are documented in the log.",
+          "Each of the experiments were documented in the log now.",
+          "Each of the experiments is documented in the log.",
+          "Each of the experiments am documented in the log."
+        ],
+        answer: 2,
+        explain: "Each is singular, requiring is."
+      },
+      {
+        scene: "Sweep 19",
+        prompt: "Pick the correct sentence for past context.",
+        options: [
+          "The dogs in the yard is barking all night.",
+          "The dogs in the yard were barking all night.",
+          "The dogs in the yard am barking all night.",
+          "The dogs in the yard be barking all night."
+        ],
+        answer: 1,
+        explain: "Plural dogs in past takes were."
+      },
+      {
+        scene: "Sweep 20",
+        prompt: "Select the strongest agreement line.",
+        options: [
+          "Was the instructions clear enough for everyone?",
+          "Am the instructions clear enough for everyone?",
+          "Were the instructions clear enough for everyone?",
+          "Be the instructions clear enough for everyone?"
+        ],
+        answer: 2,
+        explain: "Plural instructions in a past question takes were."
       }
     ],
     "be-verb-case-interview": [
@@ -944,6 +2624,174 @@
         ],
         answer: 1,
         explain: "Singular explanation requires is."
+      },
+      {
+        scene: "Interview G",
+        prompt: "Witness refers to one report in the past. Choose the line.",
+        options: [
+          "The report were incomplete.",
+          "The report was incomplete.",
+          "The report are incomplete yesterday.",
+          "The report be incomplete."
+        ],
+        answer: 1,
+        explain: "Singular report in past takes was."
+      },
+      {
+        scene: "Interview H",
+        prompt: "Witness describes two classrooms. Select the sentence.",
+        options: [
+          "Both classrooms is locked after hours.",
+          "Both classrooms are locked after hours.",
+          "Both classrooms am locked after hours.",
+          "Both classrooms was locked after hours now."
+        ],
+        answer: 1,
+        explain: "Plural classrooms requires are."
+      },
+      {
+        scene: "Interview I",
+        prompt: "Past-time clue: choose the best form.",
+        options: [
+          "The windows was open during the incident.",
+          "The windows were open during the incident.",
+          "The windows are open during the incident yesterday.",
+          "The windows be open during the incident."
+        ],
+        answer: 1,
+        explain: "Plural windows in past takes were."
+      },
+      {
+        scene: "Interview J",
+        prompt: "Pick the strongest negative be-verb line.",
+        options: [
+          "The answer are not correct.",
+          "The answer is not correct.",
+          "The answer am not correct.",
+          "The answer were not correct now."
+        ],
+        answer: 1,
+        explain: "Singular answer requires is not."
+      },
+      {
+        scene: "Interview K",
+        prompt: "Witness describes one laptop in the present. Choose the line.",
+        options: [
+          "The laptop are on the desk right now.",
+          "The laptop is on the desk right now.",
+          "The laptop am on the desk right now.",
+          "The laptop be on the desk right now."
+        ],
+        answer: 1,
+        explain: "Singular laptop pairs with is."
+      },
+      {
+        scene: "Interview L",
+        prompt: "Witness refers to several witnesses in the past. Select the sentence.",
+        options: [
+          "The witnesses was questioned after the event.",
+          "The witnesses were questioned after the event.",
+          "The witnesses is questioned after the event.",
+          "The witnesses am questioned after the event."
+        ],
+        answer: 1,
+        explain: "Plural witnesses in past takes were."
+      },
+      {
+        scene: "Interview M",
+        prompt: "Choose the line with correct second-person agreement.",
+        options: [
+          "You is expected to arrive before nine.",
+          "You am expected to arrive before nine.",
+          "You are expected to arrive before nine.",
+          "You was expected to arrive before nine."
+        ],
+        answer: 2,
+        explain: "Subject you always takes are in present tense."
+      },
+      {
+        scene: "Interview N",
+        prompt: "Witness describes a compound subject. Pick the strongest line.",
+        options: [
+          "The principal and the counselor was present during the meeting.",
+          "The principal and the counselor is present during the meeting.",
+          "The principal and the counselor were present during the meeting.",
+          "The principal and the counselor am present during the meeting."
+        ],
+        answer: 2,
+        explain: "Compound subject in past takes were."
+      },
+      {
+        scene: "Interview O",
+        prompt: "Pick the strongest be-verb question.",
+        options: [
+          "Was the documents stored in the cabinet last week?",
+          "Were the documents stored in the cabinet last week?",
+          "Am the documents stored in the cabinet last week?",
+          "Be the documents stored in the cabinet last week?"
+        ],
+        answer: 1,
+        explain: "Plural documents in a past question takes were."
+      },
+      {
+        scene: "Interview P",
+        prompt: "Witness refers to one piece of evidence. Choose the line.",
+        options: [
+          "The fingerprint are still visible on the glass.",
+          "The fingerprint is still visible on the glass.",
+          "The fingerprint am still visible on the glass.",
+          "The fingerprint were still visible on the glass now."
+        ],
+        answer: 1,
+        explain: "Singular fingerprint requires is."
+      },
+      {
+        scene: "Interview Q",
+        prompt: "Select the sentence with the cleanest past-tense agreement.",
+        options: [
+          "I were in the hallway when the alarm rang.",
+          "I was in the hallway when the alarm rang.",
+          "I are in the hallway when the alarm rang.",
+          "I is in the hallway when the alarm rang."
+        ],
+        answer: 1,
+        explain: "Subject I in past tense takes was."
+      },
+      {
+        scene: "Interview R",
+        prompt: "Witness describes a negative statement. Pick the best line.",
+        options: [
+          "The cameras was not recording during the outage.",
+          "The cameras were not recording during the outage.",
+          "The cameras am not recording during the outage.",
+          "The cameras is not recording during the outage."
+        ],
+        answer: 1,
+        explain: "Plural cameras in past takes were not."
+      },
+      {
+        scene: "Interview S",
+        prompt: "Choose the line with correct third-person singular agreement.",
+        options: [
+          "She are the only witness available today.",
+          "She am the only witness available today.",
+          "She is the only witness available today.",
+          "She were the only witness available today."
+        ],
+        answer: 2,
+        explain: "Third-person singular she takes is in present."
+      },
+      {
+        scene: "Interview T",
+        prompt: "Witness describes plural items in present. Select the sentence.",
+        options: [
+          "The files on the server is encrypted.",
+          "The files on the server am encrypted.",
+          "The files on the server are encrypted.",
+          "The files on the server was encrypted now."
+        ],
+        answer: 2,
+        explain: "Plural files requires are."
       }
     ],
     "mission-sequence-lab": [
@@ -1018,6 +2866,174 @@
         ],
         answer: 0,
         explain: "One precise connector keeps clause logic and sequence reasoning clear."
+      },
+      {
+        scene: "Sequence Draft 7",
+        prompt: "Choose the sentence with a correct after-clause.",
+        options: [
+          "After the team decoded the message, they reported the findings to headquarters.",
+          "After the team decoded the message, they report the findings to headquarters.",
+          "After the team decode the message, they reported the findings to headquarters.",
+          "After decoded message, reported findings headquarters."
+        ],
+        answer: 0,
+        explain: "Both clauses in a past narrative need consistent past tense."
+      },
+      {
+        scene: "Sequence Draft 8",
+        prompt: "Pick the line with the clearest result connector.",
+        options: [
+          "The alarm sounded early, so the agents evacuated the building immediately.",
+          "The alarm sounded early, so because the agents evacuated the building immediately.",
+          "The alarm sounded early, so the agents evacuate the building yesterday.",
+          "The alarm sounded early, so evacuated building immediately."
+        ],
+        answer: 0,
+        explain: "Use one result connector and keep past tense consistent."
+      },
+      {
+        scene: "Sequence Draft 9",
+        prompt: "Select the line that uses contrast correctly.",
+        options: [
+          "The first clue seemed obvious; however, it led the team to the wrong conclusion.",
+          "The first clue seemed obvious; however but it led the team to the wrong conclusion.",
+          "The first clue seemed obvious; however, it leads the team to the wrong conclusion yesterday.",
+          "The first clue seemed obvious however led team wrong conclusion."
+        ],
+        answer: 0,
+        explain: "However needs a semicolon before and a comma after, with matching past tense."
+      },
+      {
+        scene: "Sequence Draft 10",
+        prompt: "Which line gives the strongest next-step marker?",
+        options: [
+          "Next, the spy copied the document and returned it to the drawer.",
+          "Next, the spy copy the document and returned it to the drawer.",
+          "Next, the spy copied the document and return it to the drawer yesterday.",
+          "Next the spy was copied the document and was returned it."
+        ],
+        answer: 0,
+        explain: "Sequence markers like next pair with consistent simple past verbs."
+      },
+      {
+        scene: "Sequence Draft 11",
+        prompt: "Choose the sentence with clear cause-result markers.",
+        options: [
+          "The power went out, so the lab lost all unsaved data.",
+          "The power went out, so because the lab lost all unsaved data.",
+          "The power went out, so the lab loses all unsaved data yesterday.",
+          "Power went out so lost unsaved data."
+        ],
+        answer: 0,
+        explain: "One cause-result connector with consistent past tense is correct."
+      },
+      {
+        scene: "Sequence Draft 12",
+        prompt: "Pick the strongest contrast sequence line.",
+        options: [
+          "The team expected rain; however, the sky stayed clear all afternoon.",
+          "The team expected rain; however but the sky stayed clear all afternoon.",
+          "The team expected rain; however, the sky stays clear all afternoon yesterday.",
+          "Team expected rain however sky stayed clear."
+        ],
+        answer: 0,
+        explain: "However with a semicolon before and comma after links contrast correctly."
+      },
+      {
+        scene: "Sequence Draft 13",
+        prompt: "Select the line that uses time order correctly.",
+        options: [
+          "Before the briefing started, the agent reviewed the case files.",
+          "Before the briefing started, the agent reviews the case files yesterday.",
+          "Before the briefing start, the agent reviewed the case files.",
+          "Before briefing started reviewed case files."
+        ],
+        answer: 0,
+        explain: "Both clauses must use consistent past tense with a before connector."
+      },
+      {
+        scene: "Sequence Draft 14",
+        prompt: "Choose the best after-clause sentence.",
+        options: [
+          "After we collected the samples, we labeled each container carefully.",
+          "After we collected the samples, we label each container yesterday.",
+          "After we collect the samples, we labeled each container carefully.",
+          "After collected samples, labeled containers."
+        ],
+        answer: 0,
+        explain: "After-clauses need matching past tense in both parts."
+      },
+      {
+        scene: "Sequence Draft 15",
+        prompt: "Which line gives the clearest final step?",
+        options: [
+          "Finally, the detective sealed the evidence bag and signed the report.",
+          "Finally, the detective seal the evidence bag and signed the report.",
+          "Finally, the detective sealed the evidence bag and sign the report yesterday.",
+          "Finally sealed evidence bag signed report."
+        ],
+        answer: 0,
+        explain: "Final step markers pair with consistent simple past verbs."
+      },
+      {
+        scene: "Sequence Draft 16",
+        prompt: "Pick the sentence with the strongest therefore connector.",
+        options: [
+          "The data was corrupted; therefore, the team restarted the analysis.",
+          "The data was corrupted; therefore because the team restarted the analysis.",
+          "The data was corrupted; therefore, the team restarts the analysis yesterday.",
+          "Data corrupted therefore restarted analysis."
+        ],
+        answer: 0,
+        explain: "Therefore needs a semicolon before and a comma after, with matching past tense."
+      },
+      {
+        scene: "Sequence Draft 17",
+        prompt: "Select the line that avoids compound connector errors.",
+        options: [
+          "The alarm rang early, so the guards secured the perimeter.",
+          "The alarm rang early, so because the guards secured the perimeter.",
+          "The alarm rang early, because so the guards secured the perimeter.",
+          "The alarm rang early, so because guards secure perimeter."
+        ],
+        answer: 0,
+        explain: "Using two connectors together creates a compound connector error."
+      },
+      {
+        scene: "Sequence Draft 18",
+        prompt: "Choose the sentence with correct before-after logic.",
+        options: [
+          "The crew checked the engine before they cleared the runway.",
+          "The crew checked the engine before they clear the runway yesterday.",
+          "The crew check the engine before they cleared the runway.",
+          "Crew checked engine before cleared runway."
+        ],
+        answer: 0,
+        explain: "Both clauses need matching past tense with the before connector."
+      },
+      {
+        scene: "Sequence Draft 19",
+        prompt: "Pick the line with the clearest next-step marker.",
+        options: [
+          "Then the scientist recorded the temperature and noted the change.",
+          "Then the scientist record the temperature and noted the change.",
+          "Then the scientist recorded the temperature and note the change yesterday.",
+          "Then scientist was recorded temperature and was noted change."
+        ],
+        answer: 0,
+        explain: "Then pairs with consistent simple past verbs in sequence writing."
+      },
+      {
+        scene: "Sequence Draft 20",
+        prompt: "Select the line that uses because correctly.",
+        options: [
+          "Because the bridge was damaged, the convoy took the alternate route.",
+          "Because the bridge was damaged, so the convoy took the alternate route.",
+          "Because the bridge damaged, the convoy took the alternate route.",
+          "Because bridge was damaged convoy took alternate route."
+        ],
+        answer: 0,
+        explain: "Because introduces the cause; adding so creates a double connector."
       }
     ],
     "evidence-sort-board": [
@@ -1092,6 +3108,174 @@
         ],
         answer: 1,
         explain: "Plural results takes are."
+      },
+      {
+        scene: "Evidence Card G",
+        prompt: "Choose the sentence with correct subject-verb agreement.",
+        options: [
+          "The list of suspects includes three students from Room 204.",
+          "The list of suspects include three students from Room 204.",
+          "The list of suspects are including three students from Room 204.",
+          "The list of suspects were include three students from Room 204."
+        ],
+        answer: 0,
+        explain: "The subject is list (singular), so the verb must be includes."
+      },
+      {
+        scene: "Evidence Card H",
+        prompt: "Pick the line with the clearest pronoun reference.",
+        options: [
+          "Officer Tran handed the folder to Detective Li before Officer Tran left the room.",
+          "Officer Tran handed the folder to Detective Li before he left the room.",
+          "Officer Tran handed the folder to Detective Li before they was leaving the room.",
+          "Officer Tran handed folder Detective Li before left room."
+        ],
+        answer: 0,
+        explain: "Repeating the noun avoids ambiguous pronoun reference in evidence logs."
+      },
+      {
+        scene: "Evidence Card I",
+        prompt: "Select the best question-form evidence line.",
+        options: [
+          "Does the evidence suggest the suspect was in the building?",
+          "Does the evidence suggests the suspect was in the building?",
+          "Do the evidence suggest the suspect was in the building?",
+          "Evidence does suggest was suspect in building?"
+        ],
+        answer: 0,
+        explain: "Does pairs with the base form suggest, not suggests."
+      },
+      {
+        scene: "Evidence Card J",
+        prompt: "Pick the strongest present continuous evidence statement.",
+        options: [
+          "The investigators are reviewing the surveillance footage right now.",
+          "The investigators is reviewing the surveillance footage right now.",
+          "The investigators reviewing the surveillance footage right now.",
+          "The investigators are review the surveillance footage right now."
+        ],
+        answer: 0,
+        explain: "Plural subject takes are + verb-ing for present continuous."
+      },
+      {
+        scene: "Evidence Card K",
+        prompt: "Choose the strongest evidence sentence.",
+        options: [
+          "The guard confirmed that the gate was locked at midnight.",
+          "The guard confirmed that the gate were locked at midnight.",
+          "The guard confirm that the gate was locked at midnight.",
+          "The guard confirmed that the gate is locked at midnight yesterday."
+        ],
+        answer: 0,
+        explain: "Past tense confirmed and was keep the evidence statement consistent."
+      },
+      {
+        scene: "Evidence Card L",
+        prompt: "Pick the line with clear reference.",
+        options: [
+          "Agent Park forwarded the report to Director Ahn before Agent Park left the office.",
+          "Agent Park forwarded the report to Director Ahn before he left the office.",
+          "Agent Park forwarded the report to Director Ahn before they was leaving the office.",
+          "Agent Park forwarded report Director Ahn before left office."
+        ],
+        answer: 0,
+        explain: "Repeating the noun avoids ambiguous pronoun reference in evidence logs."
+      },
+      {
+        scene: "Evidence Card M",
+        prompt: "Select the best question evidence line.",
+        options: [
+          "Did the witness notice anything unusual near the entrance?",
+          "Did the witness noticed anything unusual near the entrance?",
+          "Does the witness noticed anything unusual near the entrance?",
+          "Witness did notice anything unusual entrance?"
+        ],
+        answer: 0,
+        explain: "Did pairs with the base form notice, not noticed."
+      },
+      {
+        scene: "Evidence Card N",
+        prompt: "Choose the sentence with valid cause and result.",
+        options: [
+          "The sensor triggered the alarm, so the team responded within minutes.",
+          "The sensor triggered the alarm, because so the team responded within minutes.",
+          "The sensor triggered the alarm, and because responded within minutes.",
+          "The sensor triggered alarm, so responded minutes."
+        ],
+        answer: 0,
+        explain: "A single correct connector keeps logic clean."
+      },
+      {
+        scene: "Evidence Card O",
+        prompt: "Pick the strongest past tense evidence statement.",
+        options: [
+          "The technician replaced the faulty cable before the system rebooted.",
+          "The technician replace the faulty cable before the system rebooted.",
+          "The technician replaced the faulty cable before the system reboot yesterday.",
+          "Technician replaced faulty cable before system rebooted."
+        ],
+        answer: 0,
+        explain: "Both verbs must be in past tense for a past evidence statement."
+      },
+      {
+        scene: "Evidence Card P",
+        prompt: "Select the line with accurate be-verb agreement.",
+        options: [
+          "The samples from the lab is contaminated.",
+          "The samples from the lab are contaminated.",
+          "The samples from the lab am contaminated.",
+          "The samples from the lab was contaminated now."
+        ],
+        answer: 1,
+        explain: "Plural samples requires are."
+      },
+      {
+        scene: "Evidence Card Q",
+        prompt: "Choose the sentence with correct subject-verb agreement.",
+        options: [
+          "The stack of papers on the desk need to be filed.",
+          "The stack of papers on the desk needs to be filed.",
+          "The stack of papers on the desk are needing to be filed.",
+          "The stack of papers on the desk were need to be filed."
+        ],
+        answer: 1,
+        explain: "The subject is stack (singular), so the verb must be needs."
+      },
+      {
+        scene: "Evidence Card R",
+        prompt: "Pick the line with the clearest pronoun reference.",
+        options: [
+          "Inspector Yoon compared the two samples and found that the first sample was altered.",
+          "Inspector Yoon compared the two samples and found that it was altered.",
+          "Inspector Yoon compared the two samples and found that they was altered.",
+          "Inspector Yoon compared two samples found first altered."
+        ],
+        answer: 0,
+        explain: "Specifying the first sample removes ambiguity from the pronoun reference."
+      },
+      {
+        scene: "Evidence Card S",
+        prompt: "Select the best question-form evidence line.",
+        options: [
+          "Were the suspects aware of the surveillance cameras?",
+          "Was the suspects aware of the surveillance cameras?",
+          "Am the suspects aware of the surveillance cameras?",
+          "Suspects were aware surveillance cameras?"
+        ],
+        answer: 0,
+        explain: "Plural suspects in a past question requires were."
+      },
+      {
+        scene: "Evidence Card T",
+        prompt: "Pick the strongest present continuous evidence statement.",
+        options: [
+          "The forensic team is analyzing the fingerprints right now.",
+          "The forensic team are analyzing the fingerprints right now.",
+          "The forensic team analyzing the fingerprints right now.",
+          "The forensic team is analyze the fingerprints right now."
+        ],
+        answer: 0,
+        explain: "Singular team takes is plus verb-ing for present continuous."
       }
     ]
   };
@@ -1817,9 +4001,10 @@
   }
 
   function resolveRoundBank(key, packId) {
+    var base = roundBanks[key] || fallbackRounds;
     var variant = packVariantBanks[key];
-    if (variant && variant[packId]) return variant[packId];
-    return roundBanks[key] || fallbackRounds;
+    if (variant && variant[packId]) return variant[packId].concat(base);
+    return base;
   }
 
   function resolveGameConfig(key, packId, baseCfg) {
@@ -1874,13 +4059,22 @@
       + ".duel-wrap{display:grid;gap:10px;}"
       + ".duel-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
       + ".duel-actions .opt{min-height:72px;}"
-      + ".classify-board{display:grid;gap:10px;}"
-      + ".classify-row{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:10px;display:grid;gap:8px;}"
-      + ".classify-row p{margin:0;font-size:14px;line-height:1.45;color:#16223a;}"
-      + ".classify-actions{display:flex;gap:8px;flex-wrap:wrap;}"
-      + ".classify-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 10px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;}"
-      + ".classify-pick.active-completed{background:#eaf2ff;border-color:#6a8fdf;color:#23427f;}"
-      + ".classify-pick.active-ongoing{background:#efeafe;border-color:#9a78df;color:#4b2c84;}"
+      + ".classify-drag-wrapper{display:grid;gap:16px;}"
+      + ".classify-pool{min-height:60px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;}"
+      + ".classify-zones{display:grid;grid-template-columns:1fr 1fr;gap:14px;}"
+      + ".classify-zone{min-height:120px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#fbfdff;display:flex;flex-direction:column;gap:8px;transition:border-color .2s,background .2s;}"
+      + ".classify-zone[data-zone=completed]{border-color:#6a8fdf;background:rgba(106,143,223,.06);}"
+      + ".classify-zone[data-zone=ongoing]{border-color:#9a78df;background:rgba(154,120,223,.06);}"
+      + ".classify-zone.drag-over{border-style:solid;box-shadow:0 0 0 3px rgba(31,95,99,.18);transform:scale(1.01);}"
+      + ".classify-zone.drag-over[data-zone=completed]{background:rgba(106,143,223,.14);}"
+      + ".classify-zone.drag-over[data-zone=ongoing]{background:rgba(154,120,223,.14);}"
+      + ".classify-zone-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;}"
+      + ".classify-card{padding:11px 14px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:grab;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,opacity .15s;touch-action:none;}"
+      + ".classify-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(11,16,32,.12);border-color:#c9a227;}"
+      + ".classify-card.selected{border-color:#c9a227;background:#fffdf5;box-shadow:0 0 0 3px rgba(201,162,39,.3);transform:translateY(-2px);}"
+      + ".classify-card:active,.classify-card.dragging{cursor:grabbing;opacity:.7;transform:scale(.97);}"
+      + ".classify-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.85;box-shadow:0 12px 28px rgba(11,16,32,.2);transform:rotate(2deg);}"
+      + "@media(max-width:620px){.classify-zones{grid-template-columns:1fr;}}"
       + ".action-bar{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:10px;display:grid;gap:8px;}"
       + ".action-bar b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
       + ".action-bar p{margin:0;font-size:13px;line-height:1.45;color:#34455f;}"
@@ -1984,8 +4178,12 @@
 
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
-    var target = Math.max(1, Math.min(20, desiredCount, source.length));
-    return shuffle(cloneRounds(source)).slice(0, target);
+    var target = Math.max(1, Math.min(20, desiredCount));
+    var pool = shuffle(cloneRounds(source));
+    while (pool.length < target) {
+      pool = pool.concat(shuffle(cloneRounds(source)));
+    }
+    return pool.slice(0, target);
   }
 
   function text(id, value) {
@@ -2028,8 +4226,8 @@
   var combo = 1;
   var hintsLeft = 1;
   var skipsLeft = 1;
-  var shotMax = difficulty === "rookie" ? 24 : difficulty === "field" ? 20 : 16;
-  var missionSecondsPerRound = difficulty === "rookie" ? 36 : difficulty === "field" ? 30 : 24;
+  var shotMax = difficulty === "rookie" ? 45 : difficulty === "field" ? 35 : 25;
+  var missionSecondsPerRound = difficulty === "rookie" ? 60 : difficulty === "field" ? 50 : 38;
   var shotClock = shotMax;
   var shotTimer = null;
   var currentRoundState = {};
@@ -2260,64 +4458,215 @@
     var rowControllers = [];
     currentRoundState = { mode: "classify", round: round, assignments: assignments, rows: rowControllers };
 
-    var board = document.createElement("div");
-    board.className = "classify-board";
+    var dragState = { el: null, optionIdx: -1, ghost: null, offsetX: 0, offsetY: 0 };
+    var selected = { el: null, optionIdx: -1 };
+
+    function selectCard(cardEl, optIdx) {
+      if (locked) return;
+      if (selected.el) selected.el.classList.remove("selected");
+      if (selected.el === cardEl) { selected.el = null; selected.optionIdx = -1; return; }
+      selected.el = cardEl;
+      selected.optionIdx = optIdx;
+      cardEl.classList.add("selected");
+    }
+
+    var wrapper = document.createElement("div");
+    wrapper.className = "classify-drag-wrapper";
+
+    var pool = document.createElement("div");
+    pool.className = "classify-pool";
+    var poolLabel = document.createElement("p");
+    poolLabel.className = "classify-zone-label";
+    poolLabel.textContent = "Drag or tap each sentence, then tap a zone";
+    pool.appendChild(poolLabel);
+
+    var zones = document.createElement("div");
+    zones.className = "classify-zones";
+
+    var completedZone = document.createElement("div");
+    completedZone.className = "classify-zone";
+    completedZone.dataset.zone = "completed";
+    var completedLabel = document.createElement("p");
+    completedLabel.className = "classify-zone-label";
+    completedLabel.textContent = "Completed Event";
+    completedZone.appendChild(completedLabel);
+
+    var ongoingZone = document.createElement("div");
+    ongoingZone.className = "classify-zone";
+    ongoingZone.dataset.zone = "ongoing";
+    var ongoingLabel = document.createElement("p");
+    ongoingLabel.className = "classify-zone-label";
+    ongoingLabel.textContent = "Ongoing Background";
+    ongoingZone.appendChild(ongoingLabel);
+
+    zones.appendChild(completedZone);
+    zones.appendChild(ongoingZone);
+
+    function makeCard(item) {
+      var card = document.createElement("div");
+      card.className = "classify-card";
+      card.draggable = true;
+      card.dataset.idx = item.optionIdx;
+      card.textContent = item.lineText;
+      card.setAttribute("touch-action", "none");
+
+      card.addEventListener("click", function () {
+        selectCard(card, item.optionIdx);
+      });
+
+      card.addEventListener("dragstart", function (e) {
+        if (locked) { e.preventDefault(); return; }
+        e.dataTransfer.setData("text/plain", item.optionIdx);
+        e.dataTransfer.effectAllowed = "move";
+        card.classList.add("dragging");
+        setTimeout(function () { card.style.opacity = "0.4"; }, 0);
+      });
+      card.addEventListener("dragend", function () {
+        card.classList.remove("dragging");
+        card.style.opacity = "";
+      });
+
+      var touchId = null;
+      card.addEventListener("touchstart", function (e) {
+        if (locked) return;
+        var t = e.touches[0];
+        touchId = t.identifier;
+        var rect = card.getBoundingClientRect();
+        dragState.el = card;
+        dragState.optionIdx = item.optionIdx;
+        dragState.offsetX = t.clientX - rect.left;
+        dragState.offsetY = t.clientY - rect.top;
+        var ghost = card.cloneNode(true);
+        ghost.className = "classify-card classify-ghost";
+        ghost.style.width = rect.width + "px";
+        ghost.style.left = rect.left + "px";
+        ghost.style.top = rect.top + "px";
+        document.body.appendChild(ghost);
+        dragState.ghost = ghost;
+        card.classList.add("dragging");
+        e.preventDefault();
+      }, { passive: false });
+
+      return card;
+    }
+
+    function handleTouchMove(e) {
+      if (!dragState.ghost) return;
+      for (var i = 0; i < e.touches.length; i++) {
+        if (e.touches[i].identifier === touchId) {
+          var t = e.touches[i];
+          dragState.ghost.style.left = (t.clientX - dragState.offsetX) + "px";
+          dragState.ghost.style.top = (t.clientY - dragState.offsetY) + "px";
+          highlightZone(t.clientX, t.clientY);
+          e.preventDefault();
+          return;
+        }
+      }
+    }
+
+    function handleTouchEnd(e) {
+      if (!dragState.ghost) return;
+      var found = false;
+      for (var i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === touchId) {
+          var t = e.changedTouches[i];
+          dropAtPoint(t.clientX, t.clientY, dragState.el, dragState.optionIdx);
+          found = true;
+          break;
+        }
+      }
+      if (dragState.ghost) dragState.ghost.remove();
+      if (dragState.el) dragState.el.classList.remove("dragging");
+      dragState.ghost = null;
+      dragState.el = null;
+      completedZone.classList.remove("drag-over");
+      ongoingZone.classList.remove("drag-over");
+    }
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", handleTouchEnd);
+
+    function highlightZone(x, y) {
+      var cRect = completedZone.getBoundingClientRect();
+      var oRect = ongoingZone.getBoundingClientRect();
+      completedZone.classList.toggle("drag-over", x >= cRect.left && x <= cRect.right && y >= cRect.top && y <= cRect.bottom);
+      ongoingZone.classList.toggle("drag-over", x >= oRect.left && x <= oRect.right && y >= oRect.top && y <= oRect.bottom);
+    }
+
+    function dropAtPoint(x, y, cardEl, optIdx) {
+      var cRect = completedZone.getBoundingClientRect();
+      var oRect = ongoingZone.getBoundingClientRect();
+      if (x >= cRect.left && x <= cRect.right && y >= cRect.top && y <= cRect.bottom) {
+        placeCard(cardEl, optIdx, "completed");
+      } else if (x >= oRect.left && x <= oRect.right && y >= oRect.top && y <= oRect.bottom) {
+        placeCard(cardEl, optIdx, "ongoing");
+      }
+    }
+
+    function placeCard(cardEl, optIdx, zone) {
+      assignments[optIdx] = zone;
+      var target = zone === "completed" ? completedZone : ongoingZone;
+      target.appendChild(cardEl);
+      cardEl.classList.remove("dragging");
+      cardEl.style.opacity = "";
+    }
+
+    [completedZone, ongoingZone].forEach(function (zone) {
+      zone.addEventListener("click", function () {
+        if (locked || !selected.el) return;
+        placeCard(selected.el, selected.optionIdx, zone.dataset.zone);
+        selected.el.classList.remove("selected");
+        selected.el = null;
+        selected.optionIdx = -1;
+      });
+      zone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        zone.classList.add("drag-over");
+      });
+      zone.addEventListener("dragleave", function () {
+        zone.classList.remove("drag-over");
+      });
+      zone.addEventListener("drop", function (e) {
+        e.preventDefault();
+        zone.classList.remove("drag-over");
+        var optIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
+        var cardEl = wrapper.querySelector('.classify-card[data-idx="' + optIdx + '"]');
+        if (cardEl) placeCard(cardEl, optIdx, zone.dataset.zone);
+      });
+    });
+
+    pool.addEventListener("dragover", function (e) { e.preventDefault(); });
+    pool.addEventListener("drop", function (e) {
+      e.preventDefault();
+      var optIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
+      var cardEl = wrapper.querySelector('.classify-card[data-idx="' + optIdx + '"]');
+      if (cardEl) {
+        pool.appendChild(cardEl);
+        delete assignments[optIdx];
+      }
+    });
 
     shuffle(round.options.map(function (lineText, optionIdx) {
       return { lineText: lineText, optionIdx: optionIdx };
     })).forEach(function (item) {
-      var row = document.createElement("div");
-      row.className = "classify-row";
-      var line = document.createElement("p");
-      line.textContent = item.lineText;
-
-      var actions = document.createElement("div");
-      actions.className = "classify-actions";
-      var completedBtn = document.createElement("button");
-      completedBtn.type = "button";
-      completedBtn.className = "classify-pick";
-      completedBtn.textContent = "Completed Event";
-
-      var ongoingBtn = document.createElement("button");
-      ongoingBtn.type = "button";
-      ongoingBtn.className = "classify-pick";
-      ongoingBtn.textContent = "Ongoing Background";
-
-      function setPick(kind) {
-        assignments[item.optionIdx] = kind;
-        completedBtn.classList.toggle("active-completed", kind === "completed");
-        ongoingBtn.classList.toggle("active-ongoing", kind === "ongoing");
-      }
+      var card = makeCard(item);
+      pool.appendChild(card);
       rowControllers.push({
         optionIdx: item.optionIdx,
         hasPick: function () { return typeof assignments[item.optionIdx] !== "undefined"; },
-        pickCorrect: function () { setPick(sentenceClass(round.options[item.optionIdx])); }
+        pickCorrect: function () { placeCard(card, item.optionIdx, sentenceClass(round.options[item.optionIdx])); }
       });
-
-      completedBtn.addEventListener("click", function () {
-        if (locked) return;
-        setPick("completed");
-      });
-      ongoingBtn.addEventListener("click", function () {
-        if (locked) return;
-        setPick("ongoing");
-      });
-
-      actions.appendChild(completedBtn);
-      actions.appendChild(ongoingBtn);
-      row.appendChild(line);
-      row.appendChild(actions);
-      board.appendChild(row);
     });
 
     var submitBtn = document.createElement("button");
     submitBtn.type = "button";
     submitBtn.className = "btn primary sweep-submit";
-    submitBtn.textContent = "Submit Classification";
+    submitBtn.textContent = "Submit Sort";
     submitBtn.addEventListener("click", function () {
       if (locked) return;
       if (Object.keys(assignments).length < round.options.length) {
-        html("feedback", "<span class=\"bad\">Classify every line first, then submit.</span>");
+        html("feedback", "<span class=\"bad\">Drag every sentence to a zone first, then submit.</span>");
         return;
       }
       var allCorrect = true;
@@ -2327,6 +4676,8 @@
           break;
         }
       }
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
       finishRound(
         allCorrect,
         "Timeline classification secured. " + round.explain,
@@ -2335,8 +4686,10 @@
       );
     });
 
-    optionsEl.appendChild(board);
-    optionsEl.appendChild(submitBtn);
+    wrapper.appendChild(pool);
+    wrapper.appendChild(zones);
+    wrapper.appendChild(submitBtn);
+    optionsEl.appendChild(wrapper);
   }
 
   function showBinaryOptions(round) {
