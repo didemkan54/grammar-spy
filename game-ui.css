@@ -67,7 +67,7 @@ h1 {
   gap: 10px;
   margin: 16px 0;
   padding: 14px 16px;
-  background: linear-gradient(135deg, var(--mid), #1a2d4a);
+  background: linear-gradient(135deg, #2a4a5a, #1f5f63);
   border-radius: 14px;
   box-shadow: var(--shadow);
 }
