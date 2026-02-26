@@ -80,10 +80,10 @@
       z-index:1;
       max-width:100%;
       margin:0;
-      padding:0;
+      padding:0 40px;
       display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:40px;
+      grid-template-columns:1fr 1fr;
+      gap:48px;
       align-items:center;
     }
     .mission-panel{
@@ -153,13 +153,15 @@
     }
     .hero-visual{
       display:flex;
-      justify-content:flex-end;
+      justify-content:center;
+      align-items:center;
     }
     .hero-visual img{
       width:100%;
-      max-width:480px;
-      border-radius:16px;
-      box-shadow:0 20px 60px rgba(11,16,32,.15);
+      max-width:520px;
+      border-radius:18px;
+      box-shadow:0 16px 48px rgba(11,16,32,.12);
+      object-fit:cover;
     }
     .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:18px}
     .step{padding:12px 0;border-radius:0;background:transparent;border-bottom:1px solid #e4e8ef}
