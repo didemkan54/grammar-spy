@@ -1,18 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="96" viewBox="0 0 360 96" role="img" aria-labelledby="title desc">
   <title id="title">Grammar Spy logo</title>
-  <desc id="desc">Shield icon with Grammar Spy wordmark.</desc>
-  <defs>
-    <linearGradient id="shieldFill" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#eef4fb"/>
-    </linearGradient>
-  </defs>
-  <g transform="translate(6 6)">
-    <path d="M38 2l27 10v21.5c0 21.1-13.5 37.5-27 44.9C24.5 71 11 54.6 11 33.5V12z" fill="url(#shieldFill)" stroke="#16223a" stroke-width="4"/>
-    <path d="M38 12l17 6.4v14.9c0 13.1-8.4 23.2-17 28.2-8.6-5-17-15.1-17-28.2V18.4z" fill="#f8fbff" stroke="#1f5f63" stroke-width="2.4"/>
-    <circle cx="38" cy="33" r="11" fill="#c9a227" stroke="#16223a" stroke-width="2.2"/>
-    <path d="M32.8 33.4l3.9 3.9 7.6-7.7" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <desc id="desc">Open book with a magnifying glass and Grammar Spy wordmark.</desc>
+  <g transform="translate(6 8)">
+    <rect x="0" y="0" width="76" height="76" rx="16" fill="#f8fbff" stroke="#d9e4f0"/>
+    <path d="M13 58V19c8.8 0 16.9 2.5 24 7.5V66c-7.1-5-15.2-8-24-8z" fill="#ffffff" stroke="#16223a" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M61 58V19c-8.8 0-16.9 2.5-24 7.5V66c7.1-5 15.2-8 24-8z" fill="#ffffff" stroke="#16223a" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M37 26v40" stroke="#1f5f63" stroke-width="2" stroke-linecap="round"/>
+    <path d="M21 31c5.7 0 11 1.6 16 4.8M53 31c-5.7 0-11 1.6-16 4.8" stroke="#d7e3f3" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="52.5" cy="32.5" r="11" fill="none" stroke="#c9a227" stroke-width="3"/>
+    <path d="M59.6 39.6l8.2 8.2" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+    <path d="M47.8 32.8l2.3 2.3 4.3-4.4" fill="none" stroke="#c9a227" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="92" y="44" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="45" fill="#16223a">Grammar</text>
-  <text x="92" y="84" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="45" fill="#1f5f63">Spy</text>
+  <text x="92" y="40" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="41" fill="#16223a">Grammar</text>
+  <text x="92" y="74" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="41" fill="#1f5f63">Spy</text>
 </svg>

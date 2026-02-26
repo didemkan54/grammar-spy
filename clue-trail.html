@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Grammar Spy™ — Clue Trail</title>
-  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg?v=20260225b" />
   <style>
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--line:#d9dee6;--slate:#4a5568;--ok:#1f8f63;--bad:#b04444}
     *{box-sizing:border-box}body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Segoe UI,sans-serif;padding:22px 14px}
@@ -51,7 +51,7 @@
 <div class="overlay" id="ov"><section class="modal"><h2 style="margin:0">Mission Report</h2><p id="r1"></p><p id="r2"></p><p id="r3"></p><div class="box" id="finalTeamsScoresWrap" style="margin-top:10px;display:none"><div id="finalTeamAScore"></div><div id="finalTeamBScore"></div><div id="winnerLine"></div></div><div class="box" id="endTeamsWrap" style="margin-top:10px;display:none"><div class="label" style="font-size:11px;text-transform:uppercase;color:var(--slate)">Teams (share scores with)</div><div id="endTeamsList" style="margin-top:6px;font-size:13px;line-height:1.5"></div></div><div class="row"><button class="btn primary" id="again">Play Again</button><a class="btn" id="teacherLink" href="teacher-home.html">Close</a></div></section></div>
 <div data-include="footer"></div>
 <script src="billing-scaffold.js"></script>
-  <script src="auth-scaffold.js"></script><script src="layout-loader.js"></script><script src="app-shell.js"></script><script src="game-sound.js"></script><script src="grammar-context-bank.js"></script>
+  <script src="auth-scaffold.js"></script><script src="layout-loader.js?v=20260225b"></script><script src="app-shell.js"></script><script src="game-sound.js"></script><script src="grammar-context-bank.js"></script>
 <script>
 (()=>{
 const q=new URLSearchParams(location.search),pack=(q.get('pack')||'pack01'),count=Math.max(6,Math.min(20,Number(q.get('count')||10)||10)),timerOn=(q.get('timer')||'on')!=='off',difficulty=q.get('difficulty')||'field';
