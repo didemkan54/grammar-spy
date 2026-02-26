@@ -431,22 +431,40 @@
         if (lang && SUPPORTED.indexOf(lang) >= 0) {
           setLang(lang);
           syncSelect();
+          apply();
         }
       }
     });
-    document.addEventListener('layout:ready', syncSelect);
+    document.addEventListener('layout:ready', function() {
+      syncSelect();
+      apply();
+    });
+    setInterval(function() {
+      var selects = document.querySelectorAll('#gsLangSelect');
+      if (selects.length && !selects[0]._bound) {
+        selects[0]._bound = true;
+        syncSelect();
+      }
+    }, 500);
+  }
+
+  function boot() {
+    apply();
+    bindSwitcher();
+    syncSelect();
+    document.dispatchEvent(new CustomEvent('i18n:applied'));
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      apply();
-      bindSwitcher();
-      document.dispatchEvent(new CustomEvent('i18n:applied'));
-    });
+    document.addEventListener('DOMContentLoaded', boot);
   } else {
-    apply();
-    bindSwitcher();
-    document.dispatchEvent(new CustomEvent('i18n:applied'));
+    boot();
   }
-  document.addEventListener('layout:ready', apply);
+  document.addEventListener('layout:ready', function() {
+    apply();
+    syncSelect();
+  });
+  // Re-apply after a short delay to catch late-rendered headers
+  setTimeout(function() { apply(); syncSelect(); }, 800);
+  setTimeout(function() { apply(); syncSelect(); }, 2000);
 })();
