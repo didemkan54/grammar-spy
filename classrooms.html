@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy™ — My Classrooms</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+  <style>
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--teal-light:#e8f4f5;--light:#f2f4f7;--line:#d9dee6;--slate:#4a5568;--gold:#c9a227;--ok:#1f8f63;--bad:#b04444}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,"Segoe UI",sans-serif;padding:0 0 40px}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 32px;display:grid;gap:20px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 4px 14px rgba(11,16,32,.05)}
+    h1{margin:0 0 6px;font-size:30px;color:var(--navy)}
+    h2{margin:0 0 4px;font-size:22px;color:var(--navy)}
+    h3{margin:0;font-size:16px;color:var(--navy)}
+    p{margin:6px 0 0;color:var(--slate);line-height:1.6}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;padding:10px 16px;background:#fff;color:var(--mid);font:700 13px Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;text-decoration:none;transition:transform .12s,box-shadow .15s}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(11,16,32,.08)}
+    .btn-primary{background:var(--teal);border-color:#194f53;color:#fff}
+    .btn-primary:hover{box-shadow:0 4px 12px rgba(31,95,99,.25)}
+    .btn-danger{color:var(--bad);border-color:#e8c0c0}
+    .btn-danger:hover{background:#fdf3f3}
+    .btn-sm{padding:6px 12px;font-size:11px}
+
+    /* Create form */
+    .create-form{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-top:14px}
+    .create-form label{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--slate)}
+    .create-form input{border:2px solid var(--line);border-radius:10px;padding:10px 14px;font-size:15px;color:var(--mid);min-width:200px;transition:border-color .15s}
+    .create-form input:focus{border-color:var(--teal);outline:none}
+
+    /* Classroom card */
+    .classroom-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 4px 14px rgba(11,16,32,.05);transition:transform .2s,box-shadow .2s}
+    .classroom-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,16,32,.08)}
+    .classroom-header{display:flex;justify-content:space-between;align-items:start;gap:16px;margin-bottom:16px}
+
+    /* Join code display */
+    .code-display{text-align:center;padding:20px;background:linear-gradient(135deg,var(--mid),#1a2d4a);border-radius:14px;margin-bottom:16px}
+    .code-display .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.5);margin-bottom:8px}
+    .code-display .code{font-size:42px;font-weight:800;letter-spacing:.2em;color:#fff;font-family:"Courier New",monospace}
+    .code-display .hint{font-size:12px;color:rgba(255,255,255,.4);margin-top:8px}
+
+    /* Student list */
+    .student-list{display:grid;gap:6px;margin-top:12px}
+    .student-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fafc;border:1px solid #e4e8ef;border-radius:10px}
+    .student-row .name{font-weight:600;font-size:14px}
+    .student-row .joined{font-size:12px;color:#7a8698}
+    .empty-students{padding:16px;text-align:center;color:#7a8698;font-size:14px;font-style:italic;background:#f8fafc;border-radius:10px}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media(max-width:800px){.grid-2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+  <main class="wrap" id="main">
+    <section class="panel">
+      <h1>My Classrooms</h1>
+      <p>Create classrooms and share the join code with your students. They enter the code to join — no accounts needed.</p>
+      <div class="create-form">
+        <label>
+          Classroom Name
+          <input type="text" id="className" placeholder="e.g. Period 3 ELD" maxlength="40" />
+        </label>
+        <label>
+          Your Name
+          <input type="text" id="teacherName" placeholder="e.g. Ms. Garcia" maxlength="30" />
+        </label>
+        <button class="btn btn-primary" id="createBtn" type="button">+ Create Classroom</button>
+      </div>
+    </section>
+
+    <div id="classroomList" class="grid-2"></div>
+
+    <section class="panel" id="emptyState" style="text-align:center;display:none">
+      <img src="assets/illustrations/teacher-dashboard.svg" alt="" style="width:180px;height:auto;opacity:.7;margin:0 auto 12px;display:block" aria-hidden="true" />
+      <h2>No classrooms yet</h2>
+      <p>Create your first classroom above and share the code with your students.</p>
+    </section>
+  </main>
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="classroom.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+  (function() {
+    var classNameInput = document.getElementById("className");
+    var teacherNameInput = document.getElementById("teacherName");
+    var createBtn = document.getElementById("createBtn");
+    var classroomList = document.getElementById("classroomList");
+    var emptyState = document.getElementById("emptyState");
+
+    function formatDate(iso) {
+      try {
+        var d = new Date(iso);
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      } catch(e) { return ""; }
+    }
+
+    function render() {
+      var classrooms = window.GSClassroom.getClassrooms();
+      if (!classrooms.length) {
+        classroomList.innerHTML = "";
+        emptyState.style.display = "block";
+        return;
+      }
+      emptyState.style.display = "none";
+
+      classroomList.innerHTML = classrooms.map(function(c) {
+        var students = (c.students || []).map(function(s) {
+          return '<div class="student-row">' +
+            '<span class="name">' + s.name + '</span>' +
+            '<span class="joined">Joined ' + formatDate(s.joinedAt) + '</span>' +
+            '<button class="btn btn-sm btn-danger" data-remove="' + c.id + '" data-student="' + s.name + '">Remove</button>' +
+          '</div>';
+        }).join("");
+
+        var studentSection = c.students && c.students.length
+          ? '<div class="student-list">' + students + '</div>'
+          : '<div class="empty-students">No students yet — share the code above!</div>';
+
+        return '<div class="classroom-card">' +
+          '<div class="classroom-header">' +
+            '<div><h2>' + c.name + '</h2>' +
+            (c.teacherName ? '<p style="margin:0;font-size:13px;color:#7a8698">' + c.teacherName + '</p>' : '') +
+            '</div>' +
+            '<button class="btn btn-sm btn-danger" data-delete="' + c.id + '">Delete</button>' +
+          '</div>' +
+          '<div class="code-display">' +
+            '<div class="label">Join Code</div>' +
+            '<div class="code">' + c.code + '</div>' +
+            '<div class="hint">Students enter this code to join</div>' +
+          '</div>' +
+          '<h3>Students (' + (c.students ? c.students.length : 0) + ')</h3>' +
+          studentSection +
+        '</div>';
+      }).join("");
+    }
+
+    createBtn.addEventListener("click", function() {
+      var name = classNameInput.value.trim();
+      var teacher = teacherNameInput.value.trim();
+      if (!name) { classNameInput.focus(); return; }
+      window.GSClassroom.createClassroom(name, teacher);
+      classNameInput.value = "";
+      render();
+    });
+
+    classNameInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") createBtn.click();
+    });
+
+    classroomList.addEventListener("click", function(e) {
+      var deleteBtn = e.target.closest("[data-delete]");
+      var removeBtn = e.target.closest("[data-remove]");
+      if (deleteBtn) {
+        if (confirm("Delete this classroom? Students will no longer see it.")) {
+          window.GSClassroom.deleteClassroom(deleteBtn.dataset.delete);
+          render();
+        }
+      }
+      if (removeBtn) {
+        window.GSClassroom.removeStudent(removeBtn.dataset.remove, removeBtn.dataset.student);
+        render();
+      }
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>
