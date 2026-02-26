@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grammar Spy™ | Agent Profile</title>
+    <link rel="stylesheet" href="core/theme.css" />
+  </head>
+  <body>
+    <main class="gs-shell">
+      <header id="topNav"></header>
+
+      <section class="gs-panel">
+        <h1>Agent Profile</h1>
+        <p class="gs-subtitle">
+          Review rank progression, mastery by skill tag, mission history, and your recommended next mission.
+        </p>
+      </section>
+
+      <section class="gs-grid gs-grid-2">
+        <article class="gs-panel">
+          <h2>Current Rank</h2>
+          <p class="gs-inline-metric"><b id="rankLabel">Cadet</b> · <span id="xpLabel">0 XP</span></p>
+          <div class="gs-progress" aria-label="Rank progress">
+            <div id="rankProgressFill" class="gs-progress-fill"></div>
+          </div>
+          <p id="rankProgressText" class="gs-subtitle" style="margin-top: 8px;">Complete missions to advance.</p>
+        </article>
+
+        <article class="gs-panel">
+          <h2>Recommended Next Mission</h2>
+          <div id="recommendedMissionCard" class="gs-empty">Complete a mission to unlock recommendations.</div>
+        </article>
+      </section>
+
+      <section class="gs-panel">
+        <h2>Skill Mastery Grid</h2>
+        <div id="skillMasteryGrid" class="gs-grid gs-grid-3"></div>
+      </section>
+
+      <section class="gs-panel">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+          <h2 style="margin: 0;">Recent Missions</h2>
+          <button id="resetProfileBtn" class="gs-btn gs-btn-danger" type="button">Reset Profile</button>
+        </div>
+        <div id="recentMissionTableWrap" style="overflow-x: auto; margin-top: 10px;"></div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { renderTopNav } from "./core/router.js";
+      import { getProfile, resetProfile, saveProfile } from "./core/storage.js";
+      import { listAllMissions } from "./core/missionLoader.js";
+      import { getRecommendations } from "./core/xpEngine.js";
+      import { getRecentMissions } from "./core/analytics.js";
+
+      renderTopNav(document.getElementById("topNav"), "profile");
+
+      const rankLabel = document.getElementById("rankLabel");
+      const xpLabel = document.getElementById("xpLabel");
+      const rankProgressFill = document.getElementById("rankProgressFill");
+      const rankProgressText = document.getElementById("rankProgressText");
+      const skillMasteryGrid = document.getElementById("skillMasteryGrid");
+      const recentMissionTableWrap = document.getElementById("recentMissionTableWrap");
+      const recommendedMissionCard = document.getElementById("recommendedMissionCard");
+      const resetProfileBtn = document.getElementById("resetProfileBtn");
+
+      const rankThresholds = {
+        Cadet: { next: "Rookie Agent", xpTarget: 300 },
+        "Rookie Agent": { next: "Field Agent", xpTarget: 900 },
+        "Field Agent": { next: "Senior Agent", xpTarget: 1800 },
+        "Senior Agent": { next: "Director", xpTarget: 3200 },
+        Director: { next: "Director", xpTarget: 3200 }
+      };
+
+      function renderRank(profile) {
+        const rank = profile.rank || "Cadet";
+        const xp = Number(profile.totalXP || 0);
+        rankLabel.textContent = rank;
+        xpLabel.textContent = `${xp.toLocaleString()} XP`;
+
+        const meta = rankThresholds[rank] || rankThresholds.Cadet;
+        const progress = Math.min(100, Math.round((xp / meta.xpTarget) * 100));
+        rankProgressFill.style.width = `${progress}%`;
+        rankProgressText.textContent =
+          rank === "Director"
+            ? "Maximum rank achieved. Keep refining mastery across missions."
+            : `${progress}% toward ${meta.next} target (${meta.xpTarget} XP guide)`;
+      }
+
+      function renderSkills(profile) {
+        const rows = Object.entries(profile.skillMastery || {});
+        if (!rows.length) {
+          skillMasteryGrid.innerHTML = `<div class="gs-empty">No skill data yet. Launch a mission to start mastery tracking.</div>`;
+          return;
+        }
+        skillMasteryGrid.innerHTML = rows
+          .sort((a, b) => a[0].localeCompare(b[0]))
+          .map(([tag, data]) => {
+            const attempts = Number(data.attempts || 0);
+            const correct = Number(data.correct || 0);
+            const accuracy = attempts ? Math.round((correct / attempts) * 100) : 0;
+            const status = data.mastered ? "Mastered" : "In progress";
+            return `
+              <article class="gs-card">
+                <h3 class="gs-card-title">${tag}</h3>
+                <p class="gs-card-sub">${status}</p>
+                <div class="gs-chip-row" style="margin-top: 8px;">
+                  <span class="gs-chip">Attempts: ${attempts}</span>
+                  <span class="gs-chip">Accuracy: ${accuracy}%</span>
+                  <span class="gs-chip">Best streak: ${data.bestStreak || 0}</span>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function renderRecentMissions(profile) {
+        const recent = getRecentMissions(profile, 8);
+        if (!recent.length) {
+          recentMissionTableWrap.innerHTML = `<div class="gs-empty">No completed missions yet.</div>`;
+          return;
+        }
+        const body = recent
+          .map(
+            (row) => `
+              <tr>
+                <td>${row.missionName || row.missionId}</td>
+                <td>${Math.round(row.accuracy || 0)}%</td>
+                <td>${row.bestStreak || 0}</td>
+                <td>${row.xpGained || 0}</td>
+                <td>${new Date(row.completedAt || Date.now()).toLocaleDateString()}</td>
+              </tr>
+            `
+          )
+          .join("");
+        recentMissionTableWrap.innerHTML = `
+          <table class="gs-table">
+            <thead>
+              <tr>
+                <th>Mission</th>
+                <th>Accuracy</th>
+                <th>Best streak</th>
+                <th>XP gained</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>
+        `;
+      }
+
+      async function renderRecommendations(profile) {
+        const manifest = await listAllMissions();
+        const lastMission = Array.isArray(profile.missionHistory)
+          ? profile.missionHistory[profile.missionHistory.length - 1]
+          : null;
+        const recs = getRecommendations(profile, lastMission, manifest);
+        if (!recs.length) {
+          recommendedMissionCard.className = "gs-empty";
+          recommendedMissionCard.textContent = "Complete a mission with tracked errors to unlock recommendations.";
+          return;
+        }
+        const top = recs[0];
+        recommendedMissionCard.className = "gs-card";
+        recommendedMissionCard.innerHTML = `
+          <h3 class="gs-card-title">${top.missionName}</h3>
+          <p class="gs-card-sub">${top.reason}</p>
+          <div class="gs-button-row" style="margin-top: 10px;">
+            <a class="gs-btn gs-btn-primary" href="missions.html?missionId=${encodeURIComponent(top.missionId)}">
+              Open Mission
+            </a>
+          </div>
+        `;
+      }
+
+      async function renderPage() {
+        const profile = getProfile();
+        renderRank(profile);
+        renderSkills(profile);
+        renderRecentMissions(profile);
+        await renderRecommendations(profile);
+      }
+
+      resetProfileBtn.addEventListener("click", () => {
+        const confirmed = window.confirm("Reset all rank, XP, and mastery data?");
+        if (!confirmed) return;
+        saveProfile(resetProfile());
+        renderPage();
+      });
+
+      renderPage();
+    </script>
+  </body>
+</html>

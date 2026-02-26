@@ -219,6 +219,50 @@
     .email-capture .email-capture-thanks{display:none;font-size:14px;color:var(--teal);font-weight:600}
     .email-capture .email-capture-thanks.show{display:block}
     .email-capture-form.hide{display:none}
+
+    .mission-engine-hub{
+      border:1px solid rgba(14,165,165,.28);
+      border-radius:16px;
+      background:linear-gradient(165deg,#f4fbfb 0%,#ffffff 70%);
+      padding:18px 16px;
+      box-shadow:0 12px 24px rgba(11,16,32,.06);
+    }
+    .mission-engine-grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+    }
+    .mission-engine-card{
+      border:1px solid rgba(14,165,165,.24);
+      border-radius:12px;
+      background:#fff;
+      padding:12px;
+    }
+    .mission-engine-card b{
+      display:block;
+      color:#0b3b3b;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+    .mission-engine-card p{
+      margin:0;
+      color:#3a5454;
+      font-size:13px;
+      line-height:1.5;
+    }
+    .mission-engine-card a{
+      display:inline-block;
+      margin-top:8px;
+      text-decoration:none;
+      color:#0ea5a5;
+      font:700 11px Inter,Arial,sans-serif;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .mission-engine-card a:hover{text-decoration:underline}
+    @media (max-width:920px){.mission-engine-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:620px){.mission-engine-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -302,6 +346,7 @@
               <a id="continueBtn" class="btn-primary btn-hero-primary" href="teacher-home.html" data-i18n="hero_continue">Continue</a>
               <a class="link-action" href="auth.html" id="signUpLink" data-i18n="hero_signUpFree">Sign up free</a>
               <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=20&timer=off" data-i18n="hero_trySample">Try a sample mission</a>
+              <a class="link-action" href="missions.html">Open Mission Library</a>
               <a class="link-action" href="teacher-welcome.html">Teacher welcome video</a>
               <a class="link-action" href="student-welcome.html">Student welcome video</a>
             </div>
@@ -316,6 +361,35 @@
   </section>
 
   <main class="wrap">
+    <section class="section section-flat mission-engine-hub" aria-label="New mission systems">
+      <p class="mission-label" style="margin-top:0;color:#0f5c5c">New Mission Systems</p>
+      <h2 style="font-size:26px;color:#0b3b3b">Mission Control is now live</h2>
+      <p class="subcopy" style="max-width:72ch;color:#2d4d4d">
+        Access the new connected learning engine: Mission Library, Training Path, Agent Profile, and Launch Shell.
+      </p>
+      <div class="mission-engine-grid">
+        <article class="mission-engine-card">
+          <b>Mission Library</b>
+          <p>Filter by grade band, cognitive level, skill tags, and retrieval type.</p>
+          <a href="missions.html">Open library</a>
+        </article>
+        <article class="mission-engine-card">
+          <b>Training Path</b>
+          <p>View Levels 1–3 progression map and linked missions by grade band.</p>
+          <a href="progression.html">Open path</a>
+        </article>
+        <article class="mission-engine-card">
+          <b>Agent Profile</b>
+          <p>Track rank, XP, mastery per skill, and recommended next missions.</p>
+          <a href="profile.html">Open profile</a>
+        </article>
+        <article class="mission-engine-card">
+          <b>Launch Shell</b>
+          <p>Run mission items with intelligence report, error patterns, and recommendations.</p>
+          <a href="games/launch.html">Launch mission</a>
+        </article>
+      </div>
+    </section>
 
     <section class="section section-flat" aria-label="One mission flow">
       <p class="mission-label" data-i18n="home_howItWorks">How it works</p>

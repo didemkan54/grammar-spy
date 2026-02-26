@@ -1,0 +1,183 @@
+{
+  "missionId": "mission-past-simple-l1",
+  "missionName": "Mission: Event Trace Basics",
+  "missionBrief": "Identify completed past events and separate them from background details in short evidence lines.",
+  "grammarFocus": "Past Simple Foundations",
+  "gradeBand": "6-7",
+  "cognitiveLevel": 1,
+  "skills": [
+    "past_simple_event",
+    "time_markers_basic",
+    "verb2_recognition"
+  ],
+  "retrievalType": "blocked",
+  "estimatedCognitiveLoad": "low",
+  "gameTypes": [
+    "retrieval-raid",
+    "error-intelligence",
+    "timeline-intercept"
+  ],
+  "difficultyTiers": {
+    "rookie": [
+      "psl1-01",
+      "psl1-02",
+      "psl1-03",
+      "psl1-04",
+      "psl1-05"
+    ],
+    "field": [
+      "psl1-01",
+      "psl1-02",
+      "psl1-03",
+      "psl1-04",
+      "psl1-05",
+      "psl1-06",
+      "psl1-07"
+    ],
+    "director": [
+      "psl1-04",
+      "psl1-05",
+      "psl1-06",
+      "psl1-07",
+      "psl1-08"
+    ]
+  },
+  "items": [
+    {
+      "id": "psl1-01",
+      "context": "Morning attendance log",
+      "sentence": "Yesterday, the class ___ their homework before discussion.",
+      "options": ["check", "checked", "is checking", "were checking"],
+      "correctAnswer": "checked",
+      "targetSkillTags": ["past_simple_event", "time_markers_basic"],
+      "explanation": "Yesterday marks a completed past event, so simple past 'checked' is correct.",
+      "commonErrors": [
+        { "pattern": "present_form", "message": "Present forms do not fit completed past events." }
+      ],
+      "metadata": {
+        "timeMarkers": ["yesterday"],
+        "clauseCount": 1,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "psl1-02",
+      "context": "Science lab report",
+      "sentence": "Last week, Mina ___ the final chart in blue.",
+      "options": ["draws", "draw", "drew", "was drawing"],
+      "correctAnswer": "drew",
+      "targetSkillTags": ["past_simple_event", "verb2_recognition"],
+      "explanation": "Last week indicates a finished event. 'Drew' is the correct past form.",
+      "commonErrors": [
+        { "pattern": "base_form_after_marker", "message": "Use a past form with past-time markers." }
+      ],
+      "metadata": {
+        "timeMarkers": ["last week"],
+        "clauseCount": 1,
+        "irregularVerbFlag": true
+      }
+    },
+    {
+      "id": "psl1-03",
+      "context": "Classroom incident note",
+      "sentence": "The projector ___ suddenly during the lesson.",
+      "options": ["stops", "stopped", "was stop", "is stopping"],
+      "correctAnswer": "stopped",
+      "targetSkillTags": ["past_simple_event"],
+      "explanation": "A sudden one-time event in the past takes simple past: 'stopped'.",
+      "commonErrors": [
+        { "pattern": "auxiliary_misuse", "message": "Do not use 'was' with a base verb for simple past events." }
+      ],
+      "metadata": {
+        "timeMarkers": ["during"],
+        "clauseCount": 1,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "psl1-04",
+      "context": "Mission debrief",
+      "sentence": "After the warning bell, we ___ to our seats quickly.",
+      "options": ["run", "ran", "were run", "are running"],
+      "correctAnswer": "ran",
+      "targetSkillTags": ["past_simple_event", "verb2_recognition"],
+      "explanation": "The action happened and finished after a past cue, so 'ran' is correct.",
+      "commonErrors": [
+        { "pattern": "present_substitution", "message": "Present verbs do not match debrief past timeline." }
+      ],
+      "metadata": {
+        "timeMarkers": ["after"],
+        "clauseCount": 1,
+        "irregularVerbFlag": true
+      }
+    },
+    {
+      "id": "psl1-05",
+      "context": "Library record",
+      "sentence": "Sara ___ two grammar books before lunch.",
+      "options": ["borrows", "borrowed", "was borrowing", "borrow"],
+      "correctAnswer": "borrowed",
+      "targetSkillTags": ["past_simple_event", "time_markers_basic"],
+      "explanation": "Before lunch references a completed event in the past, so use simple past.",
+      "commonErrors": [
+        { "pattern": "ongoing_form_overuse", "message": "Continuous form is unnecessary for completed countable actions." }
+      ],
+      "metadata": {
+        "timeMarkers": ["before lunch"],
+        "clauseCount": 1,
+        "irregularVerbFlag": false
+      }
+    },
+    {
+      "id": "psl1-06",
+      "context": "History class quiz",
+      "sentence": "The team ___ the answer after reading the clue.",
+      "options": ["find", "finds", "found", "was found"],
+      "correctAnswer": "found",
+      "targetSkillTags": ["past_simple_event", "verb2_recognition"],
+      "explanation": "The answer-finding was completed in sequence, so use past simple 'found'.",
+      "commonErrors": [
+        { "pattern": "passive_confusion", "message": "Use active past simple when the team performs the action." }
+      ],
+      "metadata": {
+        "timeMarkers": ["after"],
+        "clauseCount": 1,
+        "irregularVerbFlag": true
+      }
+    },
+    {
+      "id": "psl1-07",
+      "context": "Mission transcript",
+      "sentence": "At 9:10, the alarm ___ and everyone paused.",
+      "options": ["rings", "rang", "is ringing", "were ringing"],
+      "correctAnswer": "rang",
+      "targetSkillTags": ["past_simple_event", "time_markers_basic"],
+      "explanation": "A specific completed event at 9:10 requires simple past 'rang'.",
+      "commonErrors": [
+        { "pattern": "present_tense_intrusion", "message": "Specific past-time stamps need past forms." }
+      ],
+      "metadata": {
+        "timeMarkers": ["at 9:10"],
+        "clauseCount": 2,
+        "irregularVerbFlag": true
+      }
+    },
+    {
+      "id": "psl1-08",
+      "context": "Class reflection",
+      "sentence": "We ___ the grammar puzzle, then compared our answers.",
+      "options": ["solve", "solved", "are solving", "were solved"],
+      "correctAnswer": "solved",
+      "targetSkillTags": ["past_simple_event", "multi_clause_control"],
+      "explanation": "Two completed actions in sequence should stay in simple past.",
+      "commonErrors": [
+        { "pattern": "tense_shift", "message": "Keep tense consistent across completed sequence clauses." }
+      ],
+      "metadata": {
+        "timeMarkers": ["then"],
+        "clauseCount": 2,
+        "irregularVerbFlag": false
+      }
+    }
+  ]
+}
