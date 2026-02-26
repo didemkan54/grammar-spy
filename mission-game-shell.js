@@ -300,6 +300,54 @@
         ],
         answer: 1,
         explain: "Did + base verb leave is the correct past question form."
+      },
+      {
+        scene: "Witness Log",
+        prompt: "Smash the incorrect draft and choose the best fix.",
+        options: [
+          "The witness was describing the suspect when the officer arrived.",
+          "The witness describing the suspect when the officer arrived.",
+          "The witness were describing the suspect when the officer arrived.",
+          "The witness is describing the suspect when the officer arrived."
+        ],
+        answer: 0,
+        explain: "Singular subject takes was in past continuous; simple past arrived shows the interruption."
+      },
+      {
+        scene: "Morning Brief",
+        prompt: "Select the corrected sentence.",
+        options: [
+          "The captain reviewed the case notes before the meeting started.",
+          "The captain review the case notes before the meeting started.",
+          "The captain was review the case notes before the meeting started.",
+          "The captain reviews the case notes before the meeting started yesterday."
+        ],
+        answer: 0,
+        explain: "Two completed past actions use simple past reviewed and started."
+      },
+      {
+        scene: "Field Report",
+        prompt: "Which sentence is error-free?",
+        options: [
+          "The officers was searching the building when backup arrived.",
+          "The officers were searching the building when backup arrived.",
+          "The officers searched the building when backup arrives.",
+          "The officers searching the building when backup arrived."
+        ],
+        answer: 1,
+        explain: "Plural officers takes were in past continuous; arrived is simple past for the interruption."
+      },
+      {
+        scene: "Incident Record",
+        prompt: "Choose the strongest correction.",
+        options: [
+          "Did the team completed the report before midnight?",
+          "Did the team complete the report before midnight?",
+          "Does the team complete the report before midnight yesterday?",
+          "The team did completed the report before midnight?"
+        ],
+        answer: 1,
+        explain: "Did + base verb complete is the correct past question form."
       }
     ],
     "past-sort": [
@@ -422,6 +470,54 @@
         ],
         answer: 1,
         explain: "Two simultaneous ongoing past actions both use past continuous."
+      },
+      {
+        scene: "Timeline Card K",
+        prompt: "Choose the sentence that shows two simultaneous past actions.",
+        options: [
+          "The teacher was reading aloud while the students were taking notes.",
+          "The teacher read aloud while the students takes notes.",
+          "The teacher reads aloud while the students were taking notes.",
+          "The teacher was reading aloud while the students take notes."
+        ],
+        answer: 0,
+        explain: "Two simultaneous ongoing past actions both use past continuous."
+      },
+      {
+        scene: "Timeline Card L",
+        prompt: "Select the sentence for a completed past sequence.",
+        options: [
+          "The secretary filed the documents after the meeting ended.",
+          "The secretary was filing the documents after the meeting ended.",
+          "The secretary files the documents after the meeting ended yesterday.",
+          "The secretary filing the documents after the meeting ended."
+        ],
+        answer: 0,
+        explain: "A completed sequence in the past uses simple past for both actions."
+      },
+      {
+        scene: "Timeline Card M",
+        prompt: "Pick the line that shows an interrupted action.",
+        options: [
+          "We were reviewing the answers when the alarm sounded.",
+          "We reviewed the answers when the alarm sounds.",
+          "We are reviewing the answers when the alarm sounded.",
+          "We reviewing the answers when the alarm sounded."
+        ],
+        answer: 0,
+        explain: "Past continuous were reviewing shows the action interrupted by sounded."
+      },
+      {
+        scene: "Timeline Card N",
+        prompt: "Choose the sentence with correct past sequence.",
+        options: [
+          "After the coach blew the whistle, the players stop running.",
+          "After the coach blew the whistle, the players stopped running.",
+          "After the coach blows the whistle, the players stopped running.",
+          "After the coach was blew the whistle, the players stopped running."
+        ],
+        answer: 1,
+        explain: "A past sequence uses simple past in both clauses."
       }
     ],
     "narrative-builder": [
@@ -592,6 +688,54 @@
         ],
         answer: 1,
         explain: "A past narrative closing needs consistent simple past verbs."
+      },
+      {
+        scene: "Story Step 15",
+        prompt: "Which line best continues the narrative?",
+        options: [
+          "Before the sun rose, the scouts prepared the trail markers.",
+          "Before the sun rose, the scouts prepare the trail markers.",
+          "Before the sun rises, the scouts prepared the trail markers.",
+          "Before the sun was rose, the scouts prepared the trail markers."
+        ],
+        answer: 0,
+        explain: "A past narrative uses simple past consistently in both clauses."
+      },
+      {
+        scene: "Story Step 16",
+        prompt: "Pick the sentence that maintains story flow.",
+        options: [
+          "The commander reviewed the map and assigned each team a zone.",
+          "The commander review the map and assigned each team a zone.",
+          "The commander reviewed the map and assigns each team a zone.",
+          "The commander was review the map and assigned each team a zone."
+        ],
+        answer: 0,
+        explain: "Parallel completed past actions both take simple past forms."
+      },
+      {
+        scene: "Story Step 17",
+        prompt: "Choose the strongest narrative transition.",
+        options: [
+          "While the medic was treating the wound, the radio crackled with a new message.",
+          "While the medic treating the wound, the radio crackled with a new message.",
+          "While the medic was treating the wound, the radio crackles with a new message.",
+          "While the medic were treating the wound, the radio crackled with a new message."
+        ],
+        answer: 0,
+        explain: "Past continuous background with was plus simple past interruption keeps the narrative clear."
+      },
+      {
+        scene: "Story Step 18",
+        prompt: "Select the best closing line for the chapter.",
+        options: [
+          "In the end, the team solved every puzzle and celebrated their victory.",
+          "In the end, the team solve every puzzle and celebrated their victory.",
+          "In the end, the team solved every puzzle and celebrates their victory.",
+          "In the end, the team was solved every puzzle and celebrated their victory."
+        ],
+        answer: 0,
+        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
       }
     ],
     "dialogue-repair": [
@@ -762,6 +906,54 @@
         ],
         answer: 2,
         explain: "Modal can is followed by the base verb help; object pronoun is me."
+      },
+      {
+        scene: "Exit Briefing",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "The officer said that he don't need more evidence.",
+          "The officer said that he didn't need more evidence.",
+          "The officer said that he doesn't needed more evidence.",
+          "The officer said that he not need more evidence."
+        ],
+        answer: 1,
+        explain: "Reported past speech uses didn't + base verb for negative statements."
+      },
+      {
+        scene: "Quick Check",
+        prompt: "Choose the best repaired question.",
+        options: [
+          "Have you saw the new schedule on the board?",
+          "Have you seen the new schedule on the board?",
+          "Have you see the new schedule on the board?",
+          "Did you have seen the new schedule on the board?"
+        ],
+        answer: 1,
+        explain: "Have + past participle seen is the correct present perfect form."
+      },
+      {
+        scene: "Lineup Review",
+        prompt: "Select the clearest spoken line.",
+        options: [
+          "The principal told us that we needs to arrive on time.",
+          "The principal told us that we needed to arrive on time.",
+          "The principal told us that we needing to arrive on time.",
+          "The principal told us that we need arrives on time."
+        ],
+        answer: 1,
+        explain: "Reported past speech uses needed for correct tense agreement."
+      },
+      {
+        scene: "Case Close",
+        prompt: "Which response sounds natural and correct?",
+        options: [
+          "They was already finished when the inspector arrived.",
+          "They already finish when the inspector arrived.",
+          "They had already finished when the inspector arrived.",
+          "They have already finish when the inspector arrived."
+        ],
+        answer: 2,
+        explain: "Had + past participle shows an action completed before another past event."
       }
     ],
     "rewrite-studio": [
@@ -932,6 +1124,54 @@
         ],
         answer: 1,
         explain: "Use one connector only; although and but should not appear together."
+      },
+      {
+        scene: "Original: The students was excited about the results.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "The students were excited about the results.",
+          "The students was excited about the results.",
+          "The students is excited about the results.",
+          "The students excited about the results."
+        ],
+        answer: 0,
+        explain: "Plural students requires were for correct subject-verb agreement."
+      },
+      {
+        scene: "Original: He goed to the store and buyed some milk.",
+        prompt: "Select the best rewrite.",
+        options: [
+          "He went to the store and bought some milk.",
+          "He goed to the store and bought some milk.",
+          "He went to the store and buyed some milk.",
+          "He goes to the store and bought some milk."
+        ],
+        answer: 0,
+        explain: "Went and bought are the correct irregular past forms."
+      },
+      {
+        scene: "Original: The teacher ask us to opened our books.",
+        prompt: "Pick the best rewrite.",
+        options: [
+          "The teacher asked us to open our books.",
+          "The teacher ask us to open our books.",
+          "The teacher asked us to opened our books.",
+          "The teacher asking us to open our books."
+        ],
+        answer: 0,
+        explain: "Past tense asked plus infinitive to open is the correct pattern."
+      },
+      {
+        scene: "Original: Them don't know where is the library at.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "They don't know where the library is.",
+          "Them don't know where the library is.",
+          "They doesn't know where is the library.",
+          "They don't knows where the library is at."
+        ],
+        answer: 0,
+        explain: "Subject pronoun they with don't + base verb; embedded clause uses statement order."
       }
     ],
     "rule-sprint-present": [
@@ -1102,6 +1342,54 @@
         ],
         answer: 2,
         explain: "Singular printer takes does + base verb work."
+      },
+      {
+        scene: "Attendance Log",
+        prompt: "Choose the sentence that states a routine.",
+        options: [
+          "The secretary is recording attendance every morning.",
+          "The secretary records attendance every morning.",
+          "The secretary recorded attendance every morning now.",
+          "The secretary record attendance every morning."
+        ],
+        answer: 1,
+        explain: "Every morning signals a routine, requiring simple present records."
+      },
+      {
+        scene: "Lab Monitor",
+        prompt: "Pick the line for an action happening now.",
+        options: [
+          "The student monitors the experiment right now.",
+          "The student is monitoring the experiment right now.",
+          "The student monitored the experiment right now.",
+          "The student monitoring the experiment right now."
+        ],
+        answer: 1,
+        explain: "Right now calls for present continuous is monitoring."
+      },
+      {
+        scene: "Daily Briefing",
+        prompt: "Select the strongest third-person present sentence.",
+        options: [
+          "The manager brief the team every afternoon.",
+          "The manager briefs the team every afternoon.",
+          "The manager is brief the team every afternoon.",
+          "The manager briefed the team every afternoon usually."
+        ],
+        answer: 1,
+        explain: "Third-person singular routine takes briefs."
+      },
+      {
+        scene: "Quick Poll",
+        prompt: "Choose the correct present question.",
+        options: [
+          "Does the class agrees with the new schedule?",
+          "Do the class agree with the new schedule?",
+          "Does the class agree with the new schedule?",
+          "Class does agree with the new schedule?"
+        ],
+        answer: 2,
+        explain: "Singular class takes does + base verb agree."
       }
     ],
     "signal-decoder-present": [
@@ -1272,6 +1560,54 @@
         ],
         answer: 1,
         explain: "Always describes a permanent habit, requiring simple present brings."
+      },
+      {
+        scene: "Signal: every evening",
+        prompt: "Decode the signal and choose the correct line.",
+        options: [
+          "The guard is locking the gates every evening.",
+          "The guard locks the gates every evening.",
+          "The guard locked the gates every evening now.",
+          "The guard lock the gates every evening."
+        ],
+        answer: 1,
+        explain: "Every evening signals a repeated routine using simple present locks."
+      },
+      {
+        scene: "Signal: these days",
+        prompt: "Which sentence matches the signal?",
+        options: [
+          "She works on the new project these days.",
+          "She is working on the new project these days.",
+          "She worked on the new project these days.",
+          "She work on the new project these days."
+        ],
+        answer: 1,
+        explain: "These days signals a temporary ongoing situation, requiring present continuous."
+      },
+      {
+        scene: "Signal: watch out",
+        prompt: "Pick the line that fits immediate action.",
+        options: [
+          "Watch out, the floor is getting slippery.",
+          "Watch out, the floor gets slippery always.",
+          "Watch out, the floor got slippery.",
+          "Watch out, the floor get slippery."
+        ],
+        answer: 0,
+        explain: "Watch out draws attention to something happening now, requiring present continuous."
+      },
+      {
+        scene: "Signal: on weekdays",
+        prompt: "Select the strongest habitual statement.",
+        options: [
+          "The bus is arriving at eight on weekdays.",
+          "The bus arrives at eight on weekdays.",
+          "The bus arrived at eight on weekdays.",
+          "The bus arrive at eight on weekdays."
+        ],
+        answer: 1,
+        explain: "On weekdays signals a regular schedule using simple present arrives."
       }
     ],
     "present-case-interview": [
