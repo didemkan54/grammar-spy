@@ -420,32 +420,34 @@
 
   function syncSelect() {
     var lang = getLang();
-    var selects = document.querySelectorAll('#gsLangSelect');
-    selects.forEach(function (sel) { sel.value = lang; });
+    document.querySelectorAll('#gsLangSelect').forEach(function (sel) {
+      sel.value = lang;
+    });
+  }
+
+  function bindToSelect(sel) {
+    if (sel._i18nBound) return;
+    sel._i18nBound = true;
+    sel.value = getLang();
+    sel.addEventListener('change', function () {
+      var lang = sel.value;
+      if (lang && SUPPORTED.indexOf(lang) >= 0) {
+        setLang(lang);
+        syncSelect();
+      }
+    });
   }
 
   function bindSwitcher() {
-    document.addEventListener('change', function (e) {
-      if (e.target && e.target.id === 'gsLangSelect') {
-        var lang = e.target.value;
-        if (lang && SUPPORTED.indexOf(lang) >= 0) {
-          setLang(lang);
-          syncSelect();
-          apply();
-        }
-      }
-    });
-    document.addEventListener('layout:ready', function() {
-      syncSelect();
+    document.querySelectorAll('#gsLangSelect').forEach(bindToSelect);
+    document.addEventListener('layout:ready', function () {
+      document.querySelectorAll('#gsLangSelect').forEach(bindToSelect);
       apply();
     });
-    setInterval(function() {
-      var selects = document.querySelectorAll('#gsLangSelect');
-      if (selects.length && !selects[0]._bound) {
-        selects[0]._bound = true;
-        syncSelect();
-      }
-    }, 500);
+    var observer = new MutationObserver(function () {
+      document.querySelectorAll('#gsLangSelect').forEach(bindToSelect);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   function boot() {
