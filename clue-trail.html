@@ -78,7 +78,7 @@ function pick(){
 }
 function hud(){hudCase.textContent=`${Math.min(i+1,rounds.length)}/${rounds.length}`;hudAcc.textContent=`${Math.round((ok/Math.max(1,i))*100)}%`;hudStreak.textContent=String(streak);if(timerOn)hudTimer.textContent=`${Math.max(0,sec)}s`;}
 function show(){if(i>=rounds.length){end();return;}locked=false;fb.textContent='';fb.className='feedback';const r=rounds[i];scene.textContent=r.scene;prompt.textContent=r.prompt;opts.innerHTML='';r.options.map((t,ix)=>({t,ix})).sort(()=>Math.random()-.5).forEach(o=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=o.t;b.addEventListener('click',()=>choose(o,b,r));opts.appendChild(b)});hud();}
-function choose(o,btn,r){if(locked)return;locked=true;i++;if(o.ix===r.answer){ok++;streak++;btn.classList.add('good');fb.textContent='Mission secure: '+r.explain;fb.className='feedback ok';}else{streak=0;btn.classList.add('bad');fb.textContent='Breach detected: '+r.explain;fb.className='feedback bad';}hud();setTimeout(show,850);}
+function choose(o,btn,r){if(locked)return;locked=true;i++;if(o.ix===r.answer){ok++;streak++;btn.classList.add('good');fb.textContent='Correct! '+r.explain;fb.className='feedback ok';}else{streak=0;btn.classList.add('bad');fb.textContent='Not quite — '+r.explain;fb.className='feedback bad';}hud();setTimeout(show,850);}
 function end(){clearInterval(timer);const acc=Math.round((ok/Math.max(1,i))*100);document.getElementById('r1').textContent=`Accuracy: ${acc}% (${ok}/${Math.max(1,i)})`;document.getElementById('r2').textContent=`Pack: ${meta.title}`;document.getElementById('r3').textContent=`Recommendation: ${acc>=80?'Advance to next module':'Replay for retrieval strength'}`;track('mission_complete',{pack,game:'clue-trail',difficulty,accuracy:acc,count:rounds.length});document.getElementById('ov').classList.add('show');}
 function startTimer(){if(!timerOn)return;clearInterval(timer);timer=setInterval(()=>{sec--;hudTimer.textContent=`${Math.max(0,sec)}s`;if(sec<=0)end();},1000)}
 
@@ -105,11 +105,11 @@ function chooseTeamsSide(side,o,btn,r){
   if(o.ix===r.answer){
     if(side==='A'){okA++;streakA++;}else{okB++;streakB++;}
     btn.classList.add('good');
-    col.querySelector('.teamFeedback').textContent='Mission secure: '+r.explain;col.querySelector('.teamFeedback').className='teamFeedback ok';
+    col.querySelector('.teamFeedback').textContent='Correct! '+r.explain;col.querySelector('.teamFeedback').className='teamFeedback ok';
   }else{
     if(side==='A'){streakA=0;}else{streakB=0;}
     btn.classList.add('bad');
-    col.querySelector('.teamFeedback').textContent='Breach detected: '+r.explain;col.querySelector('.teamFeedback').className='teamFeedback bad';
+    col.querySelector('.teamFeedback').textContent='Not quite — '+r.explain;col.querySelector('.teamFeedback').className='teamFeedback bad';
   }
   if(side==='A'){iA++;}else{iB++;}
   showTeamsSide(side);

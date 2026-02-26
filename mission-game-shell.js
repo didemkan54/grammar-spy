@@ -1948,25 +1948,25 @@
 
   function modeHelperText(mode) {
     if (mode === "smash") return "Mode rule: tap the line that contains the error.";
-    if (mode === "binary") return "Mode rule: judge one highlighted line as Secure or Needs Repair.";
+    if (mode === "binary") return "Mode rule: judge one highlighted line as Correct or Incorrect.";
     if (mode === "classify") return "Mode rule: classify one sentence as Completed action or Ongoing background.";
     if (mode === "repair") return "Mode rule: read the broken line and choose the strongest repair.";
     if (mode === "duel") return "Mode rule: compare two rewrites and pick the stronger one.";
     if (mode === "sequence") return "Mode rule: choose the strongest next line for story flow.";
     if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
-    if (mode === "sweep") return "Mode rule: mark each line Secure or Needs Repair, then submit the board.";
+    if (mode === "sweep") return "Mode rule: mark each line Correct or Incorrect, then submit the board.";
     return "Mode rule: choose the single strongest line.";
   }
 
   function modePrompt(mode) {
     if (mode === "smash") return "Find and tap the line with a grammar error.";
-    if (mode === "binary") return "Read the highlighted line and decide: Secure or Needs Repair.";
+    if (mode === "binary") return "Read the highlighted line and decide: is it correct or incorrect?";
     if (mode === "classify") return "Classify each line: Completed Event or Ongoing Background.";
     if (mode === "repair") return "Choose the strongest repair for the broken line.";
     if (mode === "duel") return "Compare the two options and choose the stronger rewrite.";
     if (mode === "sequence") return "Choose the strongest next line for the sequence.";
     if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
-    if (mode === "sweep") return "Mark each line Secure or Needs Repair, then submit.";
+    if (mode === "sweep") return "Mark each line correct or incorrect, then submit.";
     return "Choose the single strongest line.";
   }
 
@@ -1978,7 +1978,7 @@
     if (mode === "duel") return "Compare two rewrites and choose the stronger sentence.";
     if (mode === "sequence") return "Pick the line that best continues the sequence logically and grammatically.";
     if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
-    if (mode === "sweep") return "Mark every line secure or needs repair before submitting the board.";
+    if (mode === "sweep") return "Mark every line correct or incorrect before submitting the board.";
     return fallback || "Choose the strongest line.";
   }
 
@@ -2363,8 +2363,8 @@
 
     var actions = document.createElement("div");
     actions.className = "binary-actions";
-    var secureBtn = buildOptionButton("Secure", "This line is grammatically correct.");
-    var repairBtn = buildOptionButton("Needs Repair", "This line has an error.");
+    var secureBtn = buildOptionButton("Correct", "This line is grammatically correct.");
+    var repairBtn = buildOptionButton("Incorrect", "This line has an error.");
 
     secureBtn.addEventListener("click", function () {
       selectBinaryVerdict(true, candidateCorrect, round, secureBtn);
@@ -2441,7 +2441,7 @@
       var repairBtn = document.createElement("button");
       repairBtn.type = "button";
       repairBtn.className = "sweep-pick";
-      repairBtn.textContent = "Needs Repair";
+      repairBtn.textContent = "Incorrect";
 
       function setChoice(isSecure) {
         selections[item.optionIdx] = isSecure;

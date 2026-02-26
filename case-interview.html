@@ -250,13 +250,13 @@
       if (opt.ok){
         correct += 1; streak += 1; hits[round.skill] += 1;
         btn.classList.add('good');
-        feedbackEl.textContent = `Mission secure: ${opt.why}`;
+        feedbackEl.textContent = `Correct! ${opt.why}`;
         feedbackEl.className = 'feedback ok';
       } else {
         streak = 0;
         btn.classList.add('bad');
         const right = round.options.find(o => o.ok);
-        feedbackEl.textContent = `Breach detected: ${opt.why} Correct line: "${right.t}".`;
+        feedbackEl.textContent = `Not quite — ${opt.why} The correct answer is "${right.t}".`;
         feedbackEl.className = 'feedback bad';
       }
       updateHud();
