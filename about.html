@@ -90,7 +90,15 @@
     .snapshot strong{font-style:normal;font-weight:700}
 
     /* FOUNDER LETTER */
-    .letter{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow);margin-top:32px}
+    .founder-intro{display:flex;gap:32px;align-items:flex-start;margin-top:32px}
+    .founder-photo{width:180px;flex-shrink:0;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:3px solid var(--border)}
+    .founder-photo img{width:100%;height:auto;display:block}
+    .founder-bio{flex:1}
+    .founder-bio .founder-name{font-size:22px;font-weight:800;color:var(--text);margin:0}
+    .founder-bio .founder-role{font-size:14px;color:var(--teal);font-weight:600;margin-top:2px}
+    .founder-bio .founder-desc{font-size:15px;color:var(--muted);margin-top:8px;line-height:1.6}
+    @media(max-width:600px){.founder-intro{flex-direction:column;align-items:center;text-align:center}.founder-photo{width:140px}}
+    .letter{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow);margin-top:28px}
     .letter p{font-size:16px;line-height:1.75}
     .letter .sig{margin-top:28px;font-weight:700;font-style:italic;color:var(--teal);font-size:17px}
 

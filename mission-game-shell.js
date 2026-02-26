@@ -4,8 +4,8 @@
   var pack = params.get("pack") || "pack01";
   var difficulty = params.get("difficulty") || "field";
   var timerOn = (params.get("timer") || "on") !== "off";
-  var requestedCount = Number(params.get("count") || 10) || 10;
-  var count = Math.max(6, Math.min(20, requestedCount));
+  var requestedCount = Number(params.get("count") || 20) || 20;
+  var count = Math.max(6, Math.min(30, requestedCount));
   var playFormat = params.get("play_format") || "individuals";
 
   var games = {

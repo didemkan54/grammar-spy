@@ -126,7 +126,7 @@
         body.innerHTML = `<div class="line"><b>Focus</b><span>${pack.grammar}</span></div><div class="line"><b>Outcome</b><span>${pack.desc}</span></div><div class="line"><b>Flow</b><span>Setup → one mission → report.</span></div>`;
       } else if(tab === 'modules'){
         const links = pack.gameLinks || pack.games.map(g => [g, '#']);
-        const baseParams = 'pack=' + packId + '&mode=class&difficulty=field&count=10&timer=on';
+        const baseParams = 'pack=' + packId + '&mode=class&difficulty=field&count=20&timer=on';
         body.innerHTML = links.map(([label, url]) => {
           const sep = url.indexOf('?') >= 0 ? '&' : '?';
           const href = url.startsWith('#') ? 'teacher-mode.html?pack=' + packId : url + sep + baseParams;
