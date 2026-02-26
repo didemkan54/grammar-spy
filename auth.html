@@ -126,12 +126,21 @@
       guest: { btn: document.getElementById('tabGuest'), view: document.getElementById('viewGuest') }
     };
 
+    const titles = { create: 'Create Account', signin: 'Sign In', guest: 'Guest Mode' };
+    const leads = {
+      create: 'Create a free account to get Mission 01 (Retell What Happened) at no cost. Save progress and mission history. Pay to unlock all other missions.',
+      signin: 'Sign in with the email you used when you created your account.',
+      guest: 'Try Mission 01 without an account. Sign up later to save your progress.'
+    };
+
     function openTab(name){
       Object.entries(tabs).forEach(([k, v]) => {
         const active = k === name;
         v.btn.classList.toggle('active', active);
         v.view.classList.toggle('active', active);
       });
+      if (titles[name]) document.getElementById('authTitle').textContent = titles[name];
+      if (leads[name]) document.getElementById('authLead').textContent = leads[name];
     }
 
     tabs.create.btn.addEventListener('click', () => openTab('create'));
