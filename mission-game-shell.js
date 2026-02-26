@@ -4134,7 +4134,29 @@
       + ".interrogation-report{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:14px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s;}"
       + ".interrogation-report:hover{border-color:" + accent + ";box-shadow:0 4px 12px rgba(11,16,32,.08);}"
       + ".interrogation-report b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";display:block;margin-bottom:4px;}"
-      + ".interrogation-report span{font-size:14px;line-height:1.45;color:#16223a;}";
+      + ".interrogation-report span{font-size:14px;line-height:1.45;color:#16223a;}"
+      + ".dialogue-reply{border-radius:16px;}"
+      + ".forge-wrap{display:grid;gap:14px;}"
+      + ".forge-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;}"
+      + ".forge-zone{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;border:2px solid " + accent + "44;border-radius:14px;background:#fffdf5;}"
+      + ".forge-tile{padding:8px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;font-size:14px;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,background .15s;}"
+      + ".forge-tile:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(11,16,32,.1);border-color:" + accent + ";}"
+      + ".forge-tile.placed{opacity:.35;pointer-events:none;}"
+      + ".forge-tile.selected{border-color:" + accent + ";background:" + accent + "11;box-shadow:0 0 0 3px " + accent + "33;}"
+      + ".detect-wrap{display:grid;gap:14px;}"
+      + ".detect-sentence{display:flex;flex-wrap:wrap;gap:6px;padding:16px;border:1px solid #d9dee6;border-radius:12px;background:#fff;min-height:48px;}"
+      + ".detect-word{padding:6px 10px;border-radius:6px;cursor:pointer;font-size:15px;color:#16223a;transition:background .15s,color .15s;user-select:none;-webkit-user-select:none;}"
+      + ".detect-word:hover{background:#e8edf5;}"
+      + ".detect-word.clicked{background:#ffeaa7;border-bottom:2px solid #f39c12;}"
+      + ".detect-word.error{background:#ffcccc;color:#c0392b;text-decoration:line-through;}"
+      + ".detect-word.ok{background:#d4edda;color:#155724;}"
+      + ".order-wrap{display:grid;gap:14px;}"
+      + ".order-list{display:grid;gap:8px;}"
+      + ".order-item{padding:12px 16px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,border-color .15s;}"
+      + ".order-item:hover{border-color:" + accent + ";box-shadow:0 4px 12px rgba(11,16,32,.08);}"
+      + ".order-item.selected{border-color:" + accent + ";background:" + accent + "11;box-shadow:0 0 0 3px " + accent + "33;transform:translateY(-2px);}"
+      + ".order-item b{color:" + accent + ";margin-right:6px;}"
+      + ".order-slot{min-height:48px;border:2px dashed #d9dee6;border-radius:10px;background:#f8fafc;}";
     document.head.appendChild(style);
   }
 
@@ -4211,6 +4233,9 @@
     if (mode === "sequence") return "A paragraph has a blank. Pick the sentence that fills the gap.";
     if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
     if (mode === "sweep") return "Pin each evidence card as VERIFIED (correct) or FLAGGED (error), then submit.";
+    if (mode === "forge") return "Build the correct sentence by clicking word tiles in order. Watch out for distractor words!";
+    if (mode === "detect") return "A sentence has an error. Click the specific word that is wrong.";
+    if (mode === "order") return "Arrange the sentences in the correct sequence: best answer first.";
     return "Mode rule: choose the single strongest line.";
   }
 
@@ -4231,6 +4256,9 @@
     if (mode === "sequence") return "Read the paragraph and pick the sentence that fills the blank.";
     if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
     if (mode === "sweep") return "Mark each card VERIFIED or FLAGGED, then submit the board.";
+    if (mode === "forge") return "Click word tiles to build the correct sentence, then submit.";
+    if (mode === "detect") return "Read the sentence and click the word that contains the error.";
+    if (mode === "order") return "Drag sentences into the best order, then submit.";
     return "Choose the single strongest line.";
   }
 
@@ -4251,6 +4279,9 @@
     if (mode === "sequence") return "A short paragraph has a gap. Pick the sentence that fits the blank and completes the meaning.";
     if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
     if (mode === "sweep") return "Review each evidence card. Mark correct grammar as VERIFIED and errors as FLAGGED, then submit.";
+    if (mode === "forge") return "The correct sentence is split into word tiles with distractors mixed in. Click tiles in order to build the sentence, then submit.";
+    if (mode === "detect") return "A wrong sentence is displayed word by word. Click the word that contains the error to reveal the correct version.";
+    if (mode === "order") return "Four sentences are shuffled. Click to select and move them into the best order, then submit.";
     return fallback || "Choose the strongest line.";
   }
 
@@ -5202,7 +5233,7 @@
     shuffledChoices.forEach(function (item) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "opt dialogue-choice-btn";
+      btn.className = "opt dialogue-choice-btn dialogue-reply";
       btn.innerHTML = "<span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
@@ -5486,6 +5517,292 @@
     optionsEl.appendChild(wrap);
   }
 
+  function showForgeOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "forge", round: round };
+
+    var correctSentence = round.options[round.answer];
+    var correctWords = correctSentence.split(/\s+/);
+
+    var distractorWords = [];
+    for (var w = 0; w < round.options.length; w++) {
+      if (w !== round.answer) {
+        var parts = round.options[w].split(/\s+/);
+        for (var p = 0; p < parts.length; p++) {
+          if (correctWords.indexOf(parts[p]) === -1 && distractorWords.indexOf(parts[p]) === -1) {
+            distractorWords.push(parts[p]);
+          }
+        }
+      }
+    }
+    distractorWords = shuffle(distractorWords).slice(0, Math.min(3, distractorWords.length));
+
+    var allTiles = shuffle(correctWords.slice().concat(distractorWords));
+    var placed = [];
+
+    var wrap = document.createElement("div");
+    wrap.className = "forge-wrap";
+
+    var sceneP = document.createElement("p");
+    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
+    sceneP.textContent = round.scene;
+    wrap.appendChild(sceneP);
+
+    var promptP = document.createElement("p");
+    promptP.style.cssText = "margin:0;font:700 14px Inter,Arial,sans-serif;color:#16223a;";
+    promptP.textContent = round.prompt;
+    wrap.appendChild(promptP);
+
+    var zoneLabel = document.createElement("p");
+    zoneLabel.style.cssText = "margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;";
+    zoneLabel.textContent = "Your Sentence";
+    wrap.appendChild(zoneLabel);
+
+    var zone = document.createElement("div");
+    zone.className = "forge-zone";
+    var zonePlaceholder = document.createElement("p");
+    zonePlaceholder.className = "builder-bar-placeholder";
+    zonePlaceholder.textContent = "Click words below to build the sentence\u2026";
+    zone.appendChild(zonePlaceholder);
+    wrap.appendChild(zone);
+
+    var poolLabel = document.createElement("p");
+    poolLabel.style.cssText = "margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;";
+    poolLabel.textContent = "Word Tiles";
+    wrap.appendChild(poolLabel);
+
+    var pool = document.createElement("div");
+    pool.className = "forge-pool";
+
+    var tileEls = [];
+
+    function updateZone() {
+      zone.innerHTML = "";
+      if (placed.length === 0) {
+        var ph = document.createElement("p");
+        ph.className = "builder-bar-placeholder";
+        ph.textContent = "Click words below to build the sentence\u2026";
+        zone.appendChild(ph);
+      } else {
+        placed.forEach(function (entry, i) {
+          var chip = document.createElement("span");
+          chip.className = "forge-tile placed";
+          chip.textContent = entry.word;
+          chip.style.opacity = "1";
+          chip.style.pointerEvents = "auto";
+          chip.addEventListener("click", function () {
+            if (locked) return;
+            placed.splice(i, 1);
+            tileEls[entry.tileIdx].classList.remove("placed");
+            tileEls[entry.tileIdx].classList.remove("selected");
+            updateZone();
+          });
+          zone.appendChild(chip);
+        });
+      }
+    }
+
+    allTiles.forEach(function (word, tileIdx) {
+      var tile = document.createElement("span");
+      tile.className = "forge-tile";
+      tile.textContent = word;
+      tile.addEventListener("click", function () {
+        if (locked || tile.classList.contains("placed")) return;
+        tile.classList.add("placed");
+        placed.push({ word: word, tileIdx: tileIdx });
+        updateZone();
+      });
+      pool.appendChild(tile);
+      tileEls.push(tile);
+    });
+
+    wrap.appendChild(pool);
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary";
+    submitBtn.textContent = "Submit";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      if (placed.length === 0) {
+        html("feedback", "<span class=\"bad\">Place word tiles before submitting.</span>");
+        return;
+      }
+      var built = placed.map(function (e) { return e.word; }).join(" ");
+      var isCorrect = built === correctSentence;
+      finishRound(
+        isCorrect,
+        "Sentence forged correctly! " + round.explain,
+        "Not quite \u2014 the correct sentence is \"" + correctSentence + "\". " + round.explain,
+        submitBtn
+      );
+    });
+    wrap.appendChild(submitBtn);
+
+    optionsEl.appendChild(wrap);
+  }
+
+  function showDetectOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "detect", round: round };
+
+    var wrongIdx = pickWrongIndex(round);
+    var wrongSentence = round.options[wrongIdx];
+    var correctSentence = round.options[round.answer];
+    var wrongWords = wrongSentence.split(/\s+/);
+    var correctWords = correctSentence.split(/\s+/);
+
+    var errorIndices = [];
+    for (var ei = 0; ei < wrongWords.length; ei++) {
+      if (ei >= correctWords.length || wrongWords[ei] !== correctWords[ei]) {
+        errorIndices.push(ei);
+      }
+    }
+    if (errorIndices.length === 0) errorIndices.push(0);
+
+    var wrap = document.createElement("div");
+    wrap.className = "detect-wrap";
+
+    var sceneP = document.createElement("p");
+    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
+    sceneP.textContent = round.scene;
+    wrap.appendChild(sceneP);
+
+    var instruction = document.createElement("p");
+    instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
+    instruction.textContent = "Click the word that contains the error:";
+    wrap.appendChild(instruction);
+
+    var sentenceDiv = document.createElement("div");
+    sentenceDiv.className = "detect-sentence";
+
+    var clicked = false;
+    wrongWords.forEach(function (word, wIdx) {
+      var span = document.createElement("span");
+      span.className = "detect-word";
+      span.textContent = word;
+      span.addEventListener("click", function () {
+        if (locked || clicked) return;
+        clicked = true;
+        var isError = errorIndices.indexOf(wIdx) !== -1;
+        span.classList.add("clicked");
+
+        wrongWords.forEach(function (_, j) {
+          var allSpans = sentenceDiv.querySelectorAll(".detect-word");
+          if (errorIndices.indexOf(j) !== -1) {
+            allSpans[j].classList.add("error");
+          } else {
+            allSpans[j].classList.add("ok");
+          }
+        });
+
+        var comparison = document.createElement("div");
+        comparison.style.cssText = "margin-top:12px;padding:12px;border:1px solid #d9dee6;border-radius:10px;background:#f8fafc;";
+        comparison.innerHTML = "<p style=\"margin:0 0 4px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;\">Correct version:</p><p style=\"margin:0;font-size:15px;color:#176a49;\">" + correctSentence + "</p>";
+        wrap.appendChild(comparison);
+
+        finishRound(
+          isError,
+          "Error detected! " + round.explain,
+          "That word is fine. The error is elsewhere. " + round.explain,
+          span
+        );
+      });
+      sentenceDiv.appendChild(span);
+    });
+
+    wrap.appendChild(sentenceDiv);
+    optionsEl.appendChild(wrap);
+  }
+
+  function showOrderOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+    currentRoundState = { mode: "order", round: round };
+
+    var correctOrder = [round.answer];
+    for (var oi = 0; oi < round.options.length; oi++) {
+      if (oi !== round.answer) correctOrder.push(oi);
+    }
+
+    var items = shuffle(round.options.map(function (text, idx) {
+      return { text: text, idx: idx };
+    }));
+
+    var selectedIdx = -1;
+
+    var wrap = document.createElement("div");
+    wrap.className = "order-wrap";
+
+    var sceneP = document.createElement("p");
+    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
+    sceneP.textContent = round.scene;
+    wrap.appendChild(sceneP);
+
+    var instruction = document.createElement("p");
+    instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
+    instruction.textContent = "Arrange the sentences in the best order (click to select, click a position to move):";
+    wrap.appendChild(instruction);
+
+    var list = document.createElement("div");
+    list.className = "order-list";
+
+    function renderList() {
+      list.innerHTML = "";
+      items.forEach(function (item, i) {
+        var el = document.createElement("div");
+        el.className = "order-item" + (i === selectedIdx ? " selected" : "");
+        el.innerHTML = "<b>" + (i + 1) + ".</b> " + item.text;
+        el.addEventListener("click", function () {
+          if (locked) return;
+          if (selectedIdx === -1) {
+            selectedIdx = i;
+            renderList();
+          } else if (selectedIdx === i) {
+            selectedIdx = -1;
+            renderList();
+          } else {
+            var moved = items.splice(selectedIdx, 1)[0];
+            items.splice(i, 0, moved);
+            selectedIdx = -1;
+            renderList();
+          }
+        });
+        list.appendChild(el);
+      });
+    }
+
+    renderList();
+    wrap.appendChild(list);
+
+    var submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.className = "btn primary";
+    submitBtn.textContent = "Submit Order";
+    submitBtn.addEventListener("click", function () {
+      if (locked) return;
+      var userOrder = items.map(function (item) { return item.idx; });
+      var isCorrect = true;
+      for (var c = 0; c < correctOrder.length; c++) {
+        if (userOrder[c] !== correctOrder[c]) {
+          isCorrect = false;
+          break;
+        }
+      }
+      finishRound(
+        isCorrect,
+        "Sequence correct! " + round.explain,
+        "Not quite \u2014 the best order starts with \"" + round.options[round.answer] + "\". " + round.explain,
+        submitBtn
+      );
+    });
+    wrap.appendChild(submitBtn);
+
+    optionsEl.appendChild(wrap);
+  }
+
   function showRound() {
     if (idx >= rounds.length) {
       endGame();
@@ -5531,6 +5848,12 @@
       showEliminateOptions(round);
     } else if (activeMode === "sweep") {
       showSweepOptions(round);
+    } else if (activeMode === "forge") {
+      showForgeOptions(round);
+    } else if (activeMode === "detect") {
+      showDetectOptions(round);
+    } else if (activeMode === "order") {
+      showOrderOptions(round);
     } else {
       showChoiceOptions(round);
     }
