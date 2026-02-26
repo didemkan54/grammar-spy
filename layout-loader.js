@@ -88,6 +88,22 @@
     } catch(e) {}
   }
 
+  function applyRoleVisibility() {
+    try {
+      var ctx = localStorage.getItem('gs_use_context_v3');
+      var studentClassroom = localStorage.getItem('gs_student_classroom');
+      var isStudent = ctx === 'individual' || studentClassroom;
+      if (!isStudent) return;
+      var navLinks = document.querySelectorAll('nav[aria-label="Primary navigation"] a');
+      navLinks.forEach(function(a) {
+        var href = (a.getAttribute('href') || '').toLowerCase();
+        if (href.indexOf('teacher-home') >= 0 || href.indexOf('teacher-mode') >= 0) {
+          a.style.display = 'none';
+        }
+      });
+    } catch(e) {}
+  }
+
   function loadAnimations() {
     if (document.querySelector('script[src="gs-animations.js"]')) return;
     var s = document.createElement('script');
@@ -103,4 +119,5 @@
     updateAuthButtons();
   }
   document.addEventListener('layout:ready', updateAuthButtons);
+  document.addEventListener('layout:ready', applyRoleVisibility);
 })();

@@ -164,6 +164,12 @@
         }
       }
       renderJoinSection();
+      if (location.search.indexOf('join=1') >= 0 || location.hash === '#joinClassSection') {
+        setTimeout(function() {
+          var joinEl = document.getElementById('joinClassSection');
+          if (joinEl) joinEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
       var FEATURED = [
         { id: 'pack01', num: '01', name: 'Retell What Happened', cover: 'assets/branding-images/packs/pack01-retell-what-happened.png' },
         { id: 'pack02', num: '02', name: 'Speak In The Moment', cover: 'assets/branding-images/packs/pack02-speak-in-the-moment.png' },
