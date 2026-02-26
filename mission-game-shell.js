@@ -4098,12 +4098,16 @@
       + ".builder-bar-chip:hover{background:" + accent + "22;}"
       + ".builder-bar-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
       + ".builder-bar-placeholder{margin:0;font-size:13px;color:#a0aec0;font-style:italic;}"
-      + ".dialogue-wrap{display:grid;gap:14px;max-width:520px;margin:0 auto;}"
+      + ".dialogue-wrap{display:grid;gap:14px;max-width:560px;margin:0 auto;}"
+      + ".dialogue-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc;}"
+      + ".dialogue-tag{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
+      + ".dialogue-scene-name{font:600 12px Inter,Arial,sans-serif;color:#4a5568;}"
       + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:85%;font-size:14px;line-height:1.5;position:relative;}"
       + ".dialogue-bubble-left{background:#e8edf5;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
       + ".dialogue-bubble-right{background:" + accent + "18;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
       + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#a0aec0;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:48px;display:flex;align-items:center;}"
       + ".dialogue-speaker{font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + accent + ";margin-bottom:4px;display:block;}"
+      + ".dialogue-objective{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4a5568;text-align:center;}"
       + ".dialogue-choices{display:grid;gap:8px;}"
       + ".dialogue-choice-btn{text-align:left;}"
       + ".rewrite-wrap{display:grid;gap:14px;}"
@@ -4360,7 +4364,7 @@
     if (mode === "spotlight") return "4 options appear one at a time with a spotlight. Read each carefully, then click the ONE correct sentence.";
     if (mode === "timeline") return "Sort sentences onto the timeline: completed events go BEFORE, ongoing actions go DURING.";
     if (mode === "builder") return "The correct sentence is split into word chips. Drag or click them into order, then submit.";
-    if (mode === "dialogue") return "A conversation has a blank speech bubble. Read the flow and pick the reply that fits.";
+    if (mode === "dialogue") return "A chat thread shows two setup turns and one missing reply. Read the flow, then choose the response that fits best.";
     if (mode === "rewrite") return "The original sentence is struck through. Compare two rewrites side by side and pick the better one.";
     if (mode === "signal") return "A signal word is shown as a badge. A sentence appears below. Decide if the sentence matches the signal.";
     if (mode === "evidence") return "Review each evidence card. Mark correct grammar as Strong Evidence and errors as Weak Evidence, then submit.";
@@ -4397,12 +4401,63 @@
       "Coach tip: look for tense or agreement mismatch.",
       "Coach tip: compare subject and verb first."
     ], roundIndex, "Coach tip: find the exact mismatch.");
+    if (mode === "dialogue") return pickRoundVariant([
+      "Coach tip: read both chat turns before picking a reply.",
+      "Coach tip: keep the message meaning, then fix the grammar.",
+      "Coach tip: pick the reply that sounds natural and correct."
+    ], roundIndex, "Coach tip: choose the strongest chat reply.");
     if (mode === "order") return pickRoundVariant([
       "Coach tip: place the opening line first, then reorder.",
       "Coach tip: move one sentence at a time and re-read.",
       "Coach tip: transitions reveal the best sequence."
     ], roundIndex, "Coach tip: test sequence coherence.");
     return modeHelperText(mode);
+  }
+
+  function buildDialogueThread(round, roundIndex) {
+    var scene = (round && round.scene) ? String(round.scene) : "Classroom Chat";
+    var lower = scene.toLowerCase();
+    var pair = pickRoundVariant([
+      { a: "Maya", b: "Leo" },
+      { a: "Sofia", b: "Noah" },
+      { a: "Ava", b: "Ethan" },
+      { a: "Zara", b: "Daniel" }
+    ], roundIndex, { a: "Student A", b: "Student B" });
+
+    var openLine = "I want to send this clearly before class starts.";
+    if (lower.indexOf("teacher") >= 0) openLine = "Ms. Lee asked me to explain this idea in one clear sentence.";
+    else if (lower.indexOf("classroom") >= 0) openLine = "I am replying to our classroom discussion thread.";
+    else if (lower.indexOf("group") >= 0) openLine = "Our group chat needs one clean response for this step.";
+    else if (lower.indexOf("partner") >= 0) openLine = "My partner asked me to rewrite this line naturally.";
+    else if (lower.indexOf("hallway") >= 0) openLine = "I am posting a quick hallway update to my team.";
+    else if (lower.indexOf("science") >= 0) openLine = "I am sending our science-lab update in the class chat.";
+    else if (lower.indexOf("library") >= 0) openLine = "I am messaging quietly from the library support desk.";
+    else if (lower.indexOf("recess") >= 0) openLine = "I am recapping what happened at recess.";
+    else if (lower.indexOf("morning") >= 0) openLine = "I am writing a morning update before homeroom.";
+    else if (lower.indexOf("cafeteria") >= 0) openLine = "I am texting from the cafeteria line with an update.";
+    else if (lower.indexOf("office") >= 0) openLine = "I am sending this message to the front office.";
+    else if (lower.indexOf("study") >= 0) openLine = "I am checking our sentence in study hall chat.";
+    else if (lower.indexOf("after-school") >= 0) openLine = "I am sending our after-school meetup update.";
+    else if (lower.indexOf("retell") >= 0) openLine = "We are retelling what happened after class.";
+    else if (lower.indexOf("present dialogue") >= 0) openLine = "We are describing what is happening right now.";
+    else if (lower.indexOf("agreement dialogue") >= 0) openLine = "We are checking subject-verb agreement before sending.";
+    else if (lower.indexOf("connector dialogue") >= 0) openLine = "We are linking two ideas with the right connector.";
+    else if (lower.indexOf("reference dialogue") >= 0) openLine = "We are making sure each pronoun reference is clear.";
+    else if (lower.indexOf("question dialogue") >= 0) openLine = "We are forming a clear question for the class chat.";
+
+    var handoffLine = pickRoundVariant([
+      "Can you help me pick the strongest reply?",
+      "Which response should I send so it sounds natural?",
+      "Pick the corrected reply I should post."
+    ], roundIndex, "Can you help me choose the best response?");
+
+    return {
+      scene: scene,
+      speakerA: pair.a,
+      speakerB: pair.b,
+      lineA: openLine,
+      lineB: handoffLine
+    };
   }
 
   function buildRounds(bank, desiredCount) {
@@ -5322,23 +5377,34 @@
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: "dialogue", round: round };
+    var thread = buildDialogueThread(round, idx);
 
     var wrap = document.createElement("div");
     wrap.className = "dialogue-wrap";
 
+    var meta = document.createElement("div");
+    meta.className = "dialogue-meta";
+    meta.innerHTML = "<span class=\"dialogue-tag\">Chat Thread</span><span class=\"dialogue-scene-name\">" + thread.scene + "</span>";
+    wrap.appendChild(meta);
+
     var bubbleA = document.createElement("div");
     bubbleA.className = "dialogue-bubble dialogue-bubble-left";
-    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">Speaker A</span>" + round.scene;
+    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerA + "</span>" + thread.lineA;
     wrap.appendChild(bubbleA);
 
     var bubbleContext = document.createElement("div");
     bubbleContext.className = "dialogue-bubble dialogue-bubble-right";
-    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>" + round.prompt;
+    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + thread.lineB;
     wrap.appendChild(bubbleContext);
+
+    var objective = document.createElement("p");
+    objective.className = "dialogue-objective";
+    objective.textContent = modeScenarioPrompt("dialogue", round, idx);
+    wrap.appendChild(objective);
 
     var bubbleBlank = document.createElement("div");
     bubbleBlank.className = "dialogue-bubble dialogue-bubble-blank";
-    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>[Pick a reply\u2026]";
+    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>[Pick " + thread.speakerB + "'s best reply\u2026]";
     wrap.appendChild(bubbleBlank);
 
     var choices = [round.answer];
@@ -5361,7 +5427,7 @@
       btn.innerHTML = "<span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
-        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>" + item.text;
+        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + item.text;
         bubbleBlank.className = "dialogue-bubble dialogue-bubble-right";
         finishRound(
           item.idx === round.answer,
