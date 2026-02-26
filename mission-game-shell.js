@@ -396,9 +396,9 @@
         prompt: "Select the clearest spoken line.",
         options: [
           "After she read it, she gave it to her.",
-          "After Elif read the draft, she gave it to Ada.",
+          "After Elena read the draft, she gave it to Ada.",
           "After she read it, gave it to her.",
-          "After Elif read it, she give it to Ada."
+          "After Elena read it, she give it to Ada."
         ],
         answer: 1,
         explain: "Replacing ambiguous pronouns makes dialogue clearer."
@@ -531,10 +531,10 @@
         scene: "Schedule Check",
         prompt: "Select the strongest third-person present sentence.",
         options: [
-          "Mina write the summary after lunch.",
-          "Mina writes the summary after lunch.",
-          "Mina is write the summary after lunch.",
-          "Mina wrote the summary after lunch usually."
+          "Maya write the summary after lunch.",
+          "Maya writes the summary after lunch.",
+          "Maya is write the summary after lunch.",
+          "Maya wrote the summary after lunch usually."
         ],
         answer: 1,
         explain: "Third-person singular takes writes."
@@ -777,10 +777,10 @@
         scene: "Dual Subject",
         prompt: "Select the sentence with correct plural agreement.",
         options: [
-          "Mina and Sude is in the hallway.",
-          "Mina and Sude are in the hallway.",
-          "Mina and Sude am in the hallway.",
-          "Mina and Sude was in the hallway."
+          "Maya and Sude is in the hallway.",
+          "Maya and Sude are in the hallway.",
+          "Maya and Sude am in the hallway.",
+          "Maya and Sude was in the hallway."
         ],
         answer: 1,
         explain: "Two names form a plural subject, so use are."
@@ -1037,10 +1037,10 @@
         scene: "Evidence Card B",
         prompt: "Pick the line with clear reference.",
         options: [
-          "Selin shared the note with Rana after Selin verified it.",
-          "Selin shared the note with Rana after she verified it.",
-          "Selin shared the note with Rana after it verified it.",
-          "Selin shared note with Rana after she were verify it."
+          "Sarah shared the note with Rana after Sarah verified it.",
+          "Sarah shared the note with Rana after she verified it.",
+          "Sarah shared the note with Rana after it verified it.",
+          "Sarah shared note with Rana after she were verify it."
         ],
         answer: 0,
         explain: "Explicit noun naming avoids pronoun-reference ambiguity in evidence logs."
@@ -1255,10 +1255,10 @@
           scene: "Reference Dialogue 1",
           prompt: "Repair the line for clear pronoun reference.",
           options: [
-            "Aylin gave Ece the file after Aylin checked it.",
-            "Aylin gave Ece the file after she checked it.",
-            "Aylin gave Ece the file after it checked it.",
-            "Aylin gave Ece file after she were checking it."
+            "Aylin gave Ella the file after Aylin checked it.",
+            "Aylin gave Ella the file after she checked it.",
+            "Aylin gave Ella the file after it checked it.",
+            "Aylin gave Ella file after she were checking it."
           ],
           answer: 0,
           explain: "Repeating the subject name avoids ambiguity."
@@ -1267,10 +1267,10 @@
           scene: "Reference Dialogue 2",
           prompt: "Choose the line with explicit ownership.",
           options: [
-            "Mina told Defne that Mina would present first.",
-            "Mina told Defne that she would present first.",
-            "Mina told Defne that it would present first.",
-            "Mina told Defne she were presenting first."
+            "Maya told Sofia that Maya would present first.",
+            "Maya told Sofia that she would present first.",
+            "Maya told Sofia that it would present first.",
+            "Maya told Sofia she were presenting first."
           ],
           answer: 0,
           explain: "Explicit noun naming keeps pronoun reference and meaning precise."
@@ -1485,10 +1485,10 @@
           scene: "Reference Rewrite 1",
           prompt: "Choose the clearest rewrite.",
           options: [
-            "Mina gave Ece the report after Mina checked it.",
-            "Mina gave Ece the report after she checked it.",
-            "Mina gave Ece the report after it checked it.",
-            "Mina gave Ece report after she were checking it."
+            "Maya gave Ella the report after Maya checked it.",
+            "Maya gave Ella the report after she checked it.",
+            "Maya gave Ella the report after it checked it.",
+            "Maya gave Ella report after she were checking it."
           ],
           answer: 0,
           explain: "Explicit naming removes pronoun confusion."
@@ -1497,10 +1497,10 @@
           scene: "Reference Rewrite 2",
           prompt: "Pick the strongest reference rewrite.",
           options: [
-            "Kerem told Arda that Kerem would speak first.",
-            "Kerem told Arda that he would speak first.",
-            "Kerem told Arda that it would speak first.",
-            "Kerem told Arda he were speaking first."
+            "Kerem told Alex that Kerem would speak first.",
+            "Kerem told Alex that he would speak first.",
+            "Kerem told Alex that it would speak first.",
+            "Kerem told Alex he were speaking first."
           ],
           answer: 0,
           explain: "Clear repeated subject preserves meaning."
@@ -1601,10 +1601,10 @@
           scene: "Reference Sequence 1",
           prompt: "Choose the sequence line with clear reference.",
           options: [
-            "Mina reviewed the script, then Mina sent it to Ece.",
-            "Mina reviewed the script, then she sent it to Ece.",
-            "Mina reviewed script, then sent it to Ece.",
-            "Mina reviewed the script, then she were sending it to Ece."
+            "Maya reviewed the script, then Maya sent it to Ella.",
+            "Maya reviewed the script, then she sent it to Ella.",
+            "Maya reviewed script, then sent it to Ella.",
+            "Maya reviewed the script, then she were sending it to Ella."
           ],
           answer: 0,
           explain: "Explicit subject naming keeps sequence reference clear."
@@ -1625,10 +1625,10 @@
           scene: "Reference Sequence 3",
           prompt: "Select the best timeline sentence with clear names.",
           options: [
-            "Elif called Duru, and Elif explained the correction.",
-            "Elif called Duru, and she explained the correction.",
-            "Elif called Duru and explained correction.",
-            "Elif called Duru, and she were explaining the correction."
+            "Elena called Duru, and Elena explained the correction.",
+            "Elena called Duru, and she explained the correction.",
+            "Elena called Duru and explained correction.",
+            "Elena called Duru, and she were explaining the correction."
           ],
           answer: 0,
           explain: "Explicit reference avoids ambiguity across steps."
@@ -1741,10 +1741,10 @@
           scene: "Reference Evidence 3",
           prompt: "Select the option with no unclear pronoun.",
           options: [
-            "Mina called Ece after Mina reviewed the notes.",
-            "Mina called Ece after she reviewed the notes.",
-            "Mina called Ece after it reviewed the notes.",
-            "Mina called Ece after she were reviewing the notes."
+            "Maya called Ella after Maya reviewed the notes.",
+            "Maya called Ella after she reviewed the notes.",
+            "Maya called Ella after it reviewed the notes.",
+            "Maya called Ella after she were reviewing the notes."
           ],
           answer: 0,
           explain: "Explicit subject naming keeps reference accurate."
