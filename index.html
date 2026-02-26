@@ -426,7 +426,7 @@
     teacherBtn.addEventListener('click', () => applyMode('class'));
     studentBtn.addEventListener('click', () => {
       applyMode('individual');
-      location.href = 'individual-home.html';
+      location.href = 'individual-home.html?join=1#joinClassSection';
     });
 
     const saved = localStorage.getItem(useKey);
