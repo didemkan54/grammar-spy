@@ -2141,7 +2141,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + displayIdx)); btn.textContent = item.lineText;
       var isTarget = activeMode === "smash" ? item.optionIdx !== round.answer : item.optionIdx === round.answer;
       btn.dataset.target = isTarget ? "1" : "0";
       btn.addEventListener("click", function () {
@@ -2194,7 +2194,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Repair " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + i)); btn.textContent = item.text;
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
@@ -2237,7 +2237,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Option " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + i)); btn.textContent = item.text;
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         var correctText = round.options[round.answer];
@@ -2392,7 +2392,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + displayIdx)); btn.textContent = item.lineText;
       btn.addEventListener("click", function () {
         if (locked || btn.classList.contains("eliminated")) return;
         if (item.optionIdx === round.answer) {

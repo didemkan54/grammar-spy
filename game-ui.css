@@ -168,6 +168,54 @@ h1 {
   box-shadow: 0 0 0 3px rgba(176, 68, 68, .12);
 }
 
+/* ── Option letter labels (A, B, C, D) ── */
+.opt {
+  position: relative;
+  padding-left: 48px;
+}
+.opt::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.opt.good::before {
+  background: var(--ok);
+  color: #fff;
+}
+.opt.bad::before {
+  background: var(--bad);
+  color: #fff;
+}
+
+/* ── Progress Bar ── */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--line);
+  border-radius: 3px;
+  margin: 8px 0 4px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+
 /* ── Feedback Strip ── */
 .feedback, #feedback, #fb {
   min-height: 28px;
@@ -273,15 +321,110 @@ h1 {
   line-height: 1.6;
 }
 
-/* ── Onboard overlay ── */
-.modal .btn.primary {
+/* ── Onboard overlay (How to Play) ── */
+.modal .btn.primary,
+.onboard-start {
   width: 100%;
   justify-content: center;
-  padding: 14px;
-  font-size: 14px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 800;
   border-radius: 12px;
-  margin-top: 6px;
+  margin-top: 10px;
+  letter-spacing: .05em;
+  background: linear-gradient(135deg, var(--teal), #2a7a7e);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.onboard-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31, 95, 99, .3);
+}
+.onboard-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 0 0 4px;
+}
+.onboard-subtitle {
+  font-size: 15px;
+  color: var(--slate);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.onboard-steps {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.onboard-step {
+  display: flex;
+  gap: 14px;
+  align-items: start;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.onboard-step-num {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.onboard-step-text {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.5;
+}
+.onboard-step-text strong {
+  color: var(--navy);
+}
+.onboard-tip {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba(201,162,39,.08), rgba(201,162,39,.04));
+  border: 1px solid rgba(201,162,39,.2);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--slate);
+}
+.onboard-tip-icon {
+  font-size: 20px;
+  min-width: 24px;
+  text-align: center;
+}
+.onboard-difficulty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 12px;
+}
+.diff-rookie { background: #e8f4f5; color: var(--teal); }
+.diff-field { background: #fdf6e3; color: #8a6d10; }
+.diff-director { background: #eef0f6; color: var(--mid); }
 
 /* ── Teams Mode ── */
 .teamsSplit {

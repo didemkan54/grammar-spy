@@ -12,14 +12,39 @@
 <main class="wrap">
   <section class="panel">
     <p class="k" id="packK">Mission Pack</p><h1>Clue Trail</h1><p class="sub">Read classroom context and choose the line that best secures meaning.</p>
-    <img src="assets/illustrations/clue-trail-scene.svg" alt="" style="width:100%;max-width:400px;height:auto;margin:8px 0 4px;opacity:.9" aria-hidden="true" />
+    <div class="progress-bar"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
     <div class="hud"><div class="chip"><b>Case</b><span id="hudCase">1/1</span></div><div class="chip"><b>Accuracy</b><span id="hudAcc">0%</span></div><div class="chip"><b>Streak</b><span id="hudStreak">0</span></div><div class="chip"><b>Timer</b><span id="hudTimer">Off</span></div></div>
     <div class="q"><div class="scene" id="scene"></div><div class="prompt" id="prompt"></div></div>
     <div class="opts" id="opts"></div><p class="feedback" id="fb"></p>
     <div class="row"><button class="btn" id="endBtn" type="button">End Mission</button><button class="btn" id="btnSound" type="button">Sound: ON</button><a class="btn" href="index.html">Home</a></div>
   </section>
 </main>
-<div id="onboardOverlay" class="overlay" role="dialog" aria-modal="true"><section class="modal"><h3>How to play: Clue Trail</h3><p>Read the classroom scene and prompt, then choose the line that best completes or secures the meaning. You get instant feedback and can build a streak.</p><button class="btn primary" id="btnOnboardClose">Start Mission</button></section></div>
+<div id="onboardOverlay" class="overlay" role="dialog" aria-modal="true">
+  <section class="modal" style="max-width:540px">
+    <div id="diffBadge" class="onboard-difficulty diff-field">Field Agent</div>
+    <h2 class="onboard-title">Clue Trail</h2>
+    <p class="onboard-subtitle">Follow the clues through a classroom scene. Read the context, then pick the sentence with the strongest grammar.</p>
+    <div class="onboard-steps">
+      <div class="onboard-step">
+        <div class="onboard-step-num">1</div>
+        <div class="onboard-step-text"><strong>Read the scene.</strong> Each question starts with a classroom context — pay attention to the time and action.</div>
+      </div>
+      <div class="onboard-step">
+        <div class="onboard-step-num">2</div>
+        <div class="onboard-step-text"><strong>Pick the best answer.</strong> Choose the sentence with the correct grammar. Look at verb tense and subject agreement.</div>
+      </div>
+      <div class="onboard-step">
+        <div class="onboard-step-num">3</div>
+        <div class="onboard-step-text"><strong>Build a streak!</strong> Get multiple correct in a row for bonus points. Speed bonuses apply when the timer is on.</div>
+      </div>
+    </div>
+    <div class="onboard-tip">
+      <span class="onboard-tip-icon">💡</span>
+      <span>Tip: If the sentence talks about something that <em>already happened</em>, use past tense (walked, told, gave).</span>
+    </div>
+    <button class="onboard-start" id="btnOnboardClose" type="button">Start Mission</button>
+  </section>
+</div>
 <div id="teamsWrap" class="teamsSplit" style="display:none" aria-label="Teams mode"></div>
 <div class="overlay" id="ov"><section class="modal"><h2 style="margin:0">Mission Report</h2><p id="r1"></p><p id="r2"></p><p id="r3"></p><div class="box" id="finalTeamsScoresWrap" style="margin-top:10px;display:none"><div id="finalTeamAScore"></div><div id="finalTeamBScore"></div><div id="winnerLine"></div></div><div class="box" id="endTeamsWrap" style="margin-top:10px;display:none"><div class="label" style="font-size:11px;text-transform:uppercase;color:var(--slate)">Teams (share scores with)</div><div id="endTeamsList" style="margin-top:6px;font-size:13px;line-height:1.5"></div></div><div class="row"><button class="btn primary" id="again">Play Again</button><a class="btn" id="teacherLink" href="teacher-home.html">Close</a></div></section></div>
 <div data-include="footer"></div>
@@ -31,6 +56,7 @@ const q=new URLSearchParams(location.search),pack=(q.get('pack')||'pack01'),coun
 const secondsPerRound=difficulty==='rookie'?36:(difficulty==='field'?30:24);
 const meta=(window.GSPacks&&GSPacks.meta[pack])||GSPacks.meta.pack01,bank=(GSPacks.clueTrail[pack]||GSPacks.clueTrail.pack01||[]).slice();
 document.getElementById('packK').textContent=meta.title+' · '+meta.short;
+const diffBadge=document.getElementById('diffBadge');if(diffBadge){diffBadge.className='onboard-difficulty diff-'+difficulty;diffBadge.textContent=difficulty==='rookie'?'Rookie':difficulty==='director'?'Director':'Field Agent';}
 const packProfiles={
   pack01:{accent:'#2f6fd8',sub:'Retell timeline clues and choose the strongest past-form sentence.'},
   pack02:{accent:'#d84f7f',sub:'Decode present-time signals and choose the strongest live-action sentence.'},
@@ -76,8 +102,8 @@ function pick(){
   }
   rounds=buildRounds(bank,nRounds);i=0;ok=0;streak=0;if(!timerOn)hudTimer.textContent='Off';sec=timerOn?rounds.length*secondsPerRound:null;
 }
-function hud(){hudCase.textContent=`${Math.min(i+1,rounds.length)}/${rounds.length}`;hudAcc.textContent=`${Math.round((ok/Math.max(1,i))*100)}%`;hudStreak.textContent=String(streak);if(timerOn)hudTimer.textContent=`${Math.max(0,sec)}s`;}
-function show(){if(i>=rounds.length){end();return;}locked=false;fb.textContent='';fb.className='feedback';const r=rounds[i];scene.textContent=r.scene;prompt.textContent=r.prompt;opts.innerHTML='';r.options.map((t,ix)=>({t,ix})).sort(()=>Math.random()-.5).forEach(o=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=o.t;b.addEventListener('click',()=>choose(o,b,r));opts.appendChild(b)});hud();}
+function hud(){hudCase.textContent=`${Math.min(i+1,rounds.length)}/${rounds.length}`;hudAcc.textContent=`${Math.round((ok/Math.max(1,i))*100)}%`;hudStreak.textContent=String(streak);if(timerOn)hudTimer.textContent=`${Math.max(0,sec)}s`;const pb=document.getElementById('progressBar');if(pb)pb.style.width=Math.round((i/Math.max(1,rounds.length))*100)+'%';}
+const labels='ABCDEFGH';function show(){if(i>=rounds.length){end();return;}locked=false;fb.textContent='';fb.className='feedback';const r=rounds[i];scene.textContent=r.scene;prompt.textContent=r.prompt;opts.innerHTML='';r.options.map((t,ix)=>({t,ix})).sort(()=>Math.random()-.5).forEach((o,li)=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=o.t;b.setAttribute('data-label',labels[li]||'');b.addEventListener('click',()=>choose(o,b,r));opts.appendChild(b)});hud();}
 function choose(o,btn,r){if(locked)return;locked=true;i++;if(o.ix===r.answer){ok++;streak++;btn.classList.add('good');fb.textContent='Correct! '+r.explain;fb.className='feedback ok';}else{streak=0;btn.classList.add('bad');fb.textContent='Not quite — '+r.explain;fb.className='feedback bad';}hud();setTimeout(show,850);}
 function end(){clearInterval(timer);const acc=Math.round((ok/Math.max(1,i))*100);document.getElementById('r1').textContent=`Accuracy: ${acc}% (${ok}/${Math.max(1,i)})`;document.getElementById('r2').textContent=`Pack: ${meta.title}`;document.getElementById('r3').textContent=`Recommendation: ${acc>=80?'Advance to next module':'Replay for retrieval strength'}`;track('mission_complete',{pack,game:'clue-trail',difficulty,accuracy:acc,count:rounds.length});document.getElementById('ov').classList.add('show');}
 function startTimer(){if(!timerOn)return;clearInterval(timer);timer=setInterval(()=>{sec--;hudTimer.textContent=`${Math.max(0,sec)}s`;if(sec<=0)end();},1000)}
