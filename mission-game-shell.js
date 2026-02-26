@@ -884,6 +884,54 @@
         ],
         answer: 0,
         explain: "Told is the correct past of tell; they were is proper agreement."
+      },
+      {
+        scene: "Original: The students doesn't have they notebooks today.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "The students don't have their notebooks today.",
+          "The students doesn't have their notebooks today.",
+          "The students don't has they notebooks today.",
+          "The students doesn't has they notebooks today."
+        ],
+        answer: 0,
+        explain: "Plural students takes don't; possessive their replaces they."
+      },
+      {
+        scene: "Original: Me and her was working on the project when teacher came.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "She and I were working on the project when the teacher came.",
+          "Me and her were working on the project when teacher came.",
+          "Her and I was working on the project when the teacher came.",
+          "She and me was working on the project when teacher came."
+        ],
+        answer: 0,
+        explain: "Subject pronouns She and I with plural were; the teacher needs the article."
+      },
+      {
+        scene: "Original: He don't remember where did he left the keys.",
+        prompt: "Choose the strongest rewrite.",
+        options: [
+          "He doesn't remember where he left the keys.",
+          "He don't remember where he left the keys.",
+          "He doesn't remembers where did he left the keys.",
+          "He doesn't remember where did he leave the keys."
+        ],
+        answer: 0,
+        explain: "Singular he takes doesn't + base verb; embedded questions use statement order."
+      },
+      {
+        scene: "Original: Although it rained, but the game was not cancelled.",
+        prompt: "Select the strongest rewrite.",
+        options: [
+          "Although it rained, but the game was not cancelled.",
+          "Although it rained, the game was not cancelled.",
+          "It rained, although but the game was not cancelled.",
+          "Although it raining, the game was not cancelled."
+        ],
+        answer: 1,
+        explain: "Use one connector only; although and but should not appear together."
       }
     ],
     "rule-sprint-present": [
