@@ -9,8 +9,8 @@
   var MAX_QUEUE = 3000;
 
   // Google Analytics 4 — basic page tracking
-  // Measurement ID: G-GJ5NBQN83P
-  var GA_MEASUREMENT_ID = 'G-GJ5NBQN83P';
+  // Measurement ID: G-WMZVCJN0KB
+  var GA_MEASUREMENT_ID = 'G-WMZVCJN0KB';
 
   function initGoogleAnalytics(){
     if (!GA_MEASUREMENT_ID || typeof document === 'undefined') return;
