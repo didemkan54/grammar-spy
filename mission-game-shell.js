@@ -4661,7 +4661,7 @@
     return modeHelperText(mode);
   }
 
-  function buildDialogueThread(round, roundIndex) {
+  function buildDialogueThread(round, roundIndex, wrongLine) {
     var scene = (round && round.scene) ? String(round.scene) : "Classroom Chat";
     var lower = scene.toLowerCase();
     var pair = pickRoundVariant([
@@ -4671,39 +4671,46 @@
       { a: "Zara", b: "Daniel" }
     ], roundIndex, { a: "Student A", b: "Student B" });
 
-    var openLine = "I want to send this clearly before class starts.";
-    if (lower.indexOf("teacher") >= 0) openLine = "Ms. Lee asked me to explain this idea in one clear sentence.";
-    else if (lower.indexOf("classroom") >= 0) openLine = "I am replying to our classroom discussion thread.";
-    else if (lower.indexOf("group") >= 0) openLine = "Our group chat needs one clean response for this step.";
-    else if (lower.indexOf("partner") >= 0) openLine = "My partner asked me to rewrite this line naturally.";
-    else if (lower.indexOf("hallway") >= 0) openLine = "I am posting a quick hallway update to my team.";
-    else if (lower.indexOf("science") >= 0) openLine = "I am sending our science-lab update in the class chat.";
-    else if (lower.indexOf("library") >= 0) openLine = "I am messaging quietly from the library support desk.";
-    else if (lower.indexOf("recess") >= 0) openLine = "I am recapping what happened at recess.";
-    else if (lower.indexOf("morning") >= 0) openLine = "I am writing a morning update before homeroom.";
-    else if (lower.indexOf("cafeteria") >= 0) openLine = "I am texting from the cafeteria line with an update.";
-    else if (lower.indexOf("office") >= 0) openLine = "I am sending this message to the front office.";
-    else if (lower.indexOf("study") >= 0) openLine = "I am checking our sentence in study hall chat.";
-    else if (lower.indexOf("after-school") >= 0) openLine = "I am sending our after-school meetup update.";
-    else if (lower.indexOf("retell") >= 0) openLine = "We are retelling what happened after class.";
-    else if (lower.indexOf("present dialogue") >= 0) openLine = "We are describing what is happening right now.";
-    else if (lower.indexOf("agreement dialogue") >= 0) openLine = "We are checking subject-verb agreement before sending.";
-    else if (lower.indexOf("connector dialogue") >= 0) openLine = "We are linking two ideas with the right connector.";
-    else if (lower.indexOf("reference dialogue") >= 0) openLine = "We are making sure each pronoun reference is clear.";
-    else if (lower.indexOf("question dialogue") >= 0) openLine = "We are forming a clear question for the class chat.";
+    var openLine = "I drafted a message before class.";
+    if (lower.indexOf("teacher") >= 0) openLine = "Ms. Lee asked me to send a clear update.";
+    else if (lower.indexOf("classroom") >= 0) openLine = "I drafted this for our classroom thread.";
+    else if (lower.indexOf("group") >= 0) openLine = "I wrote this line for our group chat.";
+    else if (lower.indexOf("partner") >= 0) openLine = "I drafted this sentence for my partner.";
+    else if (lower.indexOf("hallway") >= 0) openLine = "I wrote this quick hallway update.";
+    else if (lower.indexOf("science") >= 0) openLine = "I drafted this science-lab update.";
+    else if (lower.indexOf("library") >= 0) openLine = "I wrote this note from the library desk.";
+    else if (lower.indexOf("recess") >= 0) openLine = "I drafted this recap about recess.";
+    else if (lower.indexOf("morning") >= 0) openLine = "I wrote this morning message for homeroom.";
+    else if (lower.indexOf("cafeteria") >= 0) openLine = "I drafted this cafeteria update.";
+    else if (lower.indexOf("office") >= 0) openLine = "I wrote this message for the front office.";
+    else if (lower.indexOf("study") >= 0) openLine = "I drafted this line in study hall.";
+    else if (lower.indexOf("after-school") >= 0) openLine = "I wrote this after-school meetup message.";
+    else if (lower.indexOf("retell") >= 0) openLine = "I drafted this retell line.";
+    else if (lower.indexOf("present dialogue") >= 0) openLine = "I drafted this present-time message.";
+    else if (lower.indexOf("agreement dialogue") >= 0) openLine = "I drafted this agreement sentence.";
+    else if (lower.indexOf("connector dialogue") >= 0) openLine = "I drafted this connector sentence.";
+    else if (lower.indexOf("reference dialogue") >= 0) openLine = "I drafted this reference sentence.";
+    else if (lower.indexOf("question dialogue") >= 0) openLine = "I drafted this question.";
+
+    var draftLine = "";
+    if (typeof wrongLine === "string" && wrongLine.trim()) draftLine = wrongLine.trim();
+    else if (round && round.options && round.options.length) draftLine = String(round.options[0]);
+    else draftLine = "I no understand this clue.";
+    var lineA = openLine + " Draft: \"" + draftLine + "\"";
 
     var handoffLine = pickRoundVariant([
-      "Can you help me pick the strongest reply?",
-      "Which response should I send so it sounds natural?",
-      "Pick the corrected reply I should post."
-    ], roundIndex, "Can you help me choose the best response?");
+      "Good catch. Choose the clean revised line we should send.",
+      "Let's replace that draft with the strongest corrected line.",
+      "Pick the revision that keeps the meaning and fixes the grammar."
+    ], roundIndex, "Choose the best revision to replace that draft.");
 
     return {
       scene: scene,
       speakerA: pair.a,
       speakerB: pair.b,
-      lineA: openLine,
-      lineB: handoffLine
+      lineA: lineA,
+      lineB: handoffLine,
+      replySpeaker: pair.a
     };
   }
 
@@ -5624,7 +5631,9 @@
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: "dialogue", round: round };
-    var thread = buildDialogueThread(round, idx);
+    var brokenIdx = pickWrongIndex(round);
+    var brokenLine = round.options[brokenIdx];
+    var thread = buildDialogueThread(round, idx, brokenLine);
 
     var wrap = document.createElement("div");
     wrap.className = "dialogue-wrap";
@@ -5646,12 +5655,16 @@
 
     var objective = document.createElement("p");
     objective.className = "dialogue-objective";
-    objective.textContent = modeScenarioPrompt("dialogue", round, idx);
+    var objectiveText = modeScenarioPrompt("dialogue", round, idx);
+    if (objectiveText.toLowerCase().indexOf("draft") < 0 && objectiveText.toLowerCase().indexOf("revis") < 0) {
+      objectiveText += " Replace the draft with the best revised line.";
+    }
+    objective.textContent = objectiveText;
     wrap.appendChild(objective);
 
     var bubbleBlank = document.createElement("div");
     bubbleBlank.className = "dialogue-bubble dialogue-bubble-blank";
-    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>[Pick " + thread.speakerB + "'s best reply\u2026]";
+    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>[Pick " + thread.replySpeaker + "'s revised line\u2026]";
     wrap.appendChild(bubbleBlank);
 
     var choices = [round.answer];
@@ -5674,7 +5687,7 @@
       btn.innerHTML = "<span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
-        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + item.text;
+        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>" + item.text;
         bubbleBlank.className = "dialogue-bubble dialogue-bubble-right";
         finishRound(
           item.idx === round.answer,
