@@ -4058,7 +4058,10 @@
       + ".opt.eliminated{opacity:.6;pointer-events:none;}"
       + ".duel-wrap{display:grid;gap:10px;}"
       + ".duel-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
-      + ".duel-actions .opt{min-height:72px;}"
+      + ".duel-actions .opt{min-height:88px;display:grid;gap:8px;align-content:start;padding-left:16px;}"
+      + ".duel-actions .opt::before{display:none;}"
+      + ".duel-tag{display:inline-flex;align-items:center;gap:6px;width:max-content;padding:4px 10px;border-radius:999px;border:1px solid " + accent + "55;background:" + accent + "12;color:" + accent + ";font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}"
+      + ".duel-text{font-size:15px;line-height:1.45;color:#16223a;font-weight:600;}"
       + ".classify-drag-wrapper{display:grid;gap:16px;}"
       + ".classify-pool{min-height:60px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;}"
       + ".classify-zones{display:grid;grid-template-columns:1fr 1fr;gap:14px;}"
@@ -4771,7 +4774,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Rewrite " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.innerHTML = "<span class=\"duel-tag\">Rewrite " + String.fromCharCode(65 + i) + "</span><span class=\"duel-text\">" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         var isCorrect = item.idx === round.answer;
@@ -5476,7 +5479,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Rewrite " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.innerHTML = "<span class=\"duel-tag\">Rewrite " + String.fromCharCode(65 + i) + "</span><span class=\"duel-text\">" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
