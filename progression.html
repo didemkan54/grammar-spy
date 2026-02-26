@@ -3,21 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grammar Spy™ | Mission Training Path</title>
+    <title>Grammar Spy™ | Training Path</title>
     <link rel="stylesheet" href="core/theme.css" />
+    <style>
+      .path-hero{text-align:center;padding:32px 20px}
+      .path-hero h1{margin:0 0 8px;font-size:32px;color:#0b1020}
+      .path-hero p{margin:0;color:#4a5568;font-size:16px;max-width:560px;margin:0 auto;line-height:1.6}
+
+      .path-steps{display:grid;gap:0;max-width:800px;margin:0 auto;padding:0 20px;position:relative}
+      .path-steps::before{content:"";position:absolute;left:40px;top:60px;bottom:60px;width:3px;background:linear-gradient(180deg,#1f5f63,#c9a227,#16223a);border-radius:2px;opacity:.2}
+
+      .step{display:grid;grid-template-columns:80px 1fr;gap:20px;padding:24px 0;position:relative}
+
+      .step-marker{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:1}
+      .step-num{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+      .step-num.level-1{background:linear-gradient(135deg,#1f7a7e,#1a5c5f)}
+      .step-num.level-2{background:linear-gradient(135deg,#c9a227,#a88520)}
+      .step-num.level-3{background:linear-gradient(135deg,#16223a,#0b1020)}
+      .step-grade{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4a5568}
+
+      .step-card{background:#fff;border:1px solid #d9dee6;border-radius:16px;padding:24px;box-shadow:0 4px 14px rgba(11,16,32,.05);transition:transform .2s ease,box-shadow .2s ease}
+      .step-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(11,16,32,.1)}
+      .step-card h2{margin:0 0 4px;font-size:22px;color:#0b1020}
+      .step-card .subtitle{margin:0 0 16px;color:#4a5568;font-size:14px;line-height:1.5}
+
+      .skill-section{margin-bottom:16px}
+      .skill-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#1f5f63;margin-bottom:8px}
+      .skill-chips{display:flex;flex-wrap:wrap;gap:6px}
+      .skill-chip{background:#e8f4f5;color:#1f5f63;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px}
+      .skill-chip.gold{background:#fdf6e3;color:#8a6d10}
+      .skill-chip.navy{background:#eef0f6;color:#16223a}
+
+      .mission-link{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f8fafc;border:1px solid #e4e8ef;border-radius:10px;margin-bottom:8px;text-decoration:none;color:#16223a;font-weight:600;font-size:14px;transition:background .15s,border-color .15s}
+      .mission-link:hover{background:#e8f4f5;border-color:#1f5f63}
+      .mission-link .arrow{color:#1f5f63;font-size:16px;margin-left:auto}
+
+      .coming-soon{padding:10px 14px;background:#f8fafc;border:1px solid #e4e8ef;border-radius:10px;color:#7a8698;font-size:13px;font-style:italic}
+
+      .step-cta{margin-top:12px}
+      .step-cta a{display:inline-flex;align-items:center;gap:6px;color:#1f5f63;font-size:13px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em}
+      .step-cta a:hover{text-decoration:underline}
+
+      @media(max-width:700px){
+        .path-steps::before{left:28px}
+        .step{grid-template-columns:56px 1fr;gap:14px}
+        .step-num{width:44px;height:44px;font-size:18px}
+      }
+    </style>
   </head>
   <body>
     <main class="gs-shell">
       <header id="topNav"></header>
 
-      <section class="gs-panel">
-        <h1>Mission Training Path</h1>
-        <p class="gs-subtitle">
-          Cognitive progression map for Grades 6–12. Start with pattern recognition, move through controlled retrieval, and transfer skills into paragraph-level logic.
-        </p>
+      <section class="gs-panel path-hero">
+        <h1>Your Training Path</h1>
+        <p>Grammar skills build step by step. Start with the basics and level up as you go. Each level focuses on different grammar challenges.</p>
       </section>
 
-      <section id="pathGrid" class="gs-grid gs-grid-3" aria-live="polite"></section>
+      <div id="pathSteps" class="path-steps"></div>
     </main>
 
     <script type="module">
@@ -27,45 +70,88 @@
 
       renderTopNav(document.getElementById("topNav"), "progression");
 
-      const pathGrid = document.getElementById("pathGrid");
+      const pathSteps = document.getElementById("pathSteps");
       const missions = await listAllMissions();
 
-      pathGrid.innerHTML = PROGRESSION_MAP.map((level) => {
-        const levelMissions = missions.filter(
-          (mission) =>
-            mission.gradeBand === level.gradeBand &&
-            Number(mission.cognitiveLevel) === Number(level.cognitiveLevel)
-        );
-        const missionLinks = levelMissions.length
-          ? levelMissions
-              .map(
-                (mission) =>
-                  `<li><a href="missions.html?missionId=${encodeURIComponent(
-                    mission.missionId
-                  )}">${mission.missionName}</a></li>`
-              )
-              .join("")
-          : "<li>No missions mapped yet. Add one in /missions and manifest.json.</li>";
+      const levelMeta = [
+        {
+          title: "Foundations",
+          icon: "1",
+          subtitle: "Learn to spot grammar patterns. Notice how verbs change with time and practice identifying the basics.",
+          skillLabel: "What you'll practice",
+          skills: ["Past vs. present", "Simple event verbs", "When & while", "Time markers", "Verb forms"],
+          modeLabel: "How you'll learn",
+          modes: ["Timeline sorting", "Drag & drop", "Guided practice", "Compare & contrast"]
+        },
+        {
+          title: "Building Confidence",
+          icon: "2",
+          subtitle: "Apply what you know with less help. Work through mixed exercises and learn from your mistakes.",
+          skillLabel: "What you'll practice",
+          skills: ["Mixed past tenses", "Interruption logic", "Irregular verbs", "Multi-clause sentences", "Error detection"],
+          modeLabel: "How you'll learn",
+          modes: ["Error hunting", "Retrieval challenges", "Logic checks", "Contrast & repair"]
+        },
+        {
+          title: "Mastery",
+          icon: "3",
+          subtitle: "Think independently and explain your choices. Handle advanced grammar across paragraphs and new contexts.",
+          skillLabel: "What you'll practice",
+          skills: ["Narrative tense", "Embedded clauses", "Paragraph consistency", "Transfer to new contexts", "Production accuracy"],
+          modeLabel: "How you'll learn",
+          modes: ["Logic puzzles", "Build your own", "Paragraph repair", "Consistency audit"]
+        }
+      ];
 
-        const skills = level.skillFocus.map((skill) => `<span class="gs-chip">${skill}</span>`).join("");
-        const games = level.recommendedGameTypes
-          .map((game) => `<span class="gs-chip">${game}</span>`)
-          .join("");
+      pathSteps.innerHTML = PROGRESSION_MAP.map((level, i) => {
+        const meta = levelMeta[i];
+        const levelMissions = missions.filter(
+          m => m.gradeBand === level.gradeBand && Number(m.cognitiveLevel) === Number(level.cognitiveLevel)
+        );
+
+        const missionLinks = levelMissions.length
+          ? levelMissions.map(m =>
+              `<a class="mission-link" href="missions.html?missionId=${encodeURIComponent(m.missionId)}">
+                <span>${m.missionName.replace("Mission: ", "")}</span>
+                <span class="arrow">\u2192</span>
+              </a>`
+            ).join("")
+          : '<div class="coming-soon">More missions coming soon!</div>';
+
+        const skillChips = meta.skills.map(s => `<span class="skill-chip">${s}</span>`).join("");
+        const modeChips = meta.modes.map(s => `<span class="skill-chip gold">${s}</span>`).join("");
+        const levelClass = `level-${level.cognitiveLevel}`;
 
         return `
-          <article class="gs-card">
-            <h2 class="gs-card-title">Level ${level.cognitiveLevel} · Grade ${level.gradeBand}</h2>
-            <p class="gs-card-sub">${level.description}</p>
-            <h3 class="gs-field-label">Skill Focus</h3>
-            <div class="gs-chip-row">${skills}</div>
-            <h3 class="gs-field-label">Recommended Modes</h3>
-            <div class="gs-chip-row">${games}</div>
-            <h3 class="gs-field-label">Mapped Missions</h3>
-            <ul class="gs-list">${missionLinks}</ul>
-            <a class="gs-btn gs-btn-soft" href="missions.html?gradeBand=${level.gradeBand}&cognitiveLevel=${level.cognitiveLevel}">
-              View mission filter
-            </a>
-          </article>
+          <div class="step">
+            <div class="step-marker">
+              <div class="step-num ${levelClass}">${meta.icon}</div>
+              <span class="step-grade">Grade ${level.gradeBand}</span>
+            </div>
+            <div class="step-card">
+              <h2>${meta.title}</h2>
+              <p class="subtitle">${meta.subtitle}</p>
+
+              <div class="skill-section">
+                <div class="skill-label">${meta.skillLabel}</div>
+                <div class="skill-chips">${skillChips}</div>
+              </div>
+
+              <div class="skill-section">
+                <div class="skill-label">${meta.modeLabel}</div>
+                <div class="skill-chips">${modeChips}</div>
+              </div>
+
+              <div class="skill-section">
+                <div class="skill-label">Available missions</div>
+                ${missionLinks}
+              </div>
+
+              <div class="step-cta">
+                <a href="missions.html">Browse all missions \u2192</a>
+              </div>
+            </div>
+          </div>
         `;
       }).join("");
     </script>
