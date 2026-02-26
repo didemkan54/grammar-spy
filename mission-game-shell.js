@@ -3410,8 +3410,8 @@
   var combo = 1;
   var hintsLeft = 1;
   var skipsLeft = 1;
-  var shotMax = difficulty === "rookie" ? 24 : difficulty === "field" ? 20 : 16;
-  var missionSecondsPerRound = difficulty === "rookie" ? 36 : difficulty === "field" ? 30 : 24;
+  var shotMax = difficulty === "rookie" ? 45 : difficulty === "field" ? 35 : 25;
+  var missionSecondsPerRound = difficulty === "rookie" ? 60 : difficulty === "field" ? 50 : 38;
   var shotClock = shotMax;
   var shotTimer = null;
   var currentRoundState = {};
