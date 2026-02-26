@@ -244,7 +244,8 @@
   /** Teacher classroom codes — students enter these at home for full access */
   var TEACHER_CODES = {
     'KANCLASS': { teacher: 'Mrs. Kan', school: 'MCPS', access: 'full' },
-    'SPYGRAMMAR': { teacher: 'Mrs. Kan', school: 'MCPS', access: 'full' }
+    'SPYGRAMMAR': { teacher: 'Mrs. Kan', school: 'MCPS', access: 'full' },
+    'KANPER4': { teacher: 'Mrs. Kan', school: 'MCPS', period: '4', access: 'full' }
   };
 
   function redeemPromoCode(code){
