@@ -10,6 +10,7 @@
     '<span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">' +
     '<a href="index.html" data-i18n="nav_home" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Home</a>' +
     '<a href="packs.html" data-i18n="nav_missions" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Missions</a>' +
+    '<a href="teacher-home.html" data-i18n="nav_teacher" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Teacher</a>' +
     '<a href="insights.html" data-i18n="nav_blog" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Blog</a>' +
     '<a href="pricing.html" data-i18n="nav_pricing" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Pricing</a>' +
     '<span id="gsLangSwitcher" style="display:inline-flex;gap:4px;align-items:center;margin-left:8px;padding-left:12px;border-left:1px solid #d9dee6">' +
