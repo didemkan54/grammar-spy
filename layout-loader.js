@@ -72,12 +72,14 @@
     try {
       var session = JSON.parse(localStorage.getItem('gs_auth_session'));
       if (!session || !session.name) return;
+      var safeName = session.name;
+      if (/[!@#$%^&*(){}[\]|\\<>\/~`+=]/.test(safeName) || safeName.length > 40) safeName = 'My Account';
       var navs = document.querySelectorAll('nav[aria-label="Primary navigation"]');
       navs.forEach(function(nav) {
         var authSpans = nav.querySelectorAll('span');
         var last = authSpans[authSpans.length - 1];
         if (!last || !last.querySelector('a[href*="auth.html"]')) return;
-        var name = session.name.length > 15 ? session.name.slice(0, 15) + '…' : session.name;
+        var name = safeName.length > 15 ? safeName.slice(0, 15) + '…' : safeName;
         last.innerHTML =
           '<a href="profile.html" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">' + name + '</a>' +
           '<a href="#" onclick="localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');location.reload();return false;" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign Out</a>';

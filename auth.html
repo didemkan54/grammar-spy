@@ -69,11 +69,11 @@
       <section class="view active" id="viewCreate" aria-label="Create account">
         <div class="field">
           <label for="createName">Name</label>
-          <input id="createName" type="text" placeholder="Teacher name" />
+          <input id="createName" type="text" placeholder="Teacher name" autocomplete="given-name" data-lpignore="true" data-form-type="other" />
         </div>
         <div class="field">
           <label for="createEmail">Email</label>
-          <input id="createEmail" type="email" placeholder="teacher@school.edu" />
+          <input id="createEmail" type="email" placeholder="teacher@school.edu" autocomplete="username" data-lpignore="true" />
         </div>
         <div class="biometric-opt" id="createBiometricOpt" style="display:none">
           <input type="checkbox" id="createUseBiometric" />
@@ -88,11 +88,11 @@
       <section class="view" id="viewSignIn" aria-label="Sign in">
         <div class="field">
           <label for="signinEmail">Email</label>
-          <input id="signinEmail" type="email" placeholder="teacher@school.edu" />
+          <input id="signinEmail" type="email" placeholder="teacher@school.edu" autocomplete="username" data-lpignore="true" />
         </div>
         <div class="field">
           <label for="signinName">Display Name</label>
-          <input id="signinName" type="text" placeholder="Teacher name" />
+          <input id="signinName" type="text" placeholder="Teacher name" autocomplete="given-name" data-lpignore="true" data-form-type="other" />
         </div>
         <div class="biometric-opt" id="signinBiometricOpt" style="display:none">
           <input type="checkbox" id="signinUseBiometric" />

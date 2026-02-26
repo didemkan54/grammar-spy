@@ -59,7 +59,9 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     if (session && session.name) {
       const authEl = targetEl.querySelector('#gsAuthButtons');
       if (authEl) {
-        const name = session.name.length > 15 ? session.name.slice(0, 15) + '…' : session.name;
+        let safeName = session.name;
+        if (/[!@#$%^&*(){}[\]|\\<>\/~`+=]/.test(safeName) || safeName.length > 40) safeName = 'My Account';
+        const name = safeName.length > 15 ? safeName.slice(0, 15) + '…' : safeName;
         authEl.innerHTML = `
           <a href="profile.html" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">${name}</a>
           <a href="#" onclick="localStorage.removeItem('gs_auth_session');localStorage.removeItem('gs_account_v1');location.reload();return false;" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign Out</a>
