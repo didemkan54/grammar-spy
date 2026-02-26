@@ -3,6 +3,14 @@
   var CHECKOUT_KEY = 'gs_checkout_events_v1';
   var CONFIG_KEY = 'gs_billing_config_v1';
   var DEFAULT_TRIAL_DAYS = 14;
+  var DEFAULT_STRIPE_LINKS = {
+    single_teacher: 'https://buy.stripe.com/9B63cv9Vn7zgePJ8iR3gk01',
+    single_teacher_monthly: 'https://buy.stripe.com/9B63cv9Vn7zgePJ8iR3gk01',
+    single_teacher_yearly: 'https://buy.stripe.com/bJe7sL3wZaLs0YTcz73gk04',
+    student_monthly: 'https://buy.stripe.com/28E5kD4B35r89vp42B3gk02',
+    student_yearly: 'https://buy.stripe.com/5kQcN5aZr2eWdLF7eN3gk03',
+    school_license: ''
+  };
 
   function parse(raw, fallback){
     if (!raw) return fallback;
@@ -44,16 +52,18 @@
   }
 
   function loadConfig(){
-    return parse(localStorage.getItem(CONFIG_KEY), {
+    var stored = parse(localStorage.getItem(CONFIG_KEY), {});
+    var storedLinks = stored && stored.stripeLinks ? stored.stripeLinks : {};
+    return {
       stripeLinks: {
-        single_teacher: '',
-        single_teacher_monthly: '',
-        single_teacher_yearly: '',
-        student_monthly: '',
-        student_yearly: '',
-        school_license: ''
+        single_teacher: storedLinks.single_teacher || DEFAULT_STRIPE_LINKS.single_teacher,
+        single_teacher_monthly: storedLinks.single_teacher_monthly || DEFAULT_STRIPE_LINKS.single_teacher_monthly,
+        single_teacher_yearly: storedLinks.single_teacher_yearly || DEFAULT_STRIPE_LINKS.single_teacher_yearly,
+        student_monthly: storedLinks.student_monthly || DEFAULT_STRIPE_LINKS.student_monthly,
+        student_yearly: storedLinks.student_yearly || DEFAULT_STRIPE_LINKS.student_yearly,
+        school_license: storedLinks.school_license || DEFAULT_STRIPE_LINKS.school_license
       }
-    });
+    };
   }
 
   function setConfig(next){

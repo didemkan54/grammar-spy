@@ -50,7 +50,7 @@
 
       <div class="promo-box">
         <label for="promoCode">Promo code</label>
-        <input type="text" id="promoCode" placeholder="Enter promo code" maxlength="20" />
+        <input type="text" id="promoCode" placeholder="Enter promo code" maxlength="20" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" inputmode="text" />
       </div>
 
       <div class="biometric-row" id="biometricSignInRow" style="display:none">
@@ -169,11 +169,31 @@
     tabs.signin.btn.addEventListener('click', () => openTab('signin'));
     tabs.guest.btn.addEventListener('click', () => openTab('guest'));
 
+    function normalizePromoCode(raw) {
+      const value = String(raw || '').trim();
+      if (!value || value.indexOf('@') >= 0) return '';
+      const normalized = value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+      if (normalized.length < 4 || normalized.length > 20) return '';
+      return normalized;
+    }
+
     const promoCodeInput = document.getElementById('promoCode');
     const urlCode = new URLSearchParams(location.search).get('code');
     const storedCode = sessionStorage.getItem('gs_promo_code');
     if (promoCodeInput) {
-      promoCodeInput.value = urlCode || storedCode || '';
+      promoCodeInput.value = normalizePromoCode(urlCode) || normalizePromoCode(storedCode);
+      promoCodeInput.addEventListener('input', function() {
+        const rawValue = promoCodeInput.value || '';
+        if (rawValue.indexOf('@') >= 0) promoCodeInput.dataset.emailAttempt = '1';
+        if (promoCodeInput.dataset.emailAttempt === '1') {
+          promoCodeInput.value = '';
+          return;
+        }
+      });
+      promoCodeInput.addEventListener('blur', function() {
+        promoCodeInput.value = normalizePromoCode(promoCodeInput.value);
+        delete promoCodeInput.dataset.emailAttempt;
+      });
       if (storedCode) sessionStorage.removeItem('gs_promo_code');
     }
 
@@ -188,10 +208,11 @@
     }
 
     function tryRedeemPromoCode() {
-      const code = document.getElementById('promoCode')?.value?.trim();
-      if (code && window.GS_BILLING?.redeemPromoCode) {
-        window.GS_BILLING.redeemPromoCode(code);
-      }
+      const promoEl = document.getElementById('promoCode');
+      const code = normalizePromoCode(promoEl?.value);
+      if (!promoEl) return;
+      promoEl.value = code;
+      if (code && window.GS_BILLING?.redeemPromoCode) window.GS_BILLING.redeemPromoCode(code);
     }
 
     function simpleHash(str) {

@@ -53,7 +53,7 @@
       home_learnMore: 'Learn more',
       home_start: 'Start',
       home_startFirst: 'Start Your First Mission',
-      home_beginMission01: 'One mission, minimal prep. Start with Mission 01 and add more when you're ready.',
+      home_beginMission01: 'One mission, minimal prep. Start with Mission 01 and add more when you\'re ready.',
       home_tryMission01Free: 'Try Mission 01 Free',
       home_moreOptions: 'More options',
       home_viewAllMissions: 'View all missions',

@@ -3975,6 +3975,249 @@
     }
   };
 
+  var timelineSortRounds = [
+    {
+      scene: "Timeline Card A",
+      prompt: "Sort each sentence into BEFORE (completed) or DURING (ongoing).",
+      options: [
+        "The team was checking clues when the lights went out.",
+        "The principal announced the final schedule before lunch.",
+        "Students were organizing folders during homeroom.",
+        "The librarian locked the media room at 4:00."
+      ],
+      answer: 0,
+      explain: "Use DURING for was/were + verb-ing actions and BEFORE for completed simple past actions."
+    },
+    {
+      scene: "Timeline Card B",
+      prompt: "Drag each line to the correct timeline zone.",
+      options: [
+        "Maya was interviewing witnesses while Leo was updating the board.",
+        "The class submitted the project after second period.",
+        "We were reviewing notes when the fire drill started.",
+        "The coach blew the whistle and ended practice."
+      ],
+      answer: 0,
+      explain: "Background actions in progress belong in DURING. Finished events belong in BEFORE."
+    },
+    {
+      scene: "Timeline Card C",
+      prompt: "Sort the timeline cards: ongoing background vs completed event.",
+      options: [
+        "The nurse was checking attendance when the bell rang.",
+        "The secretary filed the forms after the meeting ended.",
+        "The students were discussing the prompt while the teacher walked around.",
+        "The captain turned off the lights before leaving."
+      ],
+      answer: 0,
+      explain: "Past continuous forms map to DURING, while simple past forms map to BEFORE."
+    },
+    {
+      scene: "Timeline Card D",
+      prompt: "Place each sentence in BEFORE or DURING.",
+      options: [
+        "We were preparing slides when the projector failed.",
+        "The team solved the puzzle and wrote the report.",
+        "The janitor was cleaning the hallway during dismissal.",
+        "The principal called the office after lunch."
+      ],
+      answer: 0,
+      explain: "Was/were + verb-ing means an action was in progress (DURING)."
+    },
+    {
+      scene: "Timeline Card E",
+      prompt: "Sort each sentence based on timeline meaning.",
+      options: [
+        "The class was reading quietly while rain tapped the windows.",
+        "The teacher posted feedback before first period.",
+        "We were arranging materials when the guest arrived.",
+        "The counselor finished the parent call at noon."
+      ],
+      answer: 0,
+      explain: "Ongoing background actions go to DURING; completed actions go to BEFORE."
+    },
+    {
+      scene: "Timeline Card F",
+      prompt: "Drag cards to BEFORE or DURING using verb clues.",
+      options: [
+        "The students were presenting their posters when the bell rang.",
+        "The office opened the doors at 8:00.",
+        "Ava was collecting lab tools while Noah labeled samples.",
+        "The team packed the equipment after class."
+      ],
+      answer: 0,
+      explain: "Use the verb form to classify each card, not whether the sentence is right/wrong."
+    },
+    {
+      scene: "Timeline Card G",
+      prompt: "Sort each line into the correct timeline zone.",
+      options: [
+        "Leo was explaining the chart while Maya took notes.",
+        "The librarian checked out the final book.",
+        "We were waiting in line when the door opened.",
+        "The teacher ended the quiz and collected papers."
+      ],
+      answer: 0,
+      explain: "DURING captures in-progress background. BEFORE captures completed events."
+    },
+    {
+      scene: "Timeline Card H",
+      prompt: "Classify each sentence: completed event or ongoing background.",
+      options: [
+        "The class was reviewing examples when the speaker arrived.",
+        "The principal signed the forms after lunch.",
+        "Students were rehearsing lines during advisory period.",
+        "The bus left the parking lot at 3:30."
+      ],
+      answer: 0,
+      explain: "Past continuous = DURING. Simple past = BEFORE."
+    },
+    {
+      scene: "Timeline Card I",
+      prompt: "Drag all four lines to BEFORE or DURING.",
+      options: [
+        "We were comparing answers while the timer was running.",
+        "The captain checked the door and locked it.",
+        "The teacher was answering questions when the call came in.",
+        "The class finished the warm-up before discussion."
+      ],
+      answer: 0,
+      explain: "Every card belongs in one zone based on timeline role."
+    },
+    {
+      scene: "Timeline Card J",
+      prompt: "Sort each sentence by timeline role.",
+      options: [
+        "Mina was organizing evidence while Berk tracked time.",
+        "The team posted the final chart before leaving.",
+        "The teacher was reading directions when the power flickered.",
+        "The office sent the announcement at 9:15."
+      ],
+      answer: 0,
+      explain: "Use DURING for progressive past actions and BEFORE for completed simple past actions."
+    },
+    {
+      scene: "Timeline Card K",
+      prompt: "Place each line in the right timeline bucket.",
+      options: [
+        "The class was taking notes while the teacher explained the graph.",
+        "The coach reviewed scores after practice.",
+        "I was checking the rubric when my phone buzzed.",
+        "The librarian closed the desk at 5:00."
+      ],
+      answer: 0,
+      explain: "In-progress actions belong in DURING. Completed events belong in BEFORE."
+    },
+    {
+      scene: "Timeline Card L",
+      prompt: "Sort these timeline clues into BEFORE or DURING.",
+      options: [
+        "We were setting up stations when the visitors arrived.",
+        "The teacher graded quizzes after school.",
+        "Students were discussing evidence while the monitor timed them.",
+        "The class submitted notebooks before the bell."
+      ],
+      answer: 0,
+      explain: "Was/were + ing is DURING. Finished actions in simple past are BEFORE."
+    },
+    {
+      scene: "Timeline Card M",
+      prompt: "Drag each sentence to the correct timeline zone.",
+      options: [
+        "The lab team was measuring samples when the timer beeped.",
+        "The secretary printed agendas before assembly.",
+        "The students were brainstorming while music played softly.",
+        "The counselor ended the meeting at 2:00."
+      ],
+      answer: 0,
+      explain: "Timeline Sort is about classifying action type, not finding one wrong line."
+    },
+    {
+      scene: "Timeline Card N",
+      prompt: "Classify each line by timeline meaning.",
+      options: [
+        "The class was watching the demo when the internet dropped.",
+        "The principal visited three classrooms before noon.",
+        "Maya was highlighting notes while Leo summarized evidence.",
+        "The teacher posted scores after class."
+      ],
+      answer: 0,
+      explain: "Choose DURING for ongoing background actions and BEFORE for completed actions."
+    },
+    {
+      scene: "Timeline Card O",
+      prompt: "Sort all cards into BEFORE or DURING.",
+      options: [
+        "We were practicing introductions when the guests entered.",
+        "The team reviewed the checklist after lunch.",
+        "Students were editing drafts while the timer was counting down.",
+        "The office delivered badges at 8:20."
+      ],
+      answer: 0,
+      explain: "Progressive forms show DURING; simple past forms show BEFORE."
+    },
+    {
+      scene: "Timeline Card P",
+      prompt: "Use the verb clues to sort each sentence.",
+      options: [
+        "The students were presenting projects when the visitor arrived.",
+        "The librarian stamped returns before recess.",
+        "I was revising the paragraph while my partner checked punctuation.",
+        "The coach started practice at 4:10."
+      ],
+      answer: 0,
+      explain: "Sort by action timing: in progress (DURING) vs completed (BEFORE)."
+    },
+    {
+      scene: "Timeline Card Q",
+      prompt: "Drag each sentence to the timeline zone that fits.",
+      options: [
+        "The class was discussing themes while rain was falling outside.",
+        "The teacher opened the rubric and explained criteria.",
+        "We were waiting in the hallway when the door unlocked.",
+        "The team finalized the script after rehearsal."
+      ],
+      answer: 0,
+      explain: "DURING captures ongoing background actions, BEFORE captures completed events."
+    },
+    {
+      scene: "Timeline Card R",
+      prompt: "Sort each line into BEFORE or DURING.",
+      options: [
+        "The teacher was reading aloud while students were taking notes.",
+        "The class completed the worksheet before discussion.",
+        "I was reviewing the clue when the alarm sounded.",
+        "The office sent the reminder at 10:30."
+      ],
+      answer: 0,
+      explain: "Past continuous belongs in DURING; simple past belongs in BEFORE."
+    },
+    {
+      scene: "Timeline Card S",
+      prompt: "Classify the timeline cards by action type.",
+      options: [
+        "The team was building the model when the glue spilled.",
+        "The nurse checked attendance after the bell rang.",
+        "Students were comparing answers while the clock was ticking.",
+        "The principal approved the field trip form."
+      ],
+      answer: 0,
+      explain: "Use DURING for ongoing actions and BEFORE for completed actions."
+    },
+    {
+      scene: "Timeline Card T",
+      prompt: "Sort each sentence to the right timeline zone.",
+      options: [
+        "I was reviewing the clue when my phone rang.",
+        "The class packed supplies before dismissal.",
+        "The monitor was updating scores while teams debated answers.",
+        "The teacher ended the mission and collected reports."
+      ],
+      answer: 0,
+      explain: "Was/were + ing belongs in DURING. Completed simple past belongs in BEFORE."
+    }
+  ];
+
   function cloneRound(round) {
     return {
       scene: round.scene,
@@ -4001,6 +4244,7 @@
   }
 
   function resolveRoundBank(key, packId) {
+    if (key === "past-sort") return timelineSortRounds;
     var base = roundBanks[key] || fallbackRounds;
     var variant = packVariantBanks[key];
     if (variant && variant[packId]) return variant[packId].concat(base);
@@ -4058,7 +4302,10 @@
       + ".opt.eliminated{opacity:.6;pointer-events:none;}"
       + ".duel-wrap{display:grid;gap:10px;}"
       + ".duel-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
-      + ".duel-actions .opt{min-height:72px;}"
+      + ".duel-actions .opt{min-height:88px;display:grid;gap:8px;align-content:start;padding-left:16px;}"
+      + ".duel-actions .opt::before{display:none;}"
+      + ".duel-tag{display:inline-flex;align-items:center;gap:6px;width:max-content;padding:4px 10px;border-radius:999px;border:1px solid " + accent + "55;background:" + accent + "12;color:" + accent + ";font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}"
+      + ".duel-text{font-size:15px;line-height:1.45;color:#16223a;font-weight:600;}"
       + ".classify-drag-wrapper{display:grid;gap:16px;}"
       + ".classify-pool{min-height:60px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;}"
       + ".classify-zones{display:grid;grid-template-columns:1fr 1fr;gap:14px;}"
@@ -4098,12 +4345,16 @@
       + ".builder-bar-chip:hover{background:" + accent + "22;}"
       + ".builder-bar-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
       + ".builder-bar-placeholder{margin:0;font-size:13px;color:#a0aec0;font-style:italic;}"
-      + ".dialogue-wrap{display:grid;gap:14px;max-width:520px;margin:0 auto;}"
+      + ".dialogue-wrap{display:grid;gap:14px;max-width:560px;margin:0 auto;}"
+      + ".dialogue-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc;}"
+      + ".dialogue-tag{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
+      + ".dialogue-scene-name{font:600 12px Inter,Arial,sans-serif;color:#4a5568;}"
       + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:85%;font-size:14px;line-height:1.5;position:relative;}"
       + ".dialogue-bubble-left{background:#e8edf5;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
       + ".dialogue-bubble-right{background:" + accent + "18;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
       + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#a0aec0;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:48px;display:flex;align-items:center;}"
       + ".dialogue-speaker{font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + accent + ";margin-bottom:4px;display:block;}"
+      + ".dialogue-objective{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4a5568;text-align:center;}"
       + ".dialogue-choices{display:grid;gap:8px;}"
       + ".dialogue-choice-btn{text-align:left;}"
       + ".rewrite-wrap{display:grid;gap:14px;}"
@@ -4253,57 +4504,114 @@
     }
   }
 
-  function modeHelperText(mode) {
-    if (mode === "spotlight") return "4 options appear one at a time. Read carefully and click the ONE correct sentence.";
-    if (mode === "timeline") return "Drag each sentence to BEFORE (completed) or DURING (ongoing) on the timeline.";
-    if (mode === "builder") return "Drag the word chips into the correct order to build the sentence.";
-    if (mode === "dialogue") return "Read the conversation and pick the reply that fills the blank speech bubble.";
-    if (mode === "rewrite") return "The original is struck through. Compare the two rewrites and pick the better one.";
-    if (mode === "signal") return "A signal word is shown. Decide: does the sentence MATCH the signal?";
-    if (mode === "evidence") return "Mark each evidence card as Strong (correct) or Weak (has errors), then submit.";
-    if (mode === "interrogation") return "Read the witness statement and pick the report that captures it with correct grammar.";
-    if (mode === "smash") return "3 sentences are correct. Find the ONE with the error.";
-    if (mode === "binary") return "A signal word is highlighted. Decide: does the verb tense MATCH or MISMATCH?";
-    if (mode === "classify") return "Drag each sentence to BEFORE (completed) or DURING (ongoing) on the timeline.";
-    if (mode === "repair") return "One message in the chat has a grammar error. Pick the corrected reply.";
-    if (mode === "duel") return "The original has a weakness underlined. Pick the stronger rewrite to fill the meter.";
-    if (mode === "sequence") return "A paragraph has a blank. Pick the sentence that fills the gap.";
-    if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
-    if (mode === "sweep") return "Pin each evidence card as VERIFIED (correct) or FLAGGED (error), then submit.";
-    if (mode === "forge") return "Build the correct sentence by clicking word tiles in order. Watch out for distractor words!";
-    if (mode === "detect") return "A sentence has an error. Click the specific word that is wrong.";
-    if (mode === "order") return "Arrange the sentences in the correct sequence: best answer first.";
-    return "Mode rule: choose the single strongest line.";
+  function pickRoundVariant(lines, roundIndex, fallback) {
+    var list = Array.isArray(lines) ? lines.filter(Boolean) : [];
+    if (!list.length) return fallback || "";
+    var safeIndex = Math.max(0, Number(roundIndex) || 0);
+    return list[safeIndex % list.length];
   }
 
-  function modePrompt(mode) {
-    if (mode === "spotlight") return "Read each option carefully, then click the correct sentence.";
-    if (mode === "timeline") return "Drag each sentence to the correct zone on the timeline.";
-    if (mode === "builder") return "Arrange the word chips to build the correct sentence.";
-    if (mode === "dialogue") return "Read the conversation and pick the reply for the blank bubble.";
-    if (mode === "rewrite") return "The original is struck through. Pick the better rewrite.";
-    if (mode === "signal") return "Does this sentence match the signal? \u2713 Matches or \u2717 Doesn\u2019t Match";
-    if (mode === "evidence") return "Mark each card as Strong or Weak evidence, then submit.";
-    if (mode === "interrogation") return "Read the witness statement. Pick the accurate report.";
-    if (mode === "smash") return "3 sentences are correct. Find the one with the error.";
-    if (mode === "binary") return "Does the verb tense match the signal word? \u2713 MATCH or \u2717 MISMATCH";
-    if (mode === "classify") return "Drag each sentence to the correct zone on the timeline.";
-    if (mode === "repair") return "One message has an error. Pick the corrected reply.";
-    if (mode === "duel") return "Compare the two rewrites. Pick the stronger one.";
-    if (mode === "sequence") return "Read the paragraph and pick the sentence that fills the blank.";
-    if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
-    if (mode === "sweep") return "Mark each card VERIFIED or FLAGGED, then submit the board.";
-    if (mode === "forge") return "Click word tiles to build the correct sentence, then submit.";
-    if (mode === "detect") return "Read the sentence and click the word that contains the error.";
-    if (mode === "order") return "Drag sentences into the best order, then submit.";
-    return "Choose the single strongest line.";
+  function modeHelperText(mode) {
+    if (mode === "spotlight") return "Tip: scan for time markers first, then verify verb form.";
+    if (mode === "timeline") return "Tip: completed action goes BEFORE; ongoing background goes DURING.";
+    if (mode === "builder") return "Tip: lock subject + verb first, then place details.";
+    if (mode === "dialogue") return "Tip: choose the reply that keeps both meaning and tense.";
+    if (mode === "rewrite") return "Tip: stronger rewrites improve grammar without changing meaning.";
+    if (mode === "signal") return "Tip: signal words should match tense, not just sound familiar.";
+    if (mode === "evidence") return "Tip: verify every line before trusting your final verdict.";
+    if (mode === "interrogation") return "Tip: match the report to the original statement precisely.";
+    if (mode === "smash") return "Tip: compare all options before committing to one word-level error.";
+    if (mode === "binary") return "Tip: focus on the highlighted signal before choosing MATCH/MISMATCH.";
+    if (mode === "classify") return "Tip: ask whether the action was finished or still in progress.";
+    if (mode === "repair") return "Tip: the best fix sounds natural and stays true to context.";
+    if (mode === "duel") return "Tip: pick the rewrite that is both correct and clear.";
+    if (mode === "sequence") return "Tip: test transitions to find the line that completes the flow.";
+    if (mode === "eliminate") return "Tip: remove weak options one by one, then confirm your keeper.";
+    if (mode === "sweep") return "Tip: tag each card quickly, then double-check before submit.";
+    if (mode === "forge") return "Tip: ignore distractors and build around the main verb phrase.";
+    if (mode === "detect") return "Tip: one word causes the break - find the exact mismatch.";
+    if (mode === "order") return "Tip: anchor the opening line first, then arrange the rest.";
+    return "Tip: read for meaning first, then grammar precision.";
+  }
+
+  function modePrompt(mode, roundIndex) {
+    if (mode === "spotlight") return pickRoundVariant([
+      "Pick the one line that is fully correct.",
+      "Which option keeps both grammar and meaning strongest?",
+      "Choose the sentence that best fits this scene."
+    ], roundIndex, "Pick the strongest line.");
+    if (mode === "timeline" || mode === "classify") return pickRoundVariant([
+      "Drag each sentence to BEFORE or DURING on the timeline.",
+      "Sort each line: completed event or ongoing background?",
+      "Place every sentence in its correct timeline zone."
+    ], roundIndex, "Sort each sentence on the timeline.");
+    if (mode === "builder") return pickRoundVariant([
+      "Arrange the word chips to build the target sentence.",
+      "Build the sentence in correct grammatical order.",
+      "Order the chips so the sentence reads correctly."
+    ], roundIndex, "Build the sentence with the chips.");
+    if (mode === "dialogue") return pickRoundVariant([
+      "Pick the reply that fits the conversation.",
+      "Choose the response that keeps the dialogue natural and correct.",
+      "Select the line that best completes the chat."
+    ], roundIndex, "Pick the best reply.");
+    if (mode === "rewrite" || mode === "duel") return pickRoundVariant([
+      "Compare both rewrites and choose the stronger one.",
+      "Pick the rewrite with clearer and correct grammar.",
+      "Choose the better revision for this sentence."
+    ], roundIndex, "Pick the stronger rewrite.");
+    if (mode === "signal" || mode === "binary") return pickRoundVariant([
+      "Does this sentence match the signal word? MATCH or MISMATCH.",
+      "Use the signal to judge the tense fit.",
+      "Check signal vs tense: does it align?"
+    ], roundIndex, "Decide whether the sentence matches the signal.");
+    if (mode === "evidence" || mode === "sweep") return pickRoundVariant([
+      "Label each card, then submit your board verdict.",
+      "Mark every line as strong or weak evidence, then submit.",
+      "Classify all cards before final board check."
+    ], roundIndex, "Mark each card, then submit.");
+    if (mode === "interrogation") return pickRoundVariant([
+      "Pick the report that accurately captures the statement.",
+      "Choose the report line that preserves the original meaning.",
+      "Select the most accurate grammar report."
+    ], roundIndex, "Pick the accurate report.");
+    if (mode === "smash" || mode === "detect") return pickRoundVariant([
+      "Find the word that causes the grammar error.",
+      "Identify the exact word that needs correction.",
+      "Tap the one word that breaks the sentence."
+    ], roundIndex, "Find the grammar error word.");
+    if (mode === "repair") return pickRoundVariant([
+      "Choose the corrected message for this chat line.",
+      "Pick the reply that repairs the grammar issue.",
+      "Select the clean fix that fits the conversation."
+    ], roundIndex, "Pick the corrected line.");
+    if (mode === "sequence" || mode === "order") return pickRoundVariant([
+      "Arrange the lines so the sequence makes sense.",
+      "Order the sentences from strongest start to finish.",
+      "Build the best flow by reordering the lines."
+    ], roundIndex, "Order the lines for best flow.");
+    if (mode === "eliminate") return pickRoundVariant([
+      "Eliminate weak lines and keep the strongest one.",
+      "Remove three weak options, then lock your best line.",
+      "Filter out weak lines to reveal the best answer."
+    ], roundIndex, "Eliminate weak options.");
+    if (mode === "forge") return pickRoundVariant([
+      "Click tiles in order to forge the correct sentence.",
+      "Build the sentence using only the tiles that fit.",
+      "Assemble the line and avoid distractor tiles."
+    ], roundIndex, "Forge the correct sentence.");
+    return pickRoundVariant([
+      "Choose the strongest line for this scene.",
+      "Pick the best grammar choice.",
+      "Select the most accurate option."
+    ], roundIndex, "Choose the strongest line.");
   }
 
   function modeHowTo(mode, fallback) {
     if (mode === "spotlight") return "4 options appear one at a time with a spotlight. Read each carefully, then click the ONE correct sentence.";
     if (mode === "timeline") return "Sort sentences onto the timeline: completed events go BEFORE, ongoing actions go DURING.";
     if (mode === "builder") return "The correct sentence is split into word chips. Drag or click them into order, then submit.";
-    if (mode === "dialogue") return "A conversation has a blank speech bubble. Read the flow and pick the reply that fits.";
+    if (mode === "dialogue") return "A chat thread shows two setup turns and one missing reply. Read the flow, then choose the response that fits best.";
     if (mode === "rewrite") return "The original sentence is struck through. Compare two rewrites side by side and pick the better one.";
     if (mode === "signal") return "A signal word is shown as a badge. A sentence appears below. Decide if the sentence matches the signal.";
     if (mode === "evidence") return "Review each evidence card. Mark correct grammar as Strong Evidence and errors as Weak Evidence, then submit.";
@@ -4320,6 +4628,83 @@
     if (mode === "detect") return "A wrong sentence is displayed word by word. Click the word that contains the error to reveal the correct version.";
     if (mode === "order") return "Four sentences are shuffled. Click to select and move them into the best order, then submit.";
     return fallback || "Choose the strongest line.";
+  }
+
+  function modeScenarioPrompt(mode, round, roundIndex) {
+    if (round && typeof round.prompt === "string" && round.prompt.trim()) {
+      return round.prompt.trim();
+    }
+    return modePrompt(mode, roundIndex);
+  }
+
+  function modeMicroTip(mode, roundIndex) {
+    if (mode === "spotlight") return pickRoundVariant([
+      "Coach tip: read all options before your first click.",
+      "Coach tip: compare verb forms before picking.",
+      "Coach tip: one option is fully clean."
+    ], roundIndex, "Coach tip: check tense + meaning.");
+    if (mode === "detect") return pickRoundVariant([
+      "Coach tip: click only one word - make it count.",
+      "Coach tip: look for tense or agreement mismatch.",
+      "Coach tip: compare subject and verb first."
+    ], roundIndex, "Coach tip: find the exact mismatch.");
+    if (mode === "dialogue") return pickRoundVariant([
+      "Coach tip: read both chat turns before picking a reply.",
+      "Coach tip: keep the message meaning, then fix the grammar.",
+      "Coach tip: pick the reply that sounds natural and correct."
+    ], roundIndex, "Coach tip: choose the strongest chat reply.");
+    if (mode === "order") return pickRoundVariant([
+      "Coach tip: place the opening line first, then reorder.",
+      "Coach tip: move one sentence at a time and re-read.",
+      "Coach tip: transitions reveal the best sequence."
+    ], roundIndex, "Coach tip: test sequence coherence.");
+    return modeHelperText(mode);
+  }
+
+  function buildDialogueThread(round, roundIndex) {
+    var scene = (round && round.scene) ? String(round.scene) : "Classroom Chat";
+    var lower = scene.toLowerCase();
+    var pair = pickRoundVariant([
+      { a: "Maya", b: "Leo" },
+      { a: "Sofia", b: "Noah" },
+      { a: "Ava", b: "Ethan" },
+      { a: "Zara", b: "Daniel" }
+    ], roundIndex, { a: "Student A", b: "Student B" });
+
+    var openLine = "I want to send this clearly before class starts.";
+    if (lower.indexOf("teacher") >= 0) openLine = "Ms. Lee asked me to explain this idea in one clear sentence.";
+    else if (lower.indexOf("classroom") >= 0) openLine = "I am replying to our classroom discussion thread.";
+    else if (lower.indexOf("group") >= 0) openLine = "Our group chat needs one clean response for this step.";
+    else if (lower.indexOf("partner") >= 0) openLine = "My partner asked me to rewrite this line naturally.";
+    else if (lower.indexOf("hallway") >= 0) openLine = "I am posting a quick hallway update to my team.";
+    else if (lower.indexOf("science") >= 0) openLine = "I am sending our science-lab update in the class chat.";
+    else if (lower.indexOf("library") >= 0) openLine = "I am messaging quietly from the library support desk.";
+    else if (lower.indexOf("recess") >= 0) openLine = "I am recapping what happened at recess.";
+    else if (lower.indexOf("morning") >= 0) openLine = "I am writing a morning update before homeroom.";
+    else if (lower.indexOf("cafeteria") >= 0) openLine = "I am texting from the cafeteria line with an update.";
+    else if (lower.indexOf("office") >= 0) openLine = "I am sending this message to the front office.";
+    else if (lower.indexOf("study") >= 0) openLine = "I am checking our sentence in study hall chat.";
+    else if (lower.indexOf("after-school") >= 0) openLine = "I am sending our after-school meetup update.";
+    else if (lower.indexOf("retell") >= 0) openLine = "We are retelling what happened after class.";
+    else if (lower.indexOf("present dialogue") >= 0) openLine = "We are describing what is happening right now.";
+    else if (lower.indexOf("agreement dialogue") >= 0) openLine = "We are checking subject-verb agreement before sending.";
+    else if (lower.indexOf("connector dialogue") >= 0) openLine = "We are linking two ideas with the right connector.";
+    else if (lower.indexOf("reference dialogue") >= 0) openLine = "We are making sure each pronoun reference is clear.";
+    else if (lower.indexOf("question dialogue") >= 0) openLine = "We are forming a clear question for the class chat.";
+
+    var handoffLine = pickRoundVariant([
+      "Can you help me pick the strongest reply?",
+      "Which response should I send so it sounds natural?",
+      "Pick the corrected reply I should post."
+    ], roundIndex, "Can you help me choose the best response?");
+
+    return {
+      scene: scene,
+      speakerA: pair.a,
+      speakerB: pair.b,
+      lineA: openLine,
+      lineB: handoffLine
+    };
   }
 
   function buildRounds(bank, desiredCount) {
@@ -4362,7 +4747,7 @@
     ? "Projector mode! The teacher controls the pace. Discuss each question as a class, vote, then reveal the answer."
     : modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode));
   text("howToTitle", "How to play: " + cfg.title);
-  text("actionTip", modePrompt(activeMode));
+  text("actionTip", modePrompt(activeMode, 0));
   text("hudTimer", timerOn ? "--" : "Off");
   var sceneLabelEl = document.querySelector(".scene .label");
   if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
@@ -4633,7 +5018,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Rewrite " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.innerHTML = "<span class=\"duel-tag\">Rewrite " + String.fromCharCode(65 + i) + "</span><span class=\"duel-text\">" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         var isCorrect = item.idx === round.answer;
@@ -4658,7 +5043,7 @@
   }
 
   function sentenceClass(lineText) {
-    return /\b(am|is|are|was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
+    return /\b(was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
   }
 
   function showClassifyOptions(round) {
@@ -5100,7 +5485,7 @@
 
     var instruction = document.createElement("p");
     instruction.className = "spotlight-instruction";
-    instruction.textContent = "Read each option carefully, then click the correct sentence.";
+    instruction.textContent = modeMicroTip("spotlight", idx);
     wrap.appendChild(instruction);
 
     var items = shuffle(round.options.map(function (lineText, optionIdx) {
@@ -5239,23 +5624,34 @@
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: "dialogue", round: round };
+    var thread = buildDialogueThread(round, idx);
 
     var wrap = document.createElement("div");
     wrap.className = "dialogue-wrap";
 
+    var meta = document.createElement("div");
+    meta.className = "dialogue-meta";
+    meta.innerHTML = "<span class=\"dialogue-tag\">Chat Thread</span><span class=\"dialogue-scene-name\">" + thread.scene + "</span>";
+    wrap.appendChild(meta);
+
     var bubbleA = document.createElement("div");
     bubbleA.className = "dialogue-bubble dialogue-bubble-left";
-    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">Speaker A</span>" + round.scene;
+    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerA + "</span>" + thread.lineA;
     wrap.appendChild(bubbleA);
 
     var bubbleContext = document.createElement("div");
     bubbleContext.className = "dialogue-bubble dialogue-bubble-right";
-    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>" + round.prompt;
+    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + thread.lineB;
     wrap.appendChild(bubbleContext);
+
+    var objective = document.createElement("p");
+    objective.className = "dialogue-objective";
+    objective.textContent = modeScenarioPrompt("dialogue", round, idx);
+    wrap.appendChild(objective);
 
     var bubbleBlank = document.createElement("div");
     bubbleBlank.className = "dialogue-bubble dialogue-bubble-blank";
-    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>[Pick a reply\u2026]";
+    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>[Pick " + thread.speakerB + "'s best reply\u2026]";
     wrap.appendChild(bubbleBlank);
 
     var choices = [round.answer];
@@ -5278,7 +5674,7 @@
       btn.innerHTML = "<span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
-        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">Speaker B</span>" + item.text;
+        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + item.text;
         bubbleBlank.className = "dialogue-bubble dialogue-bubble-right";
         finishRound(
           item.idx === round.answer,
@@ -5327,7 +5723,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Rewrite " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.innerHTML = "<span class=\"duel-tag\">Rewrite " + String.fromCharCode(65 + i) + "</span><span class=\"duel-text\">" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
@@ -5713,7 +6109,7 @@
 
     var instruction = document.createElement("p");
     instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
-    instruction.textContent = "Click the word that contains the error:";
+    instruction.textContent = modeMicroTip("detect", idx);
     wrap.appendChild(instruction);
 
     var sentenceDiv = document.createElement("div");
@@ -5784,7 +6180,7 @@
 
     var instruction = document.createElement("p");
     instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
-    instruction.textContent = "Arrange the sentences in the best order (click to select, click a position to move):";
+    instruction.textContent = modeMicroTip("order", idx);
     wrap.appendChild(instruction);
 
     var list = document.createElement("div");
@@ -5924,8 +6320,9 @@
     teamB.locked = false;
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
+    text("actionTip", modePrompt(activeMode, idx));
     text("scene", round.scene);
-    text("prompt", modePrompt(activeMode));
+    text("prompt", modeScenarioPrompt(activeMode, round, idx));
 
     optionsEl.innerHTML = "";
     var split = document.createElement("div");
@@ -5958,6 +6355,7 @@
     wcRevealed = false;
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
+    text("actionTip", modePrompt(activeMode, idx));
     var voteKey = wcVotedKey + idx;
     var alreadyVoted = false;
     try { alreadyVoted = !!sessionStorage.getItem(voteKey); } catch (e) {}
@@ -5973,7 +6371,7 @@
 
     var promptEl = document.createElement("div");
     promptEl.className = "wc-prompt";
-    promptEl.textContent = round.prompt || modePrompt(activeMode);
+    promptEl.textContent = modeScenarioPrompt(activeMode, round, idx);
     wrap.appendChild(promptEl);
 
     var optsGrid = document.createElement("div");
@@ -6115,8 +6513,9 @@
     text("feedback", "");
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
+    text("actionTip", modePrompt(activeMode, idx));
     text("scene", round.scene);
-    text("prompt", modePrompt(activeMode));
+    text("prompt", modeScenarioPrompt(activeMode, round, idx));
     if (activeMode === "spotlight") {
       showSpotlightOptions(round);
     } else if (activeMode === "timeline") {
