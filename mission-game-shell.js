@@ -374,6 +374,54 @@
         ],
         answer: 0,
         explain: "Retelling a finished sequence works best in simple past."
+      },
+      {
+        scene: "Timeline Card G",
+        prompt: "Choose the sentence that shows a completed past action.",
+        options: [
+          "The principal announced the results after lunch.",
+          "The principal was announcing the results after lunch.",
+          "The principal announces the results after lunch yesterday.",
+          "The principal is announcing the results after lunch."
+        ],
+        answer: 0,
+        explain: "A completed single action in the past takes simple past announced."
+      },
+      {
+        scene: "Timeline Card H",
+        prompt: "Select the line that shows an ongoing action interrupted by an event.",
+        options: [
+          "We were organizing the files when the power went out.",
+          "We organized the files when the power goes out.",
+          "We are organizing the files when the power went out.",
+          "We organizing the files when the power went out."
+        ],
+        answer: 0,
+        explain: "Were organizing shows background action interrupted by went out."
+      },
+      {
+        scene: "Timeline Card I",
+        prompt: "Pick the sentence with correct timeline meaning.",
+        options: [
+          "She finished the report, saved it, and then she leave.",
+          "She finished the report, saved it, and then she left.",
+          "She was finish the report, saved it, and then she left.",
+          "She finishing the report, saving it, and then she left."
+        ],
+        answer: 1,
+        explain: "A sequence of completed actions uses consistent simple past verbs."
+      },
+      {
+        scene: "Timeline Card J",
+        prompt: "Which sentence matches the meaning: background action in progress?",
+        options: [
+          "The librarian sorted the returns while students studied quietly.",
+          "The librarian was sorting the returns while students were studying quietly.",
+          "The librarian sorts the returns while students were studying quietly.",
+          "The librarian was sorting the returns while students study quietly."
+        ],
+        answer: 1,
+        explain: "Two simultaneous ongoing past actions both use past continuous."
       }
     ],
     "narrative-builder": [
@@ -496,6 +544,54 @@
         ],
         answer: 0,
         explain: "A narrative conclusion uses simple past for completed actions in sequence."
+      },
+      {
+        scene: "Story Step 11",
+        prompt: "Which line continues the story with correct tense?",
+        options: [
+          "After the team gathered the evidence, the leader presents the plan.",
+          "After the team gathered the evidence, the leader presented the plan.",
+          "After the team was gather the evidence, the leader presented the plan.",
+          "After the team gathers the evidence, the leader presented the plan."
+        ],
+        answer: 1,
+        explain: "Both clauses in a past narrative need consistent simple past."
+      },
+      {
+        scene: "Story Step 12",
+        prompt: "Select the sentence that keeps the story flowing.",
+        options: [
+          "Meanwhile, the scout was mapping the trail while the others rested nearby.",
+          "Meanwhile, the scout mapping the trail while the others rested nearby.",
+          "Meanwhile, the scout was mapping the trail while the others rests nearby.",
+          "Meanwhile, the scout maps the trail while the others rested nearby."
+        ],
+        answer: 0,
+        explain: "Simultaneous past actions use past continuous and simple past together."
+      },
+      {
+        scene: "Story Step 13",
+        prompt: "Pick the best next story line.",
+        options: [
+          "The group decided to split up, and each member choose a different route.",
+          "The group decided to split up, and each member chose a different route.",
+          "The group decides to split up, and each member chose a different route.",
+          "The group decided to split up, and each member was choose a different route."
+        ],
+        answer: 1,
+        explain: "Parallel completed past actions both take simple past forms."
+      },
+      {
+        scene: "Story Step 14",
+        prompt: "Choose the line that wraps up the chapter correctly.",
+        options: [
+          "At last, the crew returned to base and files the final report.",
+          "At last, the crew returned to base and filed the final report.",
+          "At last, the crew returns to base and filed the final report.",
+          "At last, the crew was returned to base and filed the final report."
+        ],
+        answer: 1,
+        explain: "A past narrative closing needs consistent simple past verbs."
       }
     ],
     "dialogue-repair": [
@@ -618,6 +714,54 @@
         ],
         answer: 1,
         explain: "Embedded questions keep statement order: subject before verb."
+      },
+      {
+        scene: "Cafeteria Check-in",
+        prompt: "Pick the repaired dialogue line.",
+        options: [
+          "She don't know where the meeting is.",
+          "She doesn't know where the meeting is.",
+          "She doesn't knows where the meeting is.",
+          "She not know where the meeting is."
+        ],
+        answer: 1,
+        explain: "Third-person singular she requires doesn't + base verb know."
+      },
+      {
+        scene: "Office Referral",
+        prompt: "Choose the best correction for the dialogue.",
+        options: [
+          "He asked me where did I put the folder.",
+          "He asked me where I putted the folder.",
+          "He asked me where I put the folder.",
+          "He asked me where I did put the folder."
+        ],
+        answer: 2,
+        explain: "Embedded questions use statement word order: subject before verb."
+      },
+      {
+        scene: "Study Hall Whisper",
+        prompt: "Select the natural, error-free dialogue.",
+        options: [
+          "We was supposed to finish this yesterday, but we didn't.",
+          "We were supposed to finish this yesterday, but we didn't.",
+          "We were suppose to finish this yesterday, but we don't.",
+          "We supposed to finish this yesterday, but we didn't."
+        ],
+        answer: 1,
+        explain: "Plural we takes were; supposed keeps the past participle form."
+      },
+      {
+        scene: "After-School Meetup",
+        prompt: "Which line repairs the dialogue correctly?",
+        options: [
+          "Can you helped me carry these books to the car?",
+          "Can you help I carry these books to the car?",
+          "Can you help me carry these books to the car?",
+          "Can you helps me carry these books to the car?"
+        ],
+        answer: 2,
+        explain: "Modal can is followed by the base verb help; object pronoun is me."
       }
     ],
     "rewrite-studio": [
