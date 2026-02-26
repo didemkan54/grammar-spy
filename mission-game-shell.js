@@ -4156,7 +4156,44 @@
       + ".order-item:hover{border-color:" + accent + ";box-shadow:0 4px 12px rgba(11,16,32,.08);}"
       + ".order-item.selected{border-color:" + accent + ";background:" + accent + "11;box-shadow:0 0 0 3px " + accent + "33;transform:translateY(-2px);}"
       + ".order-item b{color:" + accent + ";margin-right:6px;}"
-      + ".order-slot{min-height:48px;border:2px dashed #d9dee6;border-radius:10px;background:#f8fafc;}";
+      + ".order-slot{min-height:48px;border:2px dashed #d9dee6;border-radius:10px;background:#f8fafc;}"
+      + ".team-split{display:grid;grid-template-columns:1fr 4px 1fr;gap:0;min-height:400px}"
+      + ".team-panel{padding:16px;display:grid;gap:12px;align-content:start}"
+      + ".team-panel-a{background:#f6fafa;border-radius:14px 0 0 14px}"
+      + ".team-panel-b{background:#fffdf5;border-radius:0 14px 14px 0}"
+      + ".team-divider{background:linear-gradient(180deg,#1f5f63,#c9a227);border-radius:2px}"
+      + ".team-label{font:800 14px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:8px}"
+      + ".team-label-a{color:#1f5f63}"
+      + ".team-label-b{color:#c9a227}"
+      + ".team-score{text-align:center;font:800 28px Inter,Arial,sans-serif}"
+      + ".team-score-a{color:#1f5f63}"
+      + ".team-score-b{color:#c9a227}"
+      + ".team-status{text-align:center;font:600 12px Inter,Arial,sans-serif;color:#7a8698;text-transform:uppercase;letter-spacing:.06em}"
+      + ".team-opt{border:1px solid #d9dee6;border-radius:10px;background:#fff;padding:10px;cursor:pointer;font-size:13px;text-align:left;transition:transform .15s,border-color .15s}"
+      + ".team-opt:hover{transform:translateY(-1px);border-color:#1f5f63}"
+      + ".team-opt.good{border-color:#1f8f63;background:#eaf8ef}"
+      + ".team-opt.bad{border-color:#b04444;background:#fff0f0}"
+      + ".team-opt.locked{pointer-events:none;opacity:.7}"
+      + ".team-vs{display:flex;align-items:center;justify-content:center;font:800 18px Inter,sans-serif;color:#4a5568}"
+      + ".wc-wrap{max-width:900px;margin:0 auto;display:grid;gap:20px}"
+      + ".wc-prompt{font-size:24px;font-weight:800;color:#0b1020;text-align:center;line-height:1.3}"
+      + ".wc-scene{font-size:16px;color:#4a5568;text-align:center;padding:12px;background:#f6fafa;border-radius:12px}"
+      + ".wc-options{display:grid;grid-template-columns:1fr 1fr;gap:14px}"
+      + ".wc-opt{border:2px solid #d9dee6;border-radius:14px;background:#fff;padding:18px 20px;cursor:pointer;transition:all .2s;display:grid;gap:8px}"
+      + ".wc-opt:hover{border-color:#1f5f63;transform:translateY(-2px);box-shadow:0 6px 20px rgba(31,95,99,.12)}"
+      + ".wc-opt-label{font:800 16px Inter,sans-serif;color:#1f5f63}"
+      + ".wc-opt-text{font-size:16px;color:#16223a;line-height:1.5}"
+      + ".wc-opt-votes{display:flex;align-items:center;gap:8px}"
+      + ".wc-vote-bar{flex:1;height:8px;background:#e4e8ef;border-radius:4px;overflow:hidden}"
+      + ".wc-vote-fill{height:100%;background:#1f5f63;border-radius:4px;transition:width .3s}"
+      + ".wc-vote-count{font:700 14px Inter,sans-serif;color:#4a5568;min-width:30px;text-align:right}"
+      + ".wc-opt.correct{border-color:#1f8f63;background:#eaf8ef}"
+      + ".wc-opt.wrong{opacity:.5}"
+      + ".wc-reveal-btn{display:block;margin:0 auto;padding:14px 32px;background:#1f5f63;color:#fff;border:0;border-radius:12px;font:700 16px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}"
+      + ".wc-reveal-btn:hover{filter:brightness(1.1)}"
+      + ".wc-explain{padding:16px;background:#e6f2f2;border-radius:12px;font-size:15px;color:#1f5f63;text-align:center;font-weight:600}"
+      + ".wc-class-score{text-align:center;font:800 32px Inter,sans-serif;color:#1f5f63}"
+      + "@media(max-width:700px){.wc-options{grid-template-columns:1fr}.wc-prompt{font-size:20px}}";
     document.head.appendChild(style);
   }
 
@@ -4319,7 +4356,11 @@
   text("gameTitle", cfg.title);
   text("gameSub", cfg.subtitle);
   text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Mode: " + (ux.modeLabel || "Standard"));
-  text("howToText", modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode) + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
+  text("howToText", playFormat === "teams"
+    ? "Split-screen competition! Both teams play the same questions simultaneously. Fastest correct answers earn bonus points."
+    : playFormat === "whole_class"
+    ? "Projector mode! The teacher controls the pace. Discuss each question as a class, vote, then reveal the answer."
+    : modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode));
   text("howToTitle", "How to play: " + cfg.title);
   text("actionTip", modePrompt(activeMode));
   text("hudTimer", timerOn ? "--" : "Off");
@@ -5803,7 +5844,267 @@
     optionsEl.appendChild(wrap);
   }
 
+  /* ── TEAM MODE STATE ── */
+  var teamA = { score: 0, correct: 0, streak: 0, combo: 1, idx: 0, locked: false };
+  var teamB = { score: 0, correct: 0, streak: 0, combo: 1, idx: 0, locked: false };
+  var teamSplitEl = null;
+
+  function buildTeamPanel(team, label, cssClass, labelClass, scoreClass, round) {
+    var panel = document.createElement("div");
+    panel.className = "team-panel " + cssClass;
+    var lbl = document.createElement("div");
+    lbl.className = "team-label " + labelClass;
+    lbl.textContent = label;
+    panel.appendChild(lbl);
+    var sc = document.createElement("div");
+    sc.className = "team-score " + scoreClass;
+    sc.textContent = String(team.score);
+    sc.id = cssClass + "-score";
+    panel.appendChild(sc);
+    var st = document.createElement("div");
+    st.className = "team-status";
+    st.textContent = "Streak: " + team.streak + " \u00b7 Combo: " + team.combo + "x";
+    st.id = cssClass + "-status";
+    panel.appendChild(st);
+    var opts = round.options || [];
+    for (var i = 0; i < opts.length; i++) {
+      (function (optIdx) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "team-opt";
+        btn.textContent = opts[optIdx];
+        btn.addEventListener("click", function () {
+          if (team.locked) return;
+          team.locked = true;
+          var isCorrect = (activeMode === "smash") ? optIdx !== round.answer : optIdx === round.answer;
+          team.idx = optIdx;
+          if (isCorrect) {
+            btn.classList.add("good");
+            team.correct += 1;
+            team.streak += 1;
+            team.combo = 1 + Math.floor(Math.max(0, team.streak - 1) / 3);
+            team.score += Math.round(80 * team.combo);
+          } else {
+            btn.classList.add("bad");
+            team.streak = 0;
+            team.combo = 1;
+          }
+          var allBtns = panel.querySelectorAll(".team-opt");
+          for (var b = 0; b < allBtns.length; b++) allBtns[b].classList.add("locked");
+          var scEl = document.getElementById(cssClass + "-score");
+          if (scEl) scEl.textContent = String(team.score);
+          var stEl = document.getElementById(cssClass + "-status");
+          if (stEl) stEl.textContent = "Streak: " + team.streak + " \u00b7 Combo: " + team.combo + "x";
+          checkTeamBothAnswered(round);
+        });
+        panel.appendChild(btn);
+      })(i);
+    }
+    return panel;
+  }
+
+  function checkTeamBothAnswered(round) {
+    if (!teamA.locked || !teamB.locked) return;
+    awaitingNext = true;
+    var fb = (activeMode === "smash")
+      ? "Correct answer is option " + (round.answer + 1) + ". " + (round.explain || "")
+      : "Correct: \"" + round.options[round.answer] + "\". " + (round.explain || "");
+    html("feedback", "<span class=\"ok\">" + fb + "</span>");
+    idx += 1;
+    setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
+  }
+
+  function showTeamRound() {
+    if (idx >= rounds.length) { endGame(); return; }
+    locked = false;
+    awaitingNext = false;
+    setNextVisibility(false);
+    text("feedback", "");
+    teamA.locked = false;
+    teamB.locked = false;
+    var round = rounds[idx];
+    currentRoundState = { mode: activeMode, round: round };
+    text("scene", round.scene);
+    text("prompt", modePrompt(activeMode));
+
+    optionsEl.innerHTML = "";
+    var split = document.createElement("div");
+    split.className = "team-split";
+    split.appendChild(buildTeamPanel(teamA, "TEAM A", "team-panel-a", "team-label-a", "team-score-a", round));
+    var divider = document.createElement("div");
+    divider.className = "team-divider";
+    split.appendChild(divider);
+    split.appendChild(buildTeamPanel(teamB, "TEAM B", "team-panel-b", "team-label-b", "team-score-b", round));
+    optionsEl.appendChild(split);
+    teamSplitEl = split;
+    startShotClock(round);
+    updateHud();
+  }
+
+  /* ── WHOLE CLASS MODE STATE ── */
+  var wcVotes = [0, 0, 0, 0];
+  var wcRevealed = false;
+  var wcClassCorrect = 0;
+  var wcClassTotal = 0;
+  var wcVotedKey = "wc_voted_";
+
+  function showWholeClassRound() {
+    if (idx >= rounds.length) { endGame(); return; }
+    locked = false;
+    awaitingNext = false;
+    setNextVisibility(false);
+    text("feedback", "");
+    wcVotes = [0, 0, 0, 0];
+    wcRevealed = false;
+    var round = rounds[idx];
+    currentRoundState = { mode: activeMode, round: round };
+    var voteKey = wcVotedKey + idx;
+    var alreadyVoted = false;
+    try { alreadyVoted = !!sessionStorage.getItem(voteKey); } catch (e) {}
+
+    optionsEl.innerHTML = "";
+    var wrap = document.createElement("div");
+    wrap.className = "wc-wrap";
+
+    var sceneEl = document.createElement("div");
+    sceneEl.className = "wc-scene";
+    sceneEl.textContent = round.scene || "";
+    wrap.appendChild(sceneEl);
+
+    var promptEl = document.createElement("div");
+    promptEl.className = "wc-prompt";
+    promptEl.textContent = round.prompt || modePrompt(activeMode);
+    wrap.appendChild(promptEl);
+
+    var optsGrid = document.createElement("div");
+    optsGrid.className = "wc-options";
+    var labels = ["A", "B", "C", "D"];
+    var optEls = [];
+    var opts = round.options || [];
+
+    for (var i = 0; i < opts.length; i++) {
+      (function (optIdx) {
+        var card = document.createElement("div");
+        card.className = "wc-opt";
+        card.dataset.idx = optIdx;
+        var lbl = document.createElement("div");
+        lbl.className = "wc-opt-label";
+        lbl.textContent = labels[optIdx] || String(optIdx + 1);
+        card.appendChild(lbl);
+        var txt = document.createElement("div");
+        txt.className = "wc-opt-text";
+        txt.textContent = opts[optIdx];
+        card.appendChild(txt);
+        var votesRow = document.createElement("div");
+        votesRow.className = "wc-opt-votes";
+        var bar = document.createElement("div");
+        bar.className = "wc-vote-bar";
+        var fill = document.createElement("div");
+        fill.className = "wc-vote-fill";
+        fill.style.width = "0%";
+        fill.id = "wc-fill-" + optIdx;
+        bar.appendChild(fill);
+        votesRow.appendChild(bar);
+        var cnt = document.createElement("span");
+        cnt.className = "wc-vote-count";
+        cnt.id = "wc-count-" + optIdx;
+        cnt.textContent = "0";
+        votesRow.appendChild(cnt);
+        card.appendChild(votesRow);
+
+        var addVoteBtn = document.createElement("button");
+        addVoteBtn.type = "button";
+        addVoteBtn.className = "team-opt";
+        addVoteBtn.textContent = "+ Add Vote";
+        addVoteBtn.style.fontSize = "11px";
+        addVoteBtn.style.padding = "6px";
+        addVoteBtn.style.marginTop = "4px";
+        addVoteBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (wcRevealed) return;
+          wcVotes[optIdx] += 1;
+          updateWcVoteBars();
+        });
+        card.appendChild(addVoteBtn);
+
+        card.addEventListener("click", function () {
+          if (wcRevealed || alreadyVoted) return;
+          alreadyVoted = true;
+          try { sessionStorage.setItem(voteKey, "1"); } catch (e) {}
+          wcVotes[optIdx] += 1;
+          updateWcVoteBars();
+        });
+
+        optsGrid.appendChild(card);
+        optEls.push(card);
+      })(i);
+    }
+    wrap.appendChild(optsGrid);
+
+    var revealBtn = document.createElement("button");
+    revealBtn.type = "button";
+    revealBtn.className = "wc-reveal-btn";
+    revealBtn.textContent = "REVEAL ANSWER";
+    revealBtn.addEventListener("click", function () {
+      if (wcRevealed) return;
+      wcRevealed = true;
+      revealBtn.style.display = "none";
+
+      var totalVotes = 0;
+      for (var v = 0; v < wcVotes.length; v++) totalVotes += wcVotes[v];
+      var correctVotes = round.answer < wcVotes.length ? wcVotes[round.answer] : 0;
+      if (totalVotes > 0) {
+        wcClassCorrect += correctVotes;
+        wcClassTotal += totalVotes;
+      } else {
+        wcClassTotal += 1;
+      }
+
+      for (var k = 0; k < optEls.length; k++) {
+        if (k === round.answer) {
+          optEls[k].classList.add("correct");
+        } else {
+          optEls[k].classList.add("wrong");
+        }
+      }
+
+      var explainEl = document.createElement("div");
+      explainEl.className = "wc-explain";
+      explainEl.textContent = round.explain || "The correct answer is option " + labels[round.answer] + ".";
+      wrap.appendChild(explainEl);
+
+      if (wcClassTotal > 0) {
+        var pctEl = document.createElement("div");
+        pctEl.className = "wc-class-score";
+        pctEl.textContent = "Class Accuracy: " + Math.round((wcClassCorrect / wcClassTotal) * 100) + "%";
+        wrap.appendChild(pctEl);
+      }
+
+      idx += 1;
+      awaitingNext = true;
+      setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
+    });
+    wrap.appendChild(revealBtn);
+
+    optionsEl.appendChild(wrap);
+    updateHud();
+  }
+
+  function updateWcVoteBars() {
+    var total = 0;
+    for (var i = 0; i < wcVotes.length; i++) total += wcVotes[i];
+    for (var j = 0; j < wcVotes.length; j++) {
+      var pct = total > 0 ? Math.round((wcVotes[j] / total) * 100) : 0;
+      var fill = document.getElementById("wc-fill-" + j);
+      var cnt = document.getElementById("wc-count-" + j);
+      if (fill) fill.style.width = pct + "%";
+      if (cnt) cnt.textContent = String(wcVotes[j]);
+    }
+  }
+
   function showRound() {
+    if (playFormat === "teams") { showTeamRound(); return; }
+    if (playFormat === "whole_class") { showWholeClassRound(); return; }
     if (idx >= rounds.length) {
       endGame();
       return;
@@ -5956,10 +6257,26 @@
   function endGame() {
     if (timer) clearInterval(timer);
     if (shotTimer) clearInterval(shotTimer);
-    var acc = Math.round((correct / Math.max(1, idx)) * 100);
-    text("reportAcc", "Accuracy: " + acc + "% (" + correct + "/" + Math.max(1, idx) + ")");
-    text("reportPlan", (acc >= 80 ? "Recommendation: advance to the next mission game." : "Recommendation: replay this game for retrieval strength.") + " Final score: " + score + " pts.");
-    text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
+
+    if (playFormat === "teams") {
+      var winner = teamA.score > teamB.score ? "Team A" : (teamB.score > teamA.score ? "Team B" : "Tie");
+      var accA = Math.round((teamA.correct / Math.max(1, rounds.length)) * 100);
+      var accB = Math.round((teamB.correct / Math.max(1, rounds.length)) * 100);
+      text("reportAcc", "Team A: " + teamA.score + " pts (" + accA + "%) vs Team B: " + teamB.score + " pts (" + accB + "%)");
+      text("reportPlan", winner === "Tie" ? "It\u2019s a tie! Both teams matched up perfectly." : winner + " wins! Great competition.");
+      text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Teams Mode");
+    } else if (playFormat === "whole_class") {
+      var classAcc = wcClassTotal > 0 ? Math.round((wcClassCorrect / wcClassTotal) * 100) : 0;
+      text("reportAcc", "Class Accuracy: " + classAcc + "% \u2014 " + wcClassCorrect + "/" + wcClassTotal + " correct as a group");
+      text("reportPlan", classAcc >= 80 ? "Great class performance! Ready for the next challenge." : "Review the tricky questions and try again.");
+      text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Whole Class Mode");
+    } else {
+      var acc = Math.round((correct / Math.max(1, idx)) * 100);
+      text("reportAcc", "Accuracy: " + acc + "% (" + correct + "/" + Math.max(1, idx) + ")");
+      text("reportPlan", (acc >= 80 ? "Recommendation: advance to the next mission game." : "Recommendation: replay this game for retrieval strength.") + " Final score: " + score + " pts.");
+      text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
+    }
+
     var report = document.getElementById("reportOverlay");
     if (report) report.classList.add("show");
   }
@@ -6016,6 +6333,9 @@
       awaitingNext = false;
       setNextVisibility(false);
       sec = timerOn ? rounds.length * missionSecondsPerRound : null;
+      teamA.score = 0; teamA.correct = 0; teamA.streak = 0; teamA.combo = 1; teamA.idx = 0; teamA.locked = false;
+      teamB.score = 0; teamB.correct = 0; teamB.streak = 0; teamB.combo = 1; teamB.idx = 0; teamB.locked = false;
+      wcVotes = [0, 0, 0, 0]; wcRevealed = false; wcClassCorrect = 0; wcClassTotal = 0;
       showRound();
       startTimer();
     });
