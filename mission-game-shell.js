@@ -4661,6 +4661,72 @@
     return modeHelperText(mode);
   }
 
+  function dialogueCoachLine(round, wrongLine, roundIndex) {
+    var wrongText = (typeof wrongLine === "string") ? wrongLine : "";
+    var contextText = [
+      round && round.prompt ? String(round.prompt) : "",
+      round && round.explain ? String(round.explain) : "",
+      round && round.scene ? String(round.scene) : "",
+      wrongText
+    ].join(" ").toLowerCase();
+
+    if (contextText.indexOf("question") >= 0 || /\b(where|when|why|what|who|how)\b/i.test(wrongText)) {
+      return pickRoundVariant([
+        "That draft question order is off. Pick the corrected question form.",
+        "Use question order: helper + subject + base verb. Choose that line.",
+        "Find the revision that sounds like a natural question."
+      ], roundIndex, "Choose the corrected question pattern.");
+    }
+    if (contextText.indexOf("connector") >= 0 || contextText.indexOf("cause") >= 0 || contextText.indexOf("contrast") >= 0 || contextText.indexOf("purpose") >= 0 || /\b(because|so|however|although|therefore)\b/i.test(wrongText)) {
+      return pickRoundVariant([
+        "The connector is mismatched. Pick the line with one clear connector.",
+        "We only need one logical connector here - choose the best fit.",
+        "Select the revision with the strongest cause/contrast link."
+      ], roundIndex, "Pick the line with the best connector.");
+    }
+    if (contextText.indexOf("reference") >= 0 || contextText.indexOf("pronoun") >= 0 || contextText.indexOf("clear pronoun") >= 0) {
+      return pickRoundVariant([
+        "Reference is unclear in that draft. Pick the clearest version.",
+        "Choose the line that makes who/what explicit and unambiguous.",
+        "Find the revision with the clearest pronoun reference."
+      ], roundIndex, "Pick the clearest reference line.");
+    }
+    if (contextText.indexOf("agreement") >= 0 || contextText.indexOf("be-verb") >= 0 || contextText.indexOf("subject-verb") >= 0) {
+      return pickRoundVariant([
+        "Agreement is off in the draft. Choose the line with matching subject + verb.",
+        "Check subject-verb agreement and pick the correct form.",
+        "Choose the revision where the be-verb agrees with the subject."
+      ], roundIndex, "Pick the line with correct agreement.");
+    }
+    if (contextText.indexOf("modal") >= 0 || /\b(can|could|should|must|may|might)\b/i.test(wrongText)) {
+      return pickRoundVariant([
+        "After a modal, we need a base verb. Pick that revision.",
+        "Modal form is off - choose the version with base verb after the modal.",
+        "Select the line with correct modal + base verb structure."
+      ], roundIndex, "Choose the correct modal verb pattern.");
+    }
+    if (contextText.indexOf("past") >= 0 || contextText.indexOf("yesterday") >= 0) {
+      return pickRoundVariant([
+        "This should be in past-time form. Pick the correct past revision.",
+        "Past marker is present, so choose the line with correct past grammar.",
+        "Select the revision that keeps tense consistent in the past."
+      ], roundIndex, "Pick the strongest past-time revision.");
+    }
+    if (contextText.indexOf("present") >= 0 || contextText.indexOf("right now") >= 0) {
+      return pickRoundVariant([
+        "Keep this in present-time form. Choose the best present revision.",
+        "Present context is clear - pick the line that matches it.",
+        "Select the revision with the correct present-time grammar."
+      ], roundIndex, "Pick the strongest present-time revision.");
+    }
+
+    return pickRoundVariant([
+      "Good catch. Choose the clean revised line we should send.",
+      "Let's replace that draft with the strongest corrected line.",
+      "Pick the revision that keeps the meaning and fixes the grammar."
+    ], roundIndex, "Choose the best revision to replace that draft.");
+  }
+
   function buildDialogueThread(round, roundIndex, wrongLine) {
     var scene = (round && round.scene) ? String(round.scene) : "Classroom Chat";
     var lower = scene.toLowerCase();
@@ -4698,11 +4764,7 @@
     else draftLine = "I no understand this clue.";
     var lineA = openLine + " Draft: \"" + draftLine + "\"";
 
-    var handoffLine = pickRoundVariant([
-      "Good catch. Choose the clean revised line we should send.",
-      "Let's replace that draft with the strongest corrected line.",
-      "Pick the revision that keeps the meaning and fixes the grammar."
-    ], roundIndex, "Choose the best revision to replace that draft.");
+    var handoffLine = dialogueCoachLine(round, wrongLine, roundIndex);
 
     return {
       scene: scene,
