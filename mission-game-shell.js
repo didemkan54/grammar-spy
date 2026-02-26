@@ -3243,13 +3243,21 @@
       + ".duel-wrap{display:grid;gap:10px;}"
       + ".duel-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
       + ".duel-actions .opt{min-height:72px;}"
-      + ".classify-board{display:grid;gap:10px;}"
-      + ".classify-row{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:10px;display:grid;gap:8px;}"
-      + ".classify-row p{margin:0;font-size:14px;line-height:1.45;color:#16223a;}"
-      + ".classify-actions{display:flex;gap:8px;flex-wrap:wrap;}"
-      + ".classify-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 10px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;}"
-      + ".classify-pick.active-completed{background:#eaf2ff;border-color:#6a8fdf;color:#23427f;}"
-      + ".classify-pick.active-ongoing{background:#efeafe;border-color:#9a78df;color:#4b2c84;}"
+      + ".classify-drag-wrapper{display:grid;gap:16px;}"
+      + ".classify-pool{min-height:60px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;}"
+      + ".classify-zones{display:grid;grid-template-columns:1fr 1fr;gap:14px;}"
+      + ".classify-zone{min-height:120px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#fbfdff;display:flex;flex-direction:column;gap:8px;transition:border-color .2s,background .2s;}"
+      + ".classify-zone[data-zone=completed]{border-color:#6a8fdf;background:rgba(106,143,223,.06);}"
+      + ".classify-zone[data-zone=ongoing]{border-color:#9a78df;background:rgba(154,120,223,.06);}"
+      + ".classify-zone.drag-over{border-style:solid;box-shadow:0 0 0 3px rgba(31,95,99,.18);transform:scale(1.01);}"
+      + ".classify-zone.drag-over[data-zone=completed]{background:rgba(106,143,223,.14);}"
+      + ".classify-zone.drag-over[data-zone=ongoing]{background:rgba(154,120,223,.14);}"
+      + ".classify-zone-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;}"
+      + ".classify-card{padding:11px 14px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:grab;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,opacity .15s;touch-action:none;}"
+      + ".classify-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(11,16,32,.12);border-color:#c9a227;}"
+      + ".classify-card:active,.classify-card.dragging{cursor:grabbing;opacity:.7;transform:scale(.97);}"
+      + ".classify-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.85;box-shadow:0 12px 28px rgba(11,16,32,.2);transform:rotate(2deg);}"
+      + "@media(max-width:620px){.classify-zones{grid-template-columns:1fr;}}"
       + ".action-bar{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:10px;display:grid;gap:8px;}"
       + ".action-bar b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
       + ".action-bar p{margin:0;font-size:13px;line-height:1.45;color:#34455f;}"
@@ -3633,64 +3641,194 @@
     var rowControllers = [];
     currentRoundState = { mode: "classify", round: round, assignments: assignments, rows: rowControllers };
 
-    var board = document.createElement("div");
-    board.className = "classify-board";
+    var dragState = { el: null, optionIdx: -1, ghost: null, offsetX: 0, offsetY: 0 };
+
+    var wrapper = document.createElement("div");
+    wrapper.className = "classify-drag-wrapper";
+
+    var pool = document.createElement("div");
+    pool.className = "classify-pool";
+    var poolLabel = document.createElement("p");
+    poolLabel.className = "classify-zone-label";
+    poolLabel.textContent = "Drag each sentence to the correct zone";
+    pool.appendChild(poolLabel);
+
+    var zones = document.createElement("div");
+    zones.className = "classify-zones";
+
+    var completedZone = document.createElement("div");
+    completedZone.className = "classify-zone";
+    completedZone.dataset.zone = "completed";
+    var completedLabel = document.createElement("p");
+    completedLabel.className = "classify-zone-label";
+    completedLabel.textContent = "Completed Event";
+    completedZone.appendChild(completedLabel);
+
+    var ongoingZone = document.createElement("div");
+    ongoingZone.className = "classify-zone";
+    ongoingZone.dataset.zone = "ongoing";
+    var ongoingLabel = document.createElement("p");
+    ongoingLabel.className = "classify-zone-label";
+    ongoingLabel.textContent = "Ongoing Background";
+    ongoingZone.appendChild(ongoingLabel);
+
+    zones.appendChild(completedZone);
+    zones.appendChild(ongoingZone);
+
+    function makeCard(item) {
+      var card = document.createElement("div");
+      card.className = "classify-card";
+      card.draggable = true;
+      card.dataset.idx = item.optionIdx;
+      card.textContent = item.lineText;
+      card.setAttribute("touch-action", "none");
+
+      card.addEventListener("dragstart", function (e) {
+        if (locked) { e.preventDefault(); return; }
+        e.dataTransfer.setData("text/plain", item.optionIdx);
+        e.dataTransfer.effectAllowed = "move";
+        card.classList.add("dragging");
+        setTimeout(function () { card.style.opacity = "0.4"; }, 0);
+      });
+      card.addEventListener("dragend", function () {
+        card.classList.remove("dragging");
+        card.style.opacity = "";
+      });
+
+      var touchId = null;
+      card.addEventListener("touchstart", function (e) {
+        if (locked) return;
+        var t = e.touches[0];
+        touchId = t.identifier;
+        var rect = card.getBoundingClientRect();
+        dragState.el = card;
+        dragState.optionIdx = item.optionIdx;
+        dragState.offsetX = t.clientX - rect.left;
+        dragState.offsetY = t.clientY - rect.top;
+        var ghost = card.cloneNode(true);
+        ghost.className = "classify-card classify-ghost";
+        ghost.style.width = rect.width + "px";
+        ghost.style.left = rect.left + "px";
+        ghost.style.top = rect.top + "px";
+        document.body.appendChild(ghost);
+        dragState.ghost = ghost;
+        card.classList.add("dragging");
+        e.preventDefault();
+      }, { passive: false });
+
+      return card;
+    }
+
+    function handleTouchMove(e) {
+      if (!dragState.ghost) return;
+      for (var i = 0; i < e.touches.length; i++) {
+        if (e.touches[i].identifier === touchId) {
+          var t = e.touches[i];
+          dragState.ghost.style.left = (t.clientX - dragState.offsetX) + "px";
+          dragState.ghost.style.top = (t.clientY - dragState.offsetY) + "px";
+          highlightZone(t.clientX, t.clientY);
+          e.preventDefault();
+          return;
+        }
+      }
+    }
+
+    function handleTouchEnd(e) {
+      if (!dragState.ghost) return;
+      var found = false;
+      for (var i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === touchId) {
+          var t = e.changedTouches[i];
+          dropAtPoint(t.clientX, t.clientY, dragState.el, dragState.optionIdx);
+          found = true;
+          break;
+        }
+      }
+      if (dragState.ghost) dragState.ghost.remove();
+      if (dragState.el) dragState.el.classList.remove("dragging");
+      dragState.ghost = null;
+      dragState.el = null;
+      completedZone.classList.remove("drag-over");
+      ongoingZone.classList.remove("drag-over");
+    }
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", handleTouchEnd);
+
+    function highlightZone(x, y) {
+      var cRect = completedZone.getBoundingClientRect();
+      var oRect = ongoingZone.getBoundingClientRect();
+      completedZone.classList.toggle("drag-over", x >= cRect.left && x <= cRect.right && y >= cRect.top && y <= cRect.bottom);
+      ongoingZone.classList.toggle("drag-over", x >= oRect.left && x <= oRect.right && y >= oRect.top && y <= oRect.bottom);
+    }
+
+    function dropAtPoint(x, y, cardEl, optIdx) {
+      var cRect = completedZone.getBoundingClientRect();
+      var oRect = ongoingZone.getBoundingClientRect();
+      if (x >= cRect.left && x <= cRect.right && y >= cRect.top && y <= cRect.bottom) {
+        placeCard(cardEl, optIdx, "completed");
+      } else if (x >= oRect.left && x <= oRect.right && y >= oRect.top && y <= oRect.bottom) {
+        placeCard(cardEl, optIdx, "ongoing");
+      }
+    }
+
+    function placeCard(cardEl, optIdx, zone) {
+      assignments[optIdx] = zone;
+      var target = zone === "completed" ? completedZone : ongoingZone;
+      target.appendChild(cardEl);
+      cardEl.classList.remove("dragging");
+      cardEl.style.opacity = "";
+    }
+
+    [completedZone, ongoingZone].forEach(function (zone) {
+      zone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        zone.classList.add("drag-over");
+      });
+      zone.addEventListener("dragleave", function () {
+        zone.classList.remove("drag-over");
+      });
+      zone.addEventListener("drop", function (e) {
+        e.preventDefault();
+        zone.classList.remove("drag-over");
+        var optIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
+        var cardEl = wrapper.querySelector('.classify-card[data-idx="' + optIdx + '"]');
+        if (cardEl) placeCard(cardEl, optIdx, zone.dataset.zone);
+      });
+    });
+
+    pool.addEventListener("dragover", function (e) { e.preventDefault(); });
+    pool.addEventListener("drop", function (e) {
+      e.preventDefault();
+      var optIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
+      var cardEl = wrapper.querySelector('.classify-card[data-idx="' + optIdx + '"]');
+      if (cardEl) {
+        pool.appendChild(cardEl);
+        delete assignments[optIdx];
+      }
+    });
 
     shuffle(round.options.map(function (lineText, optionIdx) {
       return { lineText: lineText, optionIdx: optionIdx };
     })).forEach(function (item) {
-      var row = document.createElement("div");
-      row.className = "classify-row";
-      var line = document.createElement("p");
-      line.textContent = item.lineText;
-
-      var actions = document.createElement("div");
-      actions.className = "classify-actions";
-      var completedBtn = document.createElement("button");
-      completedBtn.type = "button";
-      completedBtn.className = "classify-pick";
-      completedBtn.textContent = "Completed Event";
-
-      var ongoingBtn = document.createElement("button");
-      ongoingBtn.type = "button";
-      ongoingBtn.className = "classify-pick";
-      ongoingBtn.textContent = "Ongoing Background";
-
-      function setPick(kind) {
-        assignments[item.optionIdx] = kind;
-        completedBtn.classList.toggle("active-completed", kind === "completed");
-        ongoingBtn.classList.toggle("active-ongoing", kind === "ongoing");
-      }
+      var card = makeCard(item);
+      pool.appendChild(card);
       rowControllers.push({
         optionIdx: item.optionIdx,
         hasPick: function () { return typeof assignments[item.optionIdx] !== "undefined"; },
-        pickCorrect: function () { setPick(sentenceClass(round.options[item.optionIdx])); }
+        pickCorrect: function () { placeCard(card, item.optionIdx, sentenceClass(round.options[item.optionIdx])); }
       });
-
-      completedBtn.addEventListener("click", function () {
-        if (locked) return;
-        setPick("completed");
-      });
-      ongoingBtn.addEventListener("click", function () {
-        if (locked) return;
-        setPick("ongoing");
-      });
-
-      actions.appendChild(completedBtn);
-      actions.appendChild(ongoingBtn);
-      row.appendChild(line);
-      row.appendChild(actions);
-      board.appendChild(row);
     });
 
     var submitBtn = document.createElement("button");
     submitBtn.type = "button";
     submitBtn.className = "btn primary sweep-submit";
-    submitBtn.textContent = "Submit Classification";
+    submitBtn.textContent = "Submit Sort";
     submitBtn.addEventListener("click", function () {
       if (locked) return;
       if (Object.keys(assignments).length < round.options.length) {
-        html("feedback", "<span class=\"bad\">Classify every line first, then submit.</span>");
+        html("feedback", "<span class=\"bad\">Drag every sentence to a zone first, then submit.</span>");
         return;
       }
       var allCorrect = true;
@@ -3700,6 +3838,8 @@
           break;
         }
       }
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
       finishRound(
         allCorrect,
         "Timeline classification secured. " + round.explain,
@@ -3708,8 +3848,10 @@
       );
     });
 
-    optionsEl.appendChild(board);
-    optionsEl.appendChild(submitBtn);
+    wrapper.appendChild(pool);
+    wrapper.appendChild(zones);
+    wrapper.appendChild(submitBtn);
+    optionsEl.appendChild(wrapper);
   }
 
   function showBinaryOptions(round) {
