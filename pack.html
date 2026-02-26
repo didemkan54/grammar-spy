@@ -9,7 +9,7 @@
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 10px 20px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
     body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:22px 14px 34px}
-    .wrap{max-width:960px;margin:0 auto;display:grid;gap:16px}
+    .wrap{max-width:100%;margin:0;display:grid;gap:16px}
     .panel{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow)}
     .hero{
       padding:24px;
@@ -22,7 +22,7 @@
     .pack-cover{
       justify-self:end;
       width:100%;
-      max-width:320px;
+      max-width:100%;
       border-radius:14px;
       box-shadow:0 18px 36px rgba(11,16,32,.14);
       border:1px solid #d9dee6;
@@ -55,7 +55,7 @@
     details{border:1px solid var(--cool);border-radius:12px;background:#f8fafc;padding:10px}
     summary{cursor:pointer;font:700 12px Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#16223a}
     ul{margin:10px 0 0;padding-left:18px;color:#4a5568}
-    @media (max-width:760px){
+    @media (max-width:100%){
       .hero{grid-template-columns:1fr}
       .pack-cover{justify-self:start;max-width:100%}
     }

@@ -12,7 +12,7 @@
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 10px 22px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
     body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 40px}
-    .wrap{max-width:1320px;margin:0 auto;display:grid;gap:22px;padding:0 32px}
+    .wrap{max-width:100%;margin:0;display:grid;gap:22px;padding:0 40px}
     .panel{background:#fff;border:1px solid var(--cool);border-radius:16px;box-shadow:var(--shadow);padding:22px}
     .k{margin:0 0 8px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
     h1{margin:0;color:#0b1020;font-size:34px;line-height:1.1}
@@ -27,8 +27,8 @@
     .meta{margin:0;color:#4a5568;font-size:14px}
     .btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid #194f53;background:#1f5f63;color:#fff;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif;width:fit-content}
     .icon-sm{width:22px;height:22px;vertical-align:middle;margin-right:8px;object-fit:contain}
-    @media (max-width:980px){.grid{grid-template-columns:1fr 1fr}}
-    @media (max-width:700px){.grid{grid-template-columns:1fr}}
+    @media (max-width:100%){.grid{grid-template-columns:1fr 1fr}}
+    @media (max-width:100%){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>

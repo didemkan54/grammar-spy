@@ -9,7 +9,7 @@
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--teal-light:#e8f4f5;--light:#f2f4f7;--line:#d9dee6;--slate:#4a5568;--gold:#c9a227;--ok:#1f8f63;--bad:#b04444}
     *{box-sizing:border-box}
     body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,"Segoe UI",sans-serif;padding:0 0 40px}
-    .wrap{max-width:1100px;margin:0 auto;padding:18px 32px;display:grid;gap:20px}
+    .wrap{max-width:100%;margin:0;padding:18px 40px;display:grid;gap:20px}
     .panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 4px 14px rgba(11,16,32,.05)}
     h1{margin:0 0 6px;font-size:30px;color:var(--navy)}
     h2{margin:0 0 4px;font-size:22px;color:var(--navy)}
@@ -48,7 +48,7 @@
     .empty-students{padding:16px;text-align:center;color:#7a8698;font-size:14px;font-style:italic;background:#f8fafc;border-radius:10px}
 
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    @media(max-width:800px){.grid-2{grid-template-columns:1fr}}
+    @media(max-width:100%){.grid-2{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -74,7 +74,7 @@
     <div id="classroomList" class="grid-2"></div>
 
     <section class="panel" id="emptyState" style="text-align:center;display:none">
-      <img src="assets/illustrations/teacher-dashboard.svg" alt="" style="width:180px;height:auto;opacity:.7;margin:0 auto 12px;display:block" aria-hidden="true" />
+      <img src="assets/illustrations/teacher-dashboard.svg" alt="" style="width:180px;height:auto;opacity:.7;margin:0 12px;display:block" aria-hidden="true" />
       <h2>No classrooms yet</h2>
       <p>Create your first classroom above and share the code with your students.</p>
     </section>
