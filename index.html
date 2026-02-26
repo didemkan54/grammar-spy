@@ -445,12 +445,19 @@
     if (promoInput && signUpLink) {
       promoInput.value = normalizePromoCode(promoInput.value);
       promoInput.addEventListener('input', function(){
-        if ((promoInput.value || '').indexOf('@') >= 0) promoInput.value = '';
+        var rawValue = promoInput.value || '';
+        if (rawValue.indexOf('@') >= 0) promoInput.dataset.emailAttempt = '1';
+        if (promoInput.dataset.emailAttempt === '1') {
+          promoInput.value = '';
+          sessionStorage.setItem('gs_promo_code', '');
+          return;
+        }
         var normalized = normalizePromoCode(promoInput.value);
         sessionStorage.setItem('gs_promo_code', normalized);
       });
       promoInput.addEventListener('blur', function(){
         promoInput.value = normalizePromoCode(promoInput.value);
+        delete promoInput.dataset.emailAttempt;
       });
       signUpLink.addEventListener('click', function(e){
         const code = normalizePromoCode(promoInput.value);

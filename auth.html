@@ -183,10 +183,16 @@
     if (promoCodeInput) {
       promoCodeInput.value = normalizePromoCode(urlCode) || normalizePromoCode(storedCode);
       promoCodeInput.addEventListener('input', function() {
-        if ((promoCodeInput.value || '').indexOf('@') >= 0) promoCodeInput.value = '';
+        const rawValue = promoCodeInput.value || '';
+        if (rawValue.indexOf('@') >= 0) promoCodeInput.dataset.emailAttempt = '1';
+        if (promoCodeInput.dataset.emailAttempt === '1') {
+          promoCodeInput.value = '';
+          return;
+        }
       });
       promoCodeInput.addEventListener('blur', function() {
         promoCodeInput.value = normalizePromoCode(promoCodeInput.value);
+        delete promoCodeInput.dataset.emailAttempt;
       });
       if (storedCode) sessionStorage.removeItem('gs_promo_code');
     }
