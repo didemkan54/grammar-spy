@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grammar Spy™ | Mission Library</title>
     <link rel="stylesheet" href="core/theme.css" />
+    <style>
+      .mission-card{background:#fff;border:1px solid #d9dee6;border-radius:16px;padding:22px;box-shadow:0 4px 14px rgba(11,16,32,.06);transition:transform .2s ease,box-shadow .2s ease}
+      .mission-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(11,16,32,.1)}
+      .mission-card h3{margin:0 0 6px;font-size:20px;color:#0b1020}
+      .mission-card .brief{margin:0 0 12px;color:#4a5568;font-size:14px;line-height:1.5}
+      .skill-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+      .skill-chip{background:#e8f4f5;color:#1f5f63;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.03em}
+      .preview-box{background:#f8fafc;border:1px solid #e4e8ef;border-radius:10px;padding:12px 14px;margin-bottom:14px}
+      .preview-box p{margin:0 0 2px;font-size:13px;color:#4a5568;line-height:1.5}
+      .preview-box .label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#1f5f63;margin-bottom:6px}
+      .card-actions{display:flex;gap:8px;flex-wrap:wrap}
+      .card-actions .gs-btn{font-size:13px;padding:10px 18px}
+      .settings-bar{background:#fff;border:1px solid #d9dee6;border-radius:14px;padding:16px 20px;display:flex;gap:16px;align-items:end;flex-wrap:wrap;box-shadow:0 2px 8px rgba(11,16,32,.04)}
+      .settings-bar label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4a5568;display:flex;flex-direction:column;gap:4px}
+      .settings-bar select,.settings-bar input{border:1px solid #d9dee6;border-radius:8px;padding:8px 10px;font-size:14px;color:#16223a}
+      .search-box{flex:1;min-width:180px}
+      .search-box input{width:100%;border:2px solid #d9dee6;border-radius:10px;padding:10px 14px;font-size:15px;transition:border-color .15s}
+      .search-box input:focus{border-color:#1f5f63;outline:none}
+      .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+      @media(max-width:800px){.results-grid{grid-template-columns:1fr}.settings-bar{flex-direction:column}}
+      .empty-state{text-align:center;padding:40px;color:#7a8698;font-size:16px}
+      /* Preview modal */
+      .preview-overlay{position:fixed;inset:0;background:rgba(11,16,32,.4);display:none;place-items:center;padding:16px;z-index:200;backdrop-filter:blur(3px)}
+      .preview-overlay.show{display:grid}
+      .preview-modal{width:min(520px,100%);background:#fff;border-radius:18px;padding:24px;box-shadow:0 16px 40px rgba(11,16,32,.2)}
+      .preview-modal h3{margin:0 0 4px;color:#0b1020;font-size:20px}
+      .preview-modal .sub{margin:0 0 16px;color:#4a5568;font-size:13px}
+      .preview-modal .sample{background:#f8fafc;border:1px solid #e4e8ef;border-radius:10px;padding:14px;margin-bottom:10px}
+      .preview-modal .sample p{margin:0 0 8px;font-size:14px;color:#16223a;line-height:1.5}
+      .preview-modal .sample p:last-child{margin:0}
+      .preview-modal .sample .num{color:#1f5f63;font-weight:800;margin-right:6px}
+    </style>
   </head>
   <body>
     <main class="gs-shell">
@@ -12,383 +44,172 @@
 
       <section class="gs-panel">
         <h1>Mission Library</h1>
-        <p class="gs-subtitle">
-          Select a mission by grade band, cognitive level, grammar focus, or target skill tags.
-          Configure launch controls, then deploy to game mode.
-        </p>
+        <p class="gs-subtitle">Browse missions and launch one when you're ready. Each mission focuses on a specific grammar skill.</p>
       </section>
 
-      <section class="gs-panel" aria-labelledby="teacher-controls-title">
-        <h2 id="teacher-controls-title">Teacher Controls Panel</h2>
-        <div class="gs-controls-grid">
-          <label class="gs-field">
-            <span class="gs-field-label">Mission Selector</span>
-            <input id="missionSearch" class="gs-input" list="missionSuggestions" placeholder="Search mission by name" aria-label="Search missions" />
-            <datalist id="missionSuggestions"></datalist>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Difficulty</span>
-            <select id="difficultySelect" class="gs-select" aria-label="Select mission difficulty">
-              <option value="rookie">Rookie</option>
-              <option value="field" selected>Field Agent</option>
-              <option value="director">Director</option>
-            </select>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Question Count</span>
-            <select id="questionCountSelect" class="gs-select" aria-label="Select question count">
-              <option value="5">5</option>
-              <option value="10" selected>10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-              <option value="custom">Custom</option>
-            </select>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Custom Count</span>
-            <input id="customCountInput" class="gs-input" type="number" min="1" max="40" value="10" aria-label="Custom question count" />
-          </label>
+      <!-- Simple settings bar -->
+      <div class="settings-bar">
+        <div class="search-box">
+          <input id="missionSearch" type="text" placeholder="Search missions..." aria-label="Search missions" />
         </div>
-        <div class="gs-button-row" style="margin-top: 12px;">
-          <label class="gs-btn gs-btn-soft">
-            <input id="soundToggle" type="checkbox" checked aria-label="Toggle sound" />
-            Sound On
-          </label>
-          <label class="gs-btn gs-btn-soft">
-            <input id="motionToggle" type="checkbox" aria-label="Toggle reduced motion" />
-            Reduced Motion
-          </label>
-        </div>
-      </section>
+        <label>Difficulty
+          <select id="difficultySelect" aria-label="Difficulty">
+            <option value="rookie">Rookie</option>
+            <option value="field" selected>Field Agent</option>
+            <option value="director">Director</option>
+          </select>
+        </label>
+        <label>Questions
+          <select id="questionCountSelect" aria-label="Question count">
+            <option value="6">6</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </label>
+        <label>Timer
+          <select id="timerSelect" aria-label="Timer">
+            <option value="off" selected>Off</option>
+            <option value="on">On</option>
+          </select>
+        </label>
+      </div>
 
-      <section class="gs-panel" aria-labelledby="library-filters-title">
-        <h2 id="library-filters-title">Mission Filters</h2>
-        <div class="gs-controls-grid">
-          <label class="gs-field">
-            <span class="gs-field-label">Grade Band</span>
-            <select id="gradeFilter" class="gs-select" aria-label="Filter by grade band">
-              <option value="">All</option>
-              <option value="6-7">6-7</option>
-              <option value="8-9">8-9</option>
-              <option value="10-12">10-12</option>
-            </select>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Cognitive Level</span>
-            <select id="levelFilter" class="gs-select" aria-label="Filter by cognitive level">
-              <option value="">All</option>
-              <option value="1">Level 1</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-            </select>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Grammar Focus</span>
-            <select id="grammarFilter" class="gs-select" aria-label="Filter by grammar focus">
-              <option value="">All</option>
-            </select>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Retrieval Type</span>
-            <select id="retrievalFilter" class="gs-select" aria-label="Filter by retrieval type">
-              <option value="">All</option>
-            </select>
-          </label>
-        </div>
-        <div class="gs-controls-grid" style="margin-top: 10px;">
-          <label class="gs-field">
-            <span class="gs-field-label">Skill Tag</span>
-            <select id="skillFilter" class="gs-select" aria-label="Filter by skill tag">
-              <option value="">All skills</option>
-            </select>
-          </label>
-          <div class="gs-field" style="align-self: end;">
-            <button id="resetFiltersBtn" class="gs-btn" type="button">Reset Filters</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="missionResults" class="gs-grid gs-grid-2" aria-live="polite"></section>
+      <!-- Mission cards -->
+      <div id="missionResults" class="results-grid" aria-live="polite"></div>
     </main>
 
-    <div id="launchModalBackdrop" class="gs-modal-backdrop" data-open="false">
-      <div class="gs-modal" role="dialog" aria-modal="true" aria-labelledby="launch-modal-title">
-        <div class="gs-modal-head">
-          <h2 id="launch-modal-title">Launch Mission</h2>
-          <button id="closeLaunchModalBtn" class="gs-btn" type="button" aria-label="Close launch modal">Close</button>
-        </div>
-        <p id="launchMissionSummary" class="gs-subtitle"></p>
-
-        <div class="gs-controls-grid" style="margin-top: 12px;">
-          <label class="gs-field">
-            <span class="gs-field-label">Game Type</span>
-            <select id="modalGameType" class="gs-select" aria-label="Select game type"></select>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Tier</span>
-            <select id="modalTier" class="gs-select" aria-label="Select mission tier">
-              <option value="rookie">Rookie</option>
-              <option value="field">Field Agent</option>
-              <option value="director">Director</option>
-            </select>
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Question Count</span>
-            <input id="modalCount" class="gs-input" type="number" min="1" max="40" value="10" aria-label="Question count for launch" />
-          </label>
-          <label class="gs-field">
-            <span class="gs-field-label">Timer</span>
-            <select id="modalTimer" class="gs-select" aria-label="Toggle timer">
-              <option value="off" selected>Off (Default)</option>
-              <option value="on">On (Speed bonus active)</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="gs-button-row" style="margin-top: 14px;">
-          <button id="confirmLaunchBtn" class="gs-btn gs-btn-primary" type="button">Launch Mission</button>
+    <!-- Preview modal -->
+    <div id="previewOverlay" class="preview-overlay">
+      <div class="preview-modal" role="dialog" aria-modal="true">
+        <h3 id="previewTitle">Mission Preview</h3>
+        <p class="sub" id="previewSub"></p>
+        <div id="previewSamples"></div>
+        <div class="card-actions" style="margin-top:14px">
+          <button class="gs-btn gs-btn-primary" id="previewLaunchBtn" type="button">Launch This Mission</button>
+          <button class="gs-btn" id="previewCloseBtn" type="button">Close</button>
         </div>
       </div>
     </div>
 
     <script type="module">
-      import { renderTopNav, applyReducedMotion, readQueryParams } from "./core/router.js";
-      import { getProfile, saveProfile } from "./core/storage.js";
-      import { listAllMissions, filterMissions, loadMission, getManifestSummary } from "./core/missionLoader.js";
+      import { renderTopNav, readQueryParams } from "./core/router.js";
+      import { listAllMissions, loadMission, getManifestSummary } from "./core/missionLoader.js";
 
-      const topNav = document.getElementById("topNav");
-      renderTopNav(topNav, "missions");
-
-      const state = {
-        allMissions: [],
-        filteredMissions: [],
-        previewCache: new Map(),
-        selectedMissionId: null
-      };
+      renderTopNav(document.getElementById("topNav"), "missions");
 
       const missionSearch = document.getElementById("missionSearch");
-      const missionSuggestions = document.getElementById("missionSuggestions");
       const difficultySelect = document.getElementById("difficultySelect");
       const questionCountSelect = document.getElementById("questionCountSelect");
-      const customCountInput = document.getElementById("customCountInput");
-      const soundToggle = document.getElementById("soundToggle");
-      const motionToggle = document.getElementById("motionToggle");
-
-      const gradeFilter = document.getElementById("gradeFilter");
-      const levelFilter = document.getElementById("levelFilter");
-      const grammarFilter = document.getElementById("grammarFilter");
-      const retrievalFilter = document.getElementById("retrievalFilter");
-      const skillFilter = document.getElementById("skillFilter");
-      const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+      const timerSelect = document.getElementById("timerSelect");
       const missionResults = document.getElementById("missionResults");
+      const previewOverlay = document.getElementById("previewOverlay");
+      const previewTitle = document.getElementById("previewTitle");
+      const previewSub = document.getElementById("previewSub");
+      const previewSamples = document.getElementById("previewSamples");
+      const previewLaunchBtn = document.getElementById("previewLaunchBtn");
+      const previewCloseBtn = document.getElementById("previewCloseBtn");
 
-      const launchModalBackdrop = document.getElementById("launchModalBackdrop");
-      const closeLaunchModalBtn = document.getElementById("closeLaunchModalBtn");
-      const launchMissionSummary = document.getElementById("launchMissionSummary");
-      const modalGameType = document.getElementById("modalGameType");
-      const modalTier = document.getElementById("modalTier");
-      const modalCount = document.getElementById("modalCount");
-      const modalTimer = document.getElementById("modalTimer");
-      const confirmLaunchBtn = document.getElementById("confirmLaunchBtn");
-
-      const profile = getProfile();
-      soundToggle.checked = Boolean(profile.settings?.soundOn ?? true);
-      motionToggle.checked = Boolean(profile.settings?.reducedMotion ?? false);
-      applyReducedMotion(motionToggle.checked);
-
-      soundToggle.addEventListener("change", () => {
-        const next = saveProfile({
-          ...getProfile(),
-          settings: { ...getProfile().settings, soundOn: soundToggle.checked }
-        });
-        soundToggle.checked = next.settings.soundOn;
-      });
-
-      motionToggle.addEventListener("change", () => {
-        const next = saveProfile({
-          ...getProfile(),
-          settings: { ...getProfile().settings, reducedMotion: motionToggle.checked }
-        });
-        motionToggle.checked = next.settings.reducedMotion;
-        applyReducedMotion(motionToggle.checked);
-      });
-
-      questionCountSelect.addEventListener("change", () => {
-        customCountInput.disabled = questionCountSelect.value !== "custom";
-        if (!customCountInput.disabled) customCountInput.focus();
-      });
-      customCountInput.disabled = questionCountSelect.value !== "custom";
-
-      function selectedQuestionCount() {
-        if (questionCountSelect.value === "custom") return Number(customCountInput.value) || 10;
-        return Number(questionCountSelect.value) || 10;
-      }
-
-      function fillSelectOptions(selectEl, values) {
-        const existing = selectEl.innerHTML;
-        const baseOption = existing.includes("All") ? `<option value="">All</option>` : "";
-        selectEl.innerHTML = `${baseOption}${values
-          .map((value) => `<option value="${value}">${value}</option>`)
-          .join("")}`;
-      }
+      let allMissions = [];
+      let previewCache = new Map();
+      let activeMissionId = null;
 
       async function getPreview(missionId) {
-        if (state.previewCache.has(missionId)) return state.previewCache.get(missionId);
+        if (previewCache.has(missionId)) return previewCache.get(missionId);
         const mission = await loadMission(missionId);
-        const preview = (mission.items || []).slice(0, 3).map((item) => item.sentence);
-        const gameTypes = mission.gameTypes || ["retrieval-raid"];
-        state.previewCache.set(missionId, { preview, gameTypes });
+        const preview = (mission.items || []).slice(0, 3).map(item => item.sentence);
+        const gameTypes = mission.gameTypes || ["clue-trail"];
+        previewCache.set(missionId, { preview, gameTypes });
         return { preview, gameTypes };
       }
 
       async function renderResults() {
-        const criteria = {
-          gradeBand: gradeFilter.value,
-          cognitiveLevel: levelFilter.value,
-          grammarFocus: grammarFilter.value,
-          retrievalType: retrievalFilter.value,
-          skills: skillFilter.value ? [skillFilter.value] : [],
-          missionName: missionSearch.value.trim()
-        };
-        state.filteredMissions = await filterMissions(criteria);
+        const query = missionSearch.value.trim().toLowerCase();
+        const filtered = allMissions.filter(m =>
+          !query || m.missionName.toLowerCase().includes(query) || (m.missionBrief || "").toLowerCase().includes(query)
+        );
 
-        if (!state.filteredMissions.length) {
-          missionResults.innerHTML = `<div class="gs-empty">No missions match the selected filters.</div>`;
+        if (!filtered.length) {
+          missionResults.innerHTML = '<div class="empty-state">No missions match your search.</div>';
           return;
         }
 
-        const cards = await Promise.all(
-          state.filteredMissions.map(async (mission) => {
-            const { preview } = await getPreview(mission.missionId);
-            const tags = (mission.skills || []).map((skill) => `<span class="gs-chip">${skill}</span>`).join("");
-            const previewItems = preview.map((line) => `<li>${line}</li>`).join("");
-            const tiers = (mission.availableTiers || ["rookie", "field", "director"])
-              .map((tier) => {
-                const className =
-                  tier === "rookie"
-                    ? "gs-badge gs-badge-rookie"
-                    : tier === "field"
-                    ? "gs-badge gs-badge-field"
-                    : "gs-badge gs-badge-director";
-                return `<span class="${className}">${tier}</span>`;
-              })
-              .join("");
+        const cards = await Promise.all(filtered.map(async mission => {
+          const { preview } = await getPreview(mission.missionId);
+          const skills = (mission.skills || []).map(s =>
+            '<span class="skill-chip">' + s.replace(/_/g, " ") + '</span>'
+          ).join("");
 
-            return `
-              <article class="gs-card">
-                <h3 class="gs-card-title">${mission.missionName}</h3>
-                <p class="gs-card-sub">${mission.missionBrief}</p>
-                <div class="gs-chip-row" style="margin: 10px 0 8px;">${tags}</div>
-                <div class="gs-chip-row" style="margin-bottom: 10px;">${tiers}</div>
-                <p class="gs-field-label">Preview</p>
-                <ul class="gs-list">${previewItems}</ul>
-                <div class="gs-button-row" style="margin-top: 10px;">
-                  <button class="gs-btn gs-btn-soft" data-preview-id="${mission.missionId}" type="button">Preview</button>
-                  <button class="gs-btn gs-btn-primary" data-launch-id="${mission.missionId}" type="button">Launch Mission</button>
-                </div>
-              </article>
-            `;
-          })
-        );
+          const previewLines = preview.map(line => '<p>' + line + '</p>').join("");
+
+          return `
+            <article class="mission-card">
+              <h3>${mission.missionName.replace("Mission: ", "")}</h3>
+              <p class="brief">${mission.missionBrief}</p>
+              <div class="skill-chips">${skills}</div>
+              <div class="preview-box">
+                <div class="label">Sample Questions</div>
+                ${previewLines}
+              </div>
+              <div class="card-actions">
+                <button class="gs-btn gs-btn-primary" data-launch="${mission.missionId}" type="button">Play Mission</button>
+                <button class="gs-btn" data-preview="${mission.missionId}" type="button">Preview</button>
+              </div>
+            </article>
+          `;
+        }));
         missionResults.innerHTML = cards.join("");
       }
 
-      function openLaunchModal(missionId) {
-        state.selectedMissionId = missionId;
-        const mission = state.allMissions.find((row) => row.missionId === missionId);
+      function launchMission(missionId) {
+        const mission = allMissions.find(m => m.missionId === missionId);
         if (!mission) return;
-        launchMissionSummary.textContent = `${mission.missionName} · ${mission.grammarFocus} · Grade ${mission.gradeBand} · Level ${mission.cognitiveLevel}`;
-        modalTier.value = difficultySelect.value || "field";
-        modalCount.value = selectedQuestionCount();
-        modalTimer.value = "off";
-
-        getPreview(missionId).then(({ gameTypes }) => {
-          modalGameType.innerHTML = gameTypes
-            .map((type) => `<option value="${type}">${type}</option>`)
-            .join("");
-        });
-
-        launchModalBackdrop.dataset.open = "true";
-      }
-
-      function closeLaunchModal() {
-        launchModalBackdrop.dataset.open = "false";
-      }
-
-      missionResults.addEventListener("click", async (event) => {
-        const launchButton = event.target.closest("[data-launch-id]");
-        const previewButton = event.target.closest("[data-preview-id]");
-
-        if (previewButton) {
-          const mission = await loadMission(previewButton.dataset.previewId);
-          alert(mission.items.slice(0, 3).map((item, i) => `${i + 1}. ${item.sentence}`).join("\n\n"));
-        }
-        if (launchButton) {
-          openLaunchModal(launchButton.dataset.launchId);
-        }
-      });
-
-      closeLaunchModalBtn.addEventListener("click", closeLaunchModal);
-      launchModalBackdrop.addEventListener("click", (event) => {
-        if (event.target === launchModalBackdrop) closeLaunchModal();
-      });
-      window.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && launchModalBackdrop.dataset.open === "true") closeLaunchModal();
-      });
-
-      confirmLaunchBtn.addEventListener("click", () => {
-        if (!state.selectedMissionId) return;
-        const count = Math.max(1, Number(modalCount.value || selectedQuestionCount()));
+        const gameTypes = previewCache.get(missionId)?.gameTypes || ["clue-trail"];
         const url = new URL("games/launch.html", window.location.href);
-        url.searchParams.set("missionId", state.selectedMissionId);
-        url.searchParams.set("gameType", modalGameType.value || "retrieval-raid");
-        url.searchParams.set("tier", modalTier.value || "field");
-        url.searchParams.set("count", count);
-        url.searchParams.set("timer", modalTimer.value);
+        url.searchParams.set("missionId", missionId);
+        url.searchParams.set("gameType", gameTypes[0]);
+        url.searchParams.set("tier", difficultySelect.value);
+        url.searchParams.set("count", questionCountSelect.value);
+        url.searchParams.set("timer", timerSelect.value);
         window.location.href = url.toString();
-      });
-
-      [
-        missionSearch,
-        gradeFilter,
-        levelFilter,
-        grammarFilter,
-        retrievalFilter,
-        skillFilter
-      ].forEach((el) => {
-        el.addEventListener("input", renderResults);
-        el.addEventListener("change", renderResults);
-      });
-
-      resetFiltersBtn.addEventListener("click", () => {
-        missionSearch.value = "";
-        gradeFilter.value = "";
-        levelFilter.value = "";
-        grammarFilter.value = "";
-        retrievalFilter.value = "";
-        skillFilter.value = "";
-        renderResults();
-      });
-
-      state.allMissions = await listAllMissions();
-      const summary = getManifestSummary(state.allMissions);
-
-      missionSuggestions.innerHTML = state.allMissions
-        .map((mission) => `<option value="${mission.missionName}"></option>`)
-        .join("");
-
-      fillSelectOptions(grammarFilter, summary.grammarFocus);
-      fillSelectOptions(retrievalFilter, summary.retrievalTypes);
-      fillSelectOptions(skillFilter, summary.skills);
-
-      const query = readQueryParams();
-      if (query.gradeBand) gradeFilter.value = query.gradeBand;
-      if (query.cognitiveLevel) levelFilter.value = query.cognitiveLevel;
-      if (query.missionId) {
-        const direct = state.allMissions.find((m) => m.missionId === query.missionId);
-        if (direct) missionSearch.value = direct.missionName;
       }
+
+      async function openPreview(missionId) {
+        activeMissionId = missionId;
+        const mission = allMissions.find(m => m.missionId === missionId);
+        if (!mission) return;
+        const data = await loadMission(missionId);
+        const samples = (data.items || []).slice(0, 5);
+
+        previewTitle.textContent = mission.missionName.replace("Mission: ", "");
+        previewSub.textContent = mission.missionBrief;
+        previewSamples.innerHTML = samples.map((item, i) =>
+          '<div class="sample"><p><span class="num">' + (i + 1) + '.</span> ' + item.sentence + '</p></div>'
+        ).join("");
+        previewOverlay.classList.add("show");
+      }
+
+      function closePreview() {
+        previewOverlay.classList.remove("show");
+      }
+
+      missionResults.addEventListener("click", e => {
+        const launchBtn = e.target.closest("[data-launch]");
+        const previewBtn = e.target.closest("[data-preview]");
+        if (launchBtn) launchMission(launchBtn.dataset.launch);
+        if (previewBtn) openPreview(previewBtn.dataset.preview);
+      });
+
+      previewCloseBtn.addEventListener("click", closePreview);
+      previewOverlay.addEventListener("click", e => { if (e.target === previewOverlay) closePreview(); });
+      window.addEventListener("keydown", e => { if (e.key === "Escape") closePreview(); });
+      previewLaunchBtn.addEventListener("click", () => { if (activeMissionId) launchMission(activeMissionId); });
+
+      missionSearch.addEventListener("input", renderResults);
+
+      allMissions = await listAllMissions();
       await renderResults();
     </script>
+    <script src="gs-animations.js"></script>
   </body>
 </html>

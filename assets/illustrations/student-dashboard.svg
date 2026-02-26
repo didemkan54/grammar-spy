@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 140" role="img" aria-label="Student mission dashboard">
+  <defs>
+    <linearGradient id="bgS" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e8f4f5"/><stop offset="100%" stop-color="#f2f4f7"/></linearGradient>
+  </defs>
+  <rect width="280" height="140" rx="14" fill="url(#bgS)"/>
+  <!-- Progress arc -->
+  <g transform="translate(70,70)">
+    <circle cx="0" cy="0" r="40" fill="none" stroke="#d9dee6" stroke-width="6"/>
+    <circle cx="0" cy="0" r="40" fill="none" stroke="#1f5f63" stroke-width="6" stroke-dasharray="180 252" stroke-linecap="round" transform="rotate(-90)" opacity=".6"/>
+    <text x="0" y="4" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="800" fill="#16223a" text-anchor="middle" opacity=".7">72%</text>
+    <text x="0" y="16" font-family="Inter,Arial,sans-serif" font-size="7" fill="#4a5568" text-anchor="middle" opacity=".6">accuracy</text>
+  </g>
+  <!-- XP bar -->
+  <g transform="translate(140,30)">
+    <rect x="0" y="0" width="120" height="10" rx="5" fill="#d9dee6" opacity=".5"/>
+    <rect x="0" y="0" width="78" height="10" rx="5" fill="#c9a227" opacity=".5"/>
+    <text x="125" y="9" font-family="Inter,Arial,sans-serif" font-size="8" font-weight="700" fill="#c9a227" opacity=".7">780 XP</text>
+  </g>
+  <!-- Rank badge -->
+  <g transform="translate(140,50)">
+    <path d="M12 0l14 5v10c0 9-6 16-14 19C4 31-2 24-2 15V5z" fill="#1f5f63" opacity=".2"/>
+    <text x="12" y="18" font-family="Inter,Arial,sans-serif" font-size="8" font-weight="700" fill="#1f5f63" text-anchor="middle" opacity=".5">FA</text>
+    <text x="35" y="16" font-family="Inter,Arial,sans-serif" font-size="9" font-weight="600" fill="#16223a" opacity=".5">Field Agent</text>
+  </g>
+  <!-- Mission streak -->
+  <g transform="translate(140,80)">
+    <text x="0" y="12" font-family="Inter,Arial,sans-serif" font-size="8" font-weight="700" fill="#1f5f63" opacity=".4">STREAK</text>
+    <text x="50" y="14" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="800" fill="#c9a227" opacity=".6">5</text>
+    <text x="62" y="14" font-family="Inter,Arial,sans-serif" font-size="10" fill="#c9a227" opacity=".5">&#x1F525;</text>
+  </g>
+  <!-- Next mission chip -->
+  <g transform="translate(140,102)">
+    <rect x="0" y="0" width="110" height="22" rx="6" fill="#1f5f63" opacity=".12"/>
+    <text x="8" y="15" font-family="Inter,Arial,sans-serif" font-size="8" font-weight="600" fill="#1f5f63" opacity=".6">Next: Clue Trail &#x2192;</text>
+  </g>
+</svg>

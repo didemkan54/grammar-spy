@@ -80,6 +80,11 @@
     if (!account.createdAt) account.createdAt = nowIso();
     if (!account.plan) account.plan = 'trial';
     if (!Array.isArray(account.entitlements)) account.entitlements = ['pack01'];
+    if (isOwnerEmail(account.email) && account.plan !== 'paid') {
+      account.plan = 'paid';
+      account.entitlements = ['pack01', 'pack02', 'pack03', 'pack04', 'pack05', 'pack06'];
+      if (account.billing) account.billing.status = 'active';
+    }
     if ((account.plan === 'trial' || account.plan === 'guest') && account.entitlements.length > 1) {
       account.entitlements = ['pack01'];
     }
@@ -116,23 +121,25 @@
 
   function createAccount(name, email, role){
     var stamp = nowIso();
+    var emailStr = String(email || '').trim();
+    var owner = isOwnerEmail(emailStr);
     var account = {
       id: 'acct_' + Math.random().toString(36).slice(2, 10),
       mode: 'account',
       role: role || 'teacher',
       name: String(name || 'Teacher').trim() || 'Teacher',
-      email: String(email || '').trim(),
+      email: emailStr,
       createdAt: stamp,
       updatedAt: stamp,
-      plan: 'trial',
-      entitlements: ['pack01'],
+      plan: owner ? 'paid' : 'trial',
+      entitlements: owner ? ['pack01', 'pack02', 'pack03', 'pack04', 'pack05', 'pack06'] : ['pack01'],
       trial: {
         startedAt: stamp,
         endsAt: addDays(stamp, 365),
         status: 'active'
       },
       billing: {
-        status: 'trialing',
+        status: owner ? 'active' : 'trialing',
         stripeCustomerId: '',
         lastCheckoutAt: ''
       }
@@ -214,6 +221,16 @@
     saveAccount(a);
     syncSessionFromAccount(a);
     return a;
+  }
+
+  /** Owner emails — always get full access */
+  var OWNER_EMAILS = [
+    'gul.d.kan@mcpsmd.net'
+  ];
+
+  function isOwnerEmail(email) {
+    if (!email) return false;
+    return OWNER_EMAILS.indexOf(email.trim().toLowerCase()) >= 0;
   }
 
   /** Promo codes for teacher feedback - full access, no subscription */

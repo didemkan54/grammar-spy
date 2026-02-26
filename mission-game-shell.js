@@ -77,19 +77,19 @@
   };
 
   var gameUx = {
-    "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Smash Wrong Line", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash", playMode: "smash" },
-    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Classify Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Sequence Choice", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "sequence" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Repair Line", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "repair" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Rewrite Duel", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
-    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Smash Rule Breach", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
-    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Signal Verdict", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
-    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Verdict", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
-    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Smash Agreement Error", sceneLabel: "Rule Check", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
-    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Board Sweep", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep", playMode: "sweep" },
-    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Case Verdict", sceneLabel: "Case File", startText: "Open Case", replayText: "Open New Case", endText: "Close Case", playMode: "binary" },
-    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Sequence Verdict", sceneLabel: "Sequence Step", startText: "Run Lab", replayText: "Run Lab Again", endText: "End Lab", playMode: "binary" },
-    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Board Sweep", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "sweep" }
+    "error-smash": { accent: "#1f8f63", columns: 2, modeLabel: "Spot the Correct Form", sceneLabel: "Grammar Card", startText: "Start Spotting", replayText: "Play Again", endText: "End Game", playMode: "smash" },
+    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Sort the Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Story", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "sequence" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Choose the Best Line", sceneLabel: "Dialogue Line", startText: "Start Mission", replayText: "Play Again", endText: "End Mission", playMode: "repair" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick the Rewrite", sceneLabel: "Writing Prompt", startText: "Start Rewriting", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
+    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Match the Rule", sceneLabel: "Rule Card", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
+    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Check the Grammar", sceneLabel: "Signal Card", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
+    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Judge the Sentence", sceneLabel: "Case Card", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
+    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Match the Agreement", sceneLabel: "Agreement Card", startText: "Start Matching", replayText: "Match Again", endText: "End Match", playMode: "smash" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Sort the Board", sceneLabel: "Grammar Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" },
+    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Judge the Agreement", sceneLabel: "Case Card", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
+    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Order the Sequence", sceneLabel: "Sequence Card", startText: "Start Lab", replayText: "Run Again", endText: "End Lab", playMode: "binary" },
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "sweep" }
   };
 
   var fallbackRounds = [
@@ -900,9 +900,9 @@
         prompt: "Select the clearest spoken line.",
         options: [
           "After she read it, she gave it to her.",
-          "After Elif read the draft, she gave it to Ada.",
+          "After Elena read the draft, she gave it to Ada.",
           "After she read it, gave it to her.",
-          "After Elif read it, she give it to Ada."
+          "After Elena read it, she give it to Ada."
         ],
         answer: 1,
         explain: "Replacing ambiguous pronouns makes dialogue clearer."
@@ -1371,10 +1371,10 @@
         scene: "Schedule Check",
         prompt: "Select the strongest third-person present sentence.",
         options: [
-          "Mina write the summary after lunch.",
-          "Mina writes the summary after lunch.",
-          "Mina is write the summary after lunch.",
-          "Mina wrote the summary after lunch usually."
+          "Maya write the summary after lunch.",
+          "Maya writes the summary after lunch.",
+          "Maya is write the summary after lunch.",
+          "Maya wrote the summary after lunch usually."
         ],
         answer: 1,
         explain: "Third-person singular takes writes."
@@ -2121,10 +2121,10 @@
         scene: "Dual Subject",
         prompt: "Select the sentence with correct plural agreement.",
         options: [
-          "Mina and Sude is in the hallway.",
-          "Mina and Sude are in the hallway.",
-          "Mina and Sude am in the hallway.",
-          "Mina and Sude was in the hallway."
+          "Maya and Sude is in the hallway.",
+          "Maya and Sude are in the hallway.",
+          "Maya and Sude am in the hallway.",
+          "Maya and Sude was in the hallway."
         ],
         answer: 1,
         explain: "Two names form a plural subject, so use are."
@@ -3053,10 +3053,10 @@
         scene: "Evidence Card B",
         prompt: "Pick the line with clear reference.",
         options: [
-          "Selin shared the note with Rana after Selin verified it.",
-          "Selin shared the note with Rana after she verified it.",
-          "Selin shared the note with Rana after it verified it.",
-          "Selin shared note with Rana after she were verify it."
+          "Sarah shared the note with Rana after Sarah verified it.",
+          "Sarah shared the note with Rana after she verified it.",
+          "Sarah shared the note with Rana after it verified it.",
+          "Sarah shared note with Rana after she were verify it."
         ],
         answer: 0,
         explain: "Explicit noun naming avoids pronoun-reference ambiguity in evidence logs."
@@ -3439,10 +3439,10 @@
           scene: "Reference Dialogue 1",
           prompt: "Repair the line for clear pronoun reference.",
           options: [
-            "Aylin gave Ece the file after Aylin checked it.",
-            "Aylin gave Ece the file after she checked it.",
-            "Aylin gave Ece the file after it checked it.",
-            "Aylin gave Ece file after she were checking it."
+            "Aylin gave Ella the file after Aylin checked it.",
+            "Aylin gave Ella the file after she checked it.",
+            "Aylin gave Ella the file after it checked it.",
+            "Aylin gave Ella file after she were checking it."
           ],
           answer: 0,
           explain: "Repeating the subject name avoids ambiguity."
@@ -3451,10 +3451,10 @@
           scene: "Reference Dialogue 2",
           prompt: "Choose the line with explicit ownership.",
           options: [
-            "Mina told Defne that Mina would present first.",
-            "Mina told Defne that she would present first.",
-            "Mina told Defne that it would present first.",
-            "Mina told Defne she were presenting first."
+            "Maya told Sofia that Maya would present first.",
+            "Maya told Sofia that she would present first.",
+            "Maya told Sofia that it would present first.",
+            "Maya told Sofia she were presenting first."
           ],
           answer: 0,
           explain: "Explicit noun naming keeps pronoun reference and meaning precise."
@@ -3669,10 +3669,10 @@
           scene: "Reference Rewrite 1",
           prompt: "Choose the clearest rewrite.",
           options: [
-            "Mina gave Ece the report after Mina checked it.",
-            "Mina gave Ece the report after she checked it.",
-            "Mina gave Ece the report after it checked it.",
-            "Mina gave Ece report after she were checking it."
+            "Maya gave Ella the report after Maya checked it.",
+            "Maya gave Ella the report after she checked it.",
+            "Maya gave Ella the report after it checked it.",
+            "Maya gave Ella report after she were checking it."
           ],
           answer: 0,
           explain: "Explicit naming removes pronoun confusion."
@@ -3681,10 +3681,10 @@
           scene: "Reference Rewrite 2",
           prompt: "Pick the strongest reference rewrite.",
           options: [
-            "Kerem told Arda that Kerem would speak first.",
-            "Kerem told Arda that he would speak first.",
-            "Kerem told Arda that it would speak first.",
-            "Kerem told Arda he were speaking first."
+            "Kerem told Alex that Kerem would speak first.",
+            "Kerem told Alex that he would speak first.",
+            "Kerem told Alex that it would speak first.",
+            "Kerem told Alex he were speaking first."
           ],
           answer: 0,
           explain: "Clear repeated subject preserves meaning."
@@ -3785,10 +3785,10 @@
           scene: "Reference Sequence 1",
           prompt: "Choose the sequence line with clear reference.",
           options: [
-            "Mina reviewed the script, then Mina sent it to Ece.",
-            "Mina reviewed the script, then she sent it to Ece.",
-            "Mina reviewed script, then sent it to Ece.",
-            "Mina reviewed the script, then she were sending it to Ece."
+            "Maya reviewed the script, then Maya sent it to Ella.",
+            "Maya reviewed the script, then she sent it to Ella.",
+            "Maya reviewed script, then sent it to Ella.",
+            "Maya reviewed the script, then she were sending it to Ella."
           ],
           answer: 0,
           explain: "Explicit subject naming keeps sequence reference clear."
@@ -3809,10 +3809,10 @@
           scene: "Reference Sequence 3",
           prompt: "Select the best timeline sentence with clear names.",
           options: [
-            "Elif called Duru, and Elif explained the correction.",
-            "Elif called Duru, and she explained the correction.",
-            "Elif called Duru and explained correction.",
-            "Elif called Duru, and she were explaining the correction."
+            "Elena called Duru, and Elena explained the correction.",
+            "Elena called Duru, and she explained the correction.",
+            "Elena called Duru and explained correction.",
+            "Elena called Duru, and she were explaining the correction."
           ],
           answer: 0,
           explain: "Explicit reference avoids ambiguity across steps."
@@ -3925,10 +3925,10 @@
           scene: "Reference Evidence 3",
           prompt: "Select the option with no unclear pronoun.",
           options: [
-            "Mina called Ece after Mina reviewed the notes.",
-            "Mina called Ece after she reviewed the notes.",
-            "Mina called Ece after it reviewed the notes.",
-            "Mina called Ece after she were reviewing the notes."
+            "Maya called Ella after Maya reviewed the notes.",
+            "Maya called Ella after she reviewed the notes.",
+            "Maya called Ella after it reviewed the notes.",
+            "Maya called Ella after she were reviewing the notes."
           ],
           answer: 0,
           explain: "Explicit subject naming keeps reference accurate."
@@ -4141,38 +4141,38 @@
   }
 
   function modeHelperText(mode) {
-    if (mode === "smash") return "Mode rule: tap the line that contains the error.";
-    if (mode === "binary") return "Mode rule: judge one highlighted line as Secure or Needs Repair.";
-    if (mode === "classify") return "Mode rule: classify one sentence as Completed action or Ongoing background.";
-    if (mode === "repair") return "Mode rule: read the broken line and choose the strongest repair.";
+    if (mode === "smash") return "Mode rule: find the line with the correct grammar form.";
+    if (mode === "binary") return "Mode rule: decide if the highlighted sentence is correct or incorrect.";
+    if (mode === "classify") return "Mode rule: classify the sentence — is it a completed action or ongoing background?";
+    if (mode === "repair") return "Mode rule: pick the strongest version of this sentence.";
     if (mode === "duel") return "Mode rule: compare two rewrites and pick the stronger one.";
     if (mode === "sequence") return "Mode rule: choose the strongest next line for story flow.";
     if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
-    if (mode === "sweep") return "Mode rule: mark each line Secure or Needs Repair, then submit the board.";
+    if (mode === "sweep") return "Mode rule: mark each line Correct or Incorrect, then submit the board.";
     return "Mode rule: choose the single strongest line.";
   }
 
   function modePrompt(mode) {
-    if (mode === "smash") return "Find and tap the line with a grammar error.";
-    if (mode === "binary") return "Read the highlighted line and decide: Secure or Needs Repair.";
+    if (mode === "smash") return "Find the line with the correct grammar.";
+    if (mode === "binary") return "Read the highlighted line and decide: is it correct or incorrect?";
     if (mode === "classify") return "Classify each line: Completed Event or Ongoing Background.";
-    if (mode === "repair") return "Choose the strongest repair for the broken line.";
+    if (mode === "repair") return "Choose the best version of this line.";
     if (mode === "duel") return "Compare the two options and choose the stronger rewrite.";
     if (mode === "sequence") return "Choose the strongest next line for the sequence.";
     if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
-    if (mode === "sweep") return "Mark each line Secure or Needs Repair, then submit.";
+    if (mode === "sweep") return "Mark each line correct or incorrect, then submit.";
     return "Choose the single strongest line.";
   }
 
   function modeHowTo(mode, fallback) {
-    if (mode === "smash") return "Scan all options and smash only lines that contain errors.";
-    if (mode === "binary") return "Judge one line at a time as correct or incorrect.";
-    if (mode === "classify") return "Sort lines by timeline role: completed events vs ongoing background actions.";
-    if (mode === "repair") return "Read the broken line and pick the best corrected version.";
-    if (mode === "duel") return "Compare two rewrites and choose the stronger sentence.";
-    if (mode === "sequence") return "Pick the line that best continues the sequence logically and grammatically.";
-    if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
-    if (mode === "sweep") return "Mark every line secure or needs repair before submitting the board.";
+    if (mode === "smash") return "Read all the options and pick the one with the correct grammar form.";
+    if (mode === "binary") return "Read the sentence and decide — is the grammar correct or does it need a fix?";
+    if (mode === "classify") return "Sort each sentence into the right category: completed action or ongoing background.";
+    if (mode === "repair") return "Read the sentence and choose the best version from the options.";
+    if (mode === "duel") return "Compare two versions and choose the stronger, more natural sentence.";
+    if (mode === "sequence") return "Pick the line that best continues the story in the right order.";
+    if (mode === "eliminate") return "Cross out the weaker options and keep only the strongest sentence.";
+    if (mode === "sweep") return "Go through each sentence and mark it correct or incorrect, then submit.";
     return fallback || "Choose the strongest line.";
   }
 
@@ -4293,13 +4293,18 @@
       score += award;
       if (btn) btn.classList.add("good");
       html("feedback", "<span class=\"ok\"><b>CORRECT.</b> " + successMsg + " +" + award + " pts</span>");
-      if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+      if (window.GSSound) {
+        if (streak > 2 && window.GSSound.streak) { window.GSSound.streak(streak); }
+        else if (combo > 1 && window.GSSound.combo) { window.GSSound.combo(); }
+        else if (window.GSSound.correct) { window.GSSound.correct(); }
+      }
     } else {
       streak = 0;
       combo = 1;
       score = Math.max(0, score - 20);
       if (btn) btn.classList.add("bad");
       html("feedback", "<span class=\"bad\"><b>WRONG.</b> " + failMsg + " -20 pts</span>");
+      if (window.GSSound && window.GSSound.wrong) window.GSSound.wrong();
     }
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
@@ -4319,7 +4324,7 @@
       updateHud();
       if (shotClock <= 0) {
         clearInterval(shotTimer);
-        finishRound(false, "", "Time breach: no decision submitted. " + round.explain);
+        finishRound(false, "", "Time's up! " + round.explain);
       }
     }, 1000);
   }
@@ -4334,7 +4339,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + displayIdx)); btn.textContent = item.lineText;
       var isTarget = activeMode === "smash" ? item.optionIdx !== round.answer : item.optionIdx === round.answer;
       btn.dataset.target = isTarget ? "1" : "0";
       btn.addEventListener("click", function () {
@@ -4387,13 +4392,13 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Repair " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + i)); btn.textContent = item.text;
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
           item.idx === round.answer,
-          "Repair secured: strongest correction chosen. " + round.explain,
-          "Repair missed: correct line is \"" + rightLine + "\". " + round.explain,
+          "Nice! You picked the strongest correction. " + round.explain,
+          "Not quite — the best fix is \"" + rightLine + "\". " + round.explain,
           btn
         );
       });
@@ -4430,7 +4435,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>Option " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + i)); btn.textContent = item.text;
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         var correctText = round.options[round.answer];
@@ -4711,8 +4716,8 @@
 
     var actions = document.createElement("div");
     actions.className = "binary-actions";
-    var secureBtn = buildOptionButton("Secure", "This line is grammatically correct.");
-    var repairBtn = buildOptionButton("Needs Repair", "This line has an error.");
+    var secureBtn = buildOptionButton("Correct", "This line is grammatically correct.");
+    var repairBtn = buildOptionButton("Incorrect", "This line has an error.");
 
     secureBtn.addEventListener("click", function () {
       selectBinaryVerdict(true, candidateCorrect, round, secureBtn);
@@ -4740,7 +4745,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
+      btn.setAttribute("data-label", String.fromCharCode(65 + displayIdx)); btn.textContent = item.lineText;
       btn.addEventListener("click", function () {
         if (locked || btn.classList.contains("eliminated")) return;
         if (item.optionIdx === round.answer) {
@@ -4789,7 +4794,7 @@
       var repairBtn = document.createElement("button");
       repairBtn.type = "button";
       repairBtn.className = "sweep-pick";
-      repairBtn.textContent = "Needs Repair";
+      repairBtn.textContent = "Incorrect";
 
       function setChoice(isSecure) {
         selections[item.optionIdx] = isSecure;
@@ -4897,11 +4902,11 @@
     finishRound(
       userCorrect,
       activeMode === "smash"
-        ? "Hit confirmed: you smashed an incorrect line. " + round.explain
-        : "Secure: " + round.explain,
+        ? "Nice catch! You spotted the right form. " + round.explain
+        : "Correct! " + round.explain,
       activeMode === "smash"
-        ? "That line is already correct. Smash an error line instead. " + round.explain
-        : "Needs repair: correct line is \"" + round.options[round.answer] + "\". " + round.explain,
+        ? "Not quite — that one has an error. Look for the correct form. " + round.explain
+        : "Not quite — the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
       btn
     );
   }
@@ -4910,8 +4915,8 @@
     var userCorrect = markSecure ? candidateCorrect : !candidateCorrect;
     finishRound(
       userCorrect,
-      "Verdict confirmed: " + (candidateCorrect ? "this line is secure. " : "this line needs repair. ") + round.explain,
-      "Verdict mismatch: this line is " + (candidateCorrect ? "secure. " : "not secure. ") + round.explain,
+      "Correct! " + (candidateCorrect ? "This line is grammatically correct. " : "Good eye — this line has an error. ") + round.explain,
+      "Not quite — this line is actually " + (candidateCorrect ? "correct. " : "incorrect. ") + round.explain,
       btn
     );
   }
@@ -4937,7 +4942,7 @@
       if (used) html("feedback", "<span class=\"ok\">Hint applied: one line was auto-classified.</span>");
     } else if (currentRoundState.mode === "binary") {
       used = true;
-      html("feedback", "<span class=\"ok\">Hint: the highlighted line is " + (currentRoundState.candidateCorrect ? "Secure" : "Needs Repair") + ".</span>");
+      html("feedback", "<span class=\"ok\">Hint: the highlighted line is " + (currentRoundState.candidateCorrect ? "correct" : "incorrect") + ".</span>");
     } else {
       var decoys = Array.prototype.slice.call(optionsEl.querySelectorAll(".opt")).filter(function (btn) {
         return btn.dataset.target === "0" && !btn.classList.contains("eliminated");
@@ -4970,13 +4975,14 @@
     streak = 0;
     combo = 1;
     score = Math.max(0, score - 15);
-    html("feedback", "<span class=\"bad\"><b>SKIPPED.</b> Click Next to continue. -15 pts</span>");
+    html("feedback", "<span class=\"bad\"><b>Skipped.</b> No worries — moving on. -15 pts</span>");
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
   }
 
   function goNext() {
     if (!awaitingNext) return;
+    if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
     if (idx >= rounds.length) {
       endGame();
       return;
@@ -4993,6 +4999,7 @@
     text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
     var report = document.getElementById("reportOverlay");
     if (report) report.classList.add("show");
+    if (window.GSSound && window.GSSound.missionComplete) window.GSSound.missionComplete();
   }
 
   function startTimer() {
