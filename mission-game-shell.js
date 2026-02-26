@@ -619,243 +619,243 @@
     "narrative-builder": [
       {
         scene: "Story Step 1",
-        prompt: "Which line best continues this story clearly?",
+        prompt: "Which line sounds best?",
         options: [
-          "First, we reviewed the clue cards; then we grouped them by time.",
-          "First, we review the clue cards; then we grouped them by time.",
-          "First, we reviewed the clue cards; then we grouping them by time.",
-          "First, we were review the clue cards; then we grouped them by time."
+          "First, we read the notes and put them in order.",
+          "First, we reads the notes and put them in order.",
+          "First, we read the notes and putting them in order.",
+          "First, we read the notes and putted them in order."
         ],
         answer: 0,
-        explain: "Strong narrative flow uses stable tense and sequence markers."
+        explain: "Use one clear past-time line with simple past forms."
       },
       {
         scene: "Story Step 2",
-        prompt: "Pick the best transition sentence.",
+        prompt: "Pick the best transition line.",
         options: [
-          "Because the evidence was weak, we tested a second explanation.",
-          "Because the evidence weak, we tested a second explanation.",
-          "Because the evidence was weak, we are testing a second explanation yesterday.",
-          "Because the evidence were weak, we tested a second explanation."
+          "Because the clue was weak, we tried another idea.",
+          "Because the clue weak, we tried another idea.",
+          "Because the clue was weak, we try another idea yesterday.",
+          "Because the clue were weak, we tried another idea."
         ],
         answer: 0,
-        explain: "Cause/result logic must keep tense and clause structure consistent."
+        explain: "Cause and result lines should be complete and clear."
       },
       {
         scene: "Story Step 3",
-        prompt: "Choose the strongest line for background and event.",
+        prompt: "Choose the best line for background and event.",
         options: [
-          "The class read quietly when the speaker failed.",
-          "The class was reading quietly when the speaker failed.",
-          "The class is reading quietly when the speaker failed.",
-          "The class reads quietly when the speaker failed yesterday."
+          "We were reading when the bell rang.",
+          "We reading when the bell rang.",
+          "We are reading when the bell rang.",
+          "We were read when the bell rang."
         ],
-        answer: 1,
-        explain: "Past continuous background plus past simple interrupting verb gives correct timeline logic."
+        answer: 0,
+        explain: "Use was/were + verb-ing for background and simple past for the event."
       },
       {
         scene: "Story Step 4",
-        prompt: "Which sentence keeps pronoun reference clear?",
+        prompt: "Which sentence is clearest?",
         options: [
-          "Aylin handed Nisa the file after she corrected it.",
-          "Aylin handed Nisa the file after Aylin corrected it.",
-          "Aylin handed Nisa the file after it corrected it.",
-          "Aylin handed Nisa the file after she were correcting it."
+          "Mina gave Ada the file after Mina checked it.",
+          "Mina gave Ada the file after she checked it.",
+          "Mina gave Ada the file after it checked it.",
+          "Mina gave Ada the file after she were checking it."
         ],
-        answer: 1,
-        explain: "Naming the person removes pronoun ambiguity."
+        answer: 0,
+        explain: "Name the person again when pronouns are confusing."
       },
       {
         scene: "Story Step 5",
-        prompt: "Select the best final sentence.",
+        prompt: "Pick the best final sentence.",
         options: [
-          "At the end, we submit the report and celebrate.",
-          "At the end, we submitted the report and celebrated.",
-          "At the end, we are submitting the report and celebrated.",
-          "At the end, we submitted the report and celebrates."
+          "At the end, we finished the report and smiled.",
+          "At the end, we finish the report and smiled.",
+          "At the end, we finished the report and smile.",
+          "At the end, we were finish the report and smiled."
         ],
-        answer: 1,
-        explain: "Ending a past narrative should stay in completed past forms."
+        answer: 0,
+        explain: "A finished story should stay in simple past."
       },
       {
         scene: "Story Step 6",
         prompt: "Choose the clearest timeline link.",
         options: [
-          "After we checked the evidence, we finalize the poster.",
-          "After we checked the evidence, we finalized the poster.",
-          "After we check the evidence, we finalized the poster yesterday.",
-          "After we were checked the evidence, we finalized the poster."
+          "After we checked the list, we fixed the poster.",
+          "After we check the list, we fixed the poster.",
+          "After we checked the list, we fix the poster.",
+          "After we were checked the list, we fixed the poster."
         ],
-        answer: 1,
-        explain: "After-clause and result are both completed in the past."
+        answer: 0,
+        explain: "Both actions happened in the past."
       },
       {
         scene: "Story Step 7",
-        prompt: "Which line best continues the narrative?",
+        prompt: "Which line best continues the story?",
         options: [
-          "Meanwhile, two agents were guarding the entrance while a third searched the office.",
-          "Meanwhile, two agents guarding the entrance while a third searched the office.",
-          "Meanwhile, two agents were guarding the entrance while a third searches the office.",
-          "Meanwhile, two agents was guarding the entrance while a third searched the office."
+          "Two students were guarding the door while one searched the room.",
+          "Two students guarding the door while one searched the room.",
+          "Two students were guarding the door while one searches the room.",
+          "Two students was guarding the door while one searched the room."
         ],
         answer: 0,
-        explain: "Parallel past actions need past continuous with correct subject-verb agreement."
+        explain: "Keep both actions in the same past timeline."
       },
       {
         scene: "Story Step 8",
-        prompt: "Pick the sentence that maintains story flow.",
+        prompt: "Pick the sentence that keeps story flow.",
         options: [
-          "Next, the team gathered the clues and prepared a summary for the commander.",
-          "Next, the team gather the clues and prepared a summary for the commander.",
-          "Next, the team gathered the clues and prepares a summary for the commander.",
-          "Next, the team were gathered the clues and prepared a summary for the commander."
+          "Next, the team found notes and wrote a short summary.",
+          "Next, the team find notes and wrote a short summary.",
+          "Next, the team found notes and writes a short summary.",
+          "Next, the team was found notes and wrote a short summary."
         ],
         answer: 0,
-        explain: "Sequence markers like next require consistent simple past verbs."
+        explain: "Sequence words like next work best with consistent past verbs."
       },
       {
         scene: "Story Step 9",
-        prompt: "Choose the strongest narrative transition.",
+        prompt: "Choose the strongest transition.",
         options: [
-          "Because the evidence was strong, the squad decided to move forward.",
-          "Because the evidence strong, the squad decided to move forward.",
-          "Because the evidence was strong, the squad decides to move forward yesterday.",
-          "Because the evidence were strong, the squad decided to move forward."
+          "Because the plan was clear, the team moved forward.",
+          "Because the plan clear, the team moved forward.",
+          "Because the plan was clear, the team moves forward yesterday.",
+          "Because the plan were clear, the team moved forward."
         ],
         answer: 0,
-        explain: "Cause and result clauses should keep tense consistent in past narrative."
+        explain: "Use one complete cause/result sentence."
       },
       {
         scene: "Story Step 10",
-        prompt: "Select the best closing line for the story.",
+        prompt: "Select the best closing line.",
         options: [
-          "Finally, the captain reviewed the mission log and signed the report.",
-          "Finally, the captain review the mission log and signed the report.",
-          "Finally, the captain reviewed the mission log and signs the report.",
-          "Finally, the captain was review the mission log and signed the report."
+          "Finally, the captain checked the log and signed it.",
+          "Finally, the captain check the log and signed it.",
+          "Finally, the captain checked the log and signs it.",
+          "Finally, the captain was check the log and signed it."
         ],
         answer: 0,
-        explain: "A narrative conclusion uses simple past for completed actions in sequence."
+        explain: "A closing line should keep simple past forms."
       },
       {
         scene: "Story Step 11",
-        prompt: "Which line continues the story with correct tense?",
+        prompt: "Which line keeps tense correct?",
         options: [
-          "After the team gathered the evidence, the leader presents the plan.",
-          "After the team gathered the evidence, the leader presented the plan.",
-          "After the team was gather the evidence, the leader presented the plan.",
-          "After the team gathers the evidence, the leader presented the plan."
+          "After the team found clues, the leader shared the plan.",
+          "After the team find clues, the leader shared the plan.",
+          "After the team found clues, the leader shares the plan.",
+          "After the team was find clues, the leader shared the plan."
         ],
-        answer: 1,
-        explain: "Both clauses in a past narrative need consistent simple past."
+        answer: 0,
+        explain: "Both clauses should stay in past tense."
       },
       {
         scene: "Story Step 12",
-        prompt: "Select the sentence that keeps the story flowing.",
+        prompt: "Select the sentence that keeps the story moving.",
         options: [
-          "Meanwhile, the scout was mapping the trail while the others rested nearby.",
-          "Meanwhile, the scout mapping the trail while the others rested nearby.",
-          "Meanwhile, the scout was mapping the trail while the others rests nearby.",
-          "Meanwhile, the scout maps the trail while the others rested nearby."
+          "Meanwhile, one student was drawing the map while others rested.",
+          "Meanwhile, one student drawing the map while others rested.",
+          "Meanwhile, one student was drawing the map while others rests.",
+          "Meanwhile, one student draws the map while others rested."
         ],
         answer: 0,
-        explain: "Simultaneous past actions use past continuous and simple past together."
+        explain: "Past background action should use was/were + verb-ing."
       },
       {
         scene: "Story Step 13",
-        prompt: "Pick the best next story line.",
+        prompt: "Pick the best next line.",
         options: [
-          "The group decided to split up, and each member choose a different route.",
-          "The group decided to split up, and each member chose a different route.",
-          "The group decides to split up, and each member chose a different route.",
-          "The group decided to split up, and each member was choose a different route."
+          "The group split up, and each member chose a route.",
+          "The group split up, and each member choose a route.",
+          "The group splits up, and each member chose a route.",
+          "The group split up, and each member was choose a route."
         ],
-        answer: 1,
-        explain: "Parallel completed past actions both take simple past forms."
+        answer: 0,
+        explain: "Parallel past actions should both be simple past."
       },
       {
         scene: "Story Step 14",
-        prompt: "Choose the line that wraps up the chapter correctly.",
+        prompt: "Choose the line that wraps up the chapter.",
         options: [
-          "At last, the crew returned to base and files the final report.",
           "At last, the crew returned to base and filed the final report.",
+          "At last, the crew returned to base and files the final report.",
           "At last, the crew returns to base and filed the final report.",
           "At last, the crew was returned to base and filed the final report."
         ],
-        answer: 1,
-        explain: "A past narrative closing needs consistent simple past verbs."
+        answer: 0,
+        explain: "A wrap-up line should keep completed past verbs."
       },
       {
         scene: "Story Step 15",
-        prompt: "Which line best continues the narrative?",
+        prompt: "Which line best continues the story?",
         options: [
-          "Before the sun rose, the scouts prepared the trail markers.",
-          "Before the sun rose, the scouts prepare the trail markers.",
-          "Before the sun rises, the scouts prepared the trail markers.",
-          "Before the sun was rose, the scouts prepared the trail markers."
+          "Before the sun rose, the scouts placed the markers.",
+          "Before the sun rose, the scouts place the markers.",
+          "Before the sun rises, the scouts placed the markers.",
+          "Before the sun was rose, the scouts placed the markers."
         ],
         answer: 0,
-        explain: "A past narrative uses simple past consistently in both clauses."
+        explain: "Use simple past in both parts of this timeline sentence."
       },
       {
         scene: "Story Step 16",
-        prompt: "Pick the sentence that maintains story flow.",
+        prompt: "Pick the sentence that keeps story flow.",
         options: [
-          "The commander reviewed the map and assigned each team a zone.",
-          "The commander review the map and assigned each team a zone.",
-          "The commander reviewed the map and assigns each team a zone.",
-          "The commander was review the map and assigned each team a zone."
+          "The leader checked the map and gave each team a zone.",
+          "The leader check the map and gave each team a zone.",
+          "The leader checked the map and gives each team a zone.",
+          "The leader was check the map and gave each team a zone."
         ],
         answer: 0,
-        explain: "Parallel completed past actions both take simple past forms."
+        explain: "Both actions are finished, so use simple past."
       },
       {
         scene: "Story Step 17",
-        prompt: "Choose the strongest narrative transition.",
+        prompt: "Choose the strongest transition line.",
         options: [
-          "While the medic was treating the wound, the radio crackled with a new message.",
-          "While the medic treating the wound, the radio crackled with a new message.",
-          "While the medic was treating the wound, the radio crackles with a new message.",
-          "While the medic were treating the wound, the radio crackled with a new message."
+          "While the nurse was helping a student, the radio crackled.",
+          "While the nurse helping a student, the radio crackled.",
+          "While the nurse was helping a student, the radio crackles.",
+          "While the nurse were helping a student, the radio crackled."
         ],
         answer: 0,
-        explain: "Past continuous background with was plus simple past interruption keeps the narrative clear."
+        explain: "Background + interrupting event works best in past timeline form."
       },
       {
         scene: "Story Step 18",
-        prompt: "Select the best closing line for the chapter.",
+        prompt: "Select the best closing line.",
         options: [
-          "In the end, the team solved every puzzle and celebrated their victory.",
-          "In the end, the team solve every puzzle and celebrated their victory.",
-          "In the end, the team solved every puzzle and celebrates their victory.",
-          "In the end, the team was solved every puzzle and celebrated their victory."
+          "In the end, the team solved the puzzle and celebrated.",
+          "In the end, the team solve the puzzle and celebrated.",
+          "In the end, the team solved the puzzle and celebrates.",
+          "In the end, the team was solved the puzzle and celebrated."
         ],
         answer: 0,
-        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
+        explain: "Closing lines are easiest to follow with simple past verbs."
       },
       {
         scene: "Story Step 19",
-        prompt: "Which line best continues the narrative?",
+        prompt: "Which line best continues the story?",
         options: [
-          "After the scouts returned, the leader assigned new roles to each member.",
-          "After the scouts returned, the leader assigns new roles to each member.",
-          "After the scouts returns, the leader assigned new roles to each member.",
-          "After the scouts was returned, the leader assigned new roles to each member."
+          "After the scouts came back, the leader gave new jobs.",
+          "After the scouts came back, the leader gives new jobs.",
+          "After the scouts come back, the leader gave new jobs.",
+          "After the scouts was come back, the leader gave new jobs."
         ],
         answer: 0,
-        explain: "Both clauses in a past narrative need consistent simple past."
+        explain: "Keep the return and result actions in past tense."
       },
       {
         scene: "Story Step 20",
-        prompt: "Select the best closing line for the story.",
+        prompt: "Select the best final line.",
         options: [
-          "At last, the team packed the equipment and headed back to base.",
-          "At last, the team pack the equipment and headed back to base.",
-          "At last, the team packed the equipment and heads back to base.",
-          "At last, the team was packed the equipment and headed back to base."
+          "At last, the team packed the bags and went home.",
+          "At last, the team pack the bags and went home.",
+          "At last, the team packed the bags and goes home.",
+          "At last, the team was packed the bags and went home."
         ],
         answer: 0,
-        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
+        explain: "A clear ending uses simple, consistent past verbs."
       }
     ],
     "dialogue-repair": [
