@@ -8,14 +8,14 @@
   <style>
     :root{--ink:#16223a;--muted:#4a5568;--line:#d9dee6;--teal:#1f5f63;--gold:#c9a227;--bg:#f2f4f7;--card:#fff}
     *{box-sizing:border-box}
-    body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
-    .wrap{max-width:100%;margin:0;display:grid;gap:14px;padding:18px 40px}
+    body{margin:0;padding:22px 14px;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+    .wrap{max-width:1080px;margin:0 auto;display:grid;gap:14px}
     .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(11,16,32,.08)}
     h1{margin:0 0 8px;font-size:34px;letter-spacing:-.02em}
     p{margin:0;color:var(--muted)}
     .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    @media (max-width:100%){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:100%){.grid{grid-template-columns:1fr}}
+    @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}}
     .card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px;display:grid;gap:10px}
     .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700}
     .price{font-size:30px;font-weight:900;color:var(--ink)}

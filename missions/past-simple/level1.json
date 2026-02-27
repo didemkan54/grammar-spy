@@ -63,7 +63,7 @@
     {
       "id": "psl1-02",
       "context": "Science lab report",
-      "sentence": "Last week, Maya ___ the final chart in blue.",
+      "sentence": "Last week, Mina ___ the final chart in blue.",
       "options": ["draws", "draw", "drew", "was drawing"],
       "correctAnswer": "drew",
       "targetSkillTags": ["past_simple_event", "verb2_recognition"],

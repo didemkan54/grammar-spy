@@ -9,8 +9,8 @@
   <style>
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 8px 18px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 40px}
-    .wrap{max-width:100%;margin:0;display:grid;gap:26px;padding:18px 40px}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 40px}
+    .wrap{max-width:980px;margin:0 auto;display:grid;gap:26px}
     .section{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow);padding:28px}
     h1,h2{margin:0;color:#0b1020;line-height:1.12}
     h1{font-size:34px} h2{font-size:19px}
@@ -23,20 +23,17 @@
     details{margin-top:14px;border:1px solid var(--cool);border-radius:12px;background:#f8fafc;padding:10px}
     summary{cursor:pointer;font:700 12px Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#16223a}
     ul{margin:10px 0 0;padding-left:18px;color:#4a5568;line-height:1.6}
-    @media (max-width:100%){.grid{grid-template-columns:1fr}.section{padding:20px}}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.section{padding:20px}}
   </style>
 </head>
 <body>
   <script src="i18n.js"></script>
   <div data-include="header"></div>
   <main class="wrap" id="main">
-    <section class="section" style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center">
-      <div>
-        <h1>Practical ELD guidance</h1>
-        <p>Short reads with one clear, actionable next step for your classroom.</p>
-        <a class="btn" href="teacher-home.html">Continue</a>
-      </div>
-      <img src="assets/illustrations/teacher-insights.svg" alt="" style="width:200px;height:auto;opacity:.9" aria-hidden="true" />
+    <section class="section">
+      <h1>Practical ELD guidance</h1>
+      <p>Short reads with one clear, actionable next step for your classroom.</p>
+      <a class="btn" href="teacher-home.html">Continue</a>
     </section>
 
     <section class="section">

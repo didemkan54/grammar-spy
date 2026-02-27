@@ -210,10 +210,10 @@
         scene: "Agreement Card 05",
         prompt: "Pick the strongest compound-subject line.",
         options: [
-          "Maya and Asli is prepared.",
-          "Maya and Asli are prepared.",
-          "Maya and Asli am prepared.",
-          "Maya and Asli was prepared."
+          "Mina and Asli is prepared.",
+          "Mina and Asli are prepared.",
+          "Mina and Asli am prepared.",
+          "Mina and Asli was prepared."
         ],
         answer: 1,
         explain: "Two subjects create plural agreement."
@@ -334,10 +334,10 @@
         scene: "Reference Card 03",
         prompt: "Select the sentence with no unclear pronoun.",
         options: [
-          "Maya called Zara after Maya corrected the draft.",
-          "Maya called Zara after she corrected the draft.",
-          "Maya called Zara after it corrected the draft.",
-          "Maya called Zara after she were correcting the draft."
+          "Mina called Zeynep after Mina corrected the draft.",
+          "Mina called Zeynep after she corrected the draft.",
+          "Mina called Zeynep after it corrected the draft.",
+          "Mina called Zeynep after she were correcting the draft."
         ],
         answer: 0,
         explain: "Use specific nouns when she could refer to two people."
@@ -346,10 +346,10 @@
         scene: "Reference Card 04",
         prompt: "Choose the strongest repair for reference clarity.",
         options: [
-          "When Ella met Rana, Ella handed Rana the checklist.",
-          "When Ella met Rana, she handed her the checklist.",
-          "When Ella met Rana, she handed checklist.",
-          "When Ella met Rana, she were handing her the checklist."
+          "When Ece met Rana, Ece handed Rana the checklist.",
+          "When Ece met Rana, she handed her the checklist.",
+          "When Ece met Rana, she handed checklist.",
+          "When Ece met Rana, she were handing her the checklist."
         ],
         answer: 0,
         explain: "Precise nouns prevent confusion in mission reports."

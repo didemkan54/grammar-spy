@@ -5,76 +5,25 @@
     sidebar: 'components/sidebar.html'
   };
 
-  function ensureTopNavStyles(){
-    try {
-      if (document.getElementById('gsTopNavStyles')) return;
-      var st = document.createElement('style');
-      st.id = 'gsTopNavStyles';
-      st.textContent =
-        'nav[aria-label=\"Primary navigation\"] .gs-pill{white-space:nowrap}\\n' +
-        '@media (max-width:720px){\\n' +
-        '  nav[aria-label=\"Primary navigation\"]{padding-left:14px!important;padding-right:14px!important}\\n' +
-        '}\\n' +
-        '@media (max-width:520px){\\n' +
-        '  nav[aria-label=\"Primary navigation\"]{gap:10px!important}\\n' +
-        '  nav[aria-label=\"Primary navigation\"] .gs-logo{height:46px!important}\\n' +
-        '  nav[aria-label=\"Primary navigation\"] .gs-pill{padding:6px 10px!important;font-size:11px!important}\\n' +
-        '  nav[aria-label=\"Primary navigation\"] .gs-select{padding:6px 8px!important;font-size:11px!important}\\n' +
-        '}\\n';
-      (document.head || document.documentElement).appendChild(st);
-    } catch(_e) {}
-  }
-
-  var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc';
-  var dropdownLinkStyle = 'display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap';
-  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none';
-  var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
-
-  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 16px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
-    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img class="gs-logo" src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none"></a>' +
-    '<span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
-    '<a class="gs-pill" href="index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
-    '<details id="gsMissionMenu" style="position:relative">' +
-    '<summary class="gs-pill" style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
-    '<span style="' + menuPanelStyle + '">' +
-    '<a href="teacher-mode.html" style="' + dropdownLinkStyle + '">Run a Mission</a>' +
-    '<a href="teacher-mode.html?play_format=whole_class" style="' + dropdownLinkStyle + '">Whole Class</a>' +
-    '<a href="teacher-mode.html?play_format=teams" style="' + dropdownLinkStyle + '">Teams Mode</a>' +
-    '<a href="packs.html" style="' + dropdownLinkStyle + '">Missions</a>' +
-    '<a href="progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
-    '<a href="clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
+  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 auto 16px;max-width:1120px;padding:8px 2px 12px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
+    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/GS%20Logo.png" alt="Grammar Spy™" onerror="this.onerror=null;this.src=\'assets/brand/logo-primary.svg\'" style="height:72px;width:auto;display:block;background:transparent;border:none"></a>' +
+    '<span style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">' +
+    '<a href="index.html" data-i18n="nav_home" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Home</a>' +
+    '<a href="packs.html" data-i18n="nav_missions" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Missions</a>' +
+    '<a href="missions.html" style="text-decoration:none;color:#0f5c5c;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Mission Library</a>' +
+    '<a href="progression.html" style="text-decoration:none;color:#0f5c5c;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Training Path</a>' +
+    '<a href="profile.html" style="text-decoration:none;color:#0f5c5c;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Profile</a>' +
+    '<a href="insights.html" data-i18n="nav_blog" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Blog</a>' +
+    '<a href="pricing.html" data-i18n="nav_pricing" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase">Pricing</a>' +
+    '<span id="gsLangSwitcher" style="display:inline-flex;gap:4px;align-items:center;margin-left:8px;padding-left:12px;border-left:1px solid #d9dee6">' +
+    '<button type="button" aria-label="English" data-lang="en" class="gs-lang-btn" style="border:0;background:transparent;color:#4a5568;font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:4px 6px;border-radius:4px">EN</button>' +
+    '<button type="button" aria-label="Español" data-lang="es" class="gs-lang-btn" style="border:0;background:transparent;color:#4a5568;font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:4px 6px;border-radius:4px">ES</button>' +
+    '<button type="button" aria-label="Français" data-lang="fr" class="gs-lang-btn" style="border:0;background:transparent;color:#4a5568;font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:4px 6px;border-radius:4px">FR</button></span>' +
     '</span>' +
-    '</details>' +
-    '<a class="gs-pill" href="teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
-    '<a class="gs-pill" href="pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
-    '<details id="gsResourcesMenu" style="position:relative">' +
-    '<summary class="gs-pill" style="' + menuSummaryStyle + '">Resources &#9662;</summary>' +
-    '<span style="' + menuPanelStyle + '">' +
-    '<a href="community.html" style="' + dropdownLinkStyle + '">Community</a>' +
-    '<a href="insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
-    '</span>' +
-    '</details>' +
-    '</span>' +
-    '<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end">' +
-    '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center">' +
-    '<select class="gs-select" id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
-    '<option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option><option value="fr">🇫🇷 Français</option>' +
-    '<option value="am">🇪🇹 አማርኛ</option><option value="tr">🇹🇷 Türkçe</option><option value="ar">🇸🇦 العربية</option>' +
-    '<option value="hi">🇮🇳 हिन्दी</option><option value="ur">🇵🇰 اردو</option><option value="ps">🇦🇫 پښتو</option>' +
-    '<option value="vi">🇻🇳 Tiếng Việt</option><option value="zh">🇨🇳 中文</option><option value="ko">🇰🇷 한국어</option>' +
-    '<option value="so">🇸🇴 Soomaali</option><option value="ti">🇪🇷 ትግርኛ</option><option value="pt">🇧🇷 Português</option>' +
-    '</select></span>' +
-    '<details id="gsAccountMenu" style="position:relative">' +
-    '<summary class="gs-pill" id="gsAccountLabel" style="' + menuSummaryStyle + '">Account &#9662;</summary>' +
-    '<span id="gsAccountPanel" style="' + menuPanelStyle + '">' +
-    '<a href="auth.html?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
-    '<a href="auth.html?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>' +
-    '</span>' +
-    '</details>' +
-    '</span>' +
+    '<span style="display:inline-flex;gap:6px"><a href="auth.html?mode=create" data-i18n="nav_createAccount" style="text-decoration:none;border:1px solid #194f53;border-radius:999px;padding:6px 12px;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#1f5f63">Create account</a><a href="auth.html?mode=signin" data-i18n="nav_signIn" style="text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px">Sign In</a></span>' +
     '</nav>';
 
-  var footerFallback = '<footer class="site-footer" style="margin:24px 0 0;padding:24px 40px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Arial,sans-serif;font-size:13px;">' +
+  var footerFallback = '<footer class="site-footer" style="margin:24px auto 0;max-width:1120px;padding:20px 14px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Arial,sans-serif;font-size:13px;">' +
     '<div style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;"><div>' +
     '<a href="index.html" style="color:#16223a;text-decoration:none;font-weight:700;font-size:14px;">Grammar Spy™</a>' +
     '<p style="margin:6px 0 0;color:#5c6677;font-size:12px;line-height:1.4;max-width:32ch;">Mission-based grammar training for ELD and ELA classrooms.</p></div>' +
@@ -107,7 +56,6 @@
   }
 
   function run(){
-    ensureTopNavStyles();
     const nodes = Array.prototype.slice.call(document.querySelectorAll('[data-include]'));
     Promise.all(nodes.map(includeOne)).then(function(){
       var main = document.querySelector('main');
@@ -116,57 +64,9 @@
     });
   }
 
-  function updateAuthButtons() {
-    var session = null;
-    try {
-      session = JSON.parse(localStorage.getItem('gs_auth_session'));
-    } catch (e) {}
-
-    var navs = document.querySelectorAll('nav[aria-label="Primary navigation"]');
-    navs.forEach(function(nav) {
-      var label = nav.querySelector('#gsAccountLabel');
-      var panel = nav.querySelector('#gsAccountPanel');
-      if (!label || !panel) return;
-
-      if (!session || !session.name) {
-        label.textContent = 'Account ▼';
-        panel.innerHTML =
-          '<a href="auth.html?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
-          '<a href="auth.html?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>';
-        return;
-      }
-
-      var safeName = session.name;
-      if (/[!@#$%^&*(){}[\]|\\<>\/~`+=]/.test(safeName) || safeName.length > 40) safeName = 'My Account';
-      var shortName = safeName.length > 14 ? safeName.slice(0, 14) + '…' : safeName;
-      label.textContent = shortName + ' ▼';
-      panel.innerHTML =
-        '<a href="profile.html" style="' + dropdownLinkStyle + '">Profile</a>' +
-        '<a href="#" data-i18n="nav_signOut" onclick="localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');localStorage.removeItem(\'gs_student_classroom\');localStorage.removeItem(\'gs_use_context_v3\');localStorage.removeItem(\'gs_active_student_v1\');localStorage.removeItem(\'gs_credentials\');location.href=\'index.html\';return false;" style="' + dropdownLinkStyle + '">Sign Out</a>';
-    });
-    try {
-      if (window.GS_I18N && typeof window.GS_I18N.apply === 'function') window.GS_I18N.apply();
-    } catch (e2) {}
-  }
-
-  function applyRoleVisibility() {
-    // Keep teacher links visible even after a student-mode session.
-  }
-
-  function loadAnimations() {
-    if (document.querySelector('script[src="gs-animations.js"]')) return;
-    var s = document.createElement('script');
-    s.src = 'gs-animations.js';
-    document.body.appendChild(s);
-  }
-
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function(){ run(); loadAnimations(); updateAuthButtons(); });
+    document.addEventListener('DOMContentLoaded', run);
   } else {
     run();
-    loadAnimations();
-    updateAuthButtons();
   }
-  document.addEventListener('layout:ready', updateAuthButtons);
-  document.addEventListener('layout:ready', applyRoleVisibility);
 })();

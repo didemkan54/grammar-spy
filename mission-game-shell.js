@@ -4,92 +4,92 @@
   var pack = params.get("pack") || "pack01";
   var difficulty = params.get("difficulty") || "field";
   var timerOn = (params.get("timer") || "on") !== "off";
-  var requestedCount = Number(params.get("count") || 20) || 20;
-  var count = Math.max(6, Math.min(30, requestedCount));
+  var requestedCount = Number(params.get("count") || 10) || 10;
+  var count = Math.max(6, Math.min(20, requestedCount));
   var playFormat = params.get("play_format") || "individuals";
 
   var games = {
     "error-smash": {
-      title: "Error Detector",
-      subtitle: "Scan the sentence and click the word that breaks the grammar rule.",
-      howTo: "A sentence with an error is displayed. Read carefully, then click on the exact word or phrase that contains the mistake. The correct version appears after you click."
+      title: "Error Smash",
+      subtitle: "Scan fast and choose the best correction.",
+      howTo: "Read the sentence evidence, then choose the strongest correction. Score rises with accuracy and streak."
     },
     "past-sort": {
-      title: "Timeline Sort",
-      subtitle: "Drag each sentence to the correct timeline zone.",
-      howTo: "Sentences appear in a pool. Drag or tap each one into the 'Completed Event' or 'Ongoing Background' zone based on the verb tense."
+      title: "Past Sort",
+      subtitle: "Sort timeline meaning by selecting the best tense line.",
+      howTo: "Read each context clue and choose the sentence that best matches completed versus ongoing past action."
     },
     "narrative-builder": {
-      title: "Sentence Forge",
-      subtitle: "Drag word tiles to build the grammatically correct sentence.",
-      howTo: "Word tiles are scattered below. Tap tiles in order to build the correct sentence. Watch out for distractor words that don't belong!"
+      title: "Narrative Builder",
+      subtitle: "Build story flow with accurate grammar choices.",
+      howTo: "Pick the sentence that keeps the narrative sequence clear and grammatically correct."
     },
     "dialogue-repair": {
-      title: "Dialogue Builder",
-      subtitle: "Read the conversation and choose the best reply.",
-      howTo: "A conversation is in progress. One speaker needs to respond. Read the context and pick the reply that's grammatically correct and fits the conversation naturally."
+      title: "Dialogue Repair",
+      subtitle: "Repair spoken lines to make classroom meaning clear.",
+      howTo: "Each witness line has one best repair. Choose it to keep dialogue natural and accurate."
     },
     "rewrite-studio": {
-      title: "Rewrite Duel",
-      subtitle: "The original has a problem. Pick the stronger rewrite.",
-      howTo: "Read the original sentence with its issue. Two rewrites are offered — choose the one that fixes the grammar while keeping the meaning clear."
+      title: "Rewrite Studio",
+      subtitle: "Rewrite weak lines into strong mission-ready grammar.",
+      howTo: "Select the strongest rewrite for each original line. Focus on clarity, tense, and agreement."
     },
     "rule-sprint-present": {
-      title: "Error Detector",
-      subtitle: "Scan the sentence and click the word that breaks the grammar rule.",
-      howTo: "A sentence with a present-tense error is displayed. Click on the exact word that's wrong."
+      title: "Rule Sprint (Present)",
+      subtitle: "Apply present tense rules under pressure.",
+      howTo: "Read each present-tense context and choose the grammatically strongest sentence."
     },
     "signal-decoder-present": {
-      title: "Context Match",
-      subtitle: "Read the scene, then pick the sentence that fits the context.",
-      howTo: "A scenario is described with a key signal word highlighted. Four sentences are offered — choose the one where the grammar matches the context clue."
+      title: "Signal Decoder (Present)",
+      subtitle: "Decode clue signals and match the correct present form.",
+      howTo: "Use context signals like now, usually, and right now to choose the best verb form."
     },
     "present-case-interview": {
-      title: "Case Judge",
-      subtitle: "Read the evidence and decide: is the grammar correct or not?",
-      howTo: "A sentence is presented as evidence. Study it carefully and make your call — press Correct if the grammar holds up, or Incorrect if it doesn't. Explain your reasoning!"
+      title: "Case Interview (Present)",
+      subtitle: "Interview evidence and lock the best present-tense line.",
+      howTo: "Treat each item like an interview clue. Choose the line that best matches present-time meaning."
     },
     "be-verb-rule-sprint": {
-      title: "Error Detector",
-      subtitle: "Scan the sentence and click the be-verb error.",
-      howTo: "A sentence with a be-verb agreement error is displayed. Click on the exact word that doesn't match its subject."
+      title: "Be-Verb Rule Sprint",
+      subtitle: "Use am/is/are with clean subject matching.",
+      howTo: "Check subject clues and choose the best be-verb form with agreement."
     },
     "be-verb-agreement-sweep": {
-      title: "Evidence Sort",
-      subtitle: "Review each sentence and sort it: correct grammar or needs revision.",
-      howTo: "Evidence cards appear one by one. For each sentence, label it as 'Strong Grammar' or 'Needs Revision', then submit your full board for scoring."
+      title: "Agreement Sweep",
+      subtitle: "Sweep for agreement errors and fix them quickly.",
+      howTo: "Focus on singular/plural agreement and choose the line with correct subject-verb matching."
     },
     "be-verb-case-interview": {
-      title: "Case Judge",
-      subtitle: "Evaluate the be-verb agreement. Is the evidence solid?",
-      howTo: "A sentence is presented. Study the subject and verb — do they agree? Press Correct or Incorrect."
+      title: "Case Interview (Be-Verb)",
+      subtitle: "Interview evidence to secure agreement accuracy.",
+      howTo: "Read the scene and pick the sentence with the strongest be-verb agreement."
     },
     "mission-sequence-lab": {
-      title: "Sequence Order",
-      subtitle: "Drag the sentences into the correct narrative order.",
-      howTo: "Four sentences from a story are scrambled. Tap to select a sentence, then tap the position where it belongs. Get them in the right order and submit!"
+      title: "Mission Sequence Lab",
+      subtitle: "Sequence sentence logic with grammar precision.",
+      howTo: "Choose the line that keeps sequence logic and grammar accurate from one step to the next."
     },
     "evidence-sort-board": {
-      title: "Evidence Sort",
-      subtitle: "Review each sentence and sort it: correct grammar or needs revision.",
-      howTo: "Evidence cards appear one by one. For each sentence, label it as 'Strong Grammar' or 'Needs Revision', then submit your full board for scoring."
+      title: "Evidence Sort Board",
+      subtitle: "Sort evidence lines by the strongest grammar choice.",
+      howTo: "Each option is evidence. Select the sentence that best secures meaning and correctness."
     }
   };
 
   var gameUx = {
-    "error-smash": { accent: "#b04444", columns: 1, modeLabel: "Click the Error", sceneLabel: "Grammar Card", startText: "Start Detecting", replayText: "Play Again", endText: "End Game", playMode: "detect" },
-    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Sort the Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
-    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Sentence", sceneLabel: "Story Step", startText: "Start Building", replayText: "Build Again", endText: "End Build", playMode: "forge" },
-    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Continue the Conversation", sceneLabel: "Dialogue", startText: "Start Chat", replayText: "Play Again", endText: "End Chat", playMode: "dialogue" },
-    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Pick the Best Rewrite", sceneLabel: "Writing Prompt", startText: "Start Rewriting", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
-    "rule-sprint-present": { accent: "#d84f7f", columns: 1, modeLabel: "Click the Error", sceneLabel: "Rule Card", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "detect" },
-    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Read the Context, Pick the Match", sceneLabel: "Signal Card", startText: "Start Decoding", replayText: "Decode Again", endText: "End Decode", playMode: "best" },
-    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Judge the Evidence", sceneLabel: "Case File", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
-    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 1, modeLabel: "Click the Error", sceneLabel: "Agreement Card", startText: "Start Detecting", replayText: "Detect Again", endText: "End Detection", playMode: "detect" },
-    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" },
-    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Judge the Evidence", sceneLabel: "Case File", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
-    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Put in Order", sceneLabel: "Sequence Card", startText: "Start Ordering", replayText: "Reorder", endText: "End Lab", playMode: "order" },
-    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" }
+    "error-smash": { accent: "#b04444", columns: 2, modeLabel: "Smash Wrong Line", sceneLabel: "Error File", startText: "Start Smash", replayText: "Smash Again", endText: "End Smash", playMode: "smash" },
+    "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Classify Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
+    "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Sequence Choice", sceneLabel: "Story Step", startText: "Build Story", replayText: "Build Again", endText: "End Story", playMode: "sequence" },
+    "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Repair Line", sceneLabel: "Witness Line", startText: "Repair Dialogue", replayText: "Repair Again", endText: "End Repair", playMode: "repair" },
+    "rewrite-studio": { accent: "#b3631f", columns: 1, modeLabel: "Rewrite Duel", sceneLabel: "Rewrite File", startText: "Start Rewrite", replayText: "Rewrite Again", endText: "End Rewrite", playMode: "duel" },
+    "rule-sprint-present": { accent: "#d84f7f", columns: 2, modeLabel: "Smash Rule Breach", sceneLabel: "Rule Prompt", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
+    "signal-decoder-present": { accent: "#0a7fa5", columns: 1, modeLabel: "Signal Verdict", sceneLabel: "Signal File", startText: "Decode Signals", replayText: "Decode Again", endText: "End Decode", playMode: "binary" },
+    "present-case-interview": { accent: "#3559b8", columns: 1, modeLabel: "Interview Verdict", sceneLabel: "Interview File", startText: "Start Interview", replayText: "Interview Again", endText: "End Interview", playMode: "binary" },
+    "be-verb-rule-sprint": { accent: "#1f8f63", columns: 2, modeLabel: "Smash Agreement Error", sceneLabel: "Rule Check", startText: "Start Sprint", replayText: "Sprint Again", endText: "End Sprint", playMode: "smash" },
+    "be-verb-agreement-sweep": { accent: "#2d9f7a", columns: 1, modeLabel: "Board Sweep", sceneLabel: "Sweep File", startText: "Start Sweep", replayText: "Sweep Again", endText: "End Sweep", playMode: "sweep" },
+    "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Case Verdict", sceneLabel: "Case File", startText: "Open Case", replayText: "Open New Case", endText: "Close Case", playMode: "binary" },
+    "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Sequence Verdict", sceneLabel: "Sequence Step", startText: "Run Lab", replayText: "Run Lab Again", endText: "End Lab", playMode: "binary" },
+    "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Evidence Board Sweep", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Board", playMode: "sweep" }
   };
 
   var fallbackRounds = [
@@ -204,174 +204,6 @@
         ],
         answer: 1,
         explain: "Did + base verb is the correct question pattern."
-      },
-      {
-        scene: "Briefing Room",
-        prompt: "Smash the incorrect draft and choose the best fix.",
-        options: [
-          "While the agent was reviewing the map, a message arrived.",
-          "While the agent reviewing the map, a message arrived.",
-          "While the agent is reviewing the map, a message arrived.",
-          "While the agent were reviewing the map, a message arrived."
-        ],
-        answer: 0,
-        explain: "Past continuous with was shows an ongoing past action interrupted by an event."
-      },
-      {
-        scene: "Supply Closet",
-        prompt: "Which sentence is error-free?",
-        options: [
-          "Someone take the last notebook before third period.",
-          "Someone took the last notebook before third period.",
-          "Someone is took the last notebook before third period.",
-          "Someone were taking the last notebook before third period."
-        ],
-        answer: 1,
-        explain: "A completed past event uses simple past took."
-      },
-      {
-        scene: "Detention Log",
-        prompt: "Choose the strongest correction.",
-        options: [
-          "The students was talking when the supervisor walked in.",
-          "The students talked when the supervisor walks in.",
-          "The students were talking when the supervisor walked in.",
-          "The students talking when the supervisor walked in."
-        ],
-        answer: 2,
-        explain: "Plural subject students takes were in past continuous."
-      },
-      {
-        scene: "Staff Memo",
-        prompt: "Select the corrected sentence.",
-        options: [
-          "The staff discussed the schedule and then they leaves.",
-          "The staff discussed the schedule and then they left.",
-          "The staff discuss the schedule and then they left yesterday.",
-          "The staff was discuss the schedule and then they left."
-        ],
-        answer: 1,
-        explain: "A completed sequence in the past keeps both verbs in simple past."
-      },
-      {
-        scene: "Gym Locker",
-        prompt: "Choose the error-free sentence.",
-        options: [
-          "The coach was explaining the drill when the fire alarm rang.",
-          "The coach was explaining the drill when the fire alarm was ring.",
-          "The coach explaining the drill when the fire alarm rang.",
-          "The coach were explaining the drill when the fire alarm rings."
-        ],
-        answer: 0,
-        explain: "Past continuous with was plus simple past rang shows an interrupted action."
-      },
-      {
-        scene: "Library Return Log",
-        prompt: "Select the strongest correction.",
-        options: [
-          "She returned the books and then she goes to class.",
-          "She returned the books and then she went to class.",
-          "She returning the books and then she went to class.",
-          "She was returned the books and then she went to class."
-        ],
-        answer: 1,
-        explain: "Two completed actions in sequence both need simple past."
-      },
-      {
-        scene: "Nurse's Office",
-        prompt: "Which sentence is grammatically correct?",
-        options: [
-          "The student was waited in the nurse's office when the bell rang.",
-          "The student waiting in the nurse's office when the bell rang.",
-          "The student waited in the nurse's office when the bell rings.",
-          "The student was waiting in the nurse's office when the bell rang."
-        ],
-        answer: 3,
-        explain: "Use past continuous (was waiting) for the background verb and simple past (rang) for the interrupting event."
-      },
-      {
-        scene: "Parking Lot Cam",
-        prompt: "Smash the error and pick the best sentence.",
-        options: [
-          "Did the buses left before the rain started?",
-          "Did the buses leave before the rain started?",
-          "Does the buses leave before the rain started?",
-          "The buses did left before the rain started?"
-        ],
-        answer: 1,
-        explain: "Did + base verb leave is the correct past question form."
-      },
-      {
-        scene: "Witness Log",
-        prompt: "Smash the incorrect draft and choose the best fix.",
-        options: [
-          "The witness was describing the suspect when the officer arrived.",
-          "The witness describing the suspect when the officer arrived.",
-          "The witness were describing the suspect when the officer arrived.",
-          "The witness is describing the suspect when the officer arrived."
-        ],
-        answer: 0,
-        explain: "Singular subject takes was in past continuous; simple past arrived shows the interruption."
-      },
-      {
-        scene: "Morning Brief",
-        prompt: "Select the corrected sentence.",
-        options: [
-          "The captain reviewed the case notes before the meeting started.",
-          "The captain review the case notes before the meeting started.",
-          "The captain was review the case notes before the meeting started.",
-          "The captain reviews the case notes before the meeting started yesterday."
-        ],
-        answer: 0,
-        explain: "Two completed past actions use simple past reviewed and started."
-      },
-      {
-        scene: "Field Report",
-        prompt: "Which sentence is error-free?",
-        options: [
-          "The officers was searching the building when backup arrived.",
-          "The officers were searching the building when backup arrived.",
-          "The officers searched the building when backup arrives.",
-          "The officers searching the building when backup arrived."
-        ],
-        answer: 1,
-        explain: "Plural officers takes were in past continuous; arrived is simple past for the interruption."
-      },
-      {
-        scene: "Incident Record",
-        prompt: "Choose the strongest correction.",
-        options: [
-          "Did the team completed the report before midnight?",
-          "Did the team complete the report before midnight?",
-          "Does the team complete the report before midnight yesterday?",
-          "The team did completed the report before midnight?"
-        ],
-        answer: 1,
-        explain: "Did + base verb complete is the correct past question form."
-      },
-      {
-        scene: "Cafeteria Log",
-        prompt: "Smash the incorrect draft and choose the best fix.",
-        options: [
-          "While the students were eating lunch, the fire alarm sounded.",
-          "While the students was eating lunch, the fire alarm sounded.",
-          "While the students eating lunch, the fire alarm sounded.",
-          "While the students are eating lunch, the fire alarm sounded yesterday."
-        ],
-        answer: 0,
-        explain: "Plural students takes were in past continuous; sounded is simple past for the interruption."
-      },
-      {
-        scene: "Art Room Report",
-        prompt: "Select the corrected sentence.",
-        options: [
-          "The teacher collected the brushes after the students left the room.",
-          "The teacher collected the brushes after the students leaves the room.",
-          "The teacher was collected the brushes after the students left the room.",
-          "The teacher collect the brushes after the students left the room."
-        ],
-        answer: 0,
-        explain: "Two completed past actions in sequence both use simple past."
       }
     ],
     "past-sort": [
@@ -446,416 +278,80 @@
         ],
         answer: 0,
         explain: "Retelling a finished sequence works best in simple past."
-      },
-      {
-        scene: "Timeline Card G",
-        prompt: "Choose the sentence that shows a completed past action.",
-        options: [
-          "The principal announced the results after lunch.",
-          "The principal was announcing the results after lunch.",
-          "The principal announces the results after lunch yesterday.",
-          "The principal is announcing the results after lunch."
-        ],
-        answer: 0,
-        explain: "A completed single action in the past takes simple past announced."
-      },
-      {
-        scene: "Timeline Card H",
-        prompt: "Select the line that shows an ongoing action interrupted by an event.",
-        options: [
-          "We were organizing the files when the power went out.",
-          "We organized the files when the power goes out.",
-          "We are organizing the files when the power went out.",
-          "We organizing the files when the power went out."
-        ],
-        answer: 0,
-        explain: "Use the past continuous verb (were organizing) for timeline background action and simple past (went out) for the interrupting event."
-      },
-      {
-        scene: "Timeline Card I",
-        prompt: "Pick the sentence with correct timeline meaning.",
-        options: [
-          "She finished the report, saved it, and then she leave.",
-          "She finished the report, saved it, and then she left.",
-          "She was finish the report, saved it, and then she left.",
-          "She finishing the report, saving it, and then she left."
-        ],
-        answer: 1,
-        explain: "A sequence of completed actions uses consistent simple past verbs."
-      },
-      {
-        scene: "Timeline Card J",
-        prompt: "Which sentence matches the meaning: background action in progress?",
-        options: [
-          "The librarian sorted the returns while students studied quietly.",
-          "The librarian was sorting the returns while students were studying quietly.",
-          "The librarian sorts the returns while students were studying quietly.",
-          "The librarian was sorting the returns while students study quietly."
-        ],
-        answer: 1,
-        explain: "Two simultaneous ongoing past actions both use past continuous."
-      },
-      {
-        scene: "Timeline Card K",
-        prompt: "Choose the sentence that shows two simultaneous past actions.",
-        options: [
-          "The teacher was reading aloud while the students were taking notes.",
-          "The teacher read aloud while the students takes notes.",
-          "The teacher reads aloud while the students were taking notes.",
-          "The teacher was reading aloud while the students take notes."
-        ],
-        answer: 0,
-        explain: "Two simultaneous ongoing past actions both use past continuous."
-      },
-      {
-        scene: "Timeline Card L",
-        prompt: "Select the sentence for a completed past sequence.",
-        options: [
-          "The secretary filed the documents after the meeting ended.",
-          "The secretary was filing the documents after the meeting ended.",
-          "The secretary files the documents after the meeting ended yesterday.",
-          "The secretary filing the documents after the meeting ended."
-        ],
-        answer: 0,
-        explain: "A completed sequence in the past uses simple past for both actions."
-      },
-      {
-        scene: "Timeline Card M",
-        prompt: "Pick the line that shows an interrupted action.",
-        options: [
-          "We were reviewing the answers when the alarm sounded.",
-          "We reviewed the answers when the alarm sounds.",
-          "We are reviewing the answers when the alarm sounded.",
-          "We reviewing the answers when the alarm sounded."
-        ],
-        answer: 0,
-        explain: "Past continuous were reviewing shows the action interrupted by sounded."
-      },
-      {
-        scene: "Timeline Card N",
-        prompt: "Choose the sentence with correct past sequence.",
-        options: [
-          "After the coach blew the whistle, the players stop running.",
-          "After the coach blew the whistle, the players stopped running.",
-          "After the coach blows the whistle, the players stopped running.",
-          "After the coach was blew the whistle, the players stopped running."
-        ],
-        answer: 1,
-        explain: "A past sequence uses simple past in both clauses."
-      },
-      {
-        scene: "Timeline Card O",
-        prompt: "Choose the sentence that shows a completed past action.",
-        options: [
-          "The nurse checked the attendance sheet after the bell rang.",
-          "The nurse was checking the attendance sheet after the bell rang.",
-          "The nurse checks the attendance sheet after the bell rang yesterday.",
-          "The nurse checking the attendance sheet after the bell rang."
-        ],
-        answer: 0,
-        explain: "A completed sequence in the past uses simple past for both actions."
-      },
-      {
-        scene: "Timeline Card P",
-        prompt: "Select the line that shows an ongoing action interrupted by an event.",
-        options: [
-          "The students were presenting their project when the visitor arrived.",
-          "The students presented their project when the visitor arrives.",
-          "The students are presenting their project when the visitor arrived.",
-          "The students presenting their project when the visitor arrived."
-        ],
-        answer: 0,
-        explain: "Were presenting shows an ongoing past action interrupted by arrived."
-      },
-      {
-        scene: "Timeline Card Q",
-        prompt: "Pick the sentence with correct past sequence.",
-        options: [
-          "First the captain locked the door, and then she turned off the lights.",
-          "First the captain lock the door, and then she turned off the lights.",
-          "First the captain locked the door, and then she turns off the lights.",
-          "First the captain was locked the door, and then she turned off the lights."
-        ],
-        answer: 0,
-        explain: "A retold sequence of finished actions stays in simple past."
-      },
-      {
-        scene: "Timeline Card R",
-        prompt: "Choose the sentence that shows two simultaneous past actions.",
-        options: [
-          "While the chef was cooking dinner, the waiter was setting the tables.",
-          "While the chef cooked dinner, the waiter sets the tables.",
-          "While the chef was cooking dinner, the waiter set the tables yesterday now.",
-          "While the chef cooking dinner, the waiter was setting the tables."
-        ],
-        answer: 0,
-        explain: "Two simultaneous ongoing past actions both use past continuous."
-      },
-      {
-        scene: "Timeline Card S",
-        prompt: "Select the sentence for a completed past action.",
-        options: [
-          "By the end of the day, the crew finished all the repairs.",
-          "By the end of the day, the crew was finishing all the repairs.",
-          "By the end of the day, the crew finishes all the repairs.",
-          "By the end of the day, the crew finishing all the repairs."
-        ],
-        answer: 0,
-        explain: "By + past checkpoint points to completed simple past finished."
-      },
-      {
-        scene: "Timeline Card T",
-        prompt: "Pick the line that shows an interrupted action.",
-        options: [
-          "The librarian was shelving books when the phone rang.",
-          "The librarian shelved books when the phone rings.",
-          "The librarian is shelving books when the phone rang.",
-          "The librarian shelving books when the phone rang."
-        ],
-        answer: 0,
-        explain: "Past continuous was shelving shows the action interrupted by rang."
       }
     ],
     "narrative-builder": [
       {
         scene: "Story Step 1",
-        prompt: "Which line sounds best?",
+        prompt: "Which line best continues this story clearly?",
         options: [
-          "First, we read the notes and put them in order.",
-          "First, we reads the notes and put them in order.",
-          "First, we read the notes and putting them in order.",
-          "First, we read the notes and putted them in order."
+          "First, we reviewed the clue cards; then we grouped them by time.",
+          "First, we review the clue cards; then we grouped them by time.",
+          "First, we reviewed the clue cards; then we grouping them by time.",
+          "First, we were review the clue cards; then we grouped them by time."
         ],
         answer: 0,
-        explain: "Use one clear past-time line with simple past forms."
+        explain: "Strong narrative flow uses stable tense and sequence markers."
       },
       {
         scene: "Story Step 2",
-        prompt: "Pick the best transition line.",
+        prompt: "Pick the best transition sentence.",
         options: [
-          "Because the clue was weak, we tried another idea.",
-          "Because the clue weak, we tried another idea.",
-          "Because the clue was weak, we try another idea yesterday.",
-          "Because the clue were weak, we tried another idea."
+          "Because the evidence was weak, we tested a second explanation.",
+          "Because the evidence weak, we tested a second explanation.",
+          "Because the evidence was weak, we are testing a second explanation yesterday.",
+          "Because the evidence were weak, we tested a second explanation."
         ],
         answer: 0,
-        explain: "Use one connector and keep past tense clear in both clauses."
+        explain: "Cause/result logic must keep tense and clause structure consistent."
       },
       {
         scene: "Story Step 3",
-        prompt: "Choose the best line for background and event.",
+        prompt: "Choose the strongest line for background and event.",
         options: [
-          "We were reading when the bell rang.",
-          "We reading when the bell rang.",
-          "We are reading when the bell rang.",
-          "We were read when the bell rang."
+          "The class read quietly when the speaker failed.",
+          "The class was reading quietly when the speaker failed.",
+          "The class is reading quietly when the speaker failed.",
+          "The class reads quietly when the speaker failed yesterday."
         ],
-        answer: 0,
-        explain: "Use was/were + verb-ing for background and simple past for the event."
+        answer: 1,
+        explain: "Past continuous background plus past simple interrupting verb gives correct timeline logic."
       },
       {
         scene: "Story Step 4",
-        prompt: "Which sentence is clearest?",
+        prompt: "Which sentence keeps pronoun reference clear?",
         options: [
-          "Mina gave Ada the file after Mina checked it.",
-          "Mina gave Ada the file after she checked it.",
-          "Mina gave Ada the file after it checked it.",
-          "Mina gave Ada the file after she were checking it."
+          "Aylin handed Nisa the file after she corrected it.",
+          "Aylin handed Nisa the file after Aylin corrected it.",
+          "Aylin handed Nisa the file after it corrected it.",
+          "Aylin handed Nisa the file after she were correcting it."
         ],
-        answer: 0,
-        explain: "Name the person again when pronouns are confusing."
+        answer: 1,
+        explain: "Naming the person removes pronoun ambiguity."
       },
       {
         scene: "Story Step 5",
-        prompt: "Pick the best final sentence.",
+        prompt: "Select the best final sentence.",
         options: [
-          "At the end, we finished the report and smiled.",
-          "At the end, we finish the report and smiled.",
-          "At the end, we finished the report and smile.",
-          "At the end, we were finish the report and smiled."
+          "At the end, we submit the report and celebrate.",
+          "At the end, we submitted the report and celebrated.",
+          "At the end, we are submitting the report and celebrated.",
+          "At the end, we submitted the report and celebrates."
         ],
-        answer: 0,
-        explain: "A finished story should stay in simple past."
+        answer: 1,
+        explain: "Ending a past narrative should stay in completed past forms."
       },
       {
         scene: "Story Step 6",
         prompt: "Choose the clearest timeline link.",
         options: [
-          "After we checked the list, we fixed the poster.",
-          "After we check the list, we fixed the poster.",
-          "After we checked the list, we fix the poster.",
-          "After we were checked the list, we fixed the poster."
+          "After we checked the evidence, we finalize the poster.",
+          "After we checked the evidence, we finalized the poster.",
+          "After we check the evidence, we finalized the poster yesterday.",
+          "After we were checked the evidence, we finalized the poster."
         ],
-        answer: 0,
-        explain: "Both actions happened in the past."
-      },
-      {
-        scene: "Story Step 7",
-        prompt: "Which line best continues the story?",
-        options: [
-          "Two students were guarding the door while one searched the room.",
-          "Two students guarding the door while one searched the room.",
-          "Two students were guarding the door while one searches the room.",
-          "Two students was guarding the door while one searched the room."
-        ],
-        answer: 0,
-        explain: "Keep both actions in the same past timeline."
-      },
-      {
-        scene: "Story Step 8",
-        prompt: "Pick the sentence that keeps story flow.",
-        options: [
-          "Next, the team found notes and wrote a short summary.",
-          "Next, the team find notes and wrote a short summary.",
-          "Next, the team found notes and writes a short summary.",
-          "Next, the team was found notes and wrote a short summary."
-        ],
-        answer: 0,
-        explain: "Sequence words like next work best with consistent past verbs."
-      },
-      {
-        scene: "Story Step 9",
-        prompt: "Choose the strongest transition.",
-        options: [
-          "Because the plan was clear, the team moved forward.",
-          "Because the plan clear, the team moved forward.",
-          "Because the plan was clear, the team moves forward yesterday.",
-          "Because the plan were clear, the team moved forward."
-        ],
-        answer: 0,
-        explain: "Use one connector and keep past tense consistent across clauses."
-      },
-      {
-        scene: "Story Step 10",
-        prompt: "Select the best closing line.",
-        options: [
-          "Finally, the captain checked the log and signed it.",
-          "Finally, the captain check the log and signed it.",
-          "Finally, the captain checked the log and signs it.",
-          "Finally, the captain was check the log and signed it."
-        ],
-        answer: 0,
-        explain: "A closing line should keep simple past forms."
-      },
-      {
-        scene: "Story Step 11",
-        prompt: "Which line keeps tense correct?",
-        options: [
-          "After the team found clues, the leader shared the plan.",
-          "After the team find clues, the leader shared the plan.",
-          "After the team found clues, the leader shares the plan.",
-          "After the team was find clues, the leader shared the plan."
-        ],
-        answer: 0,
-        explain: "Both clauses should stay in past tense."
-      },
-      {
-        scene: "Story Step 12",
-        prompt: "Select the sentence that keeps the story moving.",
-        options: [
-          "Meanwhile, one student was drawing the map while others rested.",
-          "Meanwhile, one student drawing the map while others rested.",
-          "Meanwhile, one student was drawing the map while others rests.",
-          "Meanwhile, one student draws the map while others rested."
-        ],
-        answer: 0,
-        explain: "Past background action should use was/were + verb-ing."
-      },
-      {
-        scene: "Story Step 13",
-        prompt: "Pick the best next line.",
-        options: [
-          "The group split up, and each member chose a route.",
-          "The group split up, and each member choose a route.",
-          "The group splits up, and each member chose a route.",
-          "The group split up, and each member was choose a route."
-        ],
-        answer: 0,
-        explain: "Parallel past actions should both be simple past."
-      },
-      {
-        scene: "Story Step 14",
-        prompt: "Choose the line that wraps up the chapter.",
-        options: [
-          "At last, the crew returned to base and filed the final report.",
-          "At last, the crew returned to base and files the final report.",
-          "At last, the crew returns to base and filed the final report.",
-          "At last, the crew was returned to base and filed the final report."
-        ],
-        answer: 0,
-        explain: "A wrap-up line should keep completed past verbs."
-      },
-      {
-        scene: "Story Step 15",
-        prompt: "Which line best continues the story?",
-        options: [
-          "Before the sun rose, the scouts placed the markers.",
-          "Before the sun rose, the scouts place the markers.",
-          "Before the sun rises, the scouts placed the markers.",
-          "Before the sun was rose, the scouts placed the markers."
-        ],
-        answer: 0,
-        explain: "Use simple past in both parts of this timeline sentence."
-      },
-      {
-        scene: "Story Step 16",
-        prompt: "Pick the sentence that keeps story flow.",
-        options: [
-          "The leader checked the map and gave each team a zone.",
-          "The leader check the map and gave each team a zone.",
-          "The leader checked the map and gives each team a zone.",
-          "The leader was check the map and gave each team a zone."
-        ],
-        answer: 0,
-        explain: "Both actions are finished, so use simple past."
-      },
-      {
-        scene: "Story Step 17",
-        prompt: "Choose the strongest transition line.",
-        options: [
-          "While the nurse was helping a student, the radio crackled.",
-          "While the nurse helping a student, the radio crackled.",
-          "While the nurse was helping a student, the radio crackles.",
-          "While the nurse were helping a student, the radio crackled."
-        ],
-        answer: 0,
-        explain: "Background + interrupting event works best in past timeline form."
-      },
-      {
-        scene: "Story Step 18",
-        prompt: "Select the best closing line.",
-        options: [
-          "In the end, the team solved the puzzle and celebrated.",
-          "In the end, the team solve the puzzle and celebrated.",
-          "In the end, the team solved the puzzle and celebrates.",
-          "In the end, the team was solved the puzzle and celebrated."
-        ],
-        answer: 0,
-        explain: "Closing lines are easiest to follow with simple past verbs."
-      },
-      {
-        scene: "Story Step 19",
-        prompt: "Which line best continues the story?",
-        options: [
-          "After the scouts came back, the leader gave new jobs.",
-          "After the scouts came back, the leader gives new jobs.",
-          "After the scouts come back, the leader gave new jobs.",
-          "After the scouts was come back, the leader gave new jobs."
-        ],
-        answer: 0,
-        explain: "Keep the return and result actions in past tense."
-      },
-      {
-        scene: "Story Step 20",
-        prompt: "Select the best final line.",
-        options: [
-          "At last, the team packed the bags and went home.",
-          "At last, the team pack the bags and went home.",
-          "At last, the team packed the bags and goes home.",
-          "At last, the team was packed the bags and went home."
-        ],
-        answer: 0,
-        explain: "A clear ending uses simple, consistent past verbs."
+        answer: 1,
+        explain: "After-clause and result are both completed in the past."
       }
     ],
     "dialogue-repair": [
@@ -930,174 +426,6 @@
         ],
         answer: 1,
         explain: "Simple past is the cleanest form for a completed mission."
-      },
-      {
-        scene: "Science Lab Chat",
-        prompt: "Pick the repaired dialogue line.",
-        options: [
-          "We doesn't have enough test tubes for the experiment.",
-          "We don't have enough test tubes for the experiment.",
-          "We not have enough test tubes for the experiment.",
-          "We do not has enough test tubes for the experiment."
-        ],
-        answer: 1,
-        explain: "Plural subject we takes do not (don't) plus base verb."
-      },
-      {
-        scene: "Library Whisper",
-        prompt: "Choose the best repaired question.",
-        options: [
-          "Can you helped me find the reference book?",
-          "Can you help me find the reference book?",
-          "Can you helps me find the reference book?",
-          "Can you helping me find the reference book?"
-        ],
-        answer: 1,
-        explain: "Modal can must be followed by the base verb form."
-      },
-      {
-        scene: "Recess Recap",
-        prompt: "Select the clearest spoken line.",
-        options: [
-          "She told him that he need to finish the poster before lunch.",
-          "She told him that he needed to finish the poster before lunch.",
-          "She told he that he needed to finish the poster before lunch.",
-          "She told him that he needing to finish the poster before lunch."
-        ],
-        answer: 1,
-        explain: "Reported past speech uses past tense needed for correct sequence."
-      },
-      {
-        scene: "Morning Lineup",
-        prompt: "Which response sounds natural and correct?",
-        options: [
-          "The teacher asked why was we late to class.",
-          "The teacher asked why we were late to class.",
-          "The teacher asked why we was late to class.",
-          "The teacher asked why were we late to class."
-        ],
-        answer: 1,
-        explain: "Embedded questions keep statement order: subject before verb."
-      },
-      {
-        scene: "Cafeteria Check-in",
-        prompt: "Pick the repaired dialogue line.",
-        options: [
-          "She don't know where the meeting is.",
-          "She doesn't know where the meeting is.",
-          "She doesn't knows where the meeting is.",
-          "She not know where the meeting is."
-        ],
-        answer: 1,
-        explain: "Third-person singular she requires doesn't + base verb know."
-      },
-      {
-        scene: "Office Referral",
-        prompt: "Choose the best correction for the dialogue.",
-        options: [
-          "He asked me where did I put the folder.",
-          "He asked me where I putted the folder.",
-          "He asked me where I put the folder.",
-          "He asked me where I did put the folder."
-        ],
-        answer: 2,
-        explain: "Embedded questions use statement word order: subject before verb."
-      },
-      {
-        scene: "Study Hall Whisper",
-        prompt: "Select the natural, error-free dialogue.",
-        options: [
-          "We was supposed to finish this yesterday, but we didn't.",
-          "We were supposed to finish this yesterday, but we didn't.",
-          "We were suppose to finish this yesterday, but we don't.",
-          "We supposed to finish this yesterday, but we didn't."
-        ],
-        answer: 1,
-        explain: "Plural we takes were; supposed keeps the past participle form."
-      },
-      {
-        scene: "After-School Meetup",
-        prompt: "Which line repairs the dialogue correctly?",
-        options: [
-          "Can you helped me carry these books to the car?",
-          "Can you help I carry these books to the car?",
-          "Can you help me carry these books to the car?",
-          "Can you helps me carry these books to the car?"
-        ],
-        answer: 2,
-        explain: "Modal can is followed by the base verb help; object pronoun is me."
-      },
-      {
-        scene: "Exit Briefing",
-        prompt: "Pick the repaired dialogue line.",
-        options: [
-          "The officer said that he don't need more evidence.",
-          "The officer said that he didn't need more evidence.",
-          "The officer said that he doesn't needed more evidence.",
-          "The officer said that he not need more evidence."
-        ],
-        answer: 1,
-        explain: "Reported past speech uses didn't + base verb for negative statements."
-      },
-      {
-        scene: "Quick Check",
-        prompt: "Choose the best repaired question.",
-        options: [
-          "Have you saw the new schedule on the board?",
-          "Have you seen the new schedule on the board?",
-          "Have you see the new schedule on the board?",
-          "Did you have seen the new schedule on the board?"
-        ],
-        answer: 1,
-        explain: "Have + past participle seen is the correct present perfect form."
-      },
-      {
-        scene: "Lineup Review",
-        prompt: "Select the clearest spoken line.",
-        options: [
-          "The principal told us that we needs to arrive on time.",
-          "The principal told us that we needed to arrive on time.",
-          "The principal told us that we needing to arrive on time.",
-          "The principal told us that we need arrives on time."
-        ],
-        answer: 1,
-        explain: "Reported past speech uses needed for correct tense agreement."
-      },
-      {
-        scene: "Case Close",
-        prompt: "Which response sounds natural and correct?",
-        options: [
-          "They was already finished when the inspector arrived.",
-          "They already finish when the inspector arrived.",
-          "They had already finished when the inspector arrived.",
-          "They have already finish when the inspector arrived."
-        ],
-        answer: 2,
-        explain: "Had + past participle shows an action completed before another past event."
-      },
-      {
-        scene: "Morning Check",
-        prompt: "Pick the repaired dialogue line.",
-        options: [
-          "The teacher asked if everyone were ready for the quiz.",
-          "The teacher asked if everyone was ready for the quiz.",
-          "The teacher asked if everyone is ready for the quiz yesterday.",
-          "The teacher ask if everyone was ready for the quiz."
-        ],
-        answer: 1,
-        explain: "Reported past speech uses was for singular agreement in the embedded clause."
-      },
-      {
-        scene: "Peer Review",
-        prompt: "Choose the best repaired question.",
-        options: [
-          "Did you checked your partner's work before submitting?",
-          "Did you check your partner's work before submitting?",
-          "Does you check your partner's work before submitting?",
-          "You did checked your partner's work before submitting?"
-        ],
-        answer: 1,
-        explain: "Did + base verb check is the correct past question form."
       }
     ],
     "rewrite-studio": [
@@ -1172,174 +500,6 @@
         ],
         answer: 0,
         explain: "Clear noun references make the sentence easier to understand."
-      },
-      {
-        scene: "Original: They was working on the task when bell ring.",
-        prompt: "Choose the strongest rewrite.",
-        options: [
-          "They were working on the task when the bell rang.",
-          "They was working on the task when the bell rang.",
-          "They working on the task when bell ring.",
-          "They are working on the task when bell ring yesterday."
-        ],
-        answer: 0,
-        explain: "Plural they takes were; past interruption needs rang."
-      },
-      {
-        scene: "Original: The student not have the right answer.",
-        prompt: "Select the best rewrite.",
-        options: [
-          "The student did not have the right answer.",
-          "The student not has the right answer.",
-          "The student do not has the right answer.",
-          "The student not having the right answer."
-        ],
-        answer: 0,
-        explain: "Negative past requires did not + base verb have."
-      },
-      {
-        scene: "Original: Me and him went to class after we eats lunch.",
-        prompt: "Pick the best rewrite.",
-        options: [
-          "He and I went to class after we ate lunch.",
-          "Me and him went to class after we ate lunch.",
-          "Him and me went to class after we eats lunch.",
-          "He and I gone to class after we eats lunch."
-        ],
-        answer: 0,
-        explain: "Subject pronouns are He and I; ate is correct past of eat."
-      },
-      {
-        scene: "Original: She telled the teacher that them was ready.",
-        prompt: "Select the strongest rewrite.",
-        options: [
-          "She told the teacher that they were ready.",
-          "She telled the teacher that they was ready.",
-          "She told the teacher that them were ready.",
-          "She telled the teacher that them was ready."
-        ],
-        answer: 0,
-        explain: "Told is the correct past of tell; they were is proper agreement."
-      },
-      {
-        scene: "Original: The students doesn't have they notebooks today.",
-        prompt: "Choose the strongest rewrite.",
-        options: [
-          "The students don't have their notebooks today.",
-          "The students doesn't have their notebooks today.",
-          "The students don't has they notebooks today.",
-          "The students doesn't has they notebooks today."
-        ],
-        answer: 0,
-        explain: "Plural students takes don't; possessive their replaces they."
-      },
-      {
-        scene: "Original: Me and her was working on the project when teacher came.",
-        prompt: "Select the strongest rewrite.",
-        options: [
-          "She and I were working on the project when the teacher came.",
-          "Me and her were working on the project when teacher came.",
-          "Her and I was working on the project when the teacher came.",
-          "She and me was working on the project when teacher came."
-        ],
-        answer: 0,
-        explain: "Subject pronouns She and I with plural were; the teacher needs the article."
-      },
-      {
-        scene: "Original: He don't remember where did he left the keys.",
-        prompt: "Choose the strongest rewrite.",
-        options: [
-          "He doesn't remember where he left the keys.",
-          "He don't remember where he left the keys.",
-          "He doesn't remembers where did he left the keys.",
-          "He doesn't remember where did he leave the keys."
-        ],
-        answer: 0,
-        explain: "Singular he takes doesn't + base verb; embedded questions use statement order."
-      },
-      {
-        scene: "Original: Although it rained, but the game was not cancelled.",
-        prompt: "Select the strongest rewrite.",
-        options: [
-          "Although it rained, but the game was not cancelled.",
-          "Although it rained, the game was not cancelled.",
-          "It rained, although but the game was not cancelled.",
-          "Although it raining, the game was not cancelled."
-        ],
-        answer: 1,
-        explain: "Use one connector only; although and but should not appear together."
-      },
-      {
-        scene: "Original: The students was excited about the results.",
-        prompt: "Choose the strongest rewrite.",
-        options: [
-          "The students were excited about the results.",
-          "The students was excited about the results.",
-          "The students is excited about the results.",
-          "The students excited about the results."
-        ],
-        answer: 0,
-        explain: "Plural students requires were for correct subject-verb agreement."
-      },
-      {
-        scene: "Original: He goed to the store and buyed some milk.",
-        prompt: "Select the best rewrite.",
-        options: [
-          "He went to the store and bought some milk.",
-          "He goed to the store and bought some milk.",
-          "He went to the store and buyed some milk.",
-          "He goes to the store and bought some milk."
-        ],
-        answer: 0,
-        explain: "Went and bought are the correct irregular past forms."
-      },
-      {
-        scene: "Original: The teacher ask us to opened our books.",
-        prompt: "Pick the best rewrite.",
-        options: [
-          "The teacher asked us to open our books.",
-          "The teacher ask us to open our books.",
-          "The teacher asked us to opened our books.",
-          "The teacher asking us to open our books."
-        ],
-        answer: 0,
-        explain: "Past tense asked plus infinitive to open is the correct pattern."
-      },
-      {
-        scene: "Original: Them don't know where is the library at.",
-        prompt: "Select the strongest rewrite.",
-        options: [
-          "They don't know where the library is.",
-          "Them don't know where the library is.",
-          "They doesn't know where is the library.",
-          "They don't knows where the library is at."
-        ],
-        answer: 0,
-        explain: "Subject pronoun they with don't + base verb; embedded clause uses statement order."
-      },
-      {
-        scene: "Original: The students is ready for the test.",
-        prompt: "Choose the strongest rewrite.",
-        options: [
-          "The students are ready for the test.",
-          "The students is ready for the test.",
-          "The students be ready for the test.",
-          "The students was ready for the test now."
-        ],
-        answer: 0,
-        explain: "Plural students requires are for correct subject-verb agreement."
-      },
-      {
-        scene: "Original: We was waiting when the bus came.",
-        prompt: "Select the best rewrite.",
-        options: [
-          "We were waiting when the bus came.",
-          "We was waiting when the bus came.",
-          "We waiting when the bus came.",
-          "We are waiting when the bus came yesterday."
-        ],
-        answer: 0,
-        explain: "Plural we takes were in past continuous; came is simple past for the interruption."
       }
     ],
     "rule-sprint-present": [
@@ -1414,174 +574,6 @@
         ],
         answer: 0,
         explain: "At the moment signals present continuous."
-      },
-      {
-        scene: "Attendance Call",
-        prompt: "Choose the sentence that states a routine.",
-        options: [
-          "The teacher calls each name every morning.",
-          "The teacher is calling each name every morning.",
-          "The teacher called each name every morning now.",
-          "The teacher call each name every morning."
-        ],
-        answer: 0,
-        explain: "Every morning signals a habit, requiring simple present with calls."
-      },
-      {
-        scene: "Lab Station",
-        prompt: "Pick the line for an action happening now.",
-        options: [
-          "The students measure the liquid right now.",
-          "The students are measuring the liquid right now.",
-          "The students measured the liquid right now.",
-          "The students measuring the liquid right now."
-        ],
-        answer: 1,
-        explain: "Right now calls for present continuous with are measuring."
-      },
-      {
-        scene: "Cafeteria Line",
-        prompt: "Select the strongest third-person present sentence.",
-        options: [
-          "The lunch monitor watch the line every day.",
-          "The lunch monitor watches the line every day.",
-          "The lunch monitor is watch the line every day.",
-          "The lunch monitor watched the line every day usually."
-        ],
-        answer: 1,
-        explain: "Third-person singular routine takes watches."
-      },
-      {
-        scene: "Hallway Pass",
-        prompt: "Choose the best negative present sentence.",
-        options: [
-          "She does not walks in the hallway without a pass.",
-          "She does not walk in the hallway without a pass.",
-          "She do not walks in the hallway without a pass.",
-          "She not walk in the hallway without a pass."
-        ],
-        answer: 1,
-        explain: "Does not is followed by the base verb walk."
-      },
-      {
-        scene: "Timer Alert",
-        prompt: "Choose the sentence about a routine.",
-        options: [
-          "The bell is ringing every hour.",
-          "The bell rings every hour.",
-          "The bell rung every hour.",
-          "The bell ring every hour."
-        ],
-        answer: 1,
-        explain: "Every hour signals a routine, requiring simple present rings."
-      },
-      {
-        scene: "Status Update",
-        prompt: "Pick the line for an action happening now.",
-        options: [
-          "The principal announces the results right now.",
-          "The principal is announcing the results right now.",
-          "The principal announced the results right now.",
-          "The principal announcing the results right now."
-        ],
-        answer: 1,
-        explain: "Right now requires present continuous is announcing."
-      },
-      {
-        scene: "Rule Board",
-        prompt: "Select the correct third-person present sentence.",
-        options: [
-          "Mr. Khan teach science on Tuesdays.",
-          "Mr. Khan teaches science on Tuesdays.",
-          "Mr. Khan is teach science on Tuesdays.",
-          "Mr. Khan teached science on Tuesdays usually."
-        ],
-        answer: 1,
-        explain: "Third-person singular routine takes teaches."
-      },
-      {
-        scene: "Quick Check",
-        prompt: "Choose the correct present question.",
-        options: [
-          "Does the printer works after lunch?",
-          "Do the printer work after lunch?",
-          "Does the printer work after lunch?",
-          "Printer does work after lunch?"
-        ],
-        answer: 2,
-        explain: "Singular printer takes does + base verb work."
-      },
-      {
-        scene: "Attendance Log",
-        prompt: "Choose the sentence that states a routine.",
-        options: [
-          "The secretary is recording attendance every morning.",
-          "The secretary records attendance every morning.",
-          "The secretary recorded attendance every morning now.",
-          "The secretary record attendance every morning."
-        ],
-        answer: 1,
-        explain: "Every morning signals a routine, requiring simple present records."
-      },
-      {
-        scene: "Lab Monitor",
-        prompt: "Pick the line for an action happening now.",
-        options: [
-          "The student monitors the experiment right now.",
-          "The student is monitoring the experiment right now.",
-          "The student monitored the experiment right now.",
-          "The student monitoring the experiment right now."
-        ],
-        answer: 1,
-        explain: "Right now calls for present continuous is monitoring."
-      },
-      {
-        scene: "Daily Briefing",
-        prompt: "Select the strongest third-person present sentence.",
-        options: [
-          "The manager brief the team every afternoon.",
-          "The manager briefs the team every afternoon.",
-          "The manager is brief the team every afternoon.",
-          "The manager briefed the team every afternoon usually."
-        ],
-        answer: 1,
-        explain: "Third-person singular routine takes briefs."
-      },
-      {
-        scene: "Quick Poll",
-        prompt: "Choose the correct present question.",
-        options: [
-          "Does the class agrees with the new schedule?",
-          "Do the class agree with the new schedule?",
-          "Does the class agree with the new schedule?",
-          "Class does agree with the new schedule?"
-        ],
-        answer: 2,
-        explain: "Singular class takes does + base verb agree."
-      },
-      {
-        scene: "Science Lab",
-        prompt: "Choose the sentence that states a routine.",
-        options: [
-          "The lab assistant is preparing the equipment every morning.",
-          "The lab assistant prepares the equipment every morning.",
-          "The lab assistant prepared the equipment every morning now.",
-          "The lab assistant prepare the equipment every morning."
-        ],
-        answer: 1,
-        explain: "Every morning signals a routine, requiring simple present prepares."
-      },
-      {
-        scene: "Recess Monitor",
-        prompt: "Pick the line for an action happening now.",
-        options: [
-          "The monitor counts the students right now.",
-          "The monitor is counting the students right now.",
-          "The monitor counted the students right now.",
-          "The monitor counting the students right now."
-        ],
-        answer: 1,
-        explain: "Right now calls for present continuous is counting."
       }
     ],
     "signal-decoder-present": [
@@ -1656,174 +648,6 @@
         ],
         answer: 1,
         explain: "Currently signals present continuous verb structure for in-progress action."
-      },
-      {
-        scene: "Signal: at this moment",
-        prompt: "Decode the signal and choose the correct line.",
-        options: [
-          "The principal is addressing the assembly at this moment.",
-          "The principal addresses the assembly at this moment.",
-          "The principal addressed the assembly at this moment.",
-          "The principal address the assembly at this moment."
-        ],
-        answer: 0,
-        explain: "At this moment signals present continuous for an action in progress."
-      },
-      {
-        scene: "Signal: never",
-        prompt: "Which sentence matches the signal?",
-        options: [
-          "He is never finishing homework on time.",
-          "He never finishes homework on time.",
-          "He never finished homework on time now.",
-          "He never finish homework on time."
-        ],
-        answer: 1,
-        explain: "Never describes a general habit, requiring simple present finishes."
-      },
-      {
-        scene: "Signal: look",
-        prompt: "Pick the line that fits immediate observation.",
-        options: [
-          "Look, the screen is flickering again.",
-          "Look, the screen flickers again always.",
-          "Look, the screen flickered again.",
-          "Look, the screen flicker again."
-        ],
-        answer: 0,
-        explain: "Look draws attention to something happening now, requiring present continuous."
-      },
-      {
-        scene: "Signal: each morning",
-        prompt: "Select the strongest habitual statement.",
-        options: [
-          "The janitor is unlocking the doors each morning.",
-          "The janitor unlocks the doors each morning.",
-          "The janitor unlocked the doors each morning.",
-          "The janitor unlock the doors each morning."
-        ],
-        answer: 1,
-        explain: "Each morning signals a repeated routine using simple present unlocks."
-      },
-      {
-        scene: "Signal: at this moment",
-        prompt: "Decode the signal and choose the correct line.",
-        options: [
-          "The nurse checks the roster at this moment.",
-          "The nurse is checking the roster at this moment.",
-          "The nurse checked the roster at this moment.",
-          "The nurse check the roster at this moment."
-        ],
-        answer: 1,
-        explain: "At this moment signals present continuous is checking."
-      },
-      {
-        scene: "Signal: twice a week",
-        prompt: "Which sentence matches the signal?",
-        options: [
-          "They are practising drills twice a week.",
-          "They practise drills twice a week.",
-          "They practised drills twice a week now.",
-          "They practises drills twice a week."
-        ],
-        answer: 1,
-        explain: "Twice a week describes a routine, requiring simple present practise."
-      },
-      {
-        scene: "Signal: now",
-        prompt: "Pick the line that fits the signal.",
-        options: [
-          "The coach explains the strategy now.",
-          "The coach is explaining the strategy now.",
-          "The coach explained the strategy now.",
-          "The coach explaining the strategy now."
-        ],
-        answer: 1,
-        explain: "Now signals an action in progress, requiring present continuous."
-      },
-      {
-        scene: "Signal: always",
-        prompt: "Select the strongest habitual statement.",
-        options: [
-          "She is always bringing her notebook to class.",
-          "She always brings her notebook to class.",
-          "She always brought her notebook to class now.",
-          "She always bring her notebook to class."
-        ],
-        answer: 1,
-        explain: "Always describes a permanent habit, requiring simple present brings."
-      },
-      {
-        scene: "Signal: every evening",
-        prompt: "Decode the signal and choose the correct line.",
-        options: [
-          "The guard is locking the gates every evening.",
-          "The guard locks the gates every evening.",
-          "The guard locked the gates every evening now.",
-          "The guard lock the gates every evening."
-        ],
-        answer: 1,
-        explain: "Every evening signals a repeated routine using simple present locks."
-      },
-      {
-        scene: "Signal: these days",
-        prompt: "Which sentence matches the signal?",
-        options: [
-          "She works on the new project these days.",
-          "She is working on the new project these days.",
-          "She worked on the new project these days.",
-          "She work on the new project these days."
-        ],
-        answer: 1,
-        explain: "These days signals a temporary ongoing situation, requiring present continuous."
-      },
-      {
-        scene: "Signal: watch out",
-        prompt: "Pick the line that fits immediate action.",
-        options: [
-          "Watch out, the floor is getting slippery.",
-          "Watch out, the floor gets slippery always.",
-          "Watch out, the floor got slippery.",
-          "Watch out, the floor get slippery."
-        ],
-        answer: 0,
-        explain: "Watch out draws attention to something happening now, requiring present continuous."
-      },
-      {
-        scene: "Signal: on weekdays",
-        prompt: "Select the strongest habitual statement.",
-        options: [
-          "The bus is arriving at eight on weekdays.",
-          "The bus arrives at eight on weekdays.",
-          "The bus arrived at eight on weekdays.",
-          "The bus arrive at eight on weekdays."
-        ],
-        answer: 1,
-        explain: "On weekdays signals a regular schedule using simple present arrives."
-      },
-      {
-        scene: "Signal: twice a week",
-        prompt: "Decode the signal and choose the correct line.",
-        options: [
-          "The club is meeting twice a week.",
-          "The club meets twice a week.",
-          "The club met twice a week now.",
-          "The club meet twice a week."
-        ],
-        answer: 1,
-        explain: "Twice a week describes a routine, requiring simple present meets."
-      },
-      {
-        scene: "Signal: as we speak",
-        prompt: "Which sentence matches the signal?",
-        options: [
-          "The technician repairs the server as we speak.",
-          "The technician is repairing the server as we speak.",
-          "The technician repaired the server as we speak.",
-          "The technician repairing the server as we speak."
-        ],
-        answer: 1,
-        explain: "As we speak signals an action in progress, requiring present continuous."
       }
     ],
     "present-case-interview": [
@@ -1898,174 +722,6 @@
         ],
         answer: 1,
         explain: "Policy or rule statements use simple present."
-      },
-      {
-        scene: "Interview File 7",
-        prompt: "Witness says this is a weekly habit. Choose the best line.",
-        options: [
-          "She reviews the case notes every Friday.",
-          "She is reviewing the case notes every Friday.",
-          "She reviewed the case notes every Friday now.",
-          "She review the case notes every Friday."
-        ],
-        answer: 0,
-        explain: "Weekly habit uses simple present reviews."
-      },
-      {
-        scene: "Interview File 8",
-        prompt: "Witness says action is happening now. Select the line.",
-        options: [
-          "The suspect waits in the hallway now.",
-          "The suspect is waiting in the hallway now.",
-          "The suspect waited in the hallway now.",
-          "The suspect waiting in the hallway now."
-        ],
-        answer: 1,
-        explain: "Now signals present continuous is waiting."
-      },
-      {
-        scene: "Interview File 9",
-        prompt: "Choose the strongest present question.",
-        options: [
-          "Do he understand the instructions?",
-          "Does he understands the instructions?",
-          "Does he understand the instructions?",
-          "He does understand the instructions?"
-        ],
-        answer: 2,
-        explain: "Does + base verb understand is required for singular he."
-      },
-      {
-        scene: "Interview File 10",
-        prompt: "Pick the most accurate negative present form.",
-        options: [
-          "The officer do not believe the alibi.",
-          "The officer does not believes the alibi.",
-          "The officer does not believe the alibi.",
-          "The officer not believes the alibi."
-        ],
-        answer: 2,
-        explain: "Does not must pair with base verb believe."
-      },
-      {
-        scene: "Interview File 11",
-        prompt: "Witness describes a morning habit. Choose the best line.",
-        options: [
-          "The guard is locking the gate every morning.",
-          "The guard locks the gate every morning.",
-          "The guard locked the gate every morning now.",
-          "The guard lock the gate every morning."
-        ],
-        answer: 1,
-        explain: "Every morning signals a habit, requiring simple present locks."
-      },
-      {
-        scene: "Interview File 12",
-        prompt: "Witness says the action is happening now. Select the line.",
-        options: [
-          "The detective examines the evidence right now.",
-          "The detective is examining the evidence right now.",
-          "The detective examined the evidence right now.",
-          "The detective examining the evidence right now."
-        ],
-        answer: 1,
-        explain: "Right now requires present continuous is examining."
-      },
-      {
-        scene: "Interview File 13",
-        prompt: "Choose the strongest present question for the witness.",
-        options: [
-          "Does the alarm rings every night?",
-          "Do the alarm ring every night?",
-          "Does the alarm ring every night?",
-          "Alarm does ring every night?"
-        ],
-        answer: 2,
-        explain: "Singular alarm takes does + base verb ring."
-      },
-      {
-        scene: "Interview File 14",
-        prompt: "Pick the most accurate negative present form.",
-        options: [
-          "The witness do not recall the licence plate.",
-          "The witness does not recalls the licence plate.",
-          "The witness does not recall the licence plate.",
-          "The witness not recall the licence plate."
-        ],
-        answer: 2,
-        explain: "Does not must pair with base verb recall."
-      },
-      {
-        scene: "Interview File 15",
-        prompt: "Witness says action is happening now. Select the line.",
-        options: [
-          "The clerk files the reports right now.",
-          "The clerk is filing the reports right now.",
-          "The clerk filed the reports right now.",
-          "The clerk filing the reports right now."
-        ],
-        answer: 1,
-        explain: "Right now requires present continuous is filing."
-      },
-      {
-        scene: "Interview File 16",
-        prompt: "Witness describes a daily rule. Choose the best line.",
-        options: [
-          "The receptionist greets every visitor at the front desk.",
-          "The receptionist is greeting every visitor at the front desk.",
-          "The receptionist greeted every visitor at the front desk now.",
-          "The receptionist greet every visitor at the front desk."
-        ],
-        answer: 0,
-        explain: "A daily rule uses simple present with third-person singular greets."
-      },
-      {
-        scene: "Interview File 17",
-        prompt: "Choose the strongest present question for the witness.",
-        options: [
-          "Does the manager checks the inventory daily?",
-          "Do the manager check the inventory daily?",
-          "Does the manager check the inventory daily?",
-          "Manager does check the inventory daily?"
-        ],
-        answer: 2,
-        explain: "Singular manager takes does + base verb check."
-      },
-      {
-        scene: "Interview File 18",
-        prompt: "Pick the most accurate negative present form.",
-        options: [
-          "The guard do not patrol the east wing.",
-          "The guard does not patrols the east wing.",
-          "The guard does not patrol the east wing.",
-          "The guard not patrol the east wing."
-        ],
-        answer: 2,
-        explain: "Does not must pair with base verb patrol."
-      },
-      {
-        scene: "Interview File 19",
-        prompt: "Witness says this is a weekly habit. Choose the best line.",
-        options: [
-          "The team reviews the security footage every Wednesday.",
-          "The team is reviewing the security footage every Wednesday.",
-          "The team reviewed the security footage every Wednesday now.",
-          "The team review the security footage every Wednesday."
-        ],
-        answer: 0,
-        explain: "Weekly habit uses simple present with third-person singular reviews."
-      },
-      {
-        scene: "Interview File 20",
-        prompt: "Witness says the action is happening now. Select the line.",
-        options: [
-          "The inspector checks the equipment right now.",
-          "The inspector is checking the equipment right now.",
-          "The inspector checked the equipment right now.",
-          "The inspector checking the equipment right now."
-        ],
-        answer: 1,
-        explain: "Right now signals present continuous is checking."
       }
     ],
     "be-verb-rule-sprint": [
@@ -2140,174 +796,6 @@
         ],
         answer: 1,
         explain: "Plural subject uses are not."
-      },
-      {
-        scene: "Roll Call",
-        prompt: "Choose the correct be-verb sentence.",
-        options: [
-          "She am present today.",
-          "She is present today.",
-          "She are present today.",
-          "She be present today."
-        ],
-        answer: 1,
-        explain: "Third-person singular she takes is."
-      },
-      {
-        scene: "Field Report",
-        prompt: "Select the line with correct past agreement.",
-        options: [
-          "The suspects were near the library at noon.",
-          "The suspects was near the library at noon.",
-          "The suspects am near the library at noon.",
-          "The suspects is near the library at noon."
-        ],
-        answer: 0,
-        explain: "Plural suspects in past takes were."
-      },
-      {
-        scene: "Partner Pair",
-        prompt: "Pick the strongest be-verb form.",
-        options: [
-          "Leo and I am assigned to the same group.",
-          "Leo and I is assigned to the same group.",
-          "Leo and I are assigned to the same group.",
-          "Leo and I be assigned to the same group."
-        ],
-        answer: 2,
-        explain: "Compound subject with I takes are."
-      },
-      {
-        scene: "Closing Statement",
-        prompt: "Choose the accurate past negative be-verb sentence.",
-        options: [
-          "The evidence were not strong enough.",
-          "The evidence was not strong enough.",
-          "The evidence are not strong enough yesterday.",
-          "The evidence be not strong enough."
-        ],
-        answer: 1,
-        explain: "Singular uncountable evidence in past takes was not."
-      },
-      {
-        scene: "Question Form",
-        prompt: "Choose the correct be-verb question.",
-        options: [
-          "Are she ready for the presentation?",
-          "Is she ready for the presentation?",
-          "Am she ready for the presentation?",
-          "Be she ready for the presentation?"
-        ],
-        answer: 1,
-        explain: "Third-person singular she takes is in questions."
-      },
-      {
-        scene: "Classroom Roster",
-        prompt: "Select the line with correct agreement.",
-        options: [
-          "The students was excited about the field trip.",
-          "The students were excited about the field trip.",
-          "The students am excited about the field trip.",
-          "The students is excited about the field trip."
-        ],
-        answer: 1,
-        explain: "Plural students in past takes were."
-      },
-      {
-        scene: "There-Sentence",
-        prompt: "Pick the strongest be-verb form.",
-        options: [
-          "There is three books on the desk.",
-          "There are three books on the desk.",
-          "There am three books on the desk.",
-          "There be three books on the desk."
-        ],
-        answer: 1,
-        explain: "Plural books requires there are."
-      },
-      {
-        scene: "Tag Check",
-        prompt: "Choose the correct be-verb tag question.",
-        options: [
-          "He is your partner, aren't he?",
-          "He is your partner, isn't he?",
-          "He is your partner, wasn't he?",
-          "He is your partner, don't he?"
-        ],
-        answer: 1,
-        explain: "Present is matches the negative tag isn't he."
-      },
-      {
-        scene: "Contraction Check",
-        prompt: "Choose the correct be-verb contraction.",
-        options: [
-          "They're ready for the next drill.",
-          "They's ready for the next drill.",
-          "They'am ready for the next drill.",
-          "They is ready for the next drill."
-        ],
-        answer: 0,
-        explain: "Plural they contracts with are to form they're."
-      },
-      {
-        scene: "Mixed Subject",
-        prompt: "Pick the sentence with correct be-verb agreement for a mixed subject.",
-        options: [
-          "Neither the teacher nor the students is in the lab.",
-          "Neither the teacher nor the students are in the lab.",
-          "Neither the teacher nor the students am in the lab.",
-          "Neither the teacher nor the students was in the lab now."
-        ],
-        answer: 1,
-        explain: "With neither…nor the verb agrees with the nearer plural subject students, so use are."
-      },
-      {
-        scene: "Visitor Badge",
-        prompt: "Choose the correct be-verb sentence.",
-        options: [
-          "The visitor are waiting in the lobby.",
-          "The visitor is waiting in the lobby.",
-          "The visitor am waiting in the lobby.",
-          "The visitor be waiting in the lobby."
-        ],
-        answer: 1,
-        explain: "Singular visitor takes is."
-      },
-      {
-        scene: "Morning Count",
-        prompt: "Select the line with correct agreement.",
-        options: [
-          "All the chairs is arranged in a circle.",
-          "All the chairs are arranged in a circle.",
-          "All the chairs am arranged in a circle.",
-          "All the chairs was arranged in a circle now."
-        ],
-        answer: 1,
-        explain: "Plural chairs takes are."
-      },
-      {
-        scene: "Lab Safety",
-        prompt: "Pick the strongest past be-verb form.",
-        options: [
-          "The chemicals was stored in the cabinet yesterday.",
-          "The chemicals were stored in the cabinet yesterday.",
-          "The chemicals are stored in the cabinet yesterday.",
-          "The chemicals be stored in the cabinet yesterday."
-        ],
-        answer: 1,
-        explain: "Plural chemicals in past takes were."
-      },
-      {
-        scene: "End-of-Day Check",
-        prompt: "Choose the accurate be-verb sentence.",
-        options: [
-          "The reports is complete and ready for review.",
-          "The reports are complete and ready for review.",
-          "The reports am complete and ready for review.",
-          "The reports was complete and ready for review now."
-        ],
-        answer: 1,
-        explain: "Plural reports requires are."
       }
     ],
     "be-verb-agreement-sweep": [
@@ -2382,174 +870,6 @@
         ],
         answer: 1,
         explain: "Plural pages requires are not."
-      },
-      {
-        scene: "Sweep 07",
-        prompt: "Find the line with correct subject-be agreement.",
-        options: [
-          "The homework are due tomorrow.",
-          "The homework is due tomorrow.",
-          "The homework am due tomorrow.",
-          "The homework were due tomorrow now."
-        ],
-        answer: 1,
-        explain: "Homework is uncountable and singular, requiring is."
-      },
-      {
-        scene: "Sweep 08",
-        prompt: "Choose the sentence that matches the subject.",
-        options: [
-          "All of the pencils is sharpened.",
-          "All of the pencils are sharpened.",
-          "All of the pencils am sharpened.",
-          "All of the pencils was sharpened now."
-        ],
-        answer: 1,
-        explain: "Plural pencils requires are."
-      },
-      {
-        scene: "Sweep 09",
-        prompt: "Select the strongest agreement line.",
-        options: [
-          "Neither the teacher nor the students is happy about the delay.",
-          "Neither the teacher nor the students are happy about the delay.",
-          "Neither the teacher nor the students am happy about the delay.",
-          "Neither the teacher nor the students was happy about the delay now."
-        ],
-        answer: 1,
-        explain: "With neither...nor the verb agrees with the nearer subject students, so use are."
-      },
-      {
-        scene: "Sweep 10",
-        prompt: "Pick the correct sentence for present context.",
-        options: [
-          "The information are helpful for the test.",
-          "The information is helpful for the test.",
-          "The information am helpful for the test.",
-          "The information were helpful for the test now."
-        ],
-        answer: 1,
-        explain: "Information is uncountable and singular, requiring is."
-      },
-      {
-        scene: "Sweep 11",
-        prompt: "Find the line with correct subject-be agreement.",
-        options: [
-          "There is many reasons for the delay.",
-          "There are many reasons for the delay.",
-          "There am many reasons for the delay.",
-          "There be many reasons for the delay."
-        ],
-        answer: 1,
-        explain: "There are pairs with the plural noun reasons."
-      },
-      {
-        scene: "Sweep 12",
-        prompt: "Choose the sentence that matches the subject.",
-        options: [
-          "The committee are meeting at noon today.",
-          "The committee is meeting at noon today.",
-          "The committee am meeting at noon today.",
-          "The committee were meeting at noon today now."
-        ],
-        answer: 1,
-        explain: "Collective noun committee is treated as singular."
-      },
-      {
-        scene: "Sweep 13",
-        prompt: "Select the strongest agreement line.",
-        options: [
-          "My brother and his friend was at the park yesterday.",
-          "My brother and his friend am at the park yesterday.",
-          "My brother and his friend were at the park yesterday.",
-          "My brother and his friend is at the park yesterday."
-        ],
-        answer: 2,
-        explain: "Compound subject in past takes were."
-      },
-      {
-        scene: "Sweep 14",
-        prompt: "Pick the correct sentence for present context.",
-        options: [
-          "Every seat in the auditorium is taken.",
-          "Every seat in the auditorium are taken.",
-          "Every seat in the auditorium am taken.",
-          "Every seat in the auditorium were taken now."
-        ],
-        answer: 0,
-        explain: "Every makes the subject singular, requiring is."
-      },
-      {
-        scene: "Sweep 15",
-        prompt: "Choose the line with correct question agreement.",
-        options: [
-          "Is the players ready for the match?",
-          "Am the players ready for the match?",
-          "Are the players ready for the match?",
-          "Be the players ready for the match?"
-        ],
-        answer: 2,
-        explain: "Plural subject players requires are in a question."
-      },
-      {
-        scene: "Sweep 16",
-        prompt: "Find the line with correct subject-be agreement.",
-        options: [
-          "There is three apples on the counter.",
-          "There am three apples on the counter.",
-          "There are three apples on the counter.",
-          "There be three apples on the counter."
-        ],
-        answer: 2,
-        explain: "There are pairs with the plural noun apples."
-      },
-      {
-        scene: "Sweep 17",
-        prompt: "Select the accurate negative agreement sentence.",
-        options: [
-          "He were not absent from class last Monday.",
-          "He was not absent from class last Monday.",
-          "He are not absent from class last Monday.",
-          "He am not absent from class last Monday."
-        ],
-        answer: 1,
-        explain: "Singular he in the past takes was not."
-      },
-      {
-        scene: "Sweep 18",
-        prompt: "Choose the sentence that matches the subject.",
-        options: [
-          "Each of the experiments are documented in the log.",
-          "Each of the experiments were documented in the log now.",
-          "Each of the experiments is documented in the log.",
-          "Each of the experiments am documented in the log."
-        ],
-        answer: 2,
-        explain: "Each is singular, requiring is."
-      },
-      {
-        scene: "Sweep 19",
-        prompt: "Pick the correct sentence for past context.",
-        options: [
-          "The dogs in the yard is barking all night.",
-          "The dogs in the yard were barking all night.",
-          "The dogs in the yard am barking all night.",
-          "The dogs in the yard be barking all night."
-        ],
-        answer: 1,
-        explain: "Plural dogs in past takes were."
-      },
-      {
-        scene: "Sweep 20",
-        prompt: "Select the strongest agreement line.",
-        options: [
-          "Was the instructions clear enough for everyone?",
-          "Am the instructions clear enough for everyone?",
-          "Were the instructions clear enough for everyone?",
-          "Be the instructions clear enough for everyone?"
-        ],
-        answer: 2,
-        explain: "Plural instructions in a past question takes were."
       }
     ],
     "be-verb-case-interview": [
@@ -2624,174 +944,6 @@
         ],
         answer: 1,
         explain: "Singular explanation requires is."
-      },
-      {
-        scene: "Interview G",
-        prompt: "Witness refers to one report in the past. Choose the line.",
-        options: [
-          "The report were incomplete.",
-          "The report was incomplete.",
-          "The report are incomplete yesterday.",
-          "The report be incomplete."
-        ],
-        answer: 1,
-        explain: "Singular report in past takes was."
-      },
-      {
-        scene: "Interview H",
-        prompt: "Witness describes two classrooms. Select the sentence.",
-        options: [
-          "Both classrooms is locked after hours.",
-          "Both classrooms are locked after hours.",
-          "Both classrooms am locked after hours.",
-          "Both classrooms was locked after hours now."
-        ],
-        answer: 1,
-        explain: "Plural classrooms requires are."
-      },
-      {
-        scene: "Interview I",
-        prompt: "Past-time clue: choose the best form.",
-        options: [
-          "The windows was open during the incident.",
-          "The windows were open during the incident.",
-          "The windows are open during the incident yesterday.",
-          "The windows be open during the incident."
-        ],
-        answer: 1,
-        explain: "Plural windows in past takes were."
-      },
-      {
-        scene: "Interview J",
-        prompt: "Pick the strongest negative be-verb line.",
-        options: [
-          "The answer are not correct.",
-          "The answer is not correct.",
-          "The answer am not correct.",
-          "The answer were not correct now."
-        ],
-        answer: 1,
-        explain: "Singular answer requires is not."
-      },
-      {
-        scene: "Interview K",
-        prompt: "Witness describes one laptop in the present. Choose the line.",
-        options: [
-          "The laptop are on the desk right now.",
-          "The laptop is on the desk right now.",
-          "The laptop am on the desk right now.",
-          "The laptop be on the desk right now."
-        ],
-        answer: 1,
-        explain: "Singular laptop pairs with is."
-      },
-      {
-        scene: "Interview L",
-        prompt: "Witness refers to several witnesses in the past. Select the sentence.",
-        options: [
-          "The witnesses was questioned after the event.",
-          "The witnesses were questioned after the event.",
-          "The witnesses is questioned after the event.",
-          "The witnesses am questioned after the event."
-        ],
-        answer: 1,
-        explain: "Plural witnesses in past takes were."
-      },
-      {
-        scene: "Interview M",
-        prompt: "Choose the line with correct second-person agreement.",
-        options: [
-          "You is expected to arrive before nine.",
-          "You am expected to arrive before nine.",
-          "You are expected to arrive before nine.",
-          "You was expected to arrive before nine."
-        ],
-        answer: 2,
-        explain: "Subject you always takes are in present tense."
-      },
-      {
-        scene: "Interview N",
-        prompt: "Witness describes a compound subject. Pick the strongest line.",
-        options: [
-          "The principal and the counselor was present during the meeting.",
-          "The principal and the counselor is present during the meeting.",
-          "The principal and the counselor were present during the meeting.",
-          "The principal and the counselor am present during the meeting."
-        ],
-        answer: 2,
-        explain: "Compound subject in past takes were."
-      },
-      {
-        scene: "Interview O",
-        prompt: "Pick the strongest be-verb question.",
-        options: [
-          "Was the documents stored in the cabinet last week?",
-          "Were the documents stored in the cabinet last week?",
-          "Am the documents stored in the cabinet last week?",
-          "Be the documents stored in the cabinet last week?"
-        ],
-        answer: 1,
-        explain: "Plural documents in a past question takes were."
-      },
-      {
-        scene: "Interview P",
-        prompt: "Witness refers to one piece of evidence. Choose the line.",
-        options: [
-          "The fingerprint are still visible on the glass.",
-          "The fingerprint is still visible on the glass.",
-          "The fingerprint am still visible on the glass.",
-          "The fingerprint were still visible on the glass now."
-        ],
-        answer: 1,
-        explain: "Singular fingerprint requires is."
-      },
-      {
-        scene: "Interview Q",
-        prompt: "Select the sentence with the cleanest past-tense agreement.",
-        options: [
-          "I were in the hallway when the alarm rang.",
-          "I was in the hallway when the alarm rang.",
-          "I are in the hallway when the alarm rang.",
-          "I is in the hallway when the alarm rang."
-        ],
-        answer: 1,
-        explain: "Subject I in past tense takes was."
-      },
-      {
-        scene: "Interview R",
-        prompt: "Witness describes a negative statement. Pick the best line.",
-        options: [
-          "The cameras was not recording during the outage.",
-          "The cameras were not recording during the outage.",
-          "The cameras am not recording during the outage.",
-          "The cameras is not recording during the outage."
-        ],
-        answer: 1,
-        explain: "Plural cameras in past takes were not."
-      },
-      {
-        scene: "Interview S",
-        prompt: "Choose the line with correct third-person singular agreement.",
-        options: [
-          "She are the only witness available today.",
-          "She am the only witness available today.",
-          "She is the only witness available today.",
-          "She were the only witness available today."
-        ],
-        answer: 2,
-        explain: "Third-person singular she takes is in present."
-      },
-      {
-        scene: "Interview T",
-        prompt: "Witness describes plural items in present. Select the sentence.",
-        options: [
-          "The files on the server is encrypted.",
-          "The files on the server am encrypted.",
-          "The files on the server are encrypted.",
-          "The files on the server was encrypted now."
-        ],
-        answer: 2,
-        explain: "Plural files requires are."
       }
     ],
     "mission-sequence-lab": [
@@ -2866,174 +1018,6 @@
         ],
         answer: 0,
         explain: "One precise connector keeps clause logic and sequence reasoning clear."
-      },
-      {
-        scene: "Sequence Draft 7",
-        prompt: "Choose the sentence with a correct after-clause.",
-        options: [
-          "After the team decoded the message, they reported the findings to headquarters.",
-          "After the team decoded the message, they report the findings to headquarters.",
-          "After the team decode the message, they reported the findings to headquarters.",
-          "After decoded message, reported findings headquarters."
-        ],
-        answer: 0,
-        explain: "Both clauses in a past narrative need consistent past tense."
-      },
-      {
-        scene: "Sequence Draft 8",
-        prompt: "Pick the line with the clearest result connector.",
-        options: [
-          "The alarm sounded early, so the agents evacuated the building immediately.",
-          "The alarm sounded early, so because the agents evacuated the building immediately.",
-          "The alarm sounded early, so the agents evacuate the building yesterday.",
-          "The alarm sounded early, so evacuated building immediately."
-        ],
-        answer: 0,
-        explain: "Use one result connector and keep past tense consistent."
-      },
-      {
-        scene: "Sequence Draft 9",
-        prompt: "Select the line that uses contrast correctly.",
-        options: [
-          "The first clue seemed obvious; however, it led the team to the wrong conclusion.",
-          "The first clue seemed obvious; however but it led the team to the wrong conclusion.",
-          "The first clue seemed obvious; however, it leads the team to the wrong conclusion yesterday.",
-          "The first clue seemed obvious however led team wrong conclusion."
-        ],
-        answer: 0,
-        explain: "However needs a semicolon before and a comma after, with matching past tense."
-      },
-      {
-        scene: "Sequence Draft 10",
-        prompt: "Which line gives the strongest next-step marker?",
-        options: [
-          "Next, the spy copied the document and returned it to the drawer.",
-          "Next, the spy copy the document and returned it to the drawer.",
-          "Next, the spy copied the document and return it to the drawer yesterday.",
-          "Next the spy was copied the document and was returned it."
-        ],
-        answer: 0,
-        explain: "Sequence markers like next pair with consistent simple past verbs."
-      },
-      {
-        scene: "Sequence Draft 11",
-        prompt: "Choose the sentence with clear cause-result markers.",
-        options: [
-          "The power went out, so the lab lost all unsaved data.",
-          "The power went out, so because the lab lost all unsaved data.",
-          "The power went out, so the lab loses all unsaved data yesterday.",
-          "Power went out so lost unsaved data."
-        ],
-        answer: 0,
-        explain: "One cause-result connector with consistent past tense is correct."
-      },
-      {
-        scene: "Sequence Draft 12",
-        prompt: "Pick the strongest contrast sequence line.",
-        options: [
-          "The team expected rain; however, the sky stayed clear all afternoon.",
-          "The team expected rain; however but the sky stayed clear all afternoon.",
-          "The team expected rain; however, the sky stays clear all afternoon yesterday.",
-          "Team expected rain however sky stayed clear."
-        ],
-        answer: 0,
-        explain: "Use the connector however to show contrast: semicolon before and comma after keep sequence logic clear across clauses."
-      },
-      {
-        scene: "Sequence Draft 13",
-        prompt: "Select the line that uses time order correctly.",
-        options: [
-          "Before the briefing started, the agent reviewed the case files.",
-          "Before the briefing started, the agent reviews the case files yesterday.",
-          "Before the briefing start, the agent reviewed the case files.",
-          "Before briefing started reviewed case files."
-        ],
-        answer: 0,
-        explain: "Both clauses must use consistent past tense with a before connector."
-      },
-      {
-        scene: "Sequence Draft 14",
-        prompt: "Choose the best after-clause sentence.",
-        options: [
-          "After we collected the samples, we labeled each container carefully.",
-          "After we collected the samples, we label each container yesterday.",
-          "After we collect the samples, we labeled each container carefully.",
-          "After collected samples, labeled containers."
-        ],
-        answer: 0,
-        explain: "After-clauses need matching past tense in both parts."
-      },
-      {
-        scene: "Sequence Draft 15",
-        prompt: "Which line gives the clearest final step?",
-        options: [
-          "Finally, the detective sealed the evidence bag and signed the report.",
-          "Finally, the detective seal the evidence bag and signed the report.",
-          "Finally, the detective sealed the evidence bag and sign the report yesterday.",
-          "Finally sealed evidence bag signed report."
-        ],
-        answer: 0,
-        explain: "Final step markers pair with consistent simple past verbs."
-      },
-      {
-        scene: "Sequence Draft 16",
-        prompt: "Pick the sentence with the strongest therefore connector.",
-        options: [
-          "The data was corrupted; therefore, the team restarted the analysis.",
-          "The data was corrupted; therefore because the team restarted the analysis.",
-          "The data was corrupted; therefore, the team restarts the analysis yesterday.",
-          "Data corrupted therefore restarted analysis."
-        ],
-        answer: 0,
-        explain: "Therefore needs a semicolon before and a comma after, with matching past tense."
-      },
-      {
-        scene: "Sequence Draft 17",
-        prompt: "Select the line that avoids compound connector errors.",
-        options: [
-          "The alarm rang early, so the guards secured the perimeter.",
-          "The alarm rang early, so because the guards secured the perimeter.",
-          "The alarm rang early, because so the guards secured the perimeter.",
-          "The alarm rang early, so because guards secure perimeter."
-        ],
-        answer: 0,
-        explain: "Using two connectors together creates a compound connector error."
-      },
-      {
-        scene: "Sequence Draft 18",
-        prompt: "Choose the sentence with correct before-after logic.",
-        options: [
-          "The crew checked the engine before they cleared the runway.",
-          "The crew checked the engine before they clear the runway yesterday.",
-          "The crew check the engine before they cleared the runway.",
-          "Crew checked engine before cleared runway."
-        ],
-        answer: 0,
-        explain: "Both clauses need matching past tense with the before connector."
-      },
-      {
-        scene: "Sequence Draft 19",
-        prompt: "Pick the line with the clearest next-step marker.",
-        options: [
-          "Then the scientist recorded the temperature and noted the change.",
-          "Then the scientist record the temperature and noted the change.",
-          "Then the scientist recorded the temperature and note the change yesterday.",
-          "Then scientist was recorded temperature and was noted change."
-        ],
-        answer: 0,
-        explain: "Then pairs with consistent simple past verbs in sequence writing."
-      },
-      {
-        scene: "Sequence Draft 20",
-        prompt: "Select the line that uses because correctly.",
-        options: [
-          "Because the bridge was damaged, the convoy took the alternate route.",
-          "Because the bridge was damaged, so the convoy took the alternate route.",
-          "Because the bridge damaged, the convoy took the alternate route.",
-          "Because bridge was damaged convoy took alternate route."
-        ],
-        answer: 0,
-        explain: "Because introduces the cause; adding so creates a double connector."
       }
     ],
     "evidence-sort-board": [
@@ -3108,174 +1092,6 @@
         ],
         answer: 1,
         explain: "Plural results takes are."
-      },
-      {
-        scene: "Evidence Card G",
-        prompt: "Choose the sentence with correct subject-verb agreement.",
-        options: [
-          "The list of suspects includes three students from Room 204.",
-          "The list of suspects include three students from Room 204.",
-          "The list of suspects are including three students from Room 204.",
-          "The list of suspects were include three students from Room 204."
-        ],
-        answer: 0,
-        explain: "The subject is list (singular), so the verb must be includes."
-      },
-      {
-        scene: "Evidence Card H",
-        prompt: "Pick the line with the clearest pronoun reference.",
-        options: [
-          "Officer Tran handed the folder to Detective Li before Officer Tran left the room.",
-          "Officer Tran handed the folder to Detective Li before he left the room.",
-          "Officer Tran handed the folder to Detective Li before they was leaving the room.",
-          "Officer Tran handed folder Detective Li before left room."
-        ],
-        answer: 0,
-        explain: "Repeating the noun avoids ambiguous pronoun reference in evidence logs."
-      },
-      {
-        scene: "Evidence Card I",
-        prompt: "Select the best question-form evidence line.",
-        options: [
-          "Does the evidence suggest the suspect was in the building?",
-          "Does the evidence suggests the suspect was in the building?",
-          "Do the evidence suggest the suspect was in the building?",
-          "Evidence does suggest was suspect in building?"
-        ],
-        answer: 0,
-        explain: "Does pairs with the base form suggest, not suggests."
-      },
-      {
-        scene: "Evidence Card J",
-        prompt: "Pick the strongest present continuous evidence statement.",
-        options: [
-          "The investigators are reviewing the surveillance footage right now.",
-          "The investigators is reviewing the surveillance footage right now.",
-          "The investigators reviewing the surveillance footage right now.",
-          "The investigators are review the surveillance footage right now."
-        ],
-        answer: 0,
-        explain: "Plural subject takes are + verb-ing for present continuous."
-      },
-      {
-        scene: "Evidence Card K",
-        prompt: "Choose the strongest evidence sentence.",
-        options: [
-          "The guard confirmed that the gate was locked at midnight.",
-          "The guard confirmed that the gate were locked at midnight.",
-          "The guard confirm that the gate was locked at midnight.",
-          "The guard confirmed that the gate is locked at midnight yesterday."
-        ],
-        answer: 0,
-        explain: "Past tense confirmed and was keep the evidence statement consistent."
-      },
-      {
-        scene: "Evidence Card L",
-        prompt: "Pick the line with clear reference.",
-        options: [
-          "Agent Park forwarded the report to Director Ahn before Agent Park left the office.",
-          "Agent Park forwarded the report to Director Ahn before he left the office.",
-          "Agent Park forwarded the report to Director Ahn before they was leaving the office.",
-          "Agent Park forwarded report Director Ahn before left office."
-        ],
-        answer: 0,
-        explain: "Repeating the noun avoids ambiguous pronoun reference in evidence logs."
-      },
-      {
-        scene: "Evidence Card M",
-        prompt: "Select the best question evidence line.",
-        options: [
-          "Did the witness notice anything unusual near the entrance?",
-          "Did the witness noticed anything unusual near the entrance?",
-          "Does the witness noticed anything unusual near the entrance?",
-          "Witness did notice anything unusual entrance?"
-        ],
-        answer: 0,
-        explain: "Did pairs with the base form notice, not noticed."
-      },
-      {
-        scene: "Evidence Card N",
-        prompt: "Choose the sentence with valid cause and result.",
-        options: [
-          "The sensor triggered the alarm, so the team responded within minutes.",
-          "The sensor triggered the alarm, because so the team responded within minutes.",
-          "The sensor triggered the alarm, and because responded within minutes.",
-          "The sensor triggered alarm, so responded minutes."
-        ],
-        answer: 0,
-        explain: "A single correct connector keeps logic clean."
-      },
-      {
-        scene: "Evidence Card O",
-        prompt: "Pick the strongest past tense evidence statement.",
-        options: [
-          "The technician replaced the faulty cable before the system rebooted.",
-          "The technician replace the faulty cable before the system rebooted.",
-          "The technician replaced the faulty cable before the system reboot yesterday.",
-          "Technician replaced faulty cable before system rebooted."
-        ],
-        answer: 0,
-        explain: "Both verbs must be in past tense for a past evidence statement."
-      },
-      {
-        scene: "Evidence Card P",
-        prompt: "Select the line with accurate be-verb agreement.",
-        options: [
-          "The samples from the lab is contaminated.",
-          "The samples from the lab are contaminated.",
-          "The samples from the lab am contaminated.",
-          "The samples from the lab was contaminated now."
-        ],
-        answer: 1,
-        explain: "Plural samples requires are."
-      },
-      {
-        scene: "Evidence Card Q",
-        prompt: "Choose the sentence with correct subject-verb agreement.",
-        options: [
-          "The stack of papers on the desk need to be filed.",
-          "The stack of papers on the desk needs to be filed.",
-          "The stack of papers on the desk are needing to be filed.",
-          "The stack of papers on the desk were need to be filed."
-        ],
-        answer: 1,
-        explain: "The subject is stack (singular), so the verb must be needs."
-      },
-      {
-        scene: "Evidence Card R",
-        prompt: "Pick the line with the clearest pronoun reference.",
-        options: [
-          "Inspector Yoon compared the two samples and found that the first sample was altered.",
-          "Inspector Yoon compared the two samples and found that it was altered.",
-          "Inspector Yoon compared the two samples and found that they was altered.",
-          "Inspector Yoon compared two samples found first altered."
-        ],
-        answer: 0,
-        explain: "Specifying the first sample removes ambiguity from the pronoun reference."
-      },
-      {
-        scene: "Evidence Card S",
-        prompt: "Select the best question-form evidence line.",
-        options: [
-          "Were the suspects aware of the surveillance cameras?",
-          "Was the suspects aware of the surveillance cameras?",
-          "Am the suspects aware of the surveillance cameras?",
-          "Suspects were aware surveillance cameras?"
-        ],
-        answer: 0,
-        explain: "Plural suspects in a past question requires were."
-      },
-      {
-        scene: "Evidence Card T",
-        prompt: "Pick the strongest present continuous evidence statement.",
-        options: [
-          "The forensic team is analyzing the fingerprints right now.",
-          "The forensic team are analyzing the fingerprints right now.",
-          "The forensic team analyzing the fingerprints right now.",
-          "The forensic team is analyze the fingerprints right now."
-        ],
-        answer: 0,
-        explain: "Singular team takes is plus verb-ing for present continuous."
       }
     ]
   };
@@ -3975,249 +1791,6 @@
     }
   };
 
-  var timelineSortRounds = [
-    {
-      scene: "Timeline Card A",
-      prompt: "Sort each sentence into BEFORE (completed) or DURING (ongoing).",
-      options: [
-        "The team was checking clues when the lights went out.",
-        "The principal announced the final schedule before lunch.",
-        "Students were organizing folders during homeroom.",
-        "The librarian locked the media room at 4:00."
-      ],
-      answer: 0,
-      explain: "Use DURING for was/were + verb-ing actions and BEFORE for completed simple past actions."
-    },
-    {
-      scene: "Timeline Card B",
-      prompt: "Drag each line to the correct timeline zone.",
-      options: [
-        "Maya was interviewing witnesses while Leo was updating the board.",
-        "The class submitted the project after second period.",
-        "We were reviewing notes when the fire drill started.",
-        "The coach blew the whistle and ended practice."
-      ],
-      answer: 0,
-      explain: "Background actions in progress belong in DURING. Finished events belong in BEFORE."
-    },
-    {
-      scene: "Timeline Card C",
-      prompt: "Sort the timeline cards: ongoing background vs completed event.",
-      options: [
-        "The nurse was checking attendance when the bell rang.",
-        "The secretary filed the forms after the meeting ended.",
-        "The students were discussing the prompt while the teacher walked around.",
-        "The captain turned off the lights before leaving."
-      ],
-      answer: 0,
-      explain: "Past continuous forms map to DURING, while simple past forms map to BEFORE."
-    },
-    {
-      scene: "Timeline Card D",
-      prompt: "Place each sentence in BEFORE or DURING.",
-      options: [
-        "We were preparing slides when the projector failed.",
-        "The team solved the puzzle and wrote the report.",
-        "The janitor was cleaning the hallway during dismissal.",
-        "The principal called the office after lunch."
-      ],
-      answer: 0,
-      explain: "Was/were + verb-ing means an action was in progress (DURING)."
-    },
-    {
-      scene: "Timeline Card E",
-      prompt: "Sort each sentence based on timeline meaning.",
-      options: [
-        "The class was reading quietly while rain tapped the windows.",
-        "The teacher posted feedback before first period.",
-        "We were arranging materials when the guest arrived.",
-        "The counselor finished the parent call at noon."
-      ],
-      answer: 0,
-      explain: "Ongoing background actions go to DURING; completed actions go to BEFORE."
-    },
-    {
-      scene: "Timeline Card F",
-      prompt: "Drag cards to BEFORE or DURING using verb clues.",
-      options: [
-        "The students were presenting their posters when the bell rang.",
-        "The office opened the doors at 8:00.",
-        "Ava was collecting lab tools while Noah labeled samples.",
-        "The team packed the equipment after class."
-      ],
-      answer: 0,
-      explain: "Use the verb form to classify each card, not whether the sentence is right/wrong."
-    },
-    {
-      scene: "Timeline Card G",
-      prompt: "Sort each line into the correct timeline zone.",
-      options: [
-        "Leo was explaining the chart while Maya took notes.",
-        "The librarian checked out the final book.",
-        "We were waiting in line when the door opened.",
-        "The teacher ended the quiz and collected papers."
-      ],
-      answer: 0,
-      explain: "DURING captures in-progress background. BEFORE captures completed events."
-    },
-    {
-      scene: "Timeline Card H",
-      prompt: "Classify each sentence: completed event or ongoing background.",
-      options: [
-        "The class was reviewing examples when the speaker arrived.",
-        "The principal signed the forms after lunch.",
-        "Students were rehearsing lines during advisory period.",
-        "The bus left the parking lot at 3:30."
-      ],
-      answer: 0,
-      explain: "Past continuous = DURING. Simple past = BEFORE."
-    },
-    {
-      scene: "Timeline Card I",
-      prompt: "Drag all four lines to BEFORE or DURING.",
-      options: [
-        "We were comparing answers while the timer was running.",
-        "The captain checked the door and locked it.",
-        "The teacher was answering questions when the call came in.",
-        "The class finished the warm-up before discussion."
-      ],
-      answer: 0,
-      explain: "Every card belongs in one zone based on timeline role."
-    },
-    {
-      scene: "Timeline Card J",
-      prompt: "Sort each sentence by timeline role.",
-      options: [
-        "Mina was organizing evidence while Berk tracked time.",
-        "The team posted the final chart before leaving.",
-        "The teacher was reading directions when the power flickered.",
-        "The office sent the announcement at 9:15."
-      ],
-      answer: 0,
-      explain: "Use DURING for progressive past actions and BEFORE for completed simple past actions."
-    },
-    {
-      scene: "Timeline Card K",
-      prompt: "Place each line in the right timeline bucket.",
-      options: [
-        "The class was taking notes while the teacher explained the graph.",
-        "The coach reviewed scores after practice.",
-        "I was checking the rubric when my phone buzzed.",
-        "The librarian closed the desk at 5:00."
-      ],
-      answer: 0,
-      explain: "In-progress actions belong in DURING. Completed events belong in BEFORE."
-    },
-    {
-      scene: "Timeline Card L",
-      prompt: "Sort these timeline clues into BEFORE or DURING.",
-      options: [
-        "We were setting up stations when the visitors arrived.",
-        "The teacher graded quizzes after school.",
-        "Students were discussing evidence while the monitor timed them.",
-        "The class submitted notebooks before the bell."
-      ],
-      answer: 0,
-      explain: "Was/were + ing is DURING. Finished actions in simple past are BEFORE."
-    },
-    {
-      scene: "Timeline Card M",
-      prompt: "Drag each sentence to the correct timeline zone.",
-      options: [
-        "The lab team was measuring samples when the timer beeped.",
-        "The secretary printed agendas before assembly.",
-        "The students were brainstorming while music played softly.",
-        "The counselor ended the meeting at 2:00."
-      ],
-      answer: 0,
-      explain: "Timeline Sort is about classifying action type, not finding one wrong line."
-    },
-    {
-      scene: "Timeline Card N",
-      prompt: "Classify each line by timeline meaning.",
-      options: [
-        "The class was watching the demo when the internet dropped.",
-        "The principal visited three classrooms before noon.",
-        "Maya was highlighting notes while Leo summarized evidence.",
-        "The teacher posted scores after class."
-      ],
-      answer: 0,
-      explain: "Choose DURING for ongoing background actions and BEFORE for completed actions."
-    },
-    {
-      scene: "Timeline Card O",
-      prompt: "Sort all cards into BEFORE or DURING.",
-      options: [
-        "We were practicing introductions when the guests entered.",
-        "The team reviewed the checklist after lunch.",
-        "Students were editing drafts while the timer was counting down.",
-        "The office delivered badges at 8:20."
-      ],
-      answer: 0,
-      explain: "Progressive forms show DURING; simple past forms show BEFORE."
-    },
-    {
-      scene: "Timeline Card P",
-      prompt: "Use the verb clues to sort each sentence.",
-      options: [
-        "The students were presenting projects when the visitor arrived.",
-        "The librarian stamped returns before recess.",
-        "I was revising the paragraph while my partner checked punctuation.",
-        "The coach started practice at 4:10."
-      ],
-      answer: 0,
-      explain: "Sort by action timing: in progress (DURING) vs completed (BEFORE)."
-    },
-    {
-      scene: "Timeline Card Q",
-      prompt: "Drag each sentence to the timeline zone that fits.",
-      options: [
-        "The class was discussing themes while rain was falling outside.",
-        "The teacher opened the rubric and explained criteria.",
-        "We were waiting in the hallway when the door unlocked.",
-        "The team finalized the script after rehearsal."
-      ],
-      answer: 0,
-      explain: "DURING captures ongoing background actions, BEFORE captures completed events."
-    },
-    {
-      scene: "Timeline Card R",
-      prompt: "Sort each line into BEFORE or DURING.",
-      options: [
-        "The teacher was reading aloud while students were taking notes.",
-        "The class completed the worksheet before discussion.",
-        "I was reviewing the clue when the alarm sounded.",
-        "The office sent the reminder at 10:30."
-      ],
-      answer: 0,
-      explain: "Past continuous belongs in DURING; simple past belongs in BEFORE."
-    },
-    {
-      scene: "Timeline Card S",
-      prompt: "Classify the timeline cards by action type.",
-      options: [
-        "The team was building the model when the glue spilled.",
-        "The nurse checked attendance after the bell rang.",
-        "Students were comparing answers while the clock was ticking.",
-        "The principal approved the field trip form."
-      ],
-      answer: 0,
-      explain: "Use DURING for ongoing actions and BEFORE for completed actions."
-    },
-    {
-      scene: "Timeline Card T",
-      prompt: "Sort each sentence to the right timeline zone.",
-      options: [
-        "I was reviewing the clue when my phone rang.",
-        "The class packed supplies before dismissal.",
-        "The monitor was updating scores while teams debated answers.",
-        "The teacher ended the mission and collected reports."
-      ],
-      answer: 0,
-      explain: "Was/were + ing belongs in DURING. Completed simple past belongs in BEFORE."
-    }
-  ];
-
   function cloneRound(round) {
     return {
       scene: round.scene,
@@ -4244,11 +1817,9 @@
   }
 
   function resolveRoundBank(key, packId) {
-    if (key === "past-sort") return timelineSortRounds;
-    var base = roundBanks[key] || fallbackRounds;
     var variant = packVariantBanks[key];
-    if (variant && variant[packId]) return variant[packId].concat(base);
-    return base;
+    if (variant && variant[packId]) return variant[packId];
+    return roundBanks[key] || fallbackRounds;
   }
 
   function resolveGameConfig(key, packId, baseCfg) {
@@ -4302,153 +1873,20 @@
       + ".opt.eliminated{opacity:.6;pointer-events:none;}"
       + ".duel-wrap{display:grid;gap:10px;}"
       + ".duel-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}"
-      + ".duel-actions .opt{min-height:88px;display:grid;gap:8px;align-content:start;padding-left:16px;}"
-      + ".duel-actions .opt::before{display:none;}"
-      + ".duel-tag{display:inline-flex;align-items:center;gap:6px;width:max-content;padding:4px 10px;border-radius:999px;border:1px solid " + accent + "55;background:" + accent + "12;color:" + accent + ";font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}"
-      + ".duel-text{font-size:15px;line-height:1.45;color:#16223a;font-weight:600;}"
-      + ".classify-drag-wrapper{display:grid;gap:16px;}"
-      + ".classify-pool{min-height:60px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;}"
-      + ".classify-zones{display:grid;grid-template-columns:1fr 1fr;gap:14px;}"
-      + ".classify-zone{min-height:120px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#fbfdff;display:flex;flex-direction:column;gap:8px;transition:border-color .2s,background .2s;}"
-      + ".classify-zone[data-zone=completed]{border-color:#6a8fdf;background:rgba(106,143,223,.06);}"
-      + ".classify-zone[data-zone=ongoing]{border-color:#9a78df;background:rgba(154,120,223,.06);}"
-      + ".classify-zone.drag-over{border-style:solid;box-shadow:0 0 0 3px rgba(31,95,99,.18);transform:scale(1.01);}"
-      + ".classify-zone.drag-over[data-zone=completed]{background:rgba(106,143,223,.14);}"
-      + ".classify-zone.drag-over[data-zone=ongoing]{background:rgba(154,120,223,.14);}"
-      + ".classify-zone-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;}"
-      + ".classify-card{padding:11px 14px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:grab;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,opacity .15s;touch-action:none;}"
-      + ".classify-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(11,16,32,.12);border-color:#c9a227;}"
-      + ".classify-card.selected{border-color:#c9a227;background:#fffdf5;box-shadow:0 0 0 3px rgba(201,162,39,.3);transform:translateY(-2px);}"
-      + ".classify-card:active,.classify-card.dragging{cursor:grabbing;opacity:.7;transform:scale(.97);}"
-      + ".classify-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.85;box-shadow:0 12px 28px rgba(11,16,32,.2);transform:rotate(2deg);}"
-      + "@media(max-width:620px){.classify-zones{grid-template-columns:1fr;}}"
+      + ".duel-actions .opt{min-height:72px;}"
+      + ".classify-board{display:grid;gap:10px;}"
+      + ".classify-row{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:10px;display:grid;gap:8px;}"
+      + ".classify-row p{margin:0;font-size:14px;line-height:1.45;color:#16223a;}"
+      + ".classify-actions{display:flex;gap:8px;flex-wrap:wrap;}"
+      + ".classify-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 10px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;}"
+      + ".classify-pick.active-completed{background:#eaf2ff;border-color:#6a8fdf;color:#23427f;}"
+      + ".classify-pick.active-ongoing{background:#efeafe;border-color:#9a78df;color:#4b2c84;}"
       + ".action-bar{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:10px;display:grid;gap:8px;}"
       + ".action-bar b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
       + ".action-bar p{margin:0;font-size:13px;line-height:1.45;color:#34455f;}"
       + ".action-progress{height:8px;background:#e8edf5;border-radius:99px;overflow:hidden;}"
       + ".action-progress > span{display:block;height:100%;width:100%;background:" + accent + ";transition:width .2s ease;}"
-      + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}"
-      + ".spotlight-wrap{display:grid;gap:12px;}"
-      + ".spotlight-instruction{margin:0;font:700 13px Inter,Arial,sans-serif;color:#4a5568;text-align:center;letter-spacing:.04em;}"
-      + ".spotlight-opt{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;}"
-      + ".spotlight-opt.spotlight-visible{opacity:1;transform:translateY(0);}"
-      + ".spotlight-opt.spotlight-active{box-shadow:0 0 0 3px " + accent + "44,0 4px 16px rgba(0,0,0,.10);border-color:" + accent + ";}"
-      + "@keyframes spotlightPulse{0%{box-shadow:0 0 0 3px " + accent + "44;}50%{box-shadow:0 0 0 6px " + accent + "22;}100%{box-shadow:0 0 0 3px " + accent + "44;}}"
-      + ".spotlight-opt.spotlight-active{animation:spotlightPulse 1.5s infinite;}"
-      + ".builder-wrap{display:grid;gap:16px;}"
-      + ".builder-chips{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;}"
-      + ".builder-chip{padding:8px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;font-size:14px;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,background .15s;}"
-      + ".builder-chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(11,16,32,.1);border-color:" + accent + ";}"
-      + ".builder-chip.used{opacity:.35;pointer-events:none;}"
-      + ".builder-bar{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;border:2px solid " + accent + "44;border-radius:14px;background:#fffdf5;}"
-      + ".builder-bar-chip{padding:8px 14px;border:1px solid " + accent + ";border-radius:8px;background:" + accent + "11;font-size:14px;color:#16223a;cursor:pointer;transition:transform .15s;}"
-      + ".builder-bar-chip:hover{background:" + accent + "22;}"
-      + ".builder-bar-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
-      + ".builder-bar-placeholder{margin:0;font-size:13px;color:#a0aec0;font-style:italic;}"
-      + ".dialogue-wrap{display:grid;gap:14px;max-width:760px;margin:0 auto;padding:18px;border:1px solid #d9dee6;border-radius:20px;background:linear-gradient(180deg,#f7fbff 0%,#ffffff 100%);box-shadow:0 10px 24px rgba(11,16,32,.08);}"
-      + ".dialogue-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid #d9dee6;border-radius:999px;background:#ffffff;}"
-      + ".dialogue-tag{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";background:" + accent + "14;padding:4px 9px;border-radius:999px;}"
-      + ".dialogue-scene-name{font:700 12px Inter,Arial,sans-serif;color:#4a5568;}"
-      + ".dialogue-thread{display:grid;gap:10px;padding:2px;}"
-      + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:88%;font-size:14px;line-height:1.55;position:relative;box-shadow:0 5px 14px rgba(11,16,32,.08);}"
-      + ".dialogue-bubble-left{background:#edf2f8;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
-      + ".dialogue-bubble-right{background:" + accent + "1e;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
-      + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#8f9aac;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:56px;display:flex;align-items:center;box-shadow:none;}"
-      + ".dialogue-speaker{font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + accent + ";margin-bottom:4px;display:block;}"
-      + ".dialogue-draft{display:inline-block;margin-top:6px;padding:7px 10px;border-radius:10px;background:#fff2f2;border:1px solid #f1c7c7;color:#7f2a2a;font-weight:600;line-height:1.45;}"
-      + ".dialogue-objective{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#3f516a;text-align:center;background:#f3f7fc;border:1px solid #d9e3ef;border-radius:12px;padding:10px 12px;}"
-      + ".dialogue-choices{display:grid;gap:10px;}"
-      + ".dialogue-choice-btn{text-align:left;border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:12px 14px;display:grid;gap:4px;box-shadow:0 3px 10px rgba(11,16,32,.05);}"
-      + ".dialogue-choice-btn:hover{transform:translateY(-1px);box-shadow:0 7px 16px rgba(11,16,32,.11);}"
-      + ".dialogue-choice-label{font:700 10px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
-      + ".rewrite-wrap{display:grid;gap:14px;}"
-      + ".rewrite-original{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:14px;text-decoration:line-through;color:#8b96a9;font-size:15px;line-height:1.5;}"
-      + ".rewrite-original b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a0aec0;text-decoration:none;display:block;margin-bottom:6px;}"
-      + ".rewrite-vs{text-align:center;font:700 13px Inter,Arial,sans-serif;color:#a0aec0;letter-spacing:.1em;}"
-      + ".rewrite-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}"
-      + ".rewrite-cards .opt{min-height:72px;text-align:left;}"
-      + "@media(max-width:620px){.rewrite-cards{grid-template-columns:1fr;}}"
-      + ".signal-wrap{display:grid;gap:16px;text-align:center;}"
-      + ".signal-badge{display:inline-block;padding:14px 28px;border-radius:99px;background:" + accent + ";color:#fff;font:700 22px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}"
-      + ".signal-sentence{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:16px;font-size:16px;line-height:1.5;color:#16223a;}"
-      + ".signal-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;}"
-      + ".signal-btns .opt{min-height:56px;}"
-      + "@media(max-width:620px){.signal-btns{grid-template-columns:1fr;}}"
-      + ".evidence-wrap{display:grid;gap:12px;}"
-      + ".evidence-card{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:12px;display:grid;gap:8px;}"
-      + ".evidence-card p{margin:0;font-size:14px;line-height:1.45;color:#16223a;}"
-      + ".evidence-actions{display:flex;gap:8px;}"
-      + ".evidence-pick{border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:8px 12px;cursor:pointer;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;transition:background .15s,border-color .15s;}"
-      + ".evidence-pick.active-strong{background:#eaf8ef;border-color:#4fb28c;color:#176a49;}"
-      + ".evidence-pick.active-weak{background:#fff0f0;border-color:#d47f7f;color:#8b2f2f;}"
-      + ".interrogation-wrap{display:grid;gap:16px;}"
-      + ".interrogation-quote{border-left:4px solid " + accent + ";background:#f8fafc;padding:16px 20px;border-radius:0 12px 12px 0;font-size:15px;line-height:1.55;color:#16223a;font-style:italic;position:relative;}"
-      + ".interrogation-quote::before{content:'\\201C';font-size:36px;color:" + accent + ";position:absolute;top:4px;left:8px;line-height:1;}"
-      + ".interrogation-quote-label{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";margin-bottom:6px;display:block;font-style:normal;}"
-      + ".interrogation-reports{display:grid;gap:10px;}"
-      + ".interrogation-report{border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:14px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s;}"
-      + ".interrogation-report:hover{border-color:" + accent + ";box-shadow:0 4px 12px rgba(11,16,32,.08);}"
-      + ".interrogation-report b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";display:block;margin-bottom:4px;}"
-      + ".interrogation-report span{font-size:14px;line-height:1.45;color:#16223a;}"
-      + ".dialogue-reply{border-radius:16px;}"
-      + ".forge-wrap{display:grid;gap:14px;}"
-      + ".forge-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:12px;border:2px dashed #d9dee6;border-radius:14px;background:#f8fafc;}"
-      + ".forge-zone{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:12px;border:2px solid " + accent + "44;border-radius:14px;background:#fffdf5;}"
-      + ".forge-tile{padding:8px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;font-size:14px;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,background .15s;}"
-      + ".forge-tile:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(11,16,32,.1);border-color:" + accent + ";}"
-      + ".forge-tile.placed{opacity:.35;pointer-events:none;}"
-      + ".forge-tile.selected{border-color:" + accent + ";background:" + accent + "11;box-shadow:0 0 0 3px " + accent + "33;}"
-      + ".detect-wrap{display:grid;gap:14px;}"
-      + ".detect-sentence{display:flex;flex-wrap:wrap;gap:6px;padding:16px;border:1px solid #d9dee6;border-radius:12px;background:#fff;min-height:48px;}"
-      + ".detect-word{padding:6px 10px;border-radius:6px;cursor:pointer;font-size:15px;color:#16223a;transition:background .15s,color .15s;user-select:none;-webkit-user-select:none;}"
-      + ".detect-word:hover{background:#e8edf5;}"
-      + ".detect-word.clicked{background:#ffeaa7;border-bottom:2px solid #f39c12;}"
-      + ".detect-word.error{background:#ffcccc;color:#c0392b;text-decoration:line-through;}"
-      + ".detect-word.ok{background:#d4edda;color:#155724;}"
-      + ".order-wrap{display:grid;gap:14px;}"
-      + ".order-list{display:grid;gap:8px;}"
-      + ".order-item{padding:12px 16px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,border-color .15s;}"
-      + ".order-item:hover{border-color:" + accent + ";box-shadow:0 4px 12px rgba(11,16,32,.08);}"
-      + ".order-item.selected{border-color:" + accent + ";background:" + accent + "11;box-shadow:0 0 0 3px " + accent + "33;transform:translateY(-2px);}"
-      + ".order-item b{color:" + accent + ";margin-right:6px;}"
-      + ".order-slot{min-height:48px;border:2px dashed #d9dee6;border-radius:10px;background:#f8fafc;}"
-      + ".team-split{display:grid;grid-template-columns:1fr 4px 1fr;gap:0;min-height:400px}"
-      + ".team-panel{padding:16px;display:grid;gap:12px;align-content:start}"
-      + ".team-panel-a{background:#f6fafa;border-radius:14px 0 0 14px}"
-      + ".team-panel-b{background:#fffdf5;border-radius:0 14px 14px 0}"
-      + ".team-divider{background:linear-gradient(180deg,#1f5f63,#c9a227);border-radius:2px}"
-      + ".team-label{font:800 14px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:8px}"
-      + ".team-label-a{color:#1f5f63}"
-      + ".team-label-b{color:#c9a227}"
-      + ".team-score{text-align:center;font:800 28px Inter,Arial,sans-serif}"
-      + ".team-score-a{color:#1f5f63}"
-      + ".team-score-b{color:#c9a227}"
-      + ".team-status{text-align:center;font:600 12px Inter,Arial,sans-serif;color:#7a8698;text-transform:uppercase;letter-spacing:.06em}"
-      + ".team-opt{border:1px solid #d9dee6;border-radius:10px;background:#fff;padding:10px;cursor:pointer;font-size:13px;text-align:left;transition:transform .15s,border-color .15s}"
-      + ".team-opt:hover{transform:translateY(-1px);border-color:#1f5f63}"
-      + ".team-opt.good{border-color:#1f8f63;background:#eaf8ef}"
-      + ".team-opt.bad{border-color:#b04444;background:#fff0f0}"
-      + ".team-opt.locked{pointer-events:none;opacity:.7}"
-      + ".team-vs{display:flex;align-items:center;justify-content:center;font:800 18px Inter,sans-serif;color:#4a5568}"
-      + ".wc-wrap{max-width:900px;margin:0 auto;display:grid;gap:20px}"
-      + ".wc-prompt{font-size:24px;font-weight:800;color:#0b1020;text-align:center;line-height:1.3}"
-      + ".wc-scene{font-size:16px;color:#4a5568;text-align:center;padding:12px;background:#f6fafa;border-radius:12px}"
-      + ".wc-options{display:grid;grid-template-columns:1fr 1fr;gap:14px}"
-      + ".wc-opt{border:2px solid #d9dee6;border-radius:14px;background:#fff;padding:18px 20px;cursor:pointer;transition:all .2s;display:grid;gap:8px}"
-      + ".wc-opt:hover{border-color:#1f5f63;transform:translateY(-2px);box-shadow:0 6px 20px rgba(31,95,99,.12)}"
-      + ".wc-opt-label{font:800 16px Inter,sans-serif;color:#1f5f63}"
-      + ".wc-opt-text{font-size:16px;color:#16223a;line-height:1.5}"
-      + ".wc-opt-votes{display:flex;align-items:center;gap:8px}"
-      + ".wc-vote-bar{flex:1;height:8px;background:#e4e8ef;border-radius:4px;overflow:hidden}"
-      + ".wc-vote-fill{height:100%;background:#1f5f63;border-radius:4px;transition:width .3s}"
-      + ".wc-vote-count{font:700 14px Inter,sans-serif;color:#4a5568;min-width:30px;text-align:right}"
-      + ".wc-opt.correct{border-color:#1f8f63;background:#eaf8ef}"
-      + ".wc-opt.wrong{opacity:.5}"
-      + ".wc-reveal-btn{display:block;margin:0 auto;padding:14px 32px;background:#1f5f63;color:#fff;border:0;border-radius:12px;font:700 16px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}"
-      + ".wc-reveal-btn:hover{filter:brightness(1.1)}"
-      + ".wc-explain{padding:16px;background:#e6f2f2;border-radius:12px;font-size:15px;color:#1f5f63;text-align:center;font-weight:600}"
-      + ".wc-class-score{text-align:center;font:800 32px Inter,sans-serif;color:#1f5f63}"
-      + "@media(max-width:700px){.wc-options{grid-template-columns:1fr}.wc-prompt{font-size:20px}}";
+      + "@media (max-width:900px){.binary-actions{grid-template-columns:1fr;}}";
     document.head.appendChild(style);
   }
 
@@ -4508,297 +1946,46 @@
     }
   }
 
-  function pickRoundVariant(lines, roundIndex, fallback) {
-    var list = Array.isArray(lines) ? lines.filter(Boolean) : [];
-    if (!list.length) return fallback || "";
-    var safeIndex = Math.max(0, Number(roundIndex) || 0);
-    return list[safeIndex % list.length];
-  }
-
   function modeHelperText(mode) {
-    if (mode === "spotlight") return "Tip: scan for time markers first, then verify verb form.";
-    if (mode === "timeline") return "Tip: completed action goes BEFORE; ongoing background goes DURING.";
-    if (mode === "builder") return "Tip: lock subject + verb first, then place details.";
-    if (mode === "dialogue") return "Tip: choose the reply that keeps both meaning and tense.";
-    if (mode === "rewrite") return "Tip: stronger rewrites improve grammar without changing meaning.";
-    if (mode === "signal") return "Tip: signal words should match tense, not just sound familiar.";
-    if (mode === "evidence") return "Tip: verify every line before trusting your final verdict.";
-    if (mode === "interrogation") return "Tip: match the report to the original statement precisely.";
-    if (mode === "smash") return "Tip: compare all options before committing to one word-level error.";
-    if (mode === "binary") return "Tip: focus on the highlighted signal before choosing MATCH/MISMATCH.";
-    if (mode === "classify") return "Tip: ask whether the action was finished or still in progress.";
-    if (mode === "repair") return "Tip: the best fix sounds natural and stays true to context.";
-    if (mode === "duel") return "Tip: pick the rewrite that is both correct and clear.";
-    if (mode === "sequence") return "Tip: test transitions to find the line that completes the flow.";
-    if (mode === "eliminate") return "Tip: remove weak options one by one, then confirm your keeper.";
-    if (mode === "sweep") return "Tip: tag each card quickly, then double-check before submit.";
-    if (mode === "forge") return "Tip: ignore distractors and build around the main verb phrase.";
-    if (mode === "detect") return "Tip: one word causes the break - find the exact mismatch.";
-    if (mode === "order") return "Tip: anchor the opening line first, then arrange the rest.";
-    return "Tip: read for meaning first, then grammar precision.";
+    if (mode === "smash") return "Mode rule: tap the line that contains the error.";
+    if (mode === "binary") return "Mode rule: judge one highlighted line as Secure or Needs Repair.";
+    if (mode === "classify") return "Mode rule: classify one sentence as Completed action or Ongoing background.";
+    if (mode === "repair") return "Mode rule: read the broken line and choose the strongest repair.";
+    if (mode === "duel") return "Mode rule: compare two rewrites and pick the stronger one.";
+    if (mode === "sequence") return "Mode rule: choose the strongest next line for story flow.";
+    if (mode === "eliminate") return "Mode rule: eliminate three weak lines and keep the strongest one.";
+    if (mode === "sweep") return "Mode rule: mark each line Secure or Needs Repair, then submit the board.";
+    return "Mode rule: choose the single strongest line.";
   }
 
-  function modePrompt(mode, roundIndex) {
-    if (mode === "spotlight") return pickRoundVariant([
-      "Pick the one line that is fully correct.",
-      "Which option keeps both grammar and meaning strongest?",
-      "Choose the sentence that best fits this scene."
-    ], roundIndex, "Pick the strongest line.");
-    if (mode === "timeline" || mode === "classify") return pickRoundVariant([
-      "Drag each sentence to BEFORE or DURING on the timeline.",
-      "Sort each line: completed event or ongoing background?",
-      "Place every sentence in its correct timeline zone."
-    ], roundIndex, "Sort each sentence on the timeline.");
-    if (mode === "builder") return pickRoundVariant([
-      "Arrange the word chips to build the target sentence.",
-      "Build the sentence in correct grammatical order.",
-      "Order the chips so the sentence reads correctly."
-    ], roundIndex, "Build the sentence with the chips.");
-    if (mode === "dialogue") return pickRoundVariant([
-      "Pick the reply that fits the conversation.",
-      "Choose the response that keeps the dialogue natural and correct.",
-      "Select the line that best completes the chat."
-    ], roundIndex, "Pick the best reply.");
-    if (mode === "rewrite" || mode === "duel") return pickRoundVariant([
-      "Compare both rewrites and choose the stronger one.",
-      "Pick the rewrite with clearer and correct grammar.",
-      "Choose the better revision for this sentence."
-    ], roundIndex, "Pick the stronger rewrite.");
-    if (mode === "signal" || mode === "binary") return pickRoundVariant([
-      "Does this sentence match the signal word? MATCH or MISMATCH.",
-      "Use the signal to judge the tense fit.",
-      "Check signal vs tense: does it align?"
-    ], roundIndex, "Decide whether the sentence matches the signal.");
-    if (mode === "evidence" || mode === "sweep") return pickRoundVariant([
-      "Label each card, then submit your board verdict.",
-      "Mark every line as strong or weak evidence, then submit.",
-      "Classify all cards before final board check."
-    ], roundIndex, "Mark each card, then submit.");
-    if (mode === "interrogation") return pickRoundVariant([
-      "Pick the report that accurately captures the statement.",
-      "Choose the report line that preserves the original meaning.",
-      "Select the most accurate grammar report."
-    ], roundIndex, "Pick the accurate report.");
-    if (mode === "smash" || mode === "detect") return pickRoundVariant([
-      "Find the word that causes the grammar error.",
-      "Identify the exact word that needs correction.",
-      "Tap the one word that breaks the sentence."
-    ], roundIndex, "Find the grammar error word.");
-    if (mode === "repair") return pickRoundVariant([
-      "Choose the corrected message for this chat line.",
-      "Pick the reply that repairs the grammar issue.",
-      "Select the clean fix that fits the conversation."
-    ], roundIndex, "Pick the corrected line.");
-    if (mode === "sequence" || mode === "order") return pickRoundVariant([
-      "Arrange the lines so the sequence makes sense.",
-      "Order the sentences from strongest start to finish.",
-      "Build the best flow by reordering the lines."
-    ], roundIndex, "Order the lines for best flow.");
-    if (mode === "eliminate") return pickRoundVariant([
-      "Eliminate weak lines and keep the strongest one.",
-      "Remove three weak options, then lock your best line.",
-      "Filter out weak lines to reveal the best answer."
-    ], roundIndex, "Eliminate weak options.");
-    if (mode === "forge") return pickRoundVariant([
-      "Click tiles in order to forge the correct sentence.",
-      "Build the sentence using only the tiles that fit.",
-      "Assemble the line and avoid distractor tiles."
-    ], roundIndex, "Forge the correct sentence.");
-    return pickRoundVariant([
-      "Choose the strongest line for this scene.",
-      "Pick the best grammar choice.",
-      "Select the most accurate option."
-    ], roundIndex, "Choose the strongest line.");
+  function modePrompt(mode) {
+    if (mode === "smash") return "Find and tap the line with a grammar error.";
+    if (mode === "binary") return "Read the highlighted line and decide: Secure or Needs Repair.";
+    if (mode === "classify") return "Classify each line: Completed Event or Ongoing Background.";
+    if (mode === "repair") return "Choose the strongest repair for the broken line.";
+    if (mode === "duel") return "Compare the two options and choose the stronger rewrite.";
+    if (mode === "sequence") return "Choose the strongest next line for the sequence.";
+    if (mode === "eliminate") return "Eliminate weak lines and leave only the strongest one.";
+    if (mode === "sweep") return "Mark each line Secure or Needs Repair, then submit.";
+    return "Choose the single strongest line.";
   }
 
   function modeHowTo(mode, fallback) {
-    if (mode === "spotlight") return "4 options appear one at a time with a spotlight. Read each carefully, then click the ONE correct sentence.";
-    if (mode === "timeline") return "Sort sentences onto the timeline: completed events go BEFORE, ongoing actions go DURING.";
-    if (mode === "builder") return "The correct sentence is split into word chips. Drag or click them into order, then submit.";
-    if (mode === "dialogue") return "A chat thread shows two setup turns and one missing reply. Read the flow, then choose the response that fits best.";
-    if (mode === "rewrite") return "The original sentence is struck through. Compare two rewrites side by side and pick the better one.";
-    if (mode === "signal") return "A signal word is shown as a badge. A sentence appears below. Decide if the sentence matches the signal.";
-    if (mode === "evidence") return "Review each evidence card. Mark correct grammar as Strong Evidence and errors as Weak Evidence, then submit.";
-    if (mode === "interrogation") return "A witness statement appears as a quote. Pick the report that captures it with correct grammar.";
-    if (mode === "smash") return "All four sentences are shown. Three are correct. Click the one that contains a grammar error.";
-    if (mode === "binary") return "A signal word is highlighted in the sentence. Decide if the verb tense matches the signal \u2014 press MATCH or MISMATCH.";
-    if (mode === "classify") return "Sort sentences onto the timeline: completed events go BEFORE, ongoing actions go DURING.";
-    if (mode === "repair") return "A conversation thread has one broken message. Pick the corrected version from the reply suggestions.";
-    if (mode === "duel") return "The original sentence has a problem underlined. Compare two rewrites and choose the stronger one.";
-    if (mode === "sequence") return "A short paragraph has a gap. Pick the sentence that fits the blank and completes the meaning.";
+    if (mode === "smash") return "Scan all options and smash only lines that contain errors.";
+    if (mode === "binary") return "Judge one line at a time as correct or incorrect.";
+    if (mode === "classify") return "Sort lines by timeline role: completed events vs ongoing background actions.";
+    if (mode === "repair") return "Read the broken line and pick the best corrected version.";
+    if (mode === "duel") return "Compare two rewrites and choose the stronger sentence.";
+    if (mode === "sequence") return "Pick the line that best continues the sequence logically and grammatically.";
     if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
-    if (mode === "sweep") return "Review each evidence card. Mark correct grammar as VERIFIED and errors as FLAGGED, then submit.";
-    if (mode === "forge") return "The correct sentence is split into word tiles with distractors mixed in. Click tiles in order to build the sentence, then submit.";
-    if (mode === "detect") return "A wrong sentence is displayed word by word. Click the word that contains the error to reveal the correct version.";
-    if (mode === "order") return "Four sentences are shuffled. Click to select and move them into the best order, then submit.";
+    if (mode === "sweep") return "Mark every line secure or needs repair before submitting the board.";
     return fallback || "Choose the strongest line.";
-  }
-
-  function modeScenarioPrompt(mode, round, roundIndex) {
-    if (round && typeof round.prompt === "string" && round.prompt.trim()) {
-      return round.prompt.trim();
-    }
-    return modePrompt(mode, roundIndex);
-  }
-
-  function modeMicroTip(mode, roundIndex) {
-    if (mode === "spotlight") return pickRoundVariant([
-      "Coach tip: read all options before your first click.",
-      "Coach tip: compare verb forms before picking.",
-      "Coach tip: one option is fully clean."
-    ], roundIndex, "Coach tip: check tense + meaning.");
-    if (mode === "detect") return pickRoundVariant([
-      "Coach tip: click only one word - make it count.",
-      "Coach tip: look for tense or agreement mismatch.",
-      "Coach tip: compare subject and verb first."
-    ], roundIndex, "Coach tip: find the exact mismatch.");
-    if (mode === "dialogue") return pickRoundVariant([
-      "Coach tip: read both chat turns before picking a reply.",
-      "Coach tip: keep the message meaning, then fix the grammar.",
-      "Coach tip: pick the reply that sounds natural and correct."
-    ], roundIndex, "Coach tip: choose the strongest chat reply.");
-    if (mode === "order") return pickRoundVariant([
-      "Coach tip: place the opening line first, then reorder.",
-      "Coach tip: move one sentence at a time and re-read.",
-      "Coach tip: transitions reveal the best sequence."
-    ], roundIndex, "Coach tip: test sequence coherence.");
-    return modeHelperText(mode);
-  }
-
-  function dialogueCoachLine(round, wrongLine, roundIndex) {
-    var wrongText = (typeof wrongLine === "string") ? wrongLine : "";
-    var contextText = [
-      round && round.prompt ? String(round.prompt) : "",
-      round && round.explain ? String(round.explain) : "",
-      round && round.scene ? String(round.scene) : "",
-      wrongText
-    ].join(" ").toLowerCase();
-
-    if (contextText.indexOf("question") >= 0 || /\b(where|when|why|what|who|how)\b/i.test(wrongText)) {
-      return pickRoundVariant([
-        "That draft question order is off. Pick the corrected question form.",
-        "Use question order: helper + subject + base verb. Choose that line.",
-        "Find the revision that sounds like a natural question."
-      ], roundIndex, "Choose the corrected question pattern.");
-    }
-    if (contextText.indexOf("connector") >= 0 || contextText.indexOf("cause") >= 0 || contextText.indexOf("contrast") >= 0 || contextText.indexOf("purpose") >= 0 || /\b(because|so|however|although|therefore)\b/i.test(wrongText)) {
-      return pickRoundVariant([
-        "The connector is mismatched. Pick the line with one clear connector.",
-        "We only need one logical connector here - choose the best fit.",
-        "Select the revision with the strongest cause/contrast link."
-      ], roundIndex, "Pick the line with the best connector.");
-    }
-    if (contextText.indexOf("reference") >= 0 || contextText.indexOf("pronoun") >= 0 || contextText.indexOf("clear pronoun") >= 0) {
-      return pickRoundVariant([
-        "Reference is unclear in that draft. Pick the clearest version.",
-        "Choose the line that makes who/what explicit and unambiguous.",
-        "Find the revision with the clearest pronoun reference."
-      ], roundIndex, "Pick the clearest reference line.");
-    }
-    if (contextText.indexOf("agreement") >= 0 || contextText.indexOf("be-verb") >= 0 || contextText.indexOf("subject-verb") >= 0) {
-      return pickRoundVariant([
-        "Agreement is off in the draft. Choose the line with matching subject + verb.",
-        "Check subject-verb agreement and pick the correct form.",
-        "Choose the revision where the be-verb agrees with the subject."
-      ], roundIndex, "Pick the line with correct agreement.");
-    }
-    if (contextText.indexOf("modal") >= 0 || /\b(can|could|should|must|may|might)\b/i.test(wrongText)) {
-      return pickRoundVariant([
-        "After a modal, we need a base verb. Pick that revision.",
-        "Modal form is off - choose the version with base verb after the modal.",
-        "Select the line with correct modal + base verb structure."
-      ], roundIndex, "Choose the correct modal verb pattern.");
-    }
-    if (contextText.indexOf("past") >= 0 || contextText.indexOf("yesterday") >= 0) {
-      return pickRoundVariant([
-        "This should be in past-time form. Pick the correct past revision.",
-        "Past marker is present, so choose the line with correct past grammar.",
-        "Select the revision that keeps tense consistent in the past."
-      ], roundIndex, "Pick the strongest past-time revision.");
-    }
-    if (contextText.indexOf("present") >= 0 || contextText.indexOf("right now") >= 0) {
-      return pickRoundVariant([
-        "Keep this in present-time form. Choose the best present revision.",
-        "Present context is clear - pick the line that matches it.",
-        "Select the revision with the correct present-time grammar."
-      ], roundIndex, "Pick the strongest present-time revision.");
-    }
-
-    return pickRoundVariant([
-      "Good catch. Choose the clean revised line we should send.",
-      "Let's replace that draft with the strongest corrected line.",
-      "Pick the revision that keeps the meaning and fixes the grammar."
-    ], roundIndex, "Choose the best revision to replace that draft.");
-  }
-
-  function formatDialogueLine(line) {
-    var text = String(line || "");
-    var marker = " Draft: ";
-    var markerIdx = text.indexOf(marker);
-    if (markerIdx < 0) return text;
-    var prefix = text.slice(0, markerIdx);
-    var draft = text.slice(markerIdx + marker.length);
-    if (!draft) return text;
-    return prefix + "<span class=\"dialogue-draft\">Draft: " + draft + "</span>";
-  }
-
-  function buildDialogueThread(round, roundIndex, wrongLine) {
-    var scene = (round && round.scene) ? String(round.scene) : "Classroom Chat";
-    var lower = scene.toLowerCase();
-    var pair = pickRoundVariant([
-      { a: "Maya", b: "Leo" },
-      { a: "Sofia", b: "Noah" },
-      { a: "Ava", b: "Ethan" },
-      { a: "Zara", b: "Daniel" }
-    ], roundIndex, { a: "Student A", b: "Student B" });
-
-    var openLine = "I drafted a message before class.";
-    if (lower.indexOf("teacher") >= 0) openLine = "Ms. Lee asked me to send a clear update.";
-    else if (lower.indexOf("classroom") >= 0) openLine = "I drafted this for our classroom thread.";
-    else if (lower.indexOf("group") >= 0) openLine = "I wrote this line for our group chat.";
-    else if (lower.indexOf("partner") >= 0) openLine = "I drafted this sentence for my partner.";
-    else if (lower.indexOf("hallway") >= 0) openLine = "I wrote this quick hallway update.";
-    else if (lower.indexOf("science") >= 0) openLine = "I drafted this science-lab update.";
-    else if (lower.indexOf("library") >= 0) openLine = "I wrote this note from the library desk.";
-    else if (lower.indexOf("recess") >= 0) openLine = "I drafted this recap about recess.";
-    else if (lower.indexOf("morning") >= 0) openLine = "I wrote this morning message for homeroom.";
-    else if (lower.indexOf("cafeteria") >= 0) openLine = "I drafted this cafeteria update.";
-    else if (lower.indexOf("office") >= 0) openLine = "I wrote this message for the front office.";
-    else if (lower.indexOf("study") >= 0) openLine = "I drafted this line in study hall.";
-    else if (lower.indexOf("after-school") >= 0) openLine = "I wrote this after-school meetup message.";
-    else if (lower.indexOf("retell") >= 0) openLine = "I drafted this retell line.";
-    else if (lower.indexOf("present dialogue") >= 0) openLine = "I drafted this present-time message.";
-    else if (lower.indexOf("agreement dialogue") >= 0) openLine = "I drafted this agreement sentence.";
-    else if (lower.indexOf("connector dialogue") >= 0) openLine = "I drafted this connector sentence.";
-    else if (lower.indexOf("reference dialogue") >= 0) openLine = "I drafted this reference sentence.";
-    else if (lower.indexOf("question dialogue") >= 0) openLine = "I drafted this question.";
-
-    var draftLine = "";
-    if (typeof wrongLine === "string" && wrongLine.trim()) draftLine = wrongLine.trim();
-    else if (round && round.options && round.options.length) draftLine = String(round.options[0]);
-    else draftLine = "I no understand this clue.";
-    var lineA = openLine + " Draft: \"" + draftLine + "\"";
-
-    var handoffLine = dialogueCoachLine(round, wrongLine, roundIndex);
-
-    return {
-      scene: scene,
-      speakerA: pair.a,
-      speakerB: pair.b,
-      lineA: lineA,
-      lineB: handoffLine,
-      replySpeaker: pair.a
-    };
   }
 
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
-    var target = Math.max(1, Math.min(20, desiredCount));
-    var pool = shuffle(cloneRounds(source));
-    while (pool.length < target) {
-      pool = pool.concat(shuffle(cloneRounds(source)));
-    }
-    return pool.slice(0, target);
+    var target = Math.max(1, Math.min(20, desiredCount, source.length));
+    return shuffle(cloneRounds(source)).slice(0, target);
   }
 
   function text(id, value) {
@@ -4825,13 +2012,9 @@
   text("gameTitle", cfg.title);
   text("gameSub", cfg.subtitle);
   text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Mode: " + (ux.modeLabel || "Standard"));
-  text("howToText", playFormat === "teams"
-    ? "Split-screen competition! Both teams play the same questions simultaneously. Fastest correct answers earn bonus points."
-    : playFormat === "whole_class"
-    ? "Projector mode! The teacher controls the pace. Discuss each question as a class, vote, then reveal the answer."
-    : modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode));
+  text("howToText", modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode) + (playFormat === "teams" ? " Teams mode enabled: alternate turns between teams." : ""));
   text("howToTitle", "How to play: " + cfg.title);
-  text("actionTip", modePrompt(activeMode, 0));
+  text("actionTip", modePrompt(activeMode));
   text("hudTimer", timerOn ? "--" : "Off");
   var sceneLabelEl = document.querySelector(".scene .label");
   if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
@@ -4845,8 +2028,8 @@
   var combo = 1;
   var hintsLeft = 1;
   var skipsLeft = 1;
-  var shotMax = difficulty === "rookie" ? 45 : difficulty === "field" ? 35 : 25;
-  var missionSecondsPerRound = difficulty === "rookie" ? 60 : difficulty === "field" ? 50 : 38;
+  var shotMax = difficulty === "rookie" ? 24 : difficulty === "field" ? 20 : 16;
+  var missionSecondsPerRound = difficulty === "rookie" ? 36 : difficulty === "field" ? 30 : 24;
   var shotClock = shotMax;
   var shotTimer = null;
   var currentRoundState = {};
@@ -4947,31 +2130,16 @@
     optionsEl.style.gridTemplateColumns = ux.columns === 1 ? "1fr" : "1fr 1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: activeMode, round: round };
-
-    if (activeMode === "smash") {
-      var smashLabel = document.createElement("p");
-      smashLabel.className = "smash-instruction";
-      smashLabel.textContent = "3 sentences are correct. Find the one with the error.";
-      optionsEl.appendChild(smashLabel);
-    }
-
     shuffle(round.options.map(function (lineText, optionIdx) {
       return { lineText: lineText, optionIdx: optionIdx };
     })).forEach(function (item, displayIdx) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = activeMode === "smash" ? "opt smash-opt" : "opt";
+      btn.className = "opt";
       btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
       var isTarget = activeMode === "smash" ? item.optionIdx !== round.answer : item.optionIdx === round.answer;
       btn.dataset.target = isTarget ? "1" : "0";
       btn.addEventListener("click", function () {
-        if (activeMode === "smash" && item.optionIdx !== round.answer) {
-          btn.classList.add("smash-error-found");
-          var flash = document.createElement("span");
-          flash.className = "smash-error-badge";
-          flash.textContent = "ERROR FOUND";
-          btn.appendChild(flash);
-        }
         selectOption(item.optionIdx, item.lineText, round, btn);
       });
       optionsEl.appendChild(btn);
@@ -4994,30 +2162,15 @@
     var brokenLine = round.options[brokenIdx];
     var rightLine = round.options[round.answer];
 
-    var chatThread = document.createElement("div");
-    chatThread.className = "chat-thread";
-
-    var systemMsg = document.createElement("div");
-    systemMsg.className = "chat-bubble chat-system";
-    systemMsg.innerHTML = "<span class=\"chat-sender\">Grammar Bot</span><p>Review this conversation. One message has a grammar error.</p>";
-    chatThread.appendChild(systemMsg);
-
-    var correctMsg = document.createElement("div");
-    correctMsg.className = "chat-bubble chat-received";
-    correctMsg.innerHTML = "<span class=\"chat-sender\">Speaker A</span><p>" + round.options[round.answer] + "</p>";
-    chatThread.appendChild(correctMsg);
-
-    var brokenMsg = document.createElement("div");
-    brokenMsg.className = "chat-bubble chat-received chat-error";
-    brokenMsg.innerHTML = "<span class=\"chat-sender\">Speaker B</span><span class=\"chat-error-tag\">\u26A0 Error</span><p>" + brokenLine + "</p>";
-    chatThread.appendChild(brokenMsg);
-
-    optionsEl.appendChild(chatThread);
-
-    var replyLabel = document.createElement("p");
-    replyLabel.className = "chat-reply-label";
-    replyLabel.textContent = "Pick the corrected reply:";
-    optionsEl.appendChild(replyLabel);
+    var card = document.createElement("div");
+    card.className = "binary-card";
+    var cardK = document.createElement("b");
+    cardK.textContent = "Broken line";
+    var cardText = document.createElement("p");
+    cardText.textContent = brokenLine;
+    card.appendChild(cardK);
+    card.appendChild(cardText);
+    optionsEl.appendChild(card);
 
     var choices = [round.answer];
     var distractorPool = [];
@@ -5031,18 +2184,18 @@
     choices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
 
     var choicesWrap = document.createElement("div");
-    choicesWrap.className = "chat-replies";
+    choicesWrap.className = "duel-actions";
     choices.forEach(function (item, i) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "opt chat-reply-btn";
-      btn.innerHTML = "<span>" + item.text + "</span>";
+      btn.className = "opt";
+      btn.innerHTML = "<b>Repair " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
         finishRound(
           item.idx === round.answer,
-          "Great fix! That corrects the conversation. " + round.explain,
-          "Not quite \u2014 the best fix is \"" + rightLine + "\". " + round.explain,
+          "Repair secured: strongest correction chosen. " + round.explain,
+          "Repair missed: correct line is \"" + rightLine + "\". " + round.explain,
           btn
         );
       });
@@ -5051,50 +2204,27 @@
     optionsEl.appendChild(choicesWrap);
   }
 
-  function underlineWeakness(wrongText, correctText) {
-    var wrongWords = wrongText.split(/\s+/);
-    var correctWords = correctText.split(/\s+/);
-    var diffParts = [];
-    var maxLen = Math.max(wrongWords.length, correctWords.length);
-    for (var w = 0; w < wrongWords.length; w++) {
-      if (w < correctWords.length && wrongWords[w] !== correctWords[w]) {
-        diffParts.push('<span class="duel-underline">' + wrongWords[w] + '</span>');
-      } else {
-        diffParts.push(wrongWords[w]);
-      }
-    }
-    return diffParts.join(" ");
-  }
-
   function showDuelOptions(round, duelLabel) {
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: activeMode, round: round };
     var wrongIdx = pickWrongIndex(round);
-    var wrongText = round.options[wrongIdx];
-    var correctText = round.options[round.answer];
     var duel = shuffle([
-      { idx: round.answer, text: correctText },
-      { idx: wrongIdx, text: wrongText }
+      { idx: round.answer, text: round.options[round.answer] },
+      { idx: wrongIdx, text: round.options[wrongIdx] }
     ]);
 
     var wrap = document.createElement("div");
     wrap.className = "duel-wrap";
-
     var card = document.createElement("div");
-    card.className = "binary-card duel-original";
+    card.className = "binary-card";
     var cardK = document.createElement("b");
-    cardK.textContent = "Original (with weakness)";
+    cardK.textContent = duelLabel;
     var cardText = document.createElement("p");
-    cardText.innerHTML = underlineWeakness(wrongText, correctText);
+    cardText.textContent = "Choose the stronger sentence.";
     card.appendChild(cardK);
     card.appendChild(cardText);
     wrap.appendChild(card);
-
-    var meter = document.createElement("div");
-    meter.className = "strength-meter";
-    meter.innerHTML = '<span class="strength-label">Strength</span><div class="strength-track"><div class="strength-fill" id="strengthFill"></div></div>';
-    wrap.appendChild(meter);
 
     var actions = document.createElement("div");
     actions.className = "duel-actions";
@@ -5102,20 +2232,13 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
-      btn.innerHTML = "<span class=\"duel-tag\">Rewrite " + String.fromCharCode(65 + i) + "</span><span class=\"duel-text\">" + item.text + "</span>";
+      btn.innerHTML = "<b>Option " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
-        var isCorrect = item.idx === round.answer;
-        if (isCorrect) {
-          var fill = document.getElementById("strengthFill");
-          if (fill) {
-            var cur = parseInt(fill.style.width, 10) || 0;
-            fill.style.width = Math.min(100, cur + 25) + "%";
-          }
-        }
+        var correctText = round.options[round.answer];
         finishRound(
-          isCorrect,
-          "Strong rewrite selected! Strength meter rising. " + round.explain,
+          item.idx === round.answer,
+          "Strong choice secured. " + round.explain,
           "Weaker option selected. Correct line: \"" + correctText + "\". " + round.explain,
           btn
         );
@@ -5127,7 +2250,7 @@
   }
 
   function sentenceClass(lineText) {
-    return /\b(was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
+    return /\b(am|is|are|was|were)\s+\w+ing\b/i.test(lineText) ? "ongoing" : "completed";
   }
 
   function showClassifyOptions(round) {
@@ -5137,219 +2260,64 @@
     var rowControllers = [];
     currentRoundState = { mode: "classify", round: round, assignments: assignments, rows: rowControllers };
 
-    var dragState = { el: null, optionIdx: -1, ghost: null, offsetX: 0, offsetY: 0 };
-    var selected = { el: null, optionIdx: -1 };
-
-    function selectCard(cardEl, optIdx) {
-      if (locked) return;
-      if (selected.el) selected.el.classList.remove("selected");
-      if (selected.el === cardEl) { selected.el = null; selected.optionIdx = -1; return; }
-      selected.el = cardEl;
-      selected.optionIdx = optIdx;
-      cardEl.classList.add("selected");
-    }
-
-    var wrapper = document.createElement("div");
-    wrapper.className = "classify-drag-wrapper";
-
-    var pool = document.createElement("div");
-    pool.className = "classify-pool";
-    var poolLabel = document.createElement("p");
-    poolLabel.className = "classify-zone-label";
-    poolLabel.textContent = "Drag or tap each sentence, then tap a zone";
-    pool.appendChild(poolLabel);
-
-    var timelineBar = document.createElement("div");
-    timelineBar.className = "timeline-bar";
-    timelineBar.innerHTML = '<span class="timeline-marker">BEFORE</span><span class="timeline-line"></span><span class="timeline-marker timeline-marker-mid">DURING</span><span class="timeline-line"></span><span class="timeline-marker">AFTER</span>';
-
-    var zones = document.createElement("div");
-    zones.className = "classify-zones";
-
-    var completedZone = document.createElement("div");
-    completedZone.className = "classify-zone";
-    completedZone.dataset.zone = "completed";
-    var completedLabel = document.createElement("p");
-    completedLabel.className = "classify-zone-label";
-    completedLabel.innerHTML = "\u2714 Completed Event <small>(BEFORE)</small>";
-    completedZone.appendChild(completedLabel);
-
-    var ongoingZone = document.createElement("div");
-    ongoingZone.className = "classify-zone";
-    ongoingZone.dataset.zone = "ongoing";
-    var ongoingLabel = document.createElement("p");
-    ongoingLabel.className = "classify-zone-label";
-    ongoingLabel.innerHTML = "\u25B6 Ongoing Background <small>(DURING)</small>";
-    ongoingZone.appendChild(ongoingLabel);
-
-    zones.appendChild(completedZone);
-    zones.appendChild(ongoingZone);
-
-    function makeCard(item) {
-      var card = document.createElement("div");
-      card.className = "classify-card";
-      card.draggable = true;
-      card.dataset.idx = item.optionIdx;
-      card.textContent = item.lineText;
-      card.setAttribute("touch-action", "none");
-
-      card.addEventListener("click", function () {
-        selectCard(card, item.optionIdx);
-      });
-
-      card.addEventListener("dragstart", function (e) {
-        if (locked) { e.preventDefault(); return; }
-        e.dataTransfer.setData("text/plain", item.optionIdx);
-        e.dataTransfer.effectAllowed = "move";
-        card.classList.add("dragging");
-        setTimeout(function () { card.style.opacity = "0.4"; }, 0);
-      });
-      card.addEventListener("dragend", function () {
-        card.classList.remove("dragging");
-        card.style.opacity = "";
-      });
-
-      var touchId = null;
-      card.addEventListener("touchstart", function (e) {
-        if (locked) return;
-        var t = e.touches[0];
-        touchId = t.identifier;
-        var rect = card.getBoundingClientRect();
-        dragState.el = card;
-        dragState.optionIdx = item.optionIdx;
-        dragState.offsetX = t.clientX - rect.left;
-        dragState.offsetY = t.clientY - rect.top;
-        var ghost = card.cloneNode(true);
-        ghost.className = "classify-card classify-ghost";
-        ghost.style.width = rect.width + "px";
-        ghost.style.left = rect.left + "px";
-        ghost.style.top = rect.top + "px";
-        document.body.appendChild(ghost);
-        dragState.ghost = ghost;
-        card.classList.add("dragging");
-        e.preventDefault();
-      }, { passive: false });
-
-      return card;
-    }
-
-    function handleTouchMove(e) {
-      if (!dragState.ghost) return;
-      for (var i = 0; i < e.touches.length; i++) {
-        if (e.touches[i].identifier === touchId) {
-          var t = e.touches[i];
-          dragState.ghost.style.left = (t.clientX - dragState.offsetX) + "px";
-          dragState.ghost.style.top = (t.clientY - dragState.offsetY) + "px";
-          highlightZone(t.clientX, t.clientY);
-          e.preventDefault();
-          return;
-        }
-      }
-    }
-
-    function handleTouchEnd(e) {
-      if (!dragState.ghost) return;
-      var found = false;
-      for (var i = 0; i < e.changedTouches.length; i++) {
-        if (e.changedTouches[i].identifier === touchId) {
-          var t = e.changedTouches[i];
-          dropAtPoint(t.clientX, t.clientY, dragState.el, dragState.optionIdx);
-          found = true;
-          break;
-        }
-      }
-      if (dragState.ghost) dragState.ghost.remove();
-      if (dragState.el) dragState.el.classList.remove("dragging");
-      dragState.ghost = null;
-      dragState.el = null;
-      completedZone.classList.remove("drag-over");
-      ongoingZone.classList.remove("drag-over");
-    }
-
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
-    document.addEventListener("touchend", handleTouchEnd);
-
-    function highlightZone(x, y) {
-      var cRect = completedZone.getBoundingClientRect();
-      var oRect = ongoingZone.getBoundingClientRect();
-      completedZone.classList.toggle("drag-over", x >= cRect.left && x <= cRect.right && y >= cRect.top && y <= cRect.bottom);
-      ongoingZone.classList.toggle("drag-over", x >= oRect.left && x <= oRect.right && y >= oRect.top && y <= oRect.bottom);
-    }
-
-    function dropAtPoint(x, y, cardEl, optIdx) {
-      var cRect = completedZone.getBoundingClientRect();
-      var oRect = ongoingZone.getBoundingClientRect();
-      if (x >= cRect.left && x <= cRect.right && y >= cRect.top && y <= cRect.bottom) {
-        placeCard(cardEl, optIdx, "completed");
-      } else if (x >= oRect.left && x <= oRect.right && y >= oRect.top && y <= oRect.bottom) {
-        placeCard(cardEl, optIdx, "ongoing");
-      }
-    }
-
-    function placeCard(cardEl, optIdx, zone) {
-      assignments[optIdx] = zone;
-      var target = zone === "completed" ? completedZone : ongoingZone;
-      target.appendChild(cardEl);
-      cardEl.classList.remove("dragging");
-      cardEl.style.opacity = "";
-    }
-
-    [completedZone, ongoingZone].forEach(function (zone) {
-      zone.addEventListener("click", function () {
-        if (locked || !selected.el) return;
-        placeCard(selected.el, selected.optionIdx, zone.dataset.zone);
-        selected.el.classList.remove("selected");
-        selected.el = null;
-        selected.optionIdx = -1;
-      });
-      zone.addEventListener("dragover", function (e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
-        zone.classList.add("drag-over");
-      });
-      zone.addEventListener("dragleave", function () {
-        zone.classList.remove("drag-over");
-      });
-      zone.addEventListener("drop", function (e) {
-        e.preventDefault();
-        zone.classList.remove("drag-over");
-        var optIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
-        var cardEl = wrapper.querySelector('.classify-card[data-idx="' + optIdx + '"]');
-        if (cardEl) placeCard(cardEl, optIdx, zone.dataset.zone);
-      });
-    });
-
-    pool.addEventListener("dragover", function (e) { e.preventDefault(); });
-    pool.addEventListener("drop", function (e) {
-      e.preventDefault();
-      var optIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
-      var cardEl = wrapper.querySelector('.classify-card[data-idx="' + optIdx + '"]');
-      if (cardEl) {
-        pool.appendChild(cardEl);
-        delete assignments[optIdx];
-      }
-    });
+    var board = document.createElement("div");
+    board.className = "classify-board";
 
     shuffle(round.options.map(function (lineText, optionIdx) {
       return { lineText: lineText, optionIdx: optionIdx };
     })).forEach(function (item) {
-      var card = makeCard(item);
-      pool.appendChild(card);
+      var row = document.createElement("div");
+      row.className = "classify-row";
+      var line = document.createElement("p");
+      line.textContent = item.lineText;
+
+      var actions = document.createElement("div");
+      actions.className = "classify-actions";
+      var completedBtn = document.createElement("button");
+      completedBtn.type = "button";
+      completedBtn.className = "classify-pick";
+      completedBtn.textContent = "Completed Event";
+
+      var ongoingBtn = document.createElement("button");
+      ongoingBtn.type = "button";
+      ongoingBtn.className = "classify-pick";
+      ongoingBtn.textContent = "Ongoing Background";
+
+      function setPick(kind) {
+        assignments[item.optionIdx] = kind;
+        completedBtn.classList.toggle("active-completed", kind === "completed");
+        ongoingBtn.classList.toggle("active-ongoing", kind === "ongoing");
+      }
       rowControllers.push({
         optionIdx: item.optionIdx,
         hasPick: function () { return typeof assignments[item.optionIdx] !== "undefined"; },
-        pickCorrect: function () { placeCard(card, item.optionIdx, sentenceClass(round.options[item.optionIdx])); }
+        pickCorrect: function () { setPick(sentenceClass(round.options[item.optionIdx])); }
       });
+
+      completedBtn.addEventListener("click", function () {
+        if (locked) return;
+        setPick("completed");
+      });
+      ongoingBtn.addEventListener("click", function () {
+        if (locked) return;
+        setPick("ongoing");
+      });
+
+      actions.appendChild(completedBtn);
+      actions.appendChild(ongoingBtn);
+      row.appendChild(line);
+      row.appendChild(actions);
+      board.appendChild(row);
     });
 
     var submitBtn = document.createElement("button");
     submitBtn.type = "button";
     submitBtn.className = "btn primary sweep-submit";
-    submitBtn.textContent = "Submit Sort";
+    submitBtn.textContent = "Submit Classification";
     submitBtn.addEventListener("click", function () {
       if (locked) return;
       if (Object.keys(assignments).length < round.options.length) {
-        html("feedback", "<span class=\"bad\">Drag every sentence to a zone first, then submit.</span>");
+        html("feedback", "<span class=\"bad\">Classify every line first, then submit.</span>");
         return;
       }
       var allCorrect = true;
@@ -5359,8 +2327,6 @@
           break;
         }
       }
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleTouchEnd);
       finishRound(
         allCorrect,
         "Timeline classification secured. " + round.explain,
@@ -5369,32 +2335,8 @@
       );
     });
 
-    wrapper.appendChild(pool);
-    wrapper.appendChild(timelineBar);
-    wrapper.appendChild(zones);
-    wrapper.appendChild(submitBtn);
-    optionsEl.appendChild(wrapper);
-  }
-
-  var signalWords = ["yesterday", "right now", "now", "usually", "every day", "always", "currently", "at the moment", "last week", "last night", "tomorrow", "today", "often", "sometimes", "already", "just", "recently", "soon", "never", "rarely", "ago", "while", "when", "before", "after", "still", "yet", "since", "for a long time", "these days", "this week", "every morning", "at present", "in the past", "so far", "once"];
-
-  function highlightSignalWord(text) {
-    var lower = text.toLowerCase();
-    var found = null;
-    for (var s = 0; s < signalWords.length; s++) {
-      var sw = signalWords[s];
-      var pos = lower.indexOf(sw);
-      if (pos !== -1) {
-        var before = text.substring(0, pos);
-        var match = text.substring(pos, pos + sw.length);
-        var after = text.substring(pos + sw.length);
-        if (!found || sw.length > found.length) {
-          found = sw;
-          var result = before + '<span class="signal-chip">' + match + '</span>' + after;
-        }
-      }
-    }
-    return found ? result : '<span class="signal-chip">' + text.split(" ")[0] + '</span>' + text.substring(text.split(" ")[0].length);
+    optionsEl.appendChild(board);
+    optionsEl.appendChild(submitBtn);
   }
 
   function showBinaryOptions(round) {
@@ -5406,34 +2348,28 @@
     currentRoundState = { mode: "binary", round: round, candidateCorrect: candidateCorrect };
 
     var card = document.createElement("div");
-    card.className = "binary-card signal-card";
+    card.className = "binary-card";
     var cardK = document.createElement("b");
-    cardK.textContent = "Signal Decoder";
+    cardK.textContent = "Line under review";
     var cardText = document.createElement("p");
-    cardText.innerHTML = highlightSignalWord(candidateText);
+    cardText.textContent = candidateText;
     card.appendChild(cardK);
     card.appendChild(cardText);
 
     var actions = document.createElement("div");
-    actions.className = "binary-actions signal-actions";
-    var matchBtn = document.createElement("button");
-    matchBtn.type = "button";
-    matchBtn.className = "opt signal-match-btn";
-    matchBtn.innerHTML = "<b>\u2713 MATCH</b><span>Verb tense matches the signal</span>";
-    var mismatchBtn = document.createElement("button");
-    mismatchBtn.type = "button";
-    mismatchBtn.className = "opt signal-mismatch-btn";
-    mismatchBtn.innerHTML = "<b>\u2717 MISMATCH</b><span>Verb tense does NOT match</span>";
+    actions.className = "binary-actions";
+    var secureBtn = buildOptionButton("Secure", "This line is grammatically correct.");
+    var repairBtn = buildOptionButton("Needs Repair", "This line has an error.");
 
-    matchBtn.addEventListener("click", function () {
-      selectBinaryVerdict(true, candidateCorrect, round, matchBtn);
+    secureBtn.addEventListener("click", function () {
+      selectBinaryVerdict(true, candidateCorrect, round, secureBtn);
     });
-    mismatchBtn.addEventListener("click", function () {
-      selectBinaryVerdict(false, candidateCorrect, round, mismatchBtn);
+    repairBtn.addEventListener("click", function () {
+      selectBinaryVerdict(false, candidateCorrect, round, repairBtn);
     });
 
-    actions.appendChild(matchBtn);
-    actions.appendChild(mismatchBtn);
+    actions.appendChild(secureBtn);
+    actions.appendChild(repairBtn);
     optionsEl.appendChild(card);
     optionsEl.appendChild(actions);
   }
@@ -5559,1044 +2495,7 @@
     optionsEl.appendChild(submitBtn);
   }
 
-  function showSpotlightOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "spotlight", round: round };
-
-    var wrap = document.createElement("div");
-    wrap.className = "spotlight-wrap";
-
-    var instruction = document.createElement("p");
-    instruction.className = "spotlight-instruction";
-    instruction.textContent = modeMicroTip("spotlight", idx);
-    wrap.appendChild(instruction);
-
-    var items = shuffle(round.options.map(function (lineText, optionIdx) {
-      return { lineText: lineText, optionIdx: optionIdx };
-    }));
-
-    items.forEach(function (item, displayIdx) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "opt spotlight-opt";
-      btn.innerHTML = "<b>" + String.fromCharCode(65 + displayIdx) + "</b><span>" + item.lineText + "</span>";
-      btn.dataset.target = item.optionIdx === round.answer ? "1" : "0";
-      btn.addEventListener("click", function () {
-        if (!btn.classList.contains("spotlight-visible")) return;
-        finishRound(
-          item.optionIdx === round.answer,
-          "Correct! " + round.explain,
-          "Not quite \u2014 the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
-          btn
-        );
-      });
-      wrap.appendChild(btn);
-
-      setTimeout(function () {
-        btn.classList.add("spotlight-visible");
-        btn.classList.add("spotlight-active");
-        setTimeout(function () {
-          btn.classList.remove("spotlight-active");
-        }, 800);
-      }, (displayIdx + 1) * 1000);
-    });
-
-    optionsEl.appendChild(wrap);
-  }
-
-  function showBuilderOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "builder", round: round };
-
-    var correctSentence = round.options[round.answer];
-    var words = correctSentence.split(/\s+/);
-    var shuffledWords = shuffle(words.slice());
-    var placed = [];
-
-    var wrap = document.createElement("div");
-    wrap.className = "builder-wrap";
-
-    var barLabel = document.createElement("p");
-    barLabel.className = "builder-bar-label";
-    barLabel.textContent = "Your Sentence";
-    wrap.appendChild(barLabel);
-
-    var bar = document.createElement("div");
-    bar.className = "builder-bar";
-    var placeholder = document.createElement("p");
-    placeholder.className = "builder-bar-placeholder";
-    placeholder.textContent = "Click words below to build the sentence\u2026";
-    bar.appendChild(placeholder);
-    wrap.appendChild(bar);
-
-    var chipsLabel = document.createElement("p");
-    chipsLabel.className = "builder-bar-label";
-    chipsLabel.textContent = "Word Chips";
-    wrap.appendChild(chipsLabel);
-
-    var chipsContainer = document.createElement("div");
-    chipsContainer.className = "builder-chips";
-
-    var chipEls = [];
-
-    function updateBar() {
-      bar.innerHTML = "";
-      if (placed.length === 0) {
-        var ph = document.createElement("p");
-        ph.className = "builder-bar-placeholder";
-        ph.textContent = "Click words below to build the sentence\u2026";
-        bar.appendChild(ph);
-      } else {
-        placed.forEach(function (entry, i) {
-          var barChip = document.createElement("span");
-          barChip.className = "builder-bar-chip";
-          barChip.textContent = entry.word;
-          barChip.addEventListener("click", function () {
-            if (locked) return;
-            placed.splice(i, 1);
-            chipEls[entry.chipIdx].classList.remove("used");
-            updateBar();
-          });
-          bar.appendChild(barChip);
-        });
-      }
-    }
-
-    shuffledWords.forEach(function (word, chipIdx) {
-      var chip = document.createElement("span");
-      chip.className = "builder-chip";
-      chip.textContent = word;
-      chip.addEventListener("click", function () {
-        if (locked || chip.classList.contains("used")) return;
-        chip.classList.add("used");
-        placed.push({ word: word, chipIdx: chipIdx });
-        updateBar();
-      });
-      chipsContainer.appendChild(chip);
-      chipEls.push(chip);
-    });
-
-    wrap.appendChild(chipsContainer);
-
-    var submitBtn = document.createElement("button");
-    submitBtn.type = "button";
-    submitBtn.className = "btn primary";
-    submitBtn.textContent = "Submit Sentence";
-    submitBtn.addEventListener("click", function () {
-      if (locked) return;
-      if (placed.length !== words.length) {
-        html("feedback", "<span class=\"bad\">Place all word chips before submitting.</span>");
-        return;
-      }
-      var built = placed.map(function (e) { return e.word; }).join(" ");
-      var isCorrect = built === correctSentence;
-      finishRound(
-        isCorrect,
-        "Sentence built correctly! " + round.explain,
-        "Not quite \u2014 the correct sentence is \"" + correctSentence + "\". " + round.explain,
-        submitBtn
-      );
-    });
-    wrap.appendChild(submitBtn);
-
-    optionsEl.appendChild(wrap);
-  }
-
-  function showDialogueOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "dialogue", round: round };
-    var brokenIdx = pickWrongIndex(round);
-    var brokenLine = round.options[brokenIdx];
-    var thread = buildDialogueThread(round, idx, brokenLine);
-
-    var wrap = document.createElement("div");
-    wrap.className = "dialogue-wrap";
-
-    var meta = document.createElement("div");
-    meta.className = "dialogue-meta";
-    meta.innerHTML = "<span class=\"dialogue-tag\">Chat Thread</span><span class=\"dialogue-scene-name\">" + thread.scene + "</span>";
-    wrap.appendChild(meta);
-
-    var objective = document.createElement("p");
-    objective.className = "dialogue-objective";
-    var objectiveText = modeScenarioPrompt("dialogue", round, idx);
-    if (objectiveText.toLowerCase().indexOf("draft") < 0 && objectiveText.toLowerCase().indexOf("revis") < 0) {
-      objectiveText += " Replace the draft with the best revised line.";
-    }
-    objective.textContent = objectiveText;
-    wrap.appendChild(objective);
-
-    var threadBody = document.createElement("div");
-    threadBody.className = "dialogue-thread";
-
-    var bubbleA = document.createElement("div");
-    bubbleA.className = "dialogue-bubble dialogue-bubble-left";
-    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerA + "</span>" + formatDialogueLine(thread.lineA);
-    threadBody.appendChild(bubbleA);
-
-    var bubbleContext = document.createElement("div");
-    bubbleContext.className = "dialogue-bubble dialogue-bubble-right";
-    bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + thread.lineB;
-    threadBody.appendChild(bubbleContext);
-
-    var bubbleBlank = document.createElement("div");
-    bubbleBlank.className = "dialogue-bubble dialogue-bubble-blank";
-    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>[Pick " + thread.replySpeaker + "'s revised line\u2026]";
-    threadBody.appendChild(bubbleBlank);
-    wrap.appendChild(threadBody);
-
-    var choices = [round.answer];
-    var distractorPool = [];
-    for (var d = 0; d < round.options.length; d++) {
-      if (d !== round.answer) distractorPool.push(d);
-    }
-    distractorPool = shuffle(distractorPool);
-    while (choices.length < 3 && distractorPool.length > 0) {
-      choices.push(distractorPool.pop());
-    }
-    var shuffledChoices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
-
-    var choicesWrap = document.createElement("div");
-    choicesWrap.className = "dialogue-choices";
-    shuffledChoices.forEach(function (item, choiceIdx) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "opt dialogue-choice-btn dialogue-reply";
-      btn.innerHTML = "<span class=\"dialogue-choice-label\">Option " + String.fromCharCode(65 + choiceIdx) + "</span><span>" + item.text + "</span>";
-      btn.dataset.target = item.idx === round.answer ? "1" : "0";
-      btn.addEventListener("click", function () {
-        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>" + item.text;
-        bubbleBlank.className = "dialogue-bubble dialogue-bubble-right";
-        finishRound(
-          item.idx === round.answer,
-          "Great reply! That fits the conversation. " + round.explain,
-          "Not quite \u2014 the best reply is \"" + round.options[round.answer] + "\". " + round.explain,
-          btn
-        );
-      });
-      choicesWrap.appendChild(btn);
-    });
-    wrap.appendChild(choicesWrap);
-
-    optionsEl.appendChild(wrap);
-  }
-
-  function showRewriteOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "rewrite", round: round };
-
-    var wrongIdx = pickWrongIndex(round);
-    var wrongText = round.options[wrongIdx];
-    var correctText = round.options[round.answer];
-
-    var wrap = document.createElement("div");
-    wrap.className = "rewrite-wrap";
-
-    var original = document.createElement("div");
-    original.className = "rewrite-original";
-    original.innerHTML = "<b>Original</b>" + wrongText;
-    wrap.appendChild(original);
-
-    var vs = document.createElement("p");
-    vs.className = "rewrite-vs";
-    vs.textContent = "\u2014 VS \u2014";
-    wrap.appendChild(vs);
-
-    var duel = shuffle([
-      { idx: round.answer, text: correctText },
-      { idx: wrongIdx, text: wrongText }
-    ]);
-
-    var cards = document.createElement("div");
-    cards.className = "rewrite-cards";
-    duel.forEach(function (item, i) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "opt";
-      btn.innerHTML = "<span class=\"duel-tag\">Rewrite " + String.fromCharCode(65 + i) + "</span><span class=\"duel-text\">" + item.text + "</span>";
-      btn.dataset.target = item.idx === round.answer ? "1" : "0";
-      btn.addEventListener("click", function () {
-        finishRound(
-          item.idx === round.answer,
-          "Strong rewrite selected! " + round.explain,
-          "Weaker option selected. Correct line: \"" + correctText + "\". " + round.explain,
-          btn
-        );
-      });
-      cards.appendChild(btn);
-    });
-    wrap.appendChild(cards);
-
-    optionsEl.appendChild(wrap);
-  }
-
-  function showSignalOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-
-    var signalText = "";
-    var sceneText = round.scene || "";
-    var signalMatch = sceneText.match(/^Signal:\s*(.+)$/i);
-    if (signalMatch) {
-      signalText = signalMatch[1].trim();
-    } else {
-      var lower = sceneText.toLowerCase();
-      for (var s = 0; s < signalWords.length; s++) {
-        if (lower.indexOf(signalWords[s]) !== -1) {
-          signalText = signalWords[s];
-          break;
-        }
-      }
-      if (!signalText) signalText = sceneText.split(" ")[0] || "signal";
-    }
-
-    var candidateIdx = Math.floor(Math.random() * round.options.length);
-    var candidateText = round.options[candidateIdx];
-    var candidateCorrect = candidateIdx === round.answer;
-    currentRoundState = { mode: "signal", round: round, candidateCorrect: candidateCorrect };
-
-    var wrap = document.createElement("div");
-    wrap.className = "signal-wrap";
-
-    var badge = document.createElement("span");
-    badge.className = "signal-badge";
-    badge.textContent = signalText;
-    wrap.appendChild(badge);
-
-    var sentence = document.createElement("div");
-    sentence.className = "signal-sentence";
-    sentence.textContent = candidateText;
-    wrap.appendChild(sentence);
-
-    var btns = document.createElement("div");
-    btns.className = "signal-btns";
-
-    var matchBtn = document.createElement("button");
-    matchBtn.type = "button";
-    matchBtn.className = "opt";
-    matchBtn.innerHTML = "<b>\u2713 Matches</b><span>Sentence matches the signal</span>";
-
-    var noMatchBtn = document.createElement("button");
-    noMatchBtn.type = "button";
-    noMatchBtn.className = "opt";
-    noMatchBtn.innerHTML = "<b>\u2717 Doesn\u2019t Match</b><span>Sentence does NOT match</span>";
-
-    matchBtn.addEventListener("click", function () {
-      var userCorrect = candidateCorrect;
-      finishRound(
-        userCorrect,
-        "Correct! " + (candidateCorrect ? "This sentence matches the signal. " : "This sentence does not match. ") + round.explain,
-        "Not quite. " + (candidateCorrect ? "This sentence actually matches the signal. " : "This sentence does not match the signal. ") + round.explain,
-        matchBtn
-      );
-    });
-    noMatchBtn.addEventListener("click", function () {
-      var userCorrect = !candidateCorrect;
-      finishRound(
-        userCorrect,
-        "Correct! " + (!candidateCorrect ? "This sentence doesn\u2019t match the signal. " : "This sentence actually matches. ") + round.explain,
-        "Not quite. " + (!candidateCorrect ? "This sentence doesn\u2019t match the signal. " : "This sentence actually matches. ") + round.explain,
-        noMatchBtn
-      );
-    });
-
-    btns.appendChild(matchBtn);
-    btns.appendChild(noMatchBtn);
-    wrap.appendChild(btns);
-
-    optionsEl.appendChild(wrap);
-  }
-
-  function showEvidenceOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    var selections = {};
-    var rowControllers = [];
-    currentRoundState = { mode: "evidence", round: round, selections: selections, rows: rowControllers };
-
-    var wrap = document.createElement("div");
-    wrap.className = "evidence-wrap";
-
-    shuffle(round.options.map(function (lineText, optionIdx) {
-      return { lineText: lineText, optionIdx: optionIdx };
-    })).forEach(function (item) {
-      var card = document.createElement("div");
-      card.className = "evidence-card";
-
-      var line = document.createElement("p");
-      line.textContent = item.lineText;
-
-      var actions = document.createElement("div");
-      actions.className = "evidence-actions";
-
-      var strongBtn = document.createElement("button");
-      strongBtn.type = "button";
-      strongBtn.className = "evidence-pick";
-      strongBtn.textContent = "Strong Evidence";
-
-      var weakBtn = document.createElement("button");
-      weakBtn.type = "button";
-      weakBtn.className = "evidence-pick";
-      weakBtn.textContent = "Weak Evidence";
-
-      function setChoice(isStrong) {
-        selections[item.optionIdx] = isStrong;
-        strongBtn.classList.toggle("active-strong", isStrong);
-        weakBtn.classList.toggle("active-weak", !isStrong);
-      }
-
-      rowControllers.push({
-        optionIdx: item.optionIdx,
-        hasPick: function () { return typeof selections[item.optionIdx] !== "undefined"; },
-        pickCorrect: function () { setChoice(item.optionIdx === round.answer); }
-      });
-
-      strongBtn.addEventListener("click", function () {
-        if (locked) return;
-        setChoice(true);
-      });
-      weakBtn.addEventListener("click", function () {
-        if (locked) return;
-        setChoice(false);
-      });
-
-      actions.appendChild(strongBtn);
-      actions.appendChild(weakBtn);
-      card.appendChild(line);
-      card.appendChild(actions);
-      wrap.appendChild(card);
-    });
-
-    var submitBtn = document.createElement("button");
-    submitBtn.type = "button";
-    submitBtn.className = "btn primary sweep-submit";
-    submitBtn.textContent = "Submit Evidence Board";
-    submitBtn.addEventListener("click", function () {
-      if (locked) return;
-      if (Object.keys(selections).length < round.options.length) {
-        html("feedback", "<span class=\"bad\">Mark every card before submitting.</span>");
-        return;
-      }
-      var allCorrect = true;
-      for (var i = 0; i < round.options.length; i++) {
-        var shouldBeStrong = i === round.answer;
-        if (selections[i] !== shouldBeStrong) {
-          allCorrect = false;
-          break;
-        }
-      }
-      finishRound(
-        allCorrect,
-        "Evidence board verified! Strong evidence identified. " + round.explain,
-        "Evidence mismatch: one or more cards are incorrectly marked. " + round.explain,
-        submitBtn
-      );
-    });
-
-    optionsEl.appendChild(wrap);
-    optionsEl.appendChild(submitBtn);
-  }
-
-  function showInterrogationOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "interrogation", round: round };
-
-    var wrap = document.createElement("div");
-    wrap.className = "interrogation-wrap";
-
-    var quote = document.createElement("div");
-    quote.className = "interrogation-quote";
-    quote.innerHTML = "<span class=\"interrogation-quote-label\">Witness Statement</span>" + round.prompt;
-    wrap.appendChild(quote);
-
-    var choices = [round.answer];
-    var distractorPool = [];
-    for (var d = 0; d < round.options.length; d++) {
-      if (d !== round.answer) distractorPool.push(d);
-    }
-    distractorPool = shuffle(distractorPool);
-    while (choices.length < 3 && distractorPool.length > 0) {
-      choices.push(distractorPool.pop());
-    }
-    var shuffledChoices = shuffle(choices.map(function (idx) { return { idx: idx, text: round.options[idx] }; }));
-
-    var reports = document.createElement("div");
-    reports.className = "interrogation-reports";
-    shuffledChoices.forEach(function (item, i) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "opt interrogation-report";
-      btn.innerHTML = "<b>Report " + String.fromCharCode(65 + i) + "</b><span>" + item.text + "</span>";
-      btn.dataset.target = item.idx === round.answer ? "1" : "0";
-      btn.addEventListener("click", function () {
-        finishRound(
-          item.idx === round.answer,
-          "Correct report selected! " + round.explain,
-          "Incorrect report. The accurate report is: \"" + round.options[round.answer] + "\". " + round.explain,
-          btn
-        );
-      });
-      reports.appendChild(btn);
-    });
-    wrap.appendChild(reports);
-
-    optionsEl.appendChild(wrap);
-  }
-
-  function showForgeOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "forge", round: round };
-
-    var correctSentence = round.options[round.answer];
-    var correctWords = correctSentence.split(/\s+/);
-
-    var distractorWords = [];
-    for (var w = 0; w < round.options.length; w++) {
-      if (w !== round.answer) {
-        var parts = round.options[w].split(/\s+/);
-        for (var p = 0; p < parts.length; p++) {
-          if (correctWords.indexOf(parts[p]) === -1 && distractorWords.indexOf(parts[p]) === -1) {
-            distractorWords.push(parts[p]);
-          }
-        }
-      }
-    }
-    distractorWords = shuffle(distractorWords).slice(0, Math.min(3, distractorWords.length));
-
-    var allTiles = shuffle(correctWords.slice().concat(distractorWords));
-    var placed = [];
-
-    var wrap = document.createElement("div");
-    wrap.className = "forge-wrap";
-
-    var sceneP = document.createElement("p");
-    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
-    sceneP.textContent = round.scene;
-    wrap.appendChild(sceneP);
-
-    var promptP = document.createElement("p");
-    promptP.style.cssText = "margin:0;font:700 14px Inter,Arial,sans-serif;color:#16223a;";
-    promptP.textContent = round.prompt;
-    wrap.appendChild(promptP);
-
-    var zoneLabel = document.createElement("p");
-    zoneLabel.style.cssText = "margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;";
-    zoneLabel.textContent = "Your Sentence";
-    wrap.appendChild(zoneLabel);
-
-    var zone = document.createElement("div");
-    zone.className = "forge-zone";
-    var zonePlaceholder = document.createElement("p");
-    zonePlaceholder.className = "builder-bar-placeholder";
-    zonePlaceholder.textContent = "Click words below to build the sentence\u2026";
-    zone.appendChild(zonePlaceholder);
-    wrap.appendChild(zone);
-
-    var poolLabel = document.createElement("p");
-    poolLabel.style.cssText = "margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;";
-    poolLabel.textContent = "Word Tiles";
-    wrap.appendChild(poolLabel);
-
-    var pool = document.createElement("div");
-    pool.className = "forge-pool";
-
-    var tileEls = [];
-
-    function updateZone() {
-      zone.innerHTML = "";
-      if (placed.length === 0) {
-        var ph = document.createElement("p");
-        ph.className = "builder-bar-placeholder";
-        ph.textContent = "Click words below to build the sentence\u2026";
-        zone.appendChild(ph);
-      } else {
-        placed.forEach(function (entry, i) {
-          var chip = document.createElement("span");
-          chip.className = "forge-tile placed";
-          chip.textContent = entry.word;
-          chip.style.opacity = "1";
-          chip.style.pointerEvents = "auto";
-          chip.addEventListener("click", function () {
-            if (locked) return;
-            placed.splice(i, 1);
-            tileEls[entry.tileIdx].classList.remove("placed");
-            tileEls[entry.tileIdx].classList.remove("selected");
-            updateZone();
-          });
-          zone.appendChild(chip);
-        });
-      }
-    }
-
-    allTiles.forEach(function (word, tileIdx) {
-      var tile = document.createElement("span");
-      tile.className = "forge-tile";
-      tile.textContent = word;
-      tile.addEventListener("click", function () {
-        if (locked || tile.classList.contains("placed")) return;
-        tile.classList.add("placed");
-        placed.push({ word: word, tileIdx: tileIdx });
-        updateZone();
-      });
-      pool.appendChild(tile);
-      tileEls.push(tile);
-    });
-
-    wrap.appendChild(pool);
-
-    var submitBtn = document.createElement("button");
-    submitBtn.type = "button";
-    submitBtn.className = "btn primary";
-    submitBtn.textContent = "Submit";
-    submitBtn.addEventListener("click", function () {
-      if (locked) return;
-      if (placed.length === 0) {
-        html("feedback", "<span class=\"bad\">Place word tiles before submitting.</span>");
-        return;
-      }
-      var built = placed.map(function (e) { return e.word; }).join(" ");
-      var isCorrect = built === correctSentence;
-      finishRound(
-        isCorrect,
-        "Sentence forged correctly! " + round.explain,
-        "Not quite \u2014 the correct sentence is \"" + correctSentence + "\". " + round.explain,
-        submitBtn
-      );
-    });
-    wrap.appendChild(submitBtn);
-
-    optionsEl.appendChild(wrap);
-  }
-
-  function showDetectOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "detect", round: round };
-
-    var wrongIdx = pickWrongIndex(round);
-    var wrongSentence = round.options[wrongIdx];
-    var correctSentence = round.options[round.answer];
-    var wrongWords = wrongSentence.split(/\s+/);
-    var correctWords = correctSentence.split(/\s+/);
-
-    var errorIndices = [];
-    for (var ei = 0; ei < wrongWords.length; ei++) {
-      if (ei >= correctWords.length || wrongWords[ei] !== correctWords[ei]) {
-        errorIndices.push(ei);
-      }
-    }
-    if (errorIndices.length === 0) errorIndices.push(0);
-
-    var wrap = document.createElement("div");
-    wrap.className = "detect-wrap";
-
-    var sceneP = document.createElement("p");
-    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
-    sceneP.textContent = round.scene;
-    wrap.appendChild(sceneP);
-
-    var instruction = document.createElement("p");
-    instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
-    instruction.textContent = modeMicroTip("detect", idx);
-    wrap.appendChild(instruction);
-
-    var sentenceDiv = document.createElement("div");
-    sentenceDiv.className = "detect-sentence";
-
-    var clicked = false;
-    wrongWords.forEach(function (word, wIdx) {
-      var span = document.createElement("span");
-      span.className = "detect-word";
-      span.textContent = word;
-      span.addEventListener("click", function () {
-        if (locked || clicked) return;
-        clicked = true;
-        var isError = errorIndices.indexOf(wIdx) !== -1;
-        span.classList.add("clicked");
-
-        wrongWords.forEach(function (_, j) {
-          var allSpans = sentenceDiv.querySelectorAll(".detect-word");
-          if (errorIndices.indexOf(j) !== -1) {
-            allSpans[j].classList.add("error");
-          } else {
-            allSpans[j].classList.add("ok");
-          }
-        });
-
-        var comparison = document.createElement("div");
-        comparison.style.cssText = "margin-top:12px;padding:12px;border:1px solid #d9dee6;border-radius:10px;background:#f8fafc;";
-        comparison.innerHTML = "<p style=\"margin:0 0 4px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;\">Correct version:</p><p style=\"margin:0;font-size:15px;color:#176a49;\">" + correctSentence + "</p>";
-        wrap.appendChild(comparison);
-
-        finishRound(
-          isError,
-          "Error detected! " + round.explain,
-          "That word is fine. The error is elsewhere. " + round.explain,
-          span
-        );
-      });
-      sentenceDiv.appendChild(span);
-    });
-
-    wrap.appendChild(sentenceDiv);
-    optionsEl.appendChild(wrap);
-  }
-
-  function showOrderOptions(round) {
-    optionsEl.style.gridTemplateColumns = "1fr";
-    optionsEl.innerHTML = "";
-    currentRoundState = { mode: "order", round: round };
-
-    var correctOrder = [round.answer];
-    for (var oi = 0; oi < round.options.length; oi++) {
-      if (oi !== round.answer) correctOrder.push(oi);
-    }
-
-    var items = shuffle(round.options.map(function (text, idx) {
-      return { text: text, idx: idx };
-    }));
-
-    var selectedIdx = -1;
-
-    var wrap = document.createElement("div");
-    wrap.className = "order-wrap";
-
-    var sceneP = document.createElement("p");
-    sceneP.style.cssText = "margin:0;font-size:14px;color:#4a5568;";
-    sceneP.textContent = round.scene;
-    wrap.appendChild(sceneP);
-
-    var instruction = document.createElement("p");
-    instruction.style.cssText = "margin:0;font:700 13px Inter,Arial,sans-serif;color:#16223a;";
-    instruction.textContent = modeMicroTip("order", idx);
-    wrap.appendChild(instruction);
-
-    var list = document.createElement("div");
-    list.className = "order-list";
-
-    function renderList() {
-      list.innerHTML = "";
-      items.forEach(function (item, i) {
-        var el = document.createElement("div");
-        el.className = "order-item" + (i === selectedIdx ? " selected" : "");
-        el.innerHTML = "<b>" + (i + 1) + ".</b> " + item.text;
-        el.addEventListener("click", function () {
-          if (locked) return;
-          if (selectedIdx === -1) {
-            selectedIdx = i;
-            renderList();
-          } else if (selectedIdx === i) {
-            selectedIdx = -1;
-            renderList();
-          } else {
-            var moved = items.splice(selectedIdx, 1)[0];
-            items.splice(i, 0, moved);
-            selectedIdx = -1;
-            renderList();
-          }
-        });
-        list.appendChild(el);
-      });
-    }
-
-    renderList();
-    wrap.appendChild(list);
-
-    var submitBtn = document.createElement("button");
-    submitBtn.type = "button";
-    submitBtn.className = "btn primary";
-    submitBtn.textContent = "Submit Order";
-    submitBtn.addEventListener("click", function () {
-      if (locked) return;
-      var userOrder = items.map(function (item) { return item.idx; });
-      var isCorrect = true;
-      for (var c = 0; c < correctOrder.length; c++) {
-        if (userOrder[c] !== correctOrder[c]) {
-          isCorrect = false;
-          break;
-        }
-      }
-      finishRound(
-        isCorrect,
-        "Sequence correct! " + round.explain,
-        "Not quite \u2014 the best order starts with \"" + round.options[round.answer] + "\". " + round.explain,
-        submitBtn
-      );
-    });
-    wrap.appendChild(submitBtn);
-
-    optionsEl.appendChild(wrap);
-  }
-
-  /* ── TEAM MODE STATE ── */
-  var teamA = { score: 0, correct: 0, streak: 0, combo: 1, idx: 0, locked: false };
-  var teamB = { score: 0, correct: 0, streak: 0, combo: 1, idx: 0, locked: false };
-  var teamSplitEl = null;
-
-  function buildTeamPanel(team, label, cssClass, labelClass, scoreClass, round) {
-    var panel = document.createElement("div");
-    panel.className = "team-panel " + cssClass;
-    var lbl = document.createElement("div");
-    lbl.className = "team-label " + labelClass;
-    lbl.textContent = label;
-    panel.appendChild(lbl);
-    var sc = document.createElement("div");
-    sc.className = "team-score " + scoreClass;
-    sc.textContent = String(team.score);
-    sc.id = cssClass + "-score";
-    panel.appendChild(sc);
-    var st = document.createElement("div");
-    st.className = "team-status";
-    st.textContent = "Streak: " + team.streak + " \u00b7 Combo: " + team.combo + "x";
-    st.id = cssClass + "-status";
-    panel.appendChild(st);
-    var opts = round.options || [];
-    for (var i = 0; i < opts.length; i++) {
-      (function (optIdx) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "team-opt";
-        btn.textContent = opts[optIdx];
-        btn.addEventListener("click", function () {
-          if (team.locked) return;
-          team.locked = true;
-          var isCorrect = (activeMode === "smash") ? optIdx !== round.answer : optIdx === round.answer;
-          team.idx = optIdx;
-          if (isCorrect) {
-            btn.classList.add("good");
-            team.correct += 1;
-            team.streak += 1;
-            team.combo = 1 + Math.floor(Math.max(0, team.streak - 1) / 3);
-            team.score += Math.round(80 * team.combo);
-          } else {
-            btn.classList.add("bad");
-            team.streak = 0;
-            team.combo = 1;
-          }
-          var allBtns = panel.querySelectorAll(".team-opt");
-          for (var b = 0; b < allBtns.length; b++) allBtns[b].classList.add("locked");
-          var scEl = document.getElementById(cssClass + "-score");
-          if (scEl) scEl.textContent = String(team.score);
-          var stEl = document.getElementById(cssClass + "-status");
-          if (stEl) stEl.textContent = "Streak: " + team.streak + " \u00b7 Combo: " + team.combo + "x";
-          checkTeamBothAnswered(round);
-        });
-        panel.appendChild(btn);
-      })(i);
-    }
-    return panel;
-  }
-
-  function checkTeamBothAnswered(round) {
-    if (!teamA.locked || !teamB.locked) return;
-    awaitingNext = true;
-    var fb = (activeMode === "smash")
-      ? "Correct answer is option " + (round.answer + 1) + ". " + (round.explain || "")
-      : "Correct: \"" + round.options[round.answer] + "\". " + (round.explain || "");
-    html("feedback", "<span class=\"ok\">" + fb + "</span>");
-    idx += 1;
-    setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
-  }
-
-  function showTeamRound() {
-    if (idx >= rounds.length) { endGame(); return; }
-    locked = false;
-    awaitingNext = false;
-    setNextVisibility(false);
-    text("feedback", "");
-    teamA.locked = false;
-    teamB.locked = false;
-    var round = rounds[idx];
-    currentRoundState = { mode: activeMode, round: round };
-    text("actionTip", modePrompt(activeMode, idx));
-    text("scene", round.scene);
-    text("prompt", modeScenarioPrompt(activeMode, round, idx));
-
-    optionsEl.innerHTML = "";
-    var split = document.createElement("div");
-    split.className = "team-split";
-    split.appendChild(buildTeamPanel(teamA, "TEAM A", "team-panel-a", "team-label-a", "team-score-a", round));
-    var divider = document.createElement("div");
-    divider.className = "team-divider";
-    split.appendChild(divider);
-    split.appendChild(buildTeamPanel(teamB, "TEAM B", "team-panel-b", "team-label-b", "team-score-b", round));
-    optionsEl.appendChild(split);
-    teamSplitEl = split;
-    startShotClock(round);
-    updateHud();
-  }
-
-  /* ── WHOLE CLASS MODE STATE ── */
-  var wcVotes = [0, 0, 0, 0];
-  var wcRevealed = false;
-  var wcClassCorrect = 0;
-  var wcClassTotal = 0;
-  var wcVotedKey = "wc_voted_";
-
-  function showWholeClassRound() {
-    if (idx >= rounds.length) { endGame(); return; }
-    locked = false;
-    awaitingNext = false;
-    setNextVisibility(false);
-    text("feedback", "");
-    wcVotes = [0, 0, 0, 0];
-    wcRevealed = false;
-    var round = rounds[idx];
-    currentRoundState = { mode: activeMode, round: round };
-    text("actionTip", modePrompt(activeMode, idx));
-    var voteKey = wcVotedKey + idx;
-    var alreadyVoted = false;
-    try { alreadyVoted = !!sessionStorage.getItem(voteKey); } catch (e) {}
-
-    optionsEl.innerHTML = "";
-    var wrap = document.createElement("div");
-    wrap.className = "wc-wrap";
-
-    var sceneEl = document.createElement("div");
-    sceneEl.className = "wc-scene";
-    sceneEl.textContent = round.scene || "";
-    wrap.appendChild(sceneEl);
-
-    var promptEl = document.createElement("div");
-    promptEl.className = "wc-prompt";
-    promptEl.textContent = modeScenarioPrompt(activeMode, round, idx);
-    wrap.appendChild(promptEl);
-
-    var optsGrid = document.createElement("div");
-    optsGrid.className = "wc-options";
-    var labels = ["A", "B", "C", "D"];
-    var optEls = [];
-    var opts = round.options || [];
-
-    for (var i = 0; i < opts.length; i++) {
-      (function (optIdx) {
-        var card = document.createElement("div");
-        card.className = "wc-opt";
-        card.dataset.idx = optIdx;
-        var lbl = document.createElement("div");
-        lbl.className = "wc-opt-label";
-        lbl.textContent = labels[optIdx] || String(optIdx + 1);
-        card.appendChild(lbl);
-        var txt = document.createElement("div");
-        txt.className = "wc-opt-text";
-        txt.textContent = opts[optIdx];
-        card.appendChild(txt);
-        var votesRow = document.createElement("div");
-        votesRow.className = "wc-opt-votes";
-        var bar = document.createElement("div");
-        bar.className = "wc-vote-bar";
-        var fill = document.createElement("div");
-        fill.className = "wc-vote-fill";
-        fill.style.width = "0%";
-        fill.id = "wc-fill-" + optIdx;
-        bar.appendChild(fill);
-        votesRow.appendChild(bar);
-        var cnt = document.createElement("span");
-        cnt.className = "wc-vote-count";
-        cnt.id = "wc-count-" + optIdx;
-        cnt.textContent = "0";
-        votesRow.appendChild(cnt);
-        card.appendChild(votesRow);
-
-        var addVoteBtn = document.createElement("button");
-        addVoteBtn.type = "button";
-        addVoteBtn.className = "team-opt";
-        addVoteBtn.textContent = "+ Add Vote";
-        addVoteBtn.style.fontSize = "11px";
-        addVoteBtn.style.padding = "6px";
-        addVoteBtn.style.marginTop = "4px";
-        addVoteBtn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          if (wcRevealed) return;
-          wcVotes[optIdx] += 1;
-          updateWcVoteBars();
-        });
-        card.appendChild(addVoteBtn);
-
-        card.addEventListener("click", function () {
-          if (wcRevealed || alreadyVoted) return;
-          alreadyVoted = true;
-          try { sessionStorage.setItem(voteKey, "1"); } catch (e) {}
-          wcVotes[optIdx] += 1;
-          updateWcVoteBars();
-        });
-
-        optsGrid.appendChild(card);
-        optEls.push(card);
-      })(i);
-    }
-    wrap.appendChild(optsGrid);
-
-    var revealBtn = document.createElement("button");
-    revealBtn.type = "button";
-    revealBtn.className = "wc-reveal-btn";
-    revealBtn.textContent = "REVEAL ANSWER";
-    revealBtn.addEventListener("click", function () {
-      if (wcRevealed) return;
-      wcRevealed = true;
-      revealBtn.style.display = "none";
-
-      var totalVotes = 0;
-      for (var v = 0; v < wcVotes.length; v++) totalVotes += wcVotes[v];
-      var correctVotes = round.answer < wcVotes.length ? wcVotes[round.answer] : 0;
-      if (totalVotes > 0) {
-        wcClassCorrect += correctVotes;
-        wcClassTotal += totalVotes;
-      } else {
-        wcClassTotal += 1;
-      }
-
-      for (var k = 0; k < optEls.length; k++) {
-        if (k === round.answer) {
-          optEls[k].classList.add("correct");
-        } else {
-          optEls[k].classList.add("wrong");
-        }
-      }
-
-      var explainEl = document.createElement("div");
-      explainEl.className = "wc-explain";
-      explainEl.textContent = round.explain || "The correct answer is option " + labels[round.answer] + ".";
-      wrap.appendChild(explainEl);
-
-      if (wcClassTotal > 0) {
-        var pctEl = document.createElement("div");
-        pctEl.className = "wc-class-score";
-        pctEl.textContent = "Class Accuracy: " + Math.round((wcClassCorrect / wcClassTotal) * 100) + "%";
-        wrap.appendChild(pctEl);
-      }
-
-      idx += 1;
-      awaitingNext = true;
-      setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
-    });
-    wrap.appendChild(revealBtn);
-
-    optionsEl.appendChild(wrap);
-    updateHud();
-  }
-
-  function updateWcVoteBars() {
-    var total = 0;
-    for (var i = 0; i < wcVotes.length; i++) total += wcVotes[i];
-    for (var j = 0; j < wcVotes.length; j++) {
-      var pct = total > 0 ? Math.round((wcVotes[j] / total) * 100) : 0;
-      var fill = document.getElementById("wc-fill-" + j);
-      var cnt = document.getElementById("wc-count-" + j);
-      if (fill) fill.style.width = pct + "%";
-      if (cnt) cnt.textContent = String(wcVotes[j]);
-    }
-  }
-
   function showRound() {
-    if (playFormat === "teams") { showTeamRound(); return; }
-    if (playFormat === "whole_class") { showWholeClassRound(); return; }
     if (idx >= rounds.length) {
       endGame();
       return;
@@ -6607,48 +2506,33 @@
     text("feedback", "");
     var round = rounds[idx];
     currentRoundState = { mode: activeMode, round: round };
-    text("actionTip", modePrompt(activeMode, idx));
     text("scene", round.scene);
-    text("prompt", modeScenarioPrompt(activeMode, round, idx));
-    if (activeMode === "spotlight") {
-      showSpotlightOptions(round);
-    } else if (activeMode === "timeline") {
-      showClassifyOptions(round);
-    } else if (activeMode === "builder") {
-      showBuilderOptions(round);
-    } else if (activeMode === "dialogue") {
-      showDialogueOptions(round);
-    } else if (activeMode === "rewrite") {
-      showRewriteOptions(round);
-    } else if (activeMode === "signal") {
-      showSignalOptions(round);
-    } else if (activeMode === "evidence") {
-      showEvidenceOptions(round);
-    } else if (activeMode === "interrogation") {
-      showInterrogationOptions(round);
-    } else if (activeMode === "smash") {
+    if (activeMode === "smash") {
+      text("prompt", modePrompt(activeMode));
       showChoiceOptions(round);
     } else if (activeMode === "binary") {
+      text("prompt", modePrompt(activeMode));
       showBinaryOptions(round);
     } else if (activeMode === "classify") {
+      text("prompt", modePrompt(activeMode));
       showClassifyOptions(round);
     } else if (activeMode === "repair") {
+      text("prompt", modePrompt(activeMode));
       showRepairOptions(round);
     } else if (activeMode === "duel") {
+      text("prompt", modePrompt(activeMode));
       showDuelOptions(round, "Rewrite Duel");
     } else if (activeMode === "sequence") {
+      text("prompt", modePrompt(activeMode));
       showDuelOptions(round, "Next-line Duel");
     } else if (activeMode === "eliminate") {
+      text("prompt", modePrompt(activeMode));
       showEliminateOptions(round);
     } else if (activeMode === "sweep") {
+      text("prompt", modePrompt(activeMode));
       showSweepOptions(round);
-    } else if (activeMode === "forge") {
-      showForgeOptions(round);
-    } else if (activeMode === "detect") {
-      showDetectOptions(round);
-    } else if (activeMode === "order") {
-      showOrderOptions(round);
     } else {
+      text("prompt", modePrompt(activeMode));
       showChoiceOptions(round);
     }
     startShotClock(round);
@@ -6660,11 +2544,11 @@
     finishRound(
       userCorrect,
       activeMode === "smash"
-        ? "Error spotted! That sentence has a grammar mistake. " + round.explain
-        : "Correct! " + round.explain,
+        ? "Hit confirmed: you smashed an incorrect line. " + round.explain
+        : "Secure: " + round.explain,
       activeMode === "smash"
-        ? "That sentence is actually correct. The error is in a different one. " + round.explain
-        : "Not quite \u2014 the correct answer is \"" + round.options[round.answer] + "\". " + round.explain,
+        ? "That line is already correct. Smash an error line instead. " + round.explain
+        : "Needs repair: correct line is \"" + round.options[round.answer] + "\". " + round.explain,
       btn
     );
   }
@@ -6688,7 +2572,7 @@
     hintsLeft -= 1;
     var used = false;
 
-    if (currentRoundState.mode === "classify" || currentRoundState.mode === "sweep" || currentRoundState.mode === "timeline" || currentRoundState.mode === "evidence") {
+    if (currentRoundState.mode === "classify" || currentRoundState.mode === "sweep") {
       var rows = currentRoundState.rows || [];
       for (var i = 0; i < rows.length; i++) {
         if (!rows[i].hasPick()) {
@@ -6698,9 +2582,9 @@
         }
       }
       if (used) html("feedback", "<span class=\"ok\">Hint applied: one line was auto-classified.</span>");
-    } else if (currentRoundState.mode === "binary" || currentRoundState.mode === "signal") {
+    } else if (currentRoundState.mode === "binary") {
       used = true;
-      html("feedback", "<span class=\"ok\">Hint: the sentence " + (currentRoundState.candidateCorrect ? "matches the signal" : "does not match") + ".</span>");
+      html("feedback", "<span class=\"ok\">Hint: the highlighted line is " + (currentRoundState.candidateCorrect ? "Secure" : "Needs Repair") + ".</span>");
     } else {
       var decoys = Array.prototype.slice.call(optionsEl.querySelectorAll(".opt")).filter(function (btn) {
         return btn.dataset.target === "0" && !btn.classList.contains("eliminated");
@@ -6750,26 +2634,10 @@
   function endGame() {
     if (timer) clearInterval(timer);
     if (shotTimer) clearInterval(shotTimer);
-
-    if (playFormat === "teams") {
-      var winner = teamA.score > teamB.score ? "Team A" : (teamB.score > teamA.score ? "Team B" : "Tie");
-      var accA = Math.round((teamA.correct / Math.max(1, rounds.length)) * 100);
-      var accB = Math.round((teamB.correct / Math.max(1, rounds.length)) * 100);
-      text("reportAcc", "Team A: " + teamA.score + " pts (" + accA + "%) vs Team B: " + teamB.score + " pts (" + accB + "%)");
-      text("reportPlan", winner === "Tie" ? "It\u2019s a tie! Both teams matched up perfectly." : winner + " wins! Great competition.");
-      text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Teams Mode");
-    } else if (playFormat === "whole_class") {
-      var classAcc = wcClassTotal > 0 ? Math.round((wcClassCorrect / wcClassTotal) * 100) : 0;
-      text("reportAcc", "Class Accuracy: " + classAcc + "% \u2014 " + wcClassCorrect + "/" + wcClassTotal + " correct as a group");
-      text("reportPlan", classAcc >= 80 ? "Great class performance! Ready for the next challenge." : "Review the tricky questions and try again.");
-      text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Whole Class Mode");
-    } else {
-      var acc = Math.round((correct / Math.max(1, idx)) * 100);
-      text("reportAcc", "Accuracy: " + acc + "% (" + correct + "/" + Math.max(1, idx) + ")");
-      text("reportPlan", (acc >= 80 ? "Recommendation: advance to the next mission game." : "Recommendation: replay this game for retrieval strength.") + " Final score: " + score + " pts.");
-      text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
-    }
-
+    var acc = Math.round((correct / Math.max(1, idx)) * 100);
+    text("reportAcc", "Accuracy: " + acc + "% (" + correct + "/" + Math.max(1, idx) + ")");
+    text("reportPlan", (acc >= 80 ? "Recommendation: advance to the next mission game." : "Recommendation: replay this game for retrieval strength.") + " Final score: " + score + " pts.");
+    text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
     var report = document.getElementById("reportOverlay");
     if (report) report.classList.add("show");
   }
@@ -6826,9 +2694,6 @@
       awaitingNext = false;
       setNextVisibility(false);
       sec = timerOn ? rounds.length * missionSecondsPerRound : null;
-      teamA.score = 0; teamA.correct = 0; teamA.streak = 0; teamA.combo = 1; teamA.idx = 0; teamA.locked = false;
-      teamB.score = 0; teamB.correct = 0; teamB.streak = 0; teamB.combo = 1; teamB.idx = 0; teamB.locked = false;
-      wcVotes = [0, 0, 0, 0]; wcRevealed = false; wcClassCorrect = 0; wcClassTotal = 0;
       showRound();
       startTimer();
     });

@@ -8,7 +8,8 @@
   <style>
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 8px 18px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 40px;margin:0;display:grid;gap:26px}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 40px}
+    .wrap{max-width:960px;margin:0 auto;display:grid;gap:26px}
     .section{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow);padding:28px}
     .k{margin:0 0 10px;font:800 11px Inter,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1f5f63}
     h1,h2{margin:0;color:#0b1020;line-height:1.12}
@@ -34,16 +35,15 @@
     .pack-section-footer{margin-top:12px}
     .icon-sm{width:20px;height:20px;vertical-align:middle;margin-right:6px;object-fit:contain}
     .card h2 .icon-sm{margin-right:8px}
-    @media (max-width:100%){.grid{grid-template-columns:1fr}.section{padding:20px}}
-    @media (max-width:100%){.pack-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.section{padding:20px}}
+    @media (max-width:900px){.pack-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
   </style>
 </head>
 <body>
   <script src="i18n.js"></script>
   <div data-include="header"></div>
   <main class="wrap">
-    <section class="section" style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center">
-      <div>
+    <section class="section">
       <p class="k">Teacher Dashboard</p>
       <h1>Control panel for your next class mission</h1>
       <p>Continue, start, or report.</p>
@@ -51,132 +51,61 @@
         <a class="seg active" aria-selected="true" href="teacher-home.html">Teacher</a>
         <a class="seg" aria-selected="false" href="individual-home.html">Student</a>
       </div>
-      </div>
-      <img src="assets/illustrations/teacher-dashboard.svg" alt="" style="width:220px;height:auto;opacity:.85" aria-hidden="true" />
     </section>
 
-    <!-- Quick Actions -->
-    <section class="section" aria-label="Quick actions">
-      <div class="grid" style="grid-template-columns:repeat(4,1fr)">
-        <article class="card" style="text-align:center;padding:20px">
-          <div style="font-size:28px;margin-bottom:8px">📋</div>
-          <h2 style="font-size:16px;margin:0 0 4px">Launch Mission</h2>
-          <p style="font-size:13px;margin:0 0 10px">Start a new class mission</p>
-          <a class="btn-primary" href="teacher-mode.html?pack=pack01" style="font-size:12px;padding:8px 14px">Launch</a>
+    <section class="section" aria-label="Teacher onboarding video">
+      <p class="k">Welcome Video</p>
+      <h2>Start with a 3-minute teacher tour</h2>
+      <p>Watch a quick walkthrough of the full teacher flow: choose a mission, run class mode, open reports, and navigate key pages.</p>
+      <a class="btn-primary" href="teacher-welcome.html">Watch welcome video</a>
+    </section>
+
+    <section class="section" aria-label="Primary actions">
+      <div class="grid">
+        <article class="card">
+          <h2>Continue Last Mission</h2>
+          <p>Return to your current setup.</p>
+          <a class="btn-primary" href="teacher-mode.html?pack=pack01">Continue</a>
         </article>
-        <article class="card" style="text-align:center;padding:20px">
-          <div style="font-size:28px;margin-bottom:8px">👥</div>
-          <h2 style="font-size:16px;margin:0 0 4px">My Classrooms</h2>
-          <p style="font-size:13px;margin:0 0 10px">Manage students & codes</p>
-          <a class="btn-primary" href="classrooms.html" style="font-size:12px;padding:8px 14px">Open</a>
+        <article class="card">
+          <h2>Start New Mission</h2>
+          <p>Choose a mission set and begin.</p>
+          <a class="btn-secondary" href="packs.html">Choose mission</a>
         </article>
-        <article class="card" style="text-align:center;padding:20px">
-          <div style="font-size:28px;margin-bottom:8px">📊</div>
-          <h2 style="font-size:16px;margin:0 0 4px">Reports</h2>
-          <p style="font-size:13px;margin:0 0 10px">View student progress</p>
-          <a class="btn-primary" href="teacher-student-progress.html" style="font-size:12px;padding:8px 14px">View</a>
-        </article>
-        <article class="card" style="text-align:center;padding:20px">
-          <div style="font-size:28px;margin-bottom:8px">📚</div>
-          <h2 style="font-size:16px;margin:0 0 4px">Mission Library</h2>
-          <p style="font-size:13px;margin:0 0 10px">Browse all missions</p>
-          <a class="btn-primary" href="packs.html" style="font-size:12px;padding:8px 14px">Browse</a>
+        <article class="card">
+          <h2>View Reports</h2>
+          <p>Open session and export data.</p>
+          <a class="link-action" href="teacher-dashboard.html">Open reports</a>
         </article>
       </div>
     </section>
 
-    <!-- My Students Overview -->
-    <section class="section" aria-label="Student overview">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px">
-        <div>
-          <p class="k">My Students</p>
-          <h2 style="margin:0">Student Overview</h2>
-        </div>
-        <a class="btn-primary" href="classrooms.html" style="font-size:12px;padding:8px 16px">+ Add Classroom</a>
-      </div>
-      <div id="studentOverview"></div>
-    </section>
-
-    <!-- Mission Selection -->
     <section class="section" aria-label="Pack tiles">
-      <p class="k">Missions</p>
-      <h2>Quick launch a mission</h2>
+      <h2>Mission selection</h2>
       <p>Open one mission set, then choose difficulty.</p>
       <div class="pack-grid" style="margin-top:14px" id="featuredPacks"></div>
       <p class="pack-section-footer"><a href="packs.html" class="link-action">View all missions →</a></p>
     </section>
 
-    <!-- Resources -->
-    <section class="section" aria-label="Resources">
-      <p class="k">Resources</p>
-      <div class="grid" style="grid-template-columns:1fr 1fr">
-        <article class="card">
-          <h2>Teacher Welcome Video</h2>
-          <p>3-minute tour of the full teacher flow.</p>
-          <a class="btn-primary" href="teacher-welcome.html" style="margin-top:8px;display:inline-flex">Watch Video</a>
-        </article>
-        <article class="card">
-          <h2>ELD Teaching Tips</h2>
-          <p>Short reads with actionable next steps.</p>
-          <a class="link-action" href="insights.html">Read Insights →</a>
-        </article>
-      </div>
+    <section class="section">
+      <details>
+        <summary>Learn more</summary>
+        <ul>
+          <li><a href="teacher-student-progress.html">Student progress</a></li>
+          <li><a href="teacher-mission-history.html">Mission history</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </details>
     </section>
   </main>
   <div data-include="footer"></div>
   <script src="billing-scaffold.js"></script>
   <script src="auth-scaffold.js"></script>
-  <script src="classroom.js"></script>
   <script src="layout-loader.js"></script>
   <script src="app-shell.js"></script>
   <script>
     (function(){
-      // Student overview
-      function renderStudentOverview() {
-        var el = document.getElementById('studentOverview');
-        if (!el || !window.GSClassroom) return;
-        var classrooms = window.GSClassroom.getClassrooms();
-        if (!classrooms.length) {
-          el.innerHTML = '<div style="text-align:center;padding:32px;background:#f8fafc;border-radius:14px;border:1px solid #e4e8ef">' +
-            '<div style="font-size:36px;margin-bottom:10px">👥</div>' +
-            '<h3 style="margin:0 0 6px;font-size:18px;color:#16223a">No classrooms yet</h3>' +
-            '<p style="margin:0 0 14px;color:#7a8698;font-size:14px">Create a classroom and share the join code with your students.</p>' +
-            '<a href="classrooms.html" style="display:inline-flex;align-items:center;padding:10px 18px;border:1px solid #194f53;border-radius:10px;background:#1f5f63;color:#fff;font:700 13px Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none">Create Classroom</a>' +
-            '</div>';
-          return;
-        }
-        var html = '';
-        classrooms.forEach(function(c) {
-          var studentCount = c.students ? c.students.length : 0;
-          var studentRows = '';
-          if (studentCount) {
-            studentRows = (c.students || []).map(function(s) {
-              var d = '';
-              try { d = new Date(s.joinedAt).toLocaleDateString('en-US', {month:'short',day:'numeric'}); } catch(e){}
-              return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#fff;border:1px solid #e4e8ef;border-radius:8px">' +
-                '<div style="display:flex;align-items:center;gap:10px">' +
-                  '<div style="width:32px;height:32px;border-radius:50%;background:#e8f4f5;color:#1f5f63;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">' + (s.name.charAt(0).toUpperCase()) + '</div>' +
-                  '<div><div style="font-weight:600;font-size:14px;color:#16223a">' + s.name + '</div>' +
-                  '<div style="font-size:11px;color:#7a8698">Joined ' + d + '</div></div>' +
-                '</div>' +
-                '<a href="teacher-student-progress.html" style="font-size:12px;color:#1f5f63;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em">View Report →</a>' +
-              '</div>';
-            }).join('');
-          } else {
-            studentRows = '<div style="padding:14px;text-align:center;color:#7a8698;font-size:13px;font-style:italic">No students yet — share code <strong>' + c.code + '</strong></div>';
-          }
-          html += '<div style="background:#fff;border:1px solid #d9dee6;border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(11,16,32,.04)">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
-              '<div><h3 style="margin:0;font-size:18px;color:#0b1020">' + c.name + '</h3>' +
-              '<span style="font-size:12px;color:#7a8698">' + studentCount + ' student' + (studentCount !== 1 ? 's' : '') + ' · Code: <strong style="color:#1f5f63;letter-spacing:.1em">' + c.code + '</strong></span></div>' +
-              '<a href="classrooms.html" style="font-size:11px;color:#1f5f63;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;border:1px solid #d9dee6;border-radius:8px;padding:6px 12px">Manage</a>' +
-            '</div>' +
-            '<div style="display:grid;gap:6px">' + studentRows + '</div>' +
-          '</div>';
-        });
-        el.innerHTML = html;
-      }
-      renderStudentOverview();
       var FEATURED = [
         { id: 'pack01', num: '01', name: 'Retell What Happened', cover: 'assets/branding-images/packs/pack01-retell-what-happened.png' },
         { id: 'pack02', num: '02', name: 'Speak In The Moment', cover: 'assets/branding-images/packs/pack02-speak-in-the-moment.png' },

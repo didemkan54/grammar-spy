@@ -3,14 +3,6 @@
   var CHECKOUT_KEY = 'gs_checkout_events_v1';
   var CONFIG_KEY = 'gs_billing_config_v1';
   var DEFAULT_TRIAL_DAYS = 14;
-  var DEFAULT_STRIPE_LINKS = {
-    single_teacher: 'https://buy.stripe.com/9B63cv9Vn7zgePJ8iR3gk01',
-    single_teacher_monthly: 'https://buy.stripe.com/9B63cv9Vn7zgePJ8iR3gk01',
-    single_teacher_yearly: 'https://buy.stripe.com/bJe7sL3wZaLs0YTcz73gk04',
-    student_monthly: 'https://buy.stripe.com/28E5kD4B35r89vp42B3gk02',
-    student_yearly: 'https://buy.stripe.com/5kQcN5aZr2eWdLF7eN3gk03',
-    school_license: ''
-  };
 
   function parse(raw, fallback){
     if (!raw) return fallback;
@@ -52,18 +44,16 @@
   }
 
   function loadConfig(){
-    var stored = parse(localStorage.getItem(CONFIG_KEY), {});
-    var storedLinks = stored && stored.stripeLinks ? stored.stripeLinks : {};
-    return {
+    return parse(localStorage.getItem(CONFIG_KEY), {
       stripeLinks: {
-        single_teacher: storedLinks.single_teacher || DEFAULT_STRIPE_LINKS.single_teacher,
-        single_teacher_monthly: storedLinks.single_teacher_monthly || DEFAULT_STRIPE_LINKS.single_teacher_monthly,
-        single_teacher_yearly: storedLinks.single_teacher_yearly || DEFAULT_STRIPE_LINKS.single_teacher_yearly,
-        student_monthly: storedLinks.student_monthly || DEFAULT_STRIPE_LINKS.student_monthly,
-        student_yearly: storedLinks.student_yearly || DEFAULT_STRIPE_LINKS.student_yearly,
-        school_license: storedLinks.school_license || DEFAULT_STRIPE_LINKS.school_license
+        single_teacher: '',
+        single_teacher_monthly: '',
+        single_teacher_yearly: '',
+        student_monthly: '',
+        student_yearly: '',
+        school_license: ''
       }
-    };
+    });
   }
 
   function setConfig(next){
@@ -90,11 +80,6 @@
     if (!account.createdAt) account.createdAt = nowIso();
     if (!account.plan) account.plan = 'trial';
     if (!Array.isArray(account.entitlements)) account.entitlements = ['pack01'];
-    if (isOwnerEmail(account.email) && account.plan !== 'paid') {
-      account.plan = 'paid';
-      account.entitlements = ['pack01', 'pack02', 'pack03', 'pack04', 'pack05', 'pack06'];
-      if (account.billing) account.billing.status = 'active';
-    }
     if ((account.plan === 'trial' || account.plan === 'guest') && account.entitlements.length > 1) {
       account.entitlements = ['pack01'];
     }
@@ -131,25 +116,23 @@
 
   function createAccount(name, email, role){
     var stamp = nowIso();
-    var emailStr = String(email || '').trim();
-    var owner = isOwnerEmail(emailStr);
     var account = {
       id: 'acct_' + Math.random().toString(36).slice(2, 10),
       mode: 'account',
       role: role || 'teacher',
       name: String(name || 'Teacher').trim() || 'Teacher',
-      email: emailStr,
+      email: String(email || '').trim(),
       createdAt: stamp,
       updatedAt: stamp,
-      plan: owner ? 'paid' : 'trial',
-      entitlements: owner ? ['pack01', 'pack02', 'pack03', 'pack04', 'pack05', 'pack06'] : ['pack01'],
+      plan: 'trial',
+      entitlements: ['pack01'],
       trial: {
         startedAt: stamp,
         endsAt: addDays(stamp, 365),
         status: 'active'
       },
       billing: {
-        status: owner ? 'active' : 'trialing',
+        status: 'trialing',
         stripeCustomerId: '',
         lastCheckoutAt: ''
       }
@@ -233,16 +216,6 @@
     return a;
   }
 
-  /** Owner emails — always get full access */
-  var OWNER_EMAILS = [
-    'gul.d.kan@mcpsmd.net'
-  ];
-
-  function isOwnerEmail(email) {
-    if (!email) return false;
-    return OWNER_EMAILS.indexOf(email.trim().toLowerCase()) >= 0;
-  }
-
   /** Promo codes for teacher feedback - full access, no subscription */
   var PROMO_CODES = new Set([
     'FEEDBACK2025',
@@ -251,17 +224,10 @@
     'GRAMMARSPY'
   ]);
 
-  /** Teacher classroom codes — students enter these at home for full access */
-  var TEACHER_CODES = {
-    'KANCLASS': { teacher: 'Mrs. Kan', school: 'MCPS', access: 'full' },
-    'SPYGRAMMAR': { teacher: 'Mrs. Kan', school: 'MCPS', access: 'full' },
-    'KANPER4': { teacher: 'Mrs. Kan', school: 'MCPS', period: '4', access: 'full' }
-  };
-
   function redeemPromoCode(code){
     if (!code || typeof code !== 'string') return false;
     var normalized = String(code).trim().toUpperCase();
-    if (!PROMO_CODES.has(normalized) && !TEACHER_CODES[normalized]) return false;
+    if (!PROMO_CODES.has(normalized)) return false;
     var a = ensureAccount();
     if (!a) return false;
     grantPaid('school');
