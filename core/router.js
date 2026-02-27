@@ -72,14 +72,14 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     `</select>`;
 
   targetEl.innerHTML = `
-    <nav aria-label="Primary navigation" style="margin:0 0 16px;padding:12px 40px 14px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">
+    <nav aria-label="Primary navigation" style="margin:0 0 16px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">
       <a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent">
-        <img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:74px;width:auto;display:block;background:transparent;border:none">
+        <img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none">
       </a>
-      <span style="display:flex;flex:1 1 520px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center">
+      <span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">
         ${primaryLinksHtml}
       </span>
-      <span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">
+      <span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end">
         <span id="gsLangSwitcher" style="display:inline-flex;align-items:center">
           ${langSelect}
         </span>
