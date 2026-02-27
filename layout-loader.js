@@ -12,7 +12,6 @@
       st.id = 'gsTopNavStyles';
       st.textContent =
         'nav[aria-label=\"Primary navigation\"] .gs-pill{white-space:nowrap}\\n' +
-        'nav[aria-label=\"Primary navigation\"] #gsMissionMenu > summary::after{content:\"▼\";font-size:9px;line-height:1;opacity:.78;margin-left:2px}\\n' +
         '@media (max-width:720px){\\n' +
         '  nav[aria-label=\"Primary navigation\"]{padding-left:14px!important;padding-right:14px!important}\\n' +
         '}\\n' +
@@ -36,7 +35,7 @@
     '<span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
     '<a class="gs-pill" href="/index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
     '<details id="gsMissionMenu" style="position:relative">' +
-    '<summary class="gs-pill" style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions</summary>' +
+    '<summary class="gs-pill" style="' + menuSummaryStyle + '"><span data-i18n="nav_missions">Missions</span><span aria-hidden="true" style="font-size:9px;line-height:1;opacity:.78">▼</span></summary>' +
     '<span style="' + menuPanelStyle + '">' +
     '<a href="/teacher-mode.html" style="' + dropdownLinkStyle + '">Run a Mission</a>' +
     '<a href="/teacher-mode.html?play_format=whole_class" style="' + dropdownLinkStyle + '">Whole Class</a>' +
