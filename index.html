@@ -17,13 +17,13 @@
     /* Grammar Spy palette (locked): Navy + Teal primary, Gold accent only. No yellow/other accent. */
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--gold:#c9a227;--shadow:0 8px 16px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:#ffffff;color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 52px}
-    .wrap{max-width:1120px;margin:0 auto;display:grid;gap:56px}
+    body{margin:0;background:#ffffff;color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 52px}
+    .wrap{max-width:100%;margin:0;display:grid;gap:48px;padding:0 40px}
     .section{padding:8px 0}
     .section-flat{padding:8px 4px}
-    .section-band-dark{background:linear-gradient(170deg,#0b1020,#16223a);padding:34px 20px;color:#eaf0ff}
-    .section-band-dark h2,.section-band-dark p,.section-band-dark li{color:#eaf0ff}
-    .section-band-dark .link-action{color:#b9dfe2}
+    .section-band-dark{background:linear-gradient(170deg,#2a4a5a,#1f5f63);padding:40px;color:#f0f7f8;margin:0 -40px;border-radius:0}
+    .section-band-dark h2,.section-band-dark p,.section-band-dark li{color:#f0f7f8}
+    .section-band-dark .link-action{color:#c9e8eb}
     .k{margin:0 0 10px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
     h1,h2{margin:0;color:var(--navy);line-height:1.05}
     h1{font-size:48px;letter-spacing:.005em}
@@ -42,14 +42,17 @@
     .mission-label{margin:0 0 8px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
     .mission-label::before{content:"";display:block;width:16px;height:2px;border-radius:2px;background:var(--gold);margin-bottom:8px}
     .hero-accent{width:36px;height:2px;background:var(--gold);border-radius:2px;margin:14px 0 0}
-    .hero-shell{margin:0 calc(50% - 50vw);padding:0 14px}
+    .hero-shell{margin:0 -40px;padding:0 40px;background:linear-gradient(180deg,#f8fbfd 0%,#ffffff 100%)}
     .hero{
       position:relative;
       overflow:hidden;
-      background:#ffffff;
+      background:transparent;
       color:var(--mid);
       border-radius:0;
-      padding:34px 0;
+      padding:48px 0 40px;
+      max-width:100%;
+      margin:0;
+      padding:0 40px;
     }
     .hero h1{color:var(--navy)}
     .hero .k{color:var(--teal)}
@@ -75,12 +78,12 @@
     .hero-grid{
       position:relative;
       z-index:1;
-      max-width:1120px;
-      margin:0 auto;
-      padding:0 6px;
+      max-width:100%;
+      margin:0;
+      padding:0 40px;
       display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:40px;
+      grid-template-columns:1fr 1fr;
+      gap:48px;
       align-items:center;
     }
     .mission-panel{
@@ -150,19 +153,29 @@
     }
     .hero-visual{
       display:flex;
-      justify-content:flex-end;
+      justify-content:center;
+      align-items:center;
     }
     .hero-visual img{
       width:100%;
-      max-width:480px;
-      border-radius:16px;
-      box-shadow:0 20px 60px rgba(11,16,32,.15);
+      max-width:520px;
+      border-radius:18px;
+      box-shadow:0 16px 48px rgba(11,16,32,.12);
+      object-fit:cover;
     }
-    .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:18px}
+    .flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}
     .step{padding:12px 0;border-radius:0;background:transparent;border-bottom:1px solid #e4e8ef}
     .step b{display:block;font-size:13px;color:#0b1020}
     .step span{display:block;margin-top:4px;font-size:13px;color:#4a5568;line-height:1.55}
     .case{padding:16px 0;border-radius:0;background:transparent;border-bottom:1px solid #e4e8ef}
+    .proof-list{margin:14px 0 0;padding-left:18px;color:#4a5568;display:grid;gap:6px;line-height:1.6}
+    .proof-note{margin-top:10px;font-size:13px;color:#5c6677}
+    .testimonial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+    .quote-card{border:1px solid var(--cool);border-radius:12px;background:#fff;padding:14px}
+    .quote-card p{margin:0;color:#324357;font-size:14px}
+    .quote-card .quote-by{display:block;margin-top:10px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6c7688}
+    .faq-list{display:grid;gap:10px;margin-top:14px}
+    .microcopy-hints{margin-top:12px;padding-left:18px;display:grid;gap:6px;font-size:13px;color:#4a5568;line-height:1.55}
     ul{margin:14px 0 0;padding-left:18px;color:#4a5568;display:grid;gap:8px;line-height:1.6}
     details{margin-top:14px;border:1px solid var(--cool);border-radius:8px;background:#fff;padding:10px}
     summary{cursor:pointer;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#16223a}
@@ -172,10 +185,30 @@
     .inside-mission .screenshot-card{border:1px solid var(--cool);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(11,16,32,.08)}
     .inside-mission .screenshot-card img{width:100%;height:auto;display:block;object-fit:cover}
     .inside-mission .screenshot-card figcaption{margin:0;padding:12px 14px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);border-top:1px solid #e4e8ef}
+    .inside-mission .report-preview{padding:14px 14px 16px;display:grid;gap:12px}
+    .inside-mission .report-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .inside-mission .report-title b{display:block;color:var(--navy);font:800 12px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+    .inside-mission .report-title span{display:block;margin-top:4px;color:#5c6677;font:600 13px Inter,Arial,sans-serif;line-height:1.35}
+    .inside-mission .report-kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .inside-mission .kpi{border:1px solid #e4e8ef;border-radius:10px;background:#f8fafc;padding:10px}
+    .inside-mission .kpi i{display:block;font-style:normal;font:800 18px Inter,Arial,sans-serif;color:var(--navy)}
+    .inside-mission .kpi small{display:block;margin-top:2px;font:800 10px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#5c6677}
+    .inside-mission .report-next{border:1px solid rgba(31,95,99,.25);background:rgba(31,95,99,.08);border-radius:12px;padding:12px}
+    .inside-mission .report-next .label{display:block;font:800 10px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#1f5f63}
+    .inside-mission .report-next a{display:inline-flex;align-items:center;gap:8px;margin-top:8px;color:#0b1020;text-decoration:none;font:800 13px Inter,Arial,sans-serif}
+    .inside-mission .report-next a:hover{text-decoration:underline}
+    .inside-mission .report-next .hint{margin-top:6px;color:#39536b;font:600 12px Inter,Arial,sans-serif;line-height:1.4}
+    .inside-mission .report-scan{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .inside-mission .scan-card{border:1px solid #e4e8ef;border-radius:12px;background:#ffffff;padding:12px}
+    .inside-mission .scan-card b{display:block;font:900 10px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#16223a}
+    .inside-mission .scan-card ul{margin:10px 0 0;padding-left:16px;display:grid;gap:6px;font-size:13px;color:#4a5568;line-height:1.5}
+    .inside-mission .report-mini{border:1px dashed rgba(201,162,39,.65);border-radius:12px;background:rgba(201,162,39,.08);padding:12px}
+    .inside-mission .report-mini b{display:block;font:900 10px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#0b1020}
+    .inside-mission .report-mini p{margin:8px 0 0;color:#324357;font-size:13px;line-height:1.55}
     @media (max-width:1000px){.inside-mission{grid-template-columns:1fr}}
     @media (max-width:620px){.inside-mission{grid-template-columns:1fr}.inside-mission .screenshot-card img{max-height:280px;object-fit:contain}}
     @media (max-width:620px){.inside-mission{gap:16px}}
-    @media (max-width:920px){h1{font-size:38px}h2{font-size:24px}.section-band-dark{padding:24px 14px}.hero{padding:34px 0}.hero-grid{grid-template-columns:1fr;gap:20px}.hero-visual{justify-content:flex-start}.flow{grid-template-columns:1fr 1fr}}
+    @media (max-width:920px){h1{font-size:38px}h2{font-size:24px}.section-band-dark{padding:24px 14px}.hero{padding:34px 0}.hero-grid{grid-template-columns:1fr;gap:20px}.hero-visual{justify-content:flex-start}.flow{grid-template-columns:1fr 1fr}.testimonial-grid{grid-template-columns:1fr}}
     @media (max-width:620px){h1{font-size:32px}.hero{padding:24px 0}.hero-buttons{flex-direction:column;align-items:flex-start;gap:12px}.btn-primary,.seg{min-height:44px;padding:10px 16px}.flow{grid-template-columns:1fr}}
 
     /* Welcome overlay */
@@ -217,50 +250,6 @@
     .email-capture .email-capture-thanks{display:none;font-size:14px;color:var(--teal);font-weight:600}
     .email-capture .email-capture-thanks.show{display:block}
     .email-capture-form.hide{display:none}
-
-    .mission-engine-hub{
-      border:1px solid rgba(14,165,165,.28);
-      border-radius:16px;
-      background:linear-gradient(165deg,#f4fbfb 0%,#ffffff 70%);
-      padding:18px 16px;
-      box-shadow:0 12px 24px rgba(11,16,32,.06);
-    }
-    .mission-engine-grid{
-      margin-top:14px;
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-    .mission-engine-card{
-      border:1px solid rgba(14,165,165,.24);
-      border-radius:12px;
-      background:#fff;
-      padding:12px;
-    }
-    .mission-engine-card b{
-      display:block;
-      color:#0b3b3b;
-      font-size:14px;
-      margin-bottom:4px;
-    }
-    .mission-engine-card p{
-      margin:0;
-      color:#3a5454;
-      font-size:13px;
-      line-height:1.5;
-    }
-    .mission-engine-card a{
-      display:inline-block;
-      margin-top:8px;
-      text-decoration:none;
-      color:#0ea5a5;
-      font:700 11px Inter,Arial,sans-serif;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-    .mission-engine-card a:hover{text-decoration:underline}
-    @media (max-width:920px){.mission-engine-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:620px){.mission-engine-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -268,17 +257,17 @@
     <div class="gs-welcome-backdrop" style="position:absolute;inset:0" aria-hidden="true"></div>
     <div class="gs-welcome-card">
       <p class="k">Grammar Spy™</p>
-      <h2 id="gsWelcomeTitle" data-i18n="welcome_title">Get the full experience of Grammar Spy</h2>
-      <p id="gsWelcomeDesc" data-i18n="welcome_desc">Join our community—teachers and students building grammar skills one mission at a time.</p>
+      <h2 id="gsWelcomeTitle">Start with Mission 01 Free</h2>
+      <p id="gsWelcomeDesc">Run one focused Mission, review the sample report, then decide if it fits your classroom.</p>
       <div class="gs-welcome-email" id="gsWelcomeEmail">
-        <label for="gsWelcomeEmailInput" data-i18n="email_getMission01">Get Mission 01 free.</label>
-        <input type="email" id="gsWelcomeEmailInput" placeholder="you@example.com" autocomplete="email">
-        <button type="button" class="btn-primary" id="gsWelcomeEmailBtn" style="margin-top:8px;width:100%" data-i18n="email_submit">Send me Mission 01</button>
-        <p class="gs-email-msg" id="gsWelcomeEmailMsg" data-i18n="email_onList">You're on the list. We'll be in touch.</p>
+        <label for="gsWelcomeEmailInput">School or work email</label>
+        <input type="email" id="gsWelcomeEmailInput" placeholder="name@school.org" autocomplete="email">
+        <button type="button" class="btn-primary" id="gsWelcomeEmailBtn" style="margin-top:8px;width:100%">Send me Mission 01</button>
+        <p class="gs-email-msg" id="gsWelcomeEmailMsg">Check your inbox. Your Mission 01 link is on the way.</p>
       </div>
       <div class="gs-welcome-actions">
-        <a href="auth.html?mode=create" class="btn-primary" data-i18n="welcome_join">Join free</a>
-        <button type="button" class="gs-welcome-dismiss" data-i18n="welcome_continue">Continue to site</button>
+        <a href="auth.html?mode=create" class="btn-primary">Create free teacher account</a>
+        <button type="button" class="gs-welcome-dismiss">Continue to site</button>
       </div>
     </div>
   </div>
@@ -326,29 +315,29 @@
       <div class="hero-grid">
         <div>
           <p class="k">Grammar Spy™</p>
-          <h1 data-i18n="hero_tagline">Structured grammar. Clear results. Zero chaos.</h1>
+          <h1 id="heroHeadline">Structured grammar practice. Clear results. No classroom chaos.</h1>
           <div class="hero-accent" aria-hidden="true"></div>
-          <p class="subcopy hero-who" data-i18n="hero_subcopy">Created by an ELD teacher for real classrooms.</p>
+          <p class="subcopy hero-who" id="heroSubcopy">Missions are short, focused grammar practice tasks you can run in minutes.</p>
           <div class="mission-panel">
-            <p class="mission-label start-here" data-i18n="hero_startHere">Start here</p>
-            <p class="hero-cta-copy" data-i18n="hero_ctaCopy">Choose one (Teacher or Student), then click Continue. Sign up for a free account to get Mission 01 at no cost; pay to unlock all missions.</p>
+            <p class="mission-label start-here">Choose your role</p>
+            <p class="hero-cta-copy" id="heroCtaCopy">Teacher path: start with Mission 01 Free, review a sample report, then create your classroom. Student path: join with a class code and complete assigned Missions.</p>
             <div class="segmented" role="tablist" aria-label="Mode selection">
-              <button id="modeTeacher" class="seg active" type="button" aria-selected="true" data-i18n="hero_teacher">Teacher</button>
-              <button id="modeStudent" class="seg" type="button" aria-selected="false" data-i18n="hero_student">Student</button>
+              <button id="modeTeacher" class="seg active" type="button" aria-selected="true">Teacher</button>
+              <button id="modeStudent" class="seg" type="button" aria-selected="false">Student</button>
             </div>
+            <p id="roleHelper" class="proof-note">Teacher: launch Mission 01, track results, create a classroom. Student: join with class code and start practice.</p>
             <div style="margin-top:14px;padding:12px 14px;background:rgba(31,95,99,.12);border:2px solid #1f5f63;border-radius:10px">
-              <label for="indexPromoCode" style="display:block;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63;margin-bottom:6px">Promo code</label>
-              <input type="text" id="indexPromoCode" placeholder="Enter promo code" maxlength="20" style="width:100%;max-width:220px;border:2px solid #1f5f63;border-radius:8px;padding:10px 12px;font-size:14px" />
+              <label for="indexPromoCode" style="display:block;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63;margin-bottom:6px">Promo code (optional)</label>
+              <input type="text" id="indexPromoCode" placeholder="CODE1234" maxlength="20" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" inputmode="text" style="width:100%;max-width:220px;border:2px solid #1f5f63;border-radius:8px;padding:10px 12px;font-size:14px" />
+              <p style="margin:8px 0 0;font-size:12px;color:#39536b">Use letters and numbers only. Email addresses are not accepted.</p>
             </div>
             <div class="hero-buttons">
-              <a id="continueBtn" class="btn-primary btn-hero-primary" href="teacher-home.html" data-i18n="hero_continue">Continue</a>
-              <a class="link-action" href="auth.html" id="signUpLink" data-i18n="hero_signUpFree">Sign up free</a>
-              <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=6&timer=off" data-i18n="hero_trySample">Try a sample mission</a>
-              <a class="link-action" href="missions.html">Open Mission Library</a>
-              <a class="link-action" href="teacher-welcome.html">Teacher welcome video</a>
-              <a class="link-action" href="student-welcome.html">Student welcome video</a>
+              <a id="continueBtn" class="btn-primary btn-hero-primary" href="auth.html?mode=create">Try Mission 01 Free</a>
+              <a id="createClassBtn" class="btn-primary btn-hero-primary" href="teacher-home.html" style="background:#c9a227;border-color:#a88520">Create a Classroom</a>
+              <a class="link-action" href="#sample-report">See a Sample Report</a>
+              <a class="link-action" href="auth.html?mode=signin" id="signInLink">Sign In</a>
             </div>
-            <div class="passive" data-i18n="hero_passive">Teacher path requires sign-in. Mission 01 free; upgrade for all missions.</div>
+            <div class="passive" id="heroPassive">Quick recall now. Spaced review later. Repeat Missions when students need another pass.</div>
           </div>
         </div>
         <div class="hero-visual">
@@ -359,112 +348,206 @@
   </section>
 
   <main class="wrap">
-    <section class="section section-flat mission-engine-hub" aria-label="New mission systems">
-      <p class="mission-label" style="margin-top:0;color:#0f5c5c">New Mission Systems</p>
-      <h2 style="font-size:26px;color:#0b3b3b">Mission Control is now live</h2>
-      <p class="subcopy" style="max-width:72ch;color:#2d4d4d">
-        Access the new connected learning engine: Mission Library, Training Path, Agent Profile, and Launch Shell.
-      </p>
-      <div class="mission-engine-grid">
-        <article class="mission-engine-card">
-          <b>Mission Library</b>
-          <p>Filter by grade band, cognitive level, skill tags, and retrieval type.</p>
-          <a href="missions.html">Open library</a>
-        </article>
-        <article class="mission-engine-card">
-          <b>Training Path</b>
-          <p>View Levels 1–3 progression map and linked missions by grade band.</p>
-          <a href="progression.html">Open path</a>
-        </article>
-        <article class="mission-engine-card">
-          <b>Agent Profile</b>
-          <p>Track rank, XP, mastery per skill, and recommended next missions.</p>
-          <a href="profile.html">Open profile</a>
-        </article>
-        <article class="mission-engine-card">
-          <b>Launch Shell</b>
-          <p>Run mission items with intelligence report, error patterns, and recommendations.</p>
-          <a href="games/launch.html">Launch mission</a>
-        </article>
-      </div>
+
+    <section class="section section-flat" aria-label="Why teachers trust this">
+      <p class="mission-label">Why teachers trust this</p>
+      <h2>Built for real classroom pace</h2>
+      <p class="subcopy">One Mission targets one grammar skill, gives instant feedback, and ends with a report you can actually use.</p>
+      <ul class="proof-list">
+        <li>One focus per Mission keeps practice clear for students and teachers.</li>
+        <li>Instant feedback supports correction in the moment, not days later.</li>
+        <li>Repeatable Missions support quick recall, spaced review, and reteach cycles.</li>
+        <li>Use report patterns to regroup, reteach, or move on with confidence.</li>
+      </ul>
+      <p class="proof-note">Teachers report smoother transitions and clearer reteach decisions (placeholder).</p>
+      <a class="link-action" href="#sample-report">See a Sample Report</a>
     </section>
 
     <section class="section section-flat" aria-label="One mission flow">
-      <p class="mission-label" data-i18n="home_howItWorks">How it works</p>
-      <h2 data-i18n="home_whatHappens">What Happens in One Mission</h2>
-      <p data-i18n="home_oneTarget">One grammar target per mission, minimal prep, and a clear result—so you know exactly what to do next, in class or on your own.</p>
+      <p class="mission-label">How it works</p>
+      <h2>Run one Mission in three clear steps</h2>
+      <p class="subcopy">Missions are short enough for class routines and structured enough for reliable grammar retrieval practice.</p>
       <div class="flow">
-        <article class="step"><b data-i18n="home_brief">Brief</b><span data-i18n="home_briefDesc">One clear target.</span></article>
-        <article class="step"><b data-i18n="home_activity">Activity</b><span data-i18n="home_activityDesc">One focused task.</span></article>
-        <article class="step"><b><img src="assets/icons/icon-check.svg" alt="" class="icon-sm" width="22" height="22"><span data-i18n="home_feedbackLabel">Feedback</span></b><span data-i18n="home_feedback">Immediate correction.</span></article>
-        <article class="step"><b data-i18n="home_report">Report</b><span data-i18n="home_reportDesc">Next-step guidance.</span></article>
+        <article class="step"><b><span style="font-size:18px;margin-right:6px">1</span>Pick a Mission</b><span>Choose grammar target and level. Setup takes about a minute.</span></article>
+        <article class="step"><b><span style="font-size:18px;margin-right:6px">2</span>Run practice</b><span>Students complete short rounds with immediate feedback and clear corrections.</span></article>
+        <article class="step"><b><span style="font-size:18px;margin-right:6px">3</span>Use the report</b><span>Spot patterns fast, reteach quickly, and repeat for spaced review.</span></article>
       </div>
-      <a class="link-action" href="teacher-mode.html" data-i18n="home_openSetup">Open mission setup</a>
+      <a class="link-action" href="teacher-mode.html">Open Mission Setup</a>
     </section>
 
     <section class="section section-flat" aria-label="Inside a Mission">
-      <p class="mission-label" data-i18n="home_insideMissionLabel">See the product</p>
-      <h2 data-i18n="home_insideMission">Inside a Mission</h2>
-      <p class="subcopy" data-i18n="home_insideMissionDesc">One clear mission screen and a simple report—so you know exactly what happened.</p>
+      <p class="mission-label">See a sample report</p>
+      <h2>Inside one Mission</h2>
+      <p class="subcopy">You get a clean student practice screen and a report that tells you what to do next.</p>
       <div class="inside-mission" role="list">
         <figure class="screenshot-card" role="listitem">
-          <img src="assets/branding-images/inside-mission/mission-screen-1.png" alt="Rule Sprint mission screen with sentence and answer choices." width="400" height="260">
-          <figcaption data-i18n="home_insideMission_cleanUI">Mission screen</figcaption>
+          <img src="assets/branding-images/inside-mission/mission-screen-1.png" alt="Grammar mission screen showing question with four answer choices and game stats.">
+          <figcaption>Mission screen</figcaption>
         </figure>
-        <figure class="screenshot-card" role="listitem">
-          <img src="assets/branding-images/inside-mission/mission-report.png" alt="Mission Report showing accuracy, strong area, vulnerability, and next steps." width="400" height="260">
-          <figcaption data-i18n="home_insideMission_report">Mission Report</figcaption>
+        <figure class="screenshot-card" role="listitem" id="sample-report">
+          <div class="report-preview" aria-label="Sample mission report preview">
+            <div class="report-title">
+              <div>
+                <b>Mission report</b>
+                <span>Mission 01 · Retell What Happened</span>
+              </div>
+              <div style="text-align:right">
+                <b style="color:#5c6677">Class</b>
+                <span>Period 3 ELD</span>
+              </div>
+            </div>
+
+            <div class="report-kpi" role="group" aria-label="Report highlights">
+              <div class="kpi"><i>84%</i><small>Accuracy</small></div>
+              <div class="kpi"><i>10</i><small>Rounds</small></div>
+              <div class="kpi"><i>2</i><small>Patterns</small></div>
+            </div>
+
+            <div class="report-next" role="group" aria-label="Next game suggestion">
+              <span class="label">Next game suggestion (click)</span>
+              <a href="dialogue-repair.html?pack=pack01">Dialogue Builder <span aria-hidden="true">→</span></a>
+              <div class="hint">Goal: fix tense choices inside a short conversation, then replay for spaced review.</div>
+            </div>
+
+            <div class="report-scan" role="group" aria-label="Strengths and weaknesses">
+              <div class="scan-card">
+                <b>Strengths</b>
+                <ul>
+                  <li>Time markers (while / when)</li>
+                  <li>Background actions (past continuous)</li>
+                </ul>
+              </div>
+              <div class="scan-card">
+                <b>Needs support</b>
+                <ul>
+                  <li>Completed actions (simple past)</li>
+                  <li>Sequence connectors (then / after)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="report-mini" role="group" aria-label="Mini lesson suggestion">
+              <b>Mini-lesson suggestion</b>
+              <p>2 minutes: circle the time marker, underline the completed action, box the background action. Then re-run the Mission at Rookie level for quick recall.</p>
+            </div>
+          </div>
+          <figcaption>Sample report</figcaption>
         </figure>
       </div>
     </section>
 
-    <section class="section section-flat" aria-label="Sample case">
-      <p class="mission-label" data-i18n="home_sampleMission">Sample mission</p>
-      <h2 data-i18n="home_classroomCase">Today’s Classroom Case</h2>
-      <p class="subcopy" data-i18n="home_exploreCase">Explore one case before full missions.</p>
-      <article class="case">
-        <b style="font-size:18px;color:#0b1020" data-i18n="home_missingAnnouncement">The Missing Morning Announcement</b>
-        <p style="margin-top:6px" data-i18n="home_findTense">Find the tense breach and rebuild the final line.</p>
-      </article>
-      <div style="margin-top:14px">
-        <a class="btn-primary" href="case-interview.html?pack=pack01&difficulty=field&mode=class" data-i18n="home_exploreMission">Explore This Mission</a>
-      </div>
-    </section>
-
-    <section class="section section-band-dark" aria-label="For teachers and students">
-      <p class="mission-label" style="color:#d8e2ed" data-i18n="home_forTeachers">For teachers & students</p>
-      <h2 data-i18n="home_supportsFlow">How It Fits Your Flow</h2>
-      <p class="subcopy" style="color:#c8d4e2" data-i18n="home_classroomRhythm">Designed for classroom rhythm or self-paced practice—one mission at a time.</p>
+    <section class="section section-band-dark" aria-label="Teacher benefits">
+      <p class="mission-label" style="color:#d8e2ed">Benefits (Teachers)</p>
+      <h2>Teacher outcomes you can use tomorrow</h2>
+      <p class="subcopy" style="color:#c8d4e2">Keep grammar practice simple, structured, and repeatable across the week.</p>
       <ul>
-        <li data-i18n="home_structuredPacing">Structured pacing</li>
-        <li data-i18n="home_realtimeFeedback">Real-time feedback</li>
-        <li data-i18n="home_reusableMissions">Reusable missions</li>
+        <li>Less prep: launch with a clear objective in a few clicks.</li>
+        <li>Classroom practicality: works for whole class, teams, or independent practice.</li>
+        <li>Time savings: instant feedback reduces correction and re-explaining.</li>
+        <li>Clarity: report data shows exactly what needs reteach.</li>
+        <li>Retrieval practice: quick recall now, spaced review later.</li>
       </ul>
-      <a class="link-action" href="insights.html" data-i18n="home_learnMore">Learn more</a>
+      <a class="link-action" href="packs.html">View all Missions</a>
+    </section>
+
+    <section class="section section-flat" aria-label="Sample mission call to action">
+      <p class="mission-label">Sample Mission CTA</p>
+      <h2>Start with Mission 01 Free</h2>
+      <p class="subcopy">Get the full teacher view: launch flow, student practice, and report clarity before you commit.</p>
+      <article class="case">
+        <b style="font-size:18px;color:#0b1020">Mission 01: Retell What Happened</b>
+        <p style="margin-top:6px">Practice past-time grammar with focused rounds and immediate feedback.</p>
+      </article>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn-primary" href="auth.html?mode=create">Try Mission 01 Free</a>
+        <a class="btn-primary" href="teacher-home.html" style="background:#c9a227;border-color:#a88520">Create a Classroom</a>
+        <a class="link-action" href="#sample-report" style="margin-top:0;align-self:center">See a Sample Report</a>
+      </div>
+    </section>
+
+    <section class="section section-flat" aria-label="Testimonials placeholders">
+      <p class="mission-label">Testimonials (Placeholders)</p>
+      <h2>Teacher voices</h2>
+      <p class="subcopy">Replace these with verified teacher quotes as they come in.</p>
+      <div class="testimonial-grid">
+        <article class="quote-card">
+          <p>"[Placeholder] I used Mission 01 as a warm-up and immediately knew what to reteach."</p>
+          <span class="quote-by">Teacher Name · Grade · School/District</span>
+        </article>
+        <article class="quote-card">
+          <p>"[Placeholder] The report made small-group planning much faster."</p>
+          <span class="quote-by">Teacher Name · Grade · School/District</span>
+        </article>
+        <article class="quote-card">
+          <p>"[Placeholder] Students stayed focused because each Mission had one clear target."</p>
+          <span class="quote-by">Teacher Name · Grade · School/District</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-flat" aria-label="Frequently asked questions">
+      <p class="mission-label">FAQ</p>
+      <h2>Questions teachers ask first</h2>
+      <div class="faq-list">
+        <details>
+          <summary>What is a Mission?</summary>
+          <p>Missions are short, focused grammar practice tasks with one clear skill target and one clear report.</p>
+        </details>
+        <details>
+          <summary>How long does one Mission take?</summary>
+          <p>Most teachers run one Mission in 10–15 minutes, depending on discussion and mode.</p>
+        </details>
+        <details>
+          <summary>Can I use this with mixed-level classes?</summary>
+          <p>Yes. You can adjust difficulty, rerun Missions, and use reports to group students for reteach.</p>
+        </details>
+        <details>
+          <summary>What does the report show?</summary>
+          <p>Accuracy patterns and practical next steps so you can decide whether to reteach, review, or move forward.</p>
+        </details>
+        <details>
+          <summary>Can I repeat Missions for retrieval practice?</summary>
+          <p>Yes. Missions are built for repeatable practice, quick recall, and spaced review routines.</p>
+        </details>
+        <details>
+          <summary>What do I get in Mission 01 Free?</summary>
+          <p>You get one full sample Mission experience before setting up more classes or paid access.</p>
+        </details>
+      </div>
     </section>
 
     <section class="section section-flat" aria-label="Final call to action">
-      <p class="mission-label" data-i18n="home_start">Start</p>
-      <h2 data-i18n="home_startFirst">Start Your First Mission</h2>
-      <p class="subcopy" data-i18n="home_beginMission01">Begin with Mission 01 and continue when ready.</p>
-      <div style="margin-top:14px"><a class="btn-primary" href="pack.html?pack=pack01" data-i18n="home_tryMission01Free">Try Mission 01 Free</a></div>
+      <p class="mission-label">Final CTA</p>
+      <h2>Ready to run your first Mission?</h2>
+      <p class="subcopy">Start free with Mission 01, then create your classroom when you are ready.</p>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn-primary" href="auth.html?mode=create">Try Mission 01 Free</a>
+        <a class="btn-primary" href="teacher-home.html" style="background:#c9a227;border-color:#a88520">Create a Classroom</a>
+        <a class="link-action" href="#sample-report" style="margin-top:0;align-self:center">See a Sample Report</a>
+      </div>
       <details>
-        <summary data-i18n="home_moreOptions">More options</summary>
+        <summary>More options</summary>
         <ul>
-          <li><a href="packs.html" data-i18n="home_viewAllMissions">View all missions</a></li>
-          <li><a href="pricing.html" data-i18n="home_viewPricing">View pricing</a></li>
+          <li><a href="packs.html">View all Missions</a></li>
+          <li><a href="pricing.html">View pricing</a></li>
+          <li><a href="auth.html?mode=signin">Sign in to existing account</a></li>
         </ul>
       </details>
     </section>
 
-    <section class="section section-flat email-capture" aria-label="Get Mission 01 free">
-      <h3 data-i18n="email_getMission01">Get Mission 01 free.</h3>
-      <p data-i18n="email_captureDesc">No login yet? Drop your email and we'll send you access to Mission 01.</p>
+    <section class="section section-flat email-capture" aria-label="Footer microcopy">
+      <h3>Get Mission 01 free.</h3>
+      <p>No login yet? Enter your school/work email and we will send your Mission 01 access steps.</p>
       <div class="email-capture-form" id="homeEmailForm">
-        <input type="email" id="homeEmailInput" placeholder="you@example.com" autocomplete="email" aria-label="Email">
-        <button type="button" class="btn-primary" id="homeEmailBtn" data-i18n="email_submit">Send me Mission 01</button>
+        <input type="email" id="homeEmailInput" placeholder="name@school.org" autocomplete="email" aria-label="School or work email">
+        <button type="button" class="btn-primary" id="homeEmailBtn">Send me Mission 01</button>
       </div>
-      <p class="email-capture-thanks" id="homeEmailThanks" data-i18n="email_onList">You're on the list. We'll be in touch.</p>
+      <p class="email-capture-thanks" id="homeEmailThanks">Check your inbox. Your Mission 01 link is on the way.</p>
+      <ul class="microcopy-hints">
+        <li>No classroom yet? Create a Classroom to assign your first Mission.</li>
+        <li>No students yet? Share your class code to get started.</li>
+        <li>No reports yet? Run one Mission to generate your first report.</li>
+      </ul>
     </section>
   </main>
 
@@ -480,33 +563,100 @@
     const teacherBtn = document.getElementById('modeTeacher');
     const studentBtn = document.getElementById('modeStudent');
     const continueBtn = document.getElementById('continueBtn');
+    const createClassBtn = document.getElementById('createClassBtn');
+    const roleHelper = document.getElementById('roleHelper');
+    const heroPassive = document.getElementById('heroPassive');
+    let currentMode = 'class';
 
     function applyMode(mode){
       const teacher = mode !== 'individual';
+      currentMode = teacher ? 'class' : 'individual';
       teacherBtn.classList.toggle('active', teacher);
       studentBtn.classList.toggle('active', !teacher);
       teacherBtn.setAttribute('aria-selected', teacher ? 'true' : 'false');
       studentBtn.setAttribute('aria-selected', !teacher ? 'true' : 'false');
-      continueBtn.href = teacher ? 'teacher-home.html' : 'individual-home.html';
+      continueBtn.href = teacher ? 'auth.html?mode=create' : 'individual-home.html?join=1#joinClassSection';
+      continueBtn.textContent = teacher ? 'Try Mission 01 Free' : 'Join with Classroom Code';
+      if (createClassBtn) createClassBtn.style.display = teacher ? 'inline-flex' : 'none';
+      if (roleHelper) {
+        roleHelper.textContent = teacher
+          ? 'Teacher mode selected. Start free, then create your classroom.'
+          : 'Student mode selected. Join your classroom with a class code from your teacher.';
+      }
+      if (heroPassive) {
+        heroPassive.textContent = teacher
+          ? 'Quick recall now. Spaced review later. Repeat Missions when students need another pass.'
+          : 'Students join by class code and complete assigned Missions with immediate feedback.';
+      }
       localStorage.setItem(useKey, teacher ? 'class' : 'individual');
     }
 
     teacherBtn.addEventListener('click', () => applyMode('class'));
     studentBtn.addEventListener('click', () => {
       applyMode('individual');
-      location.href = 'individual-home.html';
+      location.href = 'individual-home.html?join=1#joinClassSection';
     });
 
     const saved = localStorage.getItem(useKey);
     applyMode(saved === 'individual' ? 'individual' : 'class');
 
+    (function applyHeroVariant(){
+      var variants = {
+        a: {
+          headline: 'Structured grammar practice. Clear results. No classroom chaos.',
+          subcopy: 'Missions are short, focused grammar practice tasks you can run in minutes.',
+          ctaCopy: 'Teacher path: start with Mission 01 Free, review a sample report, then create your classroom. Student path: join with a class code and complete assigned Missions.'
+        },
+        b: {
+          headline: 'Teach grammar with less prep and more confidence.',
+          subcopy: 'Missions are short, focused grammar practice tasks built for quick recall, spaced review, and repeatable practice.',
+          ctaCopy: 'Run one Mission, check one clear report, then decide your next move. Start free with Mission 01 and create your classroom when ready.'
+        }
+      };
+      var qp = new URLSearchParams(location.search);
+      var key = (qp.get('hero_variant') || 'a').toLowerCase();
+      if (!variants[key]) key = 'a';
+      var h = document.getElementById('heroHeadline');
+      var s = document.getElementById('heroSubcopy');
+      var c = document.getElementById('heroCtaCopy');
+      if (h) h.textContent = variants[key].headline;
+      if (s) s.textContent = variants[key].subcopy;
+      if (c) c.textContent = variants[key].ctaCopy;
+    })();
+
+    function normalizePromoCode(raw) {
+      var value = String(raw || '').trim();
+      if (!value || value.indexOf('@') >= 0) return '';
+      var normalized = value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+      if (normalized.length < 4 || normalized.length > 20) return '';
+      return normalized;
+    }
+
     const promoInput = document.getElementById('indexPromoCode');
-    const signUpLink = document.getElementById('signUpLink');
-    if (promoInput && signUpLink) {
-      promoInput.addEventListener('input', function(){ sessionStorage.setItem('gs_promo_code', (promoInput.value || '').trim()); });
-      signUpLink.addEventListener('click', function(e){
-        const code = (promoInput.value || '').trim();
-        if (code) { e.preventDefault(); location.href = 'auth.html?code=' + encodeURIComponent(code); }
+    if (promoInput && continueBtn) {
+      promoInput.value = normalizePromoCode(promoInput.value);
+      promoInput.addEventListener('input', function(){
+        var rawValue = promoInput.value || '';
+        if (rawValue.indexOf('@') >= 0) promoInput.dataset.emailAttempt = '1';
+        if (promoInput.dataset.emailAttempt === '1') {
+          promoInput.value = '';
+          sessionStorage.setItem('gs_promo_code', '');
+          return;
+        }
+        var normalized = normalizePromoCode(promoInput.value);
+        sessionStorage.setItem('gs_promo_code', normalized);
+      });
+      promoInput.addEventListener('blur', function(){
+        promoInput.value = normalizePromoCode(promoInput.value);
+        delete promoInput.dataset.emailAttempt;
+      });
+      continueBtn.addEventListener('click', function(e){
+        if (currentMode !== 'class') return;
+        const code = normalizePromoCode(promoInput.value);
+        if (code) {
+          e.preventDefault();
+          location.href = 'auth.html?mode=create&code=' + encodeURIComponent(code);
+        }
       });
     }
 

@@ -8,8 +8,8 @@
   <style>
     :root{--navy:#0b1020;--midnight:#16223a;--teal:#1f5f63;--gold:#c9a227;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--white:#fff;--shadow-sm:0 10px 20px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:var(--light);color:var(--midnight);font-family:Inter, Montserrat, Poppins, Outfit, "Segoe UI", sans-serif;padding:22px 14px 34px}
-    .wrap{max-width:780px;margin:0 auto;display:grid;gap:14px}
+    body{margin:0;background:var(--light);color:var(--midnight);font-family:Inter, Montserrat, Poppins, Outfit, "Segoe UI", sans-serif;padding:0 0 34px}
+    .wrap{max-width:100%;margin:0;display:grid;gap:14px;padding:18px 40px}
     .panel{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow-sm);padding:16px}
     .k{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:800}
     h1{margin:8px 0 0;font-size:36px;line-height:1.06;color:var(--navy)}
@@ -32,7 +32,7 @@
     .biometric-opt input{width:auto;margin:0}
     .promo-box{background:#e8f4f5;border:2px solid var(--teal);border-radius:12px;padding:14px 16px;margin:14px 0}
     .promo-box label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:800;margin-bottom:8px}
-    .promo-box input{width:100%;max-width:280px;border:2px solid var(--teal);border-radius:8px;padding:12px 14px;font-size:15px}
+    .promo-box input{width:100%;max-width:100%;border:2px solid var(--teal);border-radius:8px;padding:12px 14px;font-size:15px}
   </style>
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#16223A" />
@@ -41,7 +41,8 @@
   <script src="i18n.js"></script>
   <div data-include="header"></div>
   <main class="wrap" id="main">
-    <section class="panel">
+    <section class="panel" style="display:grid;grid-template-columns:1fr auto;gap:28px;align-items:start">
+      <div>
       <p class="k">Access Setup</p>
       <h1 id="authTitle">Sign Up</h1>
       <p class="lead" id="authLead">Create a free account to get Mission 01 (Retell What Happened) at no cost. Save progress and mission history. Pay to unlock all other missions.</p>
@@ -49,7 +50,7 @@
 
       <div class="promo-box">
         <label for="promoCode">Promo code</label>
-        <input type="text" id="promoCode" placeholder="Enter code (e.g. FEEDBACK2025)" maxlength="20" />
+        <input type="text" id="promoCode" placeholder="Enter promo code" maxlength="20" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" inputmode="text" />
       </div>
 
       <div class="biometric-row" id="biometricSignInRow" style="display:none">
@@ -67,12 +68,23 @@
 
       <section class="view active" id="viewCreate" aria-label="Create account">
         <div class="field">
+          <label>I am a…</label>
+          <div class="tabs" style="margin:0">
+            <button class="tab active" id="createRoleTeacher" type="button" onclick="document.getElementById('createRoleTeacher').classList.add('active');document.getElementById('createRoleStudent').classList.remove('active')">Teacher</button>
+            <button class="tab" id="createRoleStudent" type="button" onclick="document.getElementById('createRoleStudent').classList.add('active');document.getElementById('createRoleTeacher').classList.remove('active')">Student</button>
+          </div>
+        </div>
+        <div class="field">
           <label for="createName">Name</label>
-          <input id="createName" type="text" placeholder="Teacher name" />
+          <input id="createName" type="text" placeholder="Your name" autocomplete="given-name" data-lpignore="true" data-form-type="other" />
         </div>
         <div class="field">
           <label for="createEmail">Email</label>
-          <input id="createEmail" type="email" placeholder="teacher@school.edu" />
+          <input id="createEmail" type="email" placeholder="you@school.edu" autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="createPassword">Password</label>
+          <input id="createPassword" type="password" placeholder="Create a password" autocomplete="new-password" minlength="4" />
         </div>
         <div class="biometric-opt" id="createBiometricOpt" style="display:none">
           <input type="checkbox" id="createUseBiometric" />
@@ -86,13 +98,21 @@
 
       <section class="view" id="viewSignIn" aria-label="Sign in">
         <div class="field">
-          <label for="signinEmail">Email</label>
-          <input id="signinEmail" type="email" placeholder="teacher@school.edu" />
+          <label>I am a…</label>
+          <div class="tabs" style="margin:0">
+            <button class="tab active" id="signinRoleTeacher" type="button" onclick="document.getElementById('signinRoleTeacher').classList.add('active');document.getElementById('signinRoleStudent').classList.remove('active')">Teacher</button>
+            <button class="tab" id="signinRoleStudent" type="button" onclick="document.getElementById('signinRoleStudent').classList.add('active');document.getElementById('signinRoleTeacher').classList.remove('active')">Student</button>
+          </div>
         </div>
         <div class="field">
-          <label for="signinName">Display Name</label>
-          <input id="signinName" type="text" placeholder="Teacher name" />
+          <label for="signinEmail">Email</label>
+          <input id="signinEmail" type="email" placeholder="you@school.edu" autocomplete="username" />
         </div>
+        <div class="field">
+          <label for="signinPassword">Password</label>
+          <input id="signinPassword" type="password" placeholder="Enter your password" autocomplete="current-password" />
+        </div>
+        <p id="signinError" class="hint" style="color:#b04444;display:none"></p>
         <div class="biometric-opt" id="signinBiometricOpt" style="display:none">
           <input type="checkbox" id="signinUseBiometric" />
           <label for="signinUseBiometric">Use Face ID for quick sign-in next time</label>
@@ -110,6 +130,8 @@
           <a class="btn" href="index.html?choose=1">Back</a>
         </div>
       </section>
+      </div>
+      <img src="assets/illustrations/spy-welcome.svg" alt="" style="width:220px;height:auto;opacity:.85;margin-top:20px;display:block" aria-hidden="true" class="hide-mobile" />
     </section>
   </main>
 
@@ -126,23 +148,52 @@
       guest: { btn: document.getElementById('tabGuest'), view: document.getElementById('viewGuest') }
     };
 
+    const titles = { create: 'Create Account', signin: 'Sign In', guest: 'Guest Mode' };
+    const leads = {
+      create: 'Create a free account to get Mission 01 (Retell What Happened) at no cost. Save progress and mission history. Pay to unlock all other missions.',
+      signin: 'Sign in with the email you used when you created your account.',
+      guest: 'Try Mission 01 without an account. Sign up later to save your progress.'
+    };
+
     function openTab(name){
       Object.entries(tabs).forEach(([k, v]) => {
         const active = k === name;
         v.btn.classList.toggle('active', active);
         v.view.classList.toggle('active', active);
       });
+      if (titles[name]) document.getElementById('authTitle').textContent = titles[name];
+      if (leads[name]) document.getElementById('authLead').textContent = leads[name];
     }
 
     tabs.create.btn.addEventListener('click', () => openTab('create'));
     tabs.signin.btn.addEventListener('click', () => openTab('signin'));
     tabs.guest.btn.addEventListener('click', () => openTab('guest'));
 
+    function normalizePromoCode(raw) {
+      const value = String(raw || '').trim();
+      if (!value || value.indexOf('@') >= 0) return '';
+      const normalized = value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+      if (normalized.length < 4 || normalized.length > 20) return '';
+      return normalized;
+    }
+
     const promoCodeInput = document.getElementById('promoCode');
     const urlCode = new URLSearchParams(location.search).get('code');
     const storedCode = sessionStorage.getItem('gs_promo_code');
     if (promoCodeInput) {
-      promoCodeInput.value = urlCode || storedCode || '';
+      promoCodeInput.value = normalizePromoCode(urlCode) || normalizePromoCode(storedCode);
+      promoCodeInput.addEventListener('input', function() {
+        const rawValue = promoCodeInput.value || '';
+        if (rawValue.indexOf('@') >= 0) promoCodeInput.dataset.emailAttempt = '1';
+        if (promoCodeInput.dataset.emailAttempt === '1') {
+          promoCodeInput.value = '';
+          return;
+        }
+      });
+      promoCodeInput.addEventListener('blur', function() {
+        promoCodeInput.value = normalizePromoCode(promoCodeInput.value);
+        delete promoCodeInput.dataset.emailAttempt;
+      });
       if (storedCode) sessionStorage.removeItem('gs_promo_code');
     }
 
@@ -157,10 +208,37 @@
     }
 
     function tryRedeemPromoCode() {
-      const code = document.getElementById('promoCode')?.value?.trim();
-      if (code && window.GS_BILLING?.redeemPromoCode) {
-        window.GS_BILLING.redeemPromoCode(code);
+      const promoEl = document.getElementById('promoCode');
+      const code = normalizePromoCode(promoEl?.value);
+      if (!promoEl) return;
+      promoEl.value = code;
+      if (code && window.GS_BILLING?.redeemPromoCode) window.GS_BILLING.redeemPromoCode(code);
+    }
+
+    function simpleHash(str) {
+      var h = 0;
+      for (var i = 0; i < str.length; i++) {
+        h = ((h << 5) - h) + str.charCodeAt(i);
+        h = h & h;
       }
+      return 'h_' + Math.abs(h).toString(36);
+    }
+
+    function saveCredentials(email, password) {
+      try {
+        var creds = JSON.parse(localStorage.getItem('gs_credentials') || '{}');
+        creds[email.toLowerCase()] = simpleHash(password);
+        localStorage.setItem('gs_credentials', JSON.stringify(creds));
+      } catch(e) {}
+    }
+
+    function checkCredentials(email, password) {
+      try {
+        var creds = JSON.parse(localStorage.getItem('gs_credentials') || '{}');
+        var stored = creds[email.toLowerCase()];
+        if (!stored) return 'no_account';
+        return stored === simpleHash(password) ? 'ok' : 'wrong_password';
+      } catch(e) { return 'ok'; }
     }
 
     function getAdminPayload(source) {
@@ -179,6 +257,10 @@
     document.getElementById('btnCreate').addEventListener('click', async () => {
       const name = document.getElementById('createName').value.trim() || 'Teacher';
       const email = document.getElementById('createEmail').value.trim();
+      const password = document.getElementById('createPassword').value;
+      if (!email) { document.getElementById('createEmail').focus(); return; }
+      if (!password || password.length < 4) { document.getElementById('createPassword').focus(); return; }
+      saveCredentials(email, password);
       window.GS_AUTH.setAccount(name, email);
       tryRedeemPromoCode();
       const payload = getAdminPayload('create_account');
@@ -191,12 +273,22 @@
         const account = window.GS_BILLING.getAccount();
         if (account) await window.GS_BIOMETRIC.saveCredentials(account);
       }
-      location.href = nextHref('teacher-home.html');
+      const isCreateStudent = document.getElementById('createRoleStudent')?.classList.contains('active');
+      localStorage.setItem('gs_use_context_v3', isCreateStudent ? 'individual' : 'class');
+      location.href = nextHref(isCreateStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
     });
 
     document.getElementById('btnSignIn').addEventListener('click', async () => {
-      const name = document.getElementById('signinName').value.trim() || 'Teacher';
       const email = document.getElementById('signinEmail').value.trim();
+      const password = document.getElementById('signinPassword').value;
+      const errEl = document.getElementById('signinError');
+      errEl.style.display = 'none';
+      if (!email) { document.getElementById('signinEmail').focus(); return; }
+      if (!password) { document.getElementById('signinPassword').focus(); return; }
+      const result = checkCredentials(email, password);
+      if (result === 'wrong_password') { errEl.textContent = 'Incorrect password. Please try again.'; errEl.style.display = 'block'; return; }
+      if (result === 'no_account') { errEl.textContent = 'No account found with this email. Create one first.'; errEl.style.display = 'block'; return; }
+      const name = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       window.GS_AUTH.setAccount(name, email);
       tryRedeemPromoCode();
       if (window.GSAdminMetrics) {
@@ -207,7 +299,9 @@
         const account = window.GS_BILLING.getAccount();
         if (account) await window.GS_BIOMETRIC.saveCredentials(account);
       }
-      location.href = nextHref('teacher-home.html');
+      const isSigninStudent = document.getElementById('signinRoleStudent')?.classList.contains('active');
+      localStorage.setItem('gs_use_context_v3', isSigninStudent ? 'individual' : 'class');
+      location.href = nextHref(isSigninStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
     });
 
     document.getElementById('btnBiometricSignIn').addEventListener('click', async () => {

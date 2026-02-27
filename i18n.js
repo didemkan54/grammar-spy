@@ -4,7 +4,7 @@
  */
 (function () {
   var STORAGE_KEY = 'gs_lang';
-  var SUPPORTED = ['en', 'es', 'fr'];
+  var SUPPORTED = ['en', 'es', 'fr', 'am', 'tr', 'ar', 'hi', 'ur', 'ps', 'vi', 'zh', 'ko', 'so', 'ti', 'pt'];
 
   var t = {
     en: {
@@ -53,7 +53,7 @@
       home_learnMore: 'Learn more',
       home_start: 'Start',
       home_startFirst: 'Start Your First Mission',
-      home_beginMission01: 'One mission, minimal prep. Start with Mission 01 and add more when you're ready.',
+      home_beginMission01: 'One mission, minimal prep. Start with Mission 01 and add more when you\'re ready.',
       home_tryMission01Free: 'Try Mission 01 Free',
       home_moreOptions: 'More options',
       home_viewAllMissions: 'View all missions',
@@ -243,6 +243,132 @@
       email_captureDesc: 'Pas encore de compte ? Laissez votre e-mail et on vous envoie l\'accès à Mission 01.',
       email_submit: 'Envoyez-moi Mission 01',
       email_onList: 'Vous êtes sur la liste. On vous recontacte.'
+    },
+    am: {
+      nav_home: 'መነሻ', nav_missions: 'ተልዕኮዎች', nav_blog: 'ብሎግ', nav_pricing: 'ዋጋ',
+      nav_createAccount: 'መለያ ፍጠር', nav_signIn: 'ግባ', nav_signOut: 'ውጣ',
+      hero_tagline: 'የተደራጀ ሰዋሰው። ግልጽ ውጤቶች። ምንም ግራ መጋባት።',
+      hero_subcopy: 'ለእውነተኛ ክፍሎች በ ELD መምህር የተሰራ።',
+      hero_startHere: 'እዚህ ጀምር', hero_teacher: 'መምህር', hero_student: 'ተማሪ',
+      hero_continue: 'ቀጥል', hero_signUpFree: 'በነጻ ተመዝገብ', hero_trySample: 'ናሙና ተልዕኮ ሞክር',
+      hero_passive: 'የመምህር መንገድ መግባት ያስፈልጋል። ተልዕኮ 01 ነጻ፤ ሁሉንም ለመክፈት ያሻሽሉ።',
+      home_howItWorks: 'እንዴት እንደሚሰራ', home_whatHappens: 'በአንድ ተልዕኮ ውስጥ ምን ይከሰታል',
+      packs_openMission: 'ተልዕኮ ክፈት', pricing_title: 'ዋጋ', pricing_signUpFree: 'በነጻ ተመዝገብ'
+    },
+    tr: {
+      nav_home: 'Ana Sayfa', nav_missions: 'Görevler', nav_blog: 'Blog', nav_pricing: 'Fiyatlar',
+      nav_createAccount: 'Hesap Oluştur', nav_signIn: 'Giriş Yap', nav_signOut: 'Çıkış Yap',
+      hero_tagline: 'Yapılandırılmış dilbilgisi. Net sonuçlar. Sıfır karmaşa.',
+      hero_subcopy: 'Gerçek sınıflar için bir ELD öğretmeni tarafından oluşturuldu.',
+      hero_startHere: 'Buradan başla', hero_teacher: 'Öğretmen', hero_student: 'Öğrenci',
+      hero_continue: 'Devam', hero_signUpFree: 'Ücretsiz kaydol', hero_trySample: 'Örnek görev dene',
+      hero_passive: 'Öğretmen yolu oturum açmayı gerektirir. Görev 01 ücretsiz; tümünü açmak için yükseltin.',
+      home_howItWorks: 'Nasıl çalışır', home_whatHappens: 'Bir görevde ne olur',
+      packs_openMission: 'Görevi aç', pricing_title: 'Fiyatlar', pricing_signUpFree: 'Ücretsiz kaydol'
+    },
+    ar: {
+      nav_home: 'الرئيسية', nav_missions: 'المهمات', nav_blog: 'المدونة', nav_pricing: 'الأسعار',
+      nav_createAccount: 'إنشاء حساب', nav_signIn: 'تسجيل الدخول', nav_signOut: 'تسجيل الخروج',
+      hero_tagline: 'قواعد منظمة. نتائج واضحة. صفر فوضى.',
+      hero_subcopy: 'صُمم بواسطة معلم ELD للفصول الدراسية الحقيقية.',
+      hero_startHere: 'ابدأ هنا', hero_teacher: 'معلم', hero_student: 'طالب',
+      hero_continue: 'متابعة', hero_signUpFree: 'سجل مجاناً', hero_trySample: 'جرب مهمة تجريبية',
+      hero_passive: 'مسار المعلم يتطلب تسجيل الدخول. المهمة 01 مجانية؛ قم بالترقية لفتح الكل.',
+      home_howItWorks: 'كيف يعمل', home_whatHappens: 'ماذا يحدث في مهمة واحدة',
+      packs_openMission: 'افتح المهمة', pricing_title: 'الأسعار', pricing_signUpFree: 'سجل مجاناً'
+    },
+    hi: {
+      nav_home: 'होम', nav_missions: 'मिशन', nav_blog: 'ब्लॉग', nav_pricing: 'मूल्य',
+      nav_createAccount: 'खाता बनाएं', nav_signIn: 'साइन इन', nav_signOut: 'साइन आउट',
+      hero_tagline: 'व्यवस्थित व्याकरण। स्पष्ट परिणाम। शून्य अराजकता।',
+      hero_subcopy: 'असली कक्षाओं के लिए एक ELD शिक्षक द्वारा बनाया गया।',
+      hero_startHere: 'यहाँ शुरू करें', hero_teacher: 'शिक्षक', hero_student: 'छात्र',
+      hero_continue: 'जारी रखें', hero_signUpFree: 'मुफ़्त साइन अप', hero_trySample: 'नमूना मिशन आज़माएं',
+      hero_passive: 'शिक्षक पथ के लिए साइन-इन आवश्यक है। मिशन 01 मुफ़्त; सभी अनलॉक करने के लिए अपग्रेड करें।',
+      home_howItWorks: 'यह कैसे काम करता है', home_whatHappens: 'एक मिशन में क्या होता है',
+      packs_openMission: 'मिशन खोलें', pricing_title: 'मूल्य', pricing_signUpFree: 'मुफ़्त साइन अप'
+    },
+    ur: {
+      nav_home: 'ہوم', nav_missions: 'مشن', nav_blog: 'بلاگ', nav_pricing: 'قیمتیں',
+      nav_createAccount: 'اکاؤنٹ بنائیں', nav_signIn: 'سائن ان', nav_signOut: 'سائن آؤٹ',
+      hero_tagline: 'منظم گرامر۔ واضح نتائج۔ کوئی افراتفری نہیں۔',
+      hero_subcopy: 'حقیقی کلاس رومز کے لیے ایک ELD ٹیچر نے بنایا۔',
+      hero_startHere: 'یہاں شروع کریں', hero_teacher: 'استاد', hero_student: 'طالب علم',
+      hero_continue: 'جاری رکھیں', hero_signUpFree: 'مفت سائن اپ', hero_trySample: 'نمونہ مشن آزمائیں',
+      hero_passive: 'استاد کے راستے کے لیے سائن ان ضروری ہے۔ مشن 01 مفت؛ سب کھولنے کے لیے اپ گریڈ کریں۔',
+      home_howItWorks: 'یہ کیسے کام کرتا ہے', home_whatHappens: 'ایک مشن میں کیا ہوتا ہے',
+      packs_openMission: 'مشن کھولیں', pricing_title: 'قیمتیں', pricing_signUpFree: 'مفت سائن اپ'
+    },
+    ps: {
+      nav_home: 'کور', nav_missions: 'ماموریتونه', nav_blog: 'بلاګ', nav_pricing: 'نرخونه',
+      nav_createAccount: 'حساب جوړ کړئ', nav_signIn: 'ننوتل', nav_signOut: 'وتل',
+      hero_tagline: 'منظم ګرامر۔ روښانه پایلې۔ هیڅ ګډوډي نشته۔',
+      hero_subcopy: 'د ریښتیني ټولګیو لپاره د ELD ښوونکي لخوا جوړ شوی۔',
+      hero_startHere: 'دلته پیل کړئ', hero_teacher: 'ښوونکی', hero_student: 'زده کونکی',
+      hero_continue: 'دوام ورکړئ', hero_signUpFree: 'وړیا ثبت نام', hero_trySample: 'نمونه ماموریت وازمایئ',
+      packs_openMission: 'ماموریت خلاص کړئ', pricing_title: 'نرخونه', pricing_signUpFree: 'وړیا ثبت نام'
+    },
+    vi: {
+      nav_home: 'Trang chủ', nav_missions: 'Nhiệm vụ', nav_blog: 'Blog', nav_pricing: 'Giá',
+      nav_createAccount: 'Tạo tài khoản', nav_signIn: 'Đăng nhập', nav_signOut: 'Đăng xuất',
+      hero_tagline: 'Ngữ pháp có cấu trúc. Kết quả rõ ràng. Không hỗn loạn.',
+      hero_subcopy: 'Được tạo bởi giáo viên ELD cho lớp học thực tế.',
+      hero_startHere: 'Bắt đầu tại đây', hero_teacher: 'Giáo viên', hero_student: 'Học sinh',
+      hero_continue: 'Tiếp tục', hero_signUpFree: 'Đăng ký miễn phí', hero_trySample: 'Thử nhiệm vụ mẫu',
+      hero_passive: 'Đường dẫn giáo viên yêu cầu đăng nhập. Nhiệm vụ 01 miễn phí; nâng cấp để mở tất cả.',
+      home_howItWorks: 'Cách hoạt động', home_whatHappens: 'Điều gì xảy ra trong một nhiệm vụ',
+      packs_openMission: 'Mở nhiệm vụ', pricing_title: 'Giá', pricing_signUpFree: 'Đăng ký miễn phí'
+    },
+    zh: {
+      nav_home: '首页', nav_missions: '任务', nav_blog: '博客', nav_pricing: '价格',
+      nav_createAccount: '创建账户', nav_signIn: '登录', nav_signOut: '退出',
+      hero_tagline: '结构化语法。清晰结果。零混乱。',
+      hero_subcopy: '由ELD教师为真实课堂创建。',
+      hero_startHere: '从这里开始', hero_teacher: '教师', hero_student: '学生',
+      hero_continue: '继续', hero_signUpFree: '免费注册', hero_trySample: '试试示例任务',
+      hero_passive: '教师路径需要登录。任务01免费；升级解锁全部。',
+      home_howItWorks: '如何运作', home_whatHappens: '一个任务中会发生什么',
+      packs_openMission: '打开任务', pricing_title: '价格', pricing_signUpFree: '免费注册'
+    },
+    ko: {
+      nav_home: '홈', nav_missions: '미션', nav_blog: '블로그', nav_pricing: '가격',
+      nav_createAccount: '계정 만들기', nav_signIn: '로그인', nav_signOut: '로그아웃',
+      hero_tagline: '체계적인 문법. 명확한 결과. 혼란 제로.',
+      hero_subcopy: '실제 교실을 위해 ELD 교사가 만들었습니다.',
+      hero_startHere: '여기서 시작', hero_teacher: '교사', hero_student: '학생',
+      hero_continue: '계속', hero_signUpFree: '무료 가입', hero_trySample: '샘플 미션 체험',
+      hero_passive: '교사 경로는 로그인이 필요합니다. 미션 01 무료; 업그레이드하여 전체 잠금 해제.',
+      home_howItWorks: '작동 방식', home_whatHappens: '미션에서 일어나는 일',
+      packs_openMission: '미션 열기', pricing_title: '가격', pricing_signUpFree: '무료 가입'
+    },
+    so: {
+      nav_home: 'Bogga Hore', nav_missions: 'Hawlaha', nav_blog: 'Blog', nav_pricing: 'Qiimaha',
+      nav_createAccount: 'Samee Akoon', nav_signIn: 'Soo Gal', nav_signOut: 'Ka Bax',
+      hero_tagline: 'Naxwe habaynaysa. Natiijooyin cad. Qas la\'aan.',
+      hero_subcopy: 'Waxaa sameeyay macallin ELD fasallo dhabta ah.',
+      hero_startHere: 'Halkan ka bilow', hero_teacher: 'Macallin', hero_student: 'Arday',
+      hero_continue: 'Sii wad', hero_signUpFree: 'Bilaash isdiiwaan geli', hero_trySample: 'Tijaabi hawl tusaale ah',
+      packs_openMission: 'Fur hawsha', pricing_title: 'Qiimaha', pricing_signUpFree: 'Bilaash isdiiwaan geli'
+    },
+    ti: {
+      nav_home: 'መበገሲ', nav_missions: 'ተልእኾታት', nav_blog: 'ብሎግ', nav_pricing: 'ዋጋ',
+      nav_createAccount: 'ሕሳብ ፍጠር', nav_signIn: 'እቶ', nav_signOut: 'ውጻእ',
+      hero_tagline: 'ስሩዕ ሰዋስው። ንጹር ውጽኢታት። ዜሮ ምድንጋር።',
+      hero_subcopy: 'ንሓቀኛ ክፍልታት ብ ELD መምህር ዝተሰርሐ።',
+      hero_startHere: 'ኣብዚ ጀምር', hero_teacher: 'መምህር', hero_student: 'ተማሃራይ',
+      hero_continue: 'ቀጽል', hero_signUpFree: 'ብነጻ ተመዝገብ', hero_trySample: 'ናሙና ተልእኾ ፈትን',
+      packs_openMission: 'ተልእኾ ክፈት', pricing_title: 'ዋጋ', pricing_signUpFree: 'ብነጻ ተመዝገብ'
+    },
+    pt: {
+      nav_home: 'Início', nav_missions: 'Missões', nav_blog: 'Blog', nav_pricing: 'Preços',
+      nav_createAccount: 'Criar conta', nav_signIn: 'Entrar', nav_signOut: 'Sair',
+      hero_tagline: 'Gramática estruturada. Resultados claros. Zero caos.',
+      hero_subcopy: 'Criado por um professor de ELD para salas de aula reais.',
+      hero_startHere: 'Comece aqui', hero_teacher: 'Professor', hero_student: 'Aluno',
+      hero_continue: 'Continuar', hero_signUpFree: 'Cadastre-se grátis', hero_trySample: 'Experimente uma missão',
+      hero_passive: 'Caminho do professor requer login. Missão 01 grátis; atualize para desbloquear tudo.',
+      home_howItWorks: 'Como funciona', home_whatHappens: 'O que acontece em uma missão',
+      packs_openMission: 'Abrir missão', pricing_title: 'Preços', pricing_signUpFree: 'Cadastre-se grátis'
     }
   };
 
@@ -292,38 +418,55 @@
     supported: SUPPORTED
   };
 
-  function bindSwitcher() {
-    document.addEventListener('click', function (e) {
-      var btn = e.target && e.target.closest && e.target.closest('#gsLangSwitcher .gs-lang-btn');
-      if (!btn) return;
-      var lang = btn.getAttribute('data-lang');
-      if (lang && SUPPORTED.indexOf(lang) >= 0) {
-        setLang(lang);
-        document.querySelectorAll('#gsLangSwitcher .gs-lang-btn').forEach(function (b) {
-          b.style.background = b.getAttribute('data-lang') === lang ? 'rgba(31,95,99,.15)' : 'transparent';
-          b.style.fontWeight = b.getAttribute('data-lang') === lang ? '800' : '700';
-        });
-      }
-    });
-    document.addEventListener('layout:ready', function () {
-      var lang = getLang();
-      document.querySelectorAll('#gsLangSwitcher .gs-lang-btn').forEach(function (b) {
-        b.style.background = b.getAttribute('data-lang') === lang ? 'rgba(31,95,99,.15)' : 'transparent';
-        b.style.fontWeight = b.getAttribute('data-lang') === lang ? '800' : '700';
-      });
+  function syncSelect() {
+    var lang = getLang();
+    document.querySelectorAll('#gsLangSelect').forEach(function (sel) {
+      sel.value = lang;
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      apply();
-      bindSwitcher();
-      document.dispatchEvent(new CustomEvent('i18n:applied'));
+  function bindToSelect(sel) {
+    if (sel._i18nBound) return;
+    sel._i18nBound = true;
+    sel.value = getLang();
+    sel.addEventListener('change', function () {
+      var lang = sel.value;
+      if (lang && SUPPORTED.indexOf(lang) >= 0) {
+        setLang(lang);
+        syncSelect();
+      }
     });
-  } else {
+  }
+
+  function bindSwitcher() {
+    document.querySelectorAll('#gsLangSelect').forEach(bindToSelect);
+    document.addEventListener('layout:ready', function () {
+      document.querySelectorAll('#gsLangSelect').forEach(bindToSelect);
+      apply();
+    });
+    var observer = new MutationObserver(function () {
+      document.querySelectorAll('#gsLangSelect').forEach(bindToSelect);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function boot() {
     apply();
     bindSwitcher();
+    syncSelect();
     document.dispatchEvent(new CustomEvent('i18n:applied'));
   }
-  document.addEventListener('layout:ready', apply);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+  document.addEventListener('layout:ready', function() {
+    apply();
+    syncSelect();
+  });
+  // Re-apply after a short delay to catch late-rendered headers
+  setTimeout(function() { apply(); syncSelect(); }, 800);
+  setTimeout(function() { apply(); syncSelect(); }, 2000);
 })();

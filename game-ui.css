@@ -1,0 +1,509 @@
+/* ── Grammar Spy Game UI ──
+   Shared styles for all mission game pages.
+   Loaded via <link> in each game page head. */
+
+:root {
+  --navy: #0b1020;
+  --mid: #16223a;
+  --teal: #1f5f63;
+  --teal-light: #e8f4f5;
+  --light: #f2f4f7;
+  --line: #d9dee6;
+  --slate: #4a5568;
+  --gold: #c9a227;
+  --ok: #1f8f63;
+  --ok-bg: #edf9f3;
+  --bad: #b04444;
+  --bad-bg: #fdf3f3;
+  --shadow: 0 4px 16px rgba(11, 16, 32, .06);
+  --shadow-md: 0 8px 24px rgba(11, 16, 32, .10);
+}
+
+* { box-sizing: border-box }
+
+body {
+  margin: 0;
+  background: var(--light);
+  color: var(--mid);
+  font-family: Inter, "Segoe UI", sans-serif;
+  padding: 0 0 40px;
+}
+
+/* ── Layout ── */
+.wrap { max-width: 100%; margin: 0; display: grid; gap: 16px; padding: 18px 40px }
+.panel {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px 22px 20px;
+  box-shadow: var(--shadow);
+}
+
+/* ── Header area ── */
+.k {
+  margin: 0;
+  font: 800 11px Inter, Arial, sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+h1 {
+  margin: 6px 0 0;
+  font-size: 28px;
+  line-height: 1.15;
+  color: var(--navy);
+}
+.sub {
+  margin: 6px 0 12px;
+  color: var(--slate);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ── HUD Stats Bar ── */
+.hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #2a4a5a, #1f5f63);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.chip {
+  text-align: center;
+  padding: 8px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .1);
+}
+.chip b {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: rgba(255, 255, 255, .55);
+  margin-bottom: 4px;
+}
+.chip span {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* ── Question Card ── */
+.q {
+  border: 2px solid var(--teal-light);
+  border-radius: 16px;
+  padding: 18px 20px;
+  background: #fbfdff;
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+  position: relative;
+}
+.q::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: -1px;
+  width: 40px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 0 0 3px 3px;
+}
+.scene {
+  font-size: 12px;
+  color: var(--teal);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.prompt {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+/* ── Answer Options ── */
+.opts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+.opt {
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 14px 16px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--mid);
+  transition: border-color .15s ease, background .15s ease, transform .12s ease, box-shadow .15s ease;
+}
+.opt:hover {
+  border-color: var(--teal);
+  background: var(--teal-light);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(31, 95, 99, .12);
+}
+.opt:active {
+  transform: translateY(0);
+}
+.opt.good {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+  box-shadow: 0 0 0 3px rgba(31, 143, 99, .15);
+}
+.opt.bad {
+  border-color: var(--bad);
+  background: var(--bad-bg);
+  box-shadow: 0 0 0 3px rgba(176, 68, 68, .12);
+}
+
+/* ── Option letter labels (A, B, C, D) ── */
+.opt {
+  position: relative;
+  padding-left: 48px;
+}
+.opt::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.opt.good::before {
+  background: var(--ok);
+  color: #fff;
+}
+.opt.bad::before {
+  background: var(--bad);
+  color: #fff;
+}
+
+/* ── Progress Bar ── */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--line);
+  border-radius: 3px;
+  margin: 8px 0 4px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+
+/* ── Feedback Strip ── */
+.feedback, #feedback, #fb {
+  min-height: 28px;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin: 4px 0 8px;
+  line-height: 1.5;
+}
+.feedback:empty, #feedback:empty, #fb:empty {
+  padding: 0;
+  margin: 0;
+}
+.ok, #feedback .ok, #fb .ok {
+  color: var(--ok);
+  background: var(--ok-bg);
+  border-left: 4px solid var(--ok);
+}
+.bad, #feedback .bad, #fb .bad {
+  color: var(--bad);
+  background: var(--bad-bg);
+  border-left: 4px solid var(--bad);
+}
+
+/* ── Action Buttons Row ── */
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: #ffffff;
+  text-decoration: none;
+  color: var(--mid);
+  font: 700 12px Inter, Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .15s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(11, 16, 32, .08);
+}
+.btn.primary {
+  background: var(--teal);
+  border-color: #194f53;
+  color: #ffffff;
+}
+.btn.primary:hover {
+  box-shadow: 0 4px 12px rgba(31, 95, 99, .25);
+}
+
+/* ── Mission Report Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 16, 32, .4);
+  display: none;
+  place-items: center;
+  padding: 16px;
+  z-index: 120;
+  backdrop-filter: blur(3px);
+}
+.overlay.show { display: grid }
+.modal {
+  width: min(620px, 100%);
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  padding: 24px 22px;
+  display: grid;
+  gap: 10px;
+}
+.modal h2, .modal h3 {
+  margin: 0;
+  color: var(--navy);
+}
+.modal h2 { font-size: 26px }
+.modal h3 { font-size: 20px }
+.modal p { margin: 4px 0; color: var(--slate); line-height: 1.6 }
+.lineout { margin: 0; color: var(--slate) }
+
+/* Growth insight box in report */
+.box {
+  background: var(--teal-light);
+  border: 1px solid rgba(31, 95, 99, .15);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ── Onboard overlay (How to Play) ── */
+.modal .btn.primary,
+.onboard-start {
+  width: 100%;
+  justify-content: center;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 12px;
+  margin-top: 10px;
+  letter-spacing: .05em;
+  background: linear-gradient(135deg, var(--teal), #2a7a7e);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.onboard-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31, 95, 99, .3);
+}
+.onboard-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 0 0 4px;
+}
+.onboard-subtitle {
+  font-size: 15px;
+  color: var(--slate);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.onboard-steps {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.onboard-step {
+  display: flex;
+  gap: 14px;
+  align-items: start;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.onboard-step-num {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.onboard-step-text {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.5;
+}
+.onboard-step-text strong {
+  color: var(--navy);
+}
+.onboard-tip {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba(201,162,39,.08), rgba(201,162,39,.04));
+  border: 1px solid rgba(201,162,39,.2);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--slate);
+}
+.onboard-tip-icon {
+  font-size: 20px;
+  min-width: 24px;
+  text-align: center;
+}
+.onboard-difficulty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 12px;
+}
+.diff-rookie { background: #e8f4f5; color: var(--teal); }
+.diff-field { background: #fdf6e3; color: #8a6d10; }
+.diff-director { background: #eef0f6; color: var(--mid); }
+
+/* ── Teams Mode ── */
+.teamsSplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+.teamColumn {
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  background: #ffffff;
+}
+.teamColumn h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--teal);
+}
+.teamColumn .teamQ {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: #fbfdff;
+  margin: 8px 0;
+}
+.teamColumn .teamOpts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 8px 0;
+}
+.teamColumn .teamOpt {
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 600;
+  transition: border-color .15s;
+}
+.teamColumn .teamOpt.good { border-color: var(--ok); background: var(--ok-bg) }
+.teamColumn .teamOpt.bad { border-color: var(--bad); background: var(--bad-bg) }
+.teamColumn .teamFeedback { min-height: 24px; font-weight: 700; margin: 8px 0 }
+.teamColumn .teamFeedback.ok { color: var(--ok) }
+.teamColumn .teamFeedback.bad { color: var(--bad) }
+.teamColumn .teamHud {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 8px 0;
+}
+.teamColumn .teamChip {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px;
+  background: #f8fafc;
+  font-size: 12px;
+}
+#finalTeamsScoresWrap {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+#winnerLine {
+  font-size: 16px;
+  color: var(--teal);
+  margin-top: 6px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .hud { grid-template-columns: repeat(2, 1fr) }
+  .opts { grid-template-columns: 1fr }
+  .teamsSplit { grid-template-columns: 1fr }
+  .teamColumn .teamOpts { grid-template-columns: 1fr }
+}
