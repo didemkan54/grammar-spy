@@ -31,10 +31,9 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     { label: "Training Path", href: "progression.html" },
     { label: "CLUES", href: "clues.html" }
   ];
-  const moreLinks = [
+  const rightLinks = [
     { label: "Teacher", href: "teacher-home.html" },
     { label: "Community", href: "community.html" },
-    { label: "Profile", href: "profile.html" },
     { label: "Blog", href: "insights.html" },
     { label: "Pricing", href: "pricing.html" }
   ];
@@ -53,7 +52,11 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   }).join("");
   const primaryLinksHtml = primaryLinks.map(buildPrimaryLink).join("") +
     `<details style="position:relative"><summary style="${missionMenuSummaryStyle}">Missions &#9662;</summary><span style="${menuPanelStyle}">${missionMenuLinksHtml}</span></details>`;
-  const moreLinksHtml = moreLinks.map((l) => `<a href="${l.href}" style="${dropdownLinkStyle}">${l.label}</a>`).join("");
+  const rightLinksHtml = rightLinks.map((link) => {
+    const isActive = currentPage === link.href.toLowerCase();
+    const color = isActive ? "#0f5c5c" : "#4a5568";
+    return `<a href="${link.href}" style="${navLinkStyle};color:${color}">${link.label}</a>`;
+  }).join("");
 
   const langSelect = `<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +
     `<option value="en">\u{1F1FA}\u{1F1F8} English</option><option value="es">\u{1F1EA}\u{1F1F8} Español</option><option value="fr">\u{1F1EB}\u{1F1F7} Français</option>` +
@@ -72,12 +75,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
         ${primaryLinksHtml}
       </span>
       <span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">
-        <details style="position:relative">
-          <summary style="${menuSummaryStyle}">More &#9662;</summary>
-          <span style="${menuPanelStyle}">
-            ${moreLinksHtml}
-          </span>
-        </details>
+        ${rightLinksHtml}
         <span id="gsLangSwitcher" style="display:inline-flex;align-items:center">
           ${langSelect}
         </span>

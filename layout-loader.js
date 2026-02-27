@@ -24,16 +24,10 @@
     '</details>' +
     '</span>' +
     '<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">' +
-    '<details id="gsMoreMenu" style="position:relative">' +
-    '<summary style="' + menuSummaryStyle + '">More &#9662;</summary>' +
-    '<span style="' + menuPanelStyle + '">' +
-    '<a href="teacher-home.html" data-i18n="nav_teacher" style="' + dropdownLinkStyle + '">Teacher</a>' +
-    '<a href="community.html" style="' + dropdownLinkStyle + '">Community</a>' +
-    '<a href="profile.html" style="' + dropdownLinkStyle + '">Profile</a>' +
-    '<a href="insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
-    '<a href="pricing.html" data-i18n="nav_pricing" style="' + dropdownLinkStyle + '">Pricing</a>' +
-    '</span>' +
-    '</details>' +
+    '<a href="teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
+    '<a href="community.html" style="' + navLinkStyle + '">Community</a>' +
+    '<a href="insights.html" data-i18n="nav_blog" style="' + navLinkStyle + '">Blog</a>' +
+    '<a href="pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
     '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center">' +
     '<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
     '<option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option><option value="fr">🇫🇷 Français</option>' +
