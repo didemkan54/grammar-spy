@@ -287,7 +287,7 @@
           "The student was waiting in the nurse's office when the bell rang."
         ],
         answer: 3,
-        explain: "Was waiting shows an ongoing action interrupted by the bell."
+        explain: "Use past continuous (was waiting) for the background verb and simple past (rang) for the interrupting event."
       },
       {
         scene: "Parking Lot Cam",
@@ -469,7 +469,7 @@
           "We organizing the files when the power went out."
         ],
         answer: 0,
-        explain: "Were organizing shows background action interrupted by went out."
+        explain: "Use the past continuous verb (were organizing) for timeline background action and simple past (went out) for the interrupting event."
       },
       {
         scene: "Timeline Card I",
@@ -2937,7 +2937,7 @@
           "Team expected rain however sky stayed clear."
         ],
         answer: 0,
-        explain: "However with a semicolon before and comma after links contrast correctly."
+        explain: "Use the connector however to show contrast: semicolon before and comma after keep sequence logic clear across clauses."
       },
       {
         scene: "Sequence Draft 13",
