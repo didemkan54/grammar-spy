@@ -241,19 +241,6 @@
       } catch(e) { return 'ok'; }
     }
 
-    function getAdminPayload(source) {
-      const account = window.GS_BILLING?.getAccount ? window.GS_BILLING.getAccount() : null;
-      return {
-        source: source || 'auth',
-        accountId: account?.id || '',
-        email: account?.email || '',
-        name: account?.name || '',
-        role: account?.role || 'teacher',
-        plan: account?.plan || 'trial',
-        mode: account?.mode || 'account'
-      };
-    }
-
     document.getElementById('btnCreate').addEventListener('click', async () => {
       const name = document.getElementById('createName').value.trim() || 'Teacher';
       const email = document.getElementById('createEmail').value.trim();
@@ -263,11 +250,6 @@
       saveCredentials(email, password);
       window.GS_AUTH.setAccount(name, email);
       tryRedeemPromoCode();
-      const payload = getAdminPayload('create_account');
-      if (window.GSAdminMetrics) {
-        window.GSAdminMetrics.trackUserCreated(payload);
-        window.GSAdminMetrics.trackLogin(payload);
-      }
       const useBiometric = document.getElementById('createUseBiometric')?.checked;
       if (useBiometric && window.GS_BIOMETRIC && window.GS_BILLING) {
         const account = window.GS_BILLING.getAccount();
@@ -291,9 +273,6 @@
       const name = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       window.GS_AUTH.setAccount(name, email);
       tryRedeemPromoCode();
-      if (window.GSAdminMetrics) {
-        window.GSAdminMetrics.trackLogin(getAdminPayload('sign_in'));
-      }
       const useBiometric = document.getElementById('signinUseBiometric')?.checked;
       if (useBiometric && window.GS_BIOMETRIC && window.GS_BILLING) {
         const account = window.GS_BILLING.getAccount();
@@ -309,9 +288,6 @@
       const account = await window.GS_BIOMETRIC.signInWithBiometric();
       if (account) {
         window.GS_BILLING.restoreFromBiometric(account);
-        if (window.GSAdminMetrics) {
-          window.GSAdminMetrics.trackLogin(getAdminPayload('biometric_sign_in'));
-        }
         location.href = nextHref('teacher-home.html');
       }
     });

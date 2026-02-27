@@ -1,14 +1,11 @@
 (function(){
   var KEY = 'gs_analytics_events_v1';
   var GROWTH_KEY = 'gs_growth_records_v1';
-  var USER_REGISTRY_KEY = 'gs_admin_users_v1';
-  var LOGIN_MARK_KEY = 'gs_last_login_mark_v1';
   var ACTIVE_STUDENT_KEY = 'gs_active_student_v1';
   var CLOUD_CONFIG_KEY = 'gs_cloud_config_v1';
   var CLOUD_QUEUE_KEY = 'gs_cloud_queue_v1';
   var MAX_EVENTS = 1500;
   var MAX_GROWTH = 4000;
-  var MAX_USERS = 3000;
   var MAX_QUEUE = 3000;
 
   // Google Analytics 4 — basic page tracking
@@ -50,274 +47,6 @@
     }
   }
 
-  function safeParseObject(raw, fallback){
-    if (!raw) return fallback || {};
-    try {
-      var parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
-      return fallback || {};
-    } catch (_err){
-      return fallback || {};
-    }
-  }
-
-  function nowIso(){
-    return new Date().toISOString();
-  }
-
-  function pad2(n){
-    return Number(n) < 10 ? '0' + Number(n) : String(Number(n));
-  }
-
-  function dayKey(iso){
-    var d = new Date(iso || Date.now());
-    if (isNaN(d.getTime())) return '';
-    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
-  }
-
-  function normalizeEmail(value){
-    return String(value || '').trim().toLowerCase();
-  }
-
-  function normalizeName(value){
-    return String(value || '').trim();
-  }
-
-  function resolveUserKey(payload){
-    var p = payload || {};
-    if (p.accountId) return 'acct:' + String(p.accountId).trim();
-    var email = normalizeEmail(p.email);
-    if (email) return 'email:' + email;
-    var name = normalizeName(p.name).toLowerCase();
-    if (name) return 'name:' + name;
-    return 'anon:' + Math.random().toString(36).slice(2, 10);
-  }
-
-  function readUsers(){
-    return safeParse(localStorage.getItem(USER_REGISTRY_KEY))
-      .filter(function(row){ return row && typeof row === 'object'; });
-  }
-
-  function writeUsers(rows){
-    localStorage.setItem(USER_REGISTRY_KEY, JSON.stringify((rows || []).slice(-MAX_USERS)));
-  }
-
-  function findUserIndex(rows, payload, userKey){
-    var email = normalizeEmail(payload && payload.email);
-    var accountId = payload && payload.accountId ? String(payload.accountId).trim() : '';
-    for (var i = 0; i < rows.length; i += 1){
-      var row = rows[i] || {};
-      if (row.userKey && row.userKey === userKey) return i;
-      if (email && row.emailNormalized === email) return i;
-      if (accountId && row.accountId === accountId) return i;
-    }
-    return -1;
-  }
-
-  function hydrateUserRow(row, payload, userKey, now){
-    var p = payload || {};
-    var out = row && typeof row === 'object' ? row : {};
-    out.userKey = out.userKey || userKey;
-    out.accountId = p.accountId ? String(p.accountId).trim() : (out.accountId || '');
-    out.email = p.email ? String(p.email).trim() : (out.email || '');
-    out.emailNormalized = normalizeEmail(out.email);
-    out.name = p.name ? normalizeName(p.name) : (out.name || '');
-    out.role = p.role ? String(p.role).trim() : (out.role || 'teacher');
-    out.mode = p.mode ? String(p.mode).trim() : (out.mode || 'account');
-    out.plan = p.plan ? String(p.plan).trim() : (out.plan || 'trial');
-    out.createdAt = out.createdAt || p.createdAt || now;
-    out.updatedAt = now;
-    out.lastSeenAt = now;
-    out.loginCount = Number(out.loginCount || 0);
-    out.classroomCount = Number(out.classroomCount || 0);
-    out.classroomCreated = Boolean(out.classroomCreated);
-    out.signupCount = Number(out.signupCount || 0);
-    return out;
-  }
-
-  function mutateUser(payload, mutator){
-    var rows = readUsers();
-    var now = nowIso();
-    var userKey = resolveUserKey(payload);
-    var idx = findUserIndex(rows, payload, userKey);
-    var row = hydrateUserRow(idx >= 0 ? rows[idx] : null, payload, userKey, now);
-    if (typeof mutator === 'function') mutator(row, now);
-    row.updatedAt = now;
-    row.lastSeenAt = now;
-    if (idx >= 0) rows[idx] = row;
-    else rows.push(row);
-    writeUsers(rows);
-    return row;
-  }
-
-  function trackUserCreated(payload){
-    var didCreate = false;
-    var row = mutateUser(payload, function(rec, now){
-      if (!rec.firstSignupAt){
-        rec.firstSignupAt = now;
-        rec.createdAt = now;
-        didCreate = true;
-      }
-      rec.lastSignupAt = now;
-      rec.signupCount += 1;
-      if (!rec.lastLoginAt){
-        rec.lastLoginAt = now;
-        rec.loginCount = Math.max(1, rec.loginCount);
-      }
-    });
-
-    if (!(payload && payload.suppressAnalytics) && didCreate && typeof track === 'function') {
-      track('user_signup', {
-        userKey: row.userKey,
-        email: row.email || '',
-        plan: row.plan || '',
-        role: row.role || 'teacher'
-      });
-    }
-    return row;
-  }
-
-  function trackLogin(payload){
-    var didLogIn = false;
-    var minGapMs = payload && Number(payload.minGapMs || 0) > 0 ? Number(payload.minGapMs) : 0;
-    var nowMs = Date.now();
-
-    var row = mutateUser(payload, function(rec, now){
-      var lastMs = rec.lastLoginAt ? new Date(rec.lastLoginAt).getTime() : 0;
-      if (!lastMs || nowMs - lastMs >= minGapMs){
-        rec.lastLoginAt = now;
-        rec.loginCount += 1;
-        rec.lastLoginSource = payload && payload.source ? String(payload.source) : 'auth';
-        didLogIn = true;
-      }
-    });
-
-    if (!(payload && payload.suppressAnalytics) && didLogIn && typeof track === 'function') {
-      track('user_login', {
-        userKey: row.userKey,
-        email: row.email || '',
-        plan: row.plan || '',
-        source: payload && payload.source ? String(payload.source) : 'auth'
-      });
-    }
-    return row;
-  }
-
-  function trackClassroomCreated(payload){
-    var row = mutateUser(payload, function(rec, now){
-      rec.classroomCreated = true;
-      rec.classroomCount += 1;
-      rec.lastClassroomAt = now;
-      rec.lastClassroomName = payload && payload.classroomName ? String(payload.classroomName) : (rec.lastClassroomName || '');
-      rec.lastClassroomPack = payload && payload.pack ? String(payload.pack) : (rec.lastClassroomPack || '');
-      rec.lastClassroomFormat = payload && payload.playFormat ? String(payload.playFormat) : (rec.lastClassroomFormat || '');
-    });
-
-    if (!(payload && payload.suppressAnalytics) && typeof track === 'function') {
-      track('classroom_created', {
-        userKey: row.userKey,
-        email: row.email || '',
-        pack: row.lastClassroomPack || '',
-        playFormat: row.lastClassroomFormat || '',
-        classroomName: row.lastClassroomName || ''
-      });
-    }
-    return row;
-  }
-
-  function listAdminUsers(options){
-    var opts = options || {};
-    var includeGuests = Boolean(opts.includeGuests);
-    var rows = readUsers().filter(function(row){
-      if (!includeGuests && row.mode === 'guest') return false;
-      if (!row.email && !row.accountId && !row.name) return false;
-      return true;
-    });
-    rows.sort(function(a, b){
-      var aMs = new Date(a.lastLoginAt || a.createdAt || 0).getTime();
-      var bMs = new Date(b.lastLoginAt || b.createdAt || 0).getTime();
-      return bMs - aMs;
-    });
-    return rows;
-  }
-
-  function getAdminSummary(){
-    var rows = listAdminUsers({ includeGuests: false });
-    var today = dayKey();
-    var newUsersToday = rows.filter(function(row){
-      return dayKey(row.createdAt) === today;
-    }).length;
-    var lastLoginAt = '';
-    rows.forEach(function(row){
-      if (!row.lastLoginAt) return;
-      if (!lastLoginAt || new Date(row.lastLoginAt).getTime() > new Date(lastLoginAt).getTime()) {
-        lastLoginAt = row.lastLoginAt;
-      }
-    });
-
-    var classroomYes = rows.filter(function(row){ return Boolean(row.classroomCreated); }).length;
-    return {
-      totalUsers: rows.length,
-      newUsersToday: newUsersToday,
-      lastLoginAt: lastLoginAt || '',
-      classroomCreatedYes: classroomYes,
-      classroomCreatedNo: Math.max(0, rows.length - classroomYes)
-    };
-  }
-
-  function exportUsersCsv(){
-    var rows = listAdminUsers({ includeGuests: true });
-    if (!rows.length) {
-      return 'userKey,email,name,createdAt,lastLoginAt,classroomCreated,classroomCount,plan,mode\n';
-    }
-    var head = ['userKey', 'email', 'name', 'createdAt', 'lastLoginAt', 'classroomCreated', 'classroomCount', 'plan', 'mode'];
-    var lines = rows.map(function(row){
-      return head.map(function(key){
-        var val = row[key] == null ? '' : String(row[key]);
-        return '"' + val.replace(/"/g, '""') + '"';
-      }).join(',');
-    });
-    return head.join(',') + '\n' + lines.join('\n');
-  }
-
-  function clearAdminUsers(){
-    localStorage.removeItem(USER_REGISTRY_KEY);
-    localStorage.removeItem(LOGIN_MARK_KEY);
-  }
-
-  function maybeTrackSessionLogin(){
-    if (!window.GS_BILLING || !window.GS_BILLING.getAccount) return;
-    var account = window.GS_BILLING.getAccount();
-    if (!account || account.mode === 'guest') return;
-
-    var payload = {
-      accountId: account.id || '',
-      email: account.email || '',
-      name: account.name || '',
-      role: account.role || 'teacher',
-      plan: account.plan || 'trial',
-      mode: account.mode || 'account',
-      source: 'session_restore'
-    };
-    var userKey = resolveUserKey(payload);
-    var mark = safeParseObject(localStorage.getItem(LOGIN_MARK_KEY), null);
-    var nowMs = Date.now();
-    if (mark && mark.userKey === userKey && Number(mark.ts || 0) > (nowMs - 6 * 60 * 60 * 1000)) return;
-
-    trackLogin({
-      accountId: payload.accountId,
-      email: payload.email,
-      name: payload.name,
-      role: payload.role,
-      plan: payload.plan,
-      mode: payload.mode,
-      source: payload.source,
-      minGapMs: 30 * 60 * 1000,
-      suppressAnalytics: true
-    });
-    localStorage.setItem(LOGIN_MARK_KEY, JSON.stringify({ userKey: userKey, ts: nowMs }));
-  }
-
   function readEvents(){
     return safeParse(localStorage.getItem(KEY));
   }
@@ -335,7 +64,8 @@
   }
 
   function readCloudConfig(){
-    var cfg = safeParseObject(localStorage.getItem(CLOUD_CONFIG_KEY), { endpoint: '', apiKey: '' });
+    var cfg = safeParse(localStorage.getItem(CLOUD_CONFIG_KEY));
+    if (!cfg || Array.isArray(cfg)) return { endpoint: '', apiKey: '' };
     return {
       endpoint: typeof cfg.endpoint === 'string' ? cfg.endpoint.trim() : '',
       apiKey: typeof cfg.apiKey === 'string' ? cfg.apiKey.trim() : ''
@@ -557,16 +287,6 @@
     flush: flushCloudQueue
   };
 
-  window.GSAdminMetrics = {
-    trackUserCreated: trackUserCreated,
-    trackLogin: trackLogin,
-    trackClassroomCreated: trackClassroomCreated,
-    getSummary: getAdminSummary,
-    getUsers: listAdminUsers,
-    exportCsv: exportUsersCsv,
-    clear: clearAdminUsers
-  };
-
   function gameSuggestionForWeakGame(game){
     var map = {
       'error-smash': 'rule-sprint',
@@ -704,7 +424,6 @@
   window.addEventListener('DOMContentLoaded', function(){
     getActiveStudent();
     flushCloudQueue();
-    maybeTrackSessionLogin();
     track('page_view', { title: document.title });
     ensureStudentPicker();
     attachMissionGrowthInsights();
