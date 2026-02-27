@@ -185,6 +185,26 @@
     .inside-mission .screenshot-card{border:1px solid var(--cool);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(11,16,32,.08)}
     .inside-mission .screenshot-card img{width:100%;height:auto;display:block;object-fit:cover}
     .inside-mission .screenshot-card figcaption{margin:0;padding:12px 14px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);border-top:1px solid #e4e8ef}
+    .inside-mission .report-preview{padding:14px 14px 16px;display:grid;gap:12px}
+    .inside-mission .report-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .inside-mission .report-title b{display:block;color:var(--navy);font:800 12px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+    .inside-mission .report-title span{display:block;margin-top:4px;color:#5c6677;font:600 13px Inter,Arial,sans-serif;line-height:1.35}
+    .inside-mission .report-kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .inside-mission .kpi{border:1px solid #e4e8ef;border-radius:10px;background:#f8fafc;padding:10px}
+    .inside-mission .kpi i{display:block;font-style:normal;font:800 18px Inter,Arial,sans-serif;color:var(--navy)}
+    .inside-mission .kpi small{display:block;margin-top:2px;font:800 10px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#5c6677}
+    .inside-mission .report-next{border:1px solid rgba(31,95,99,.25);background:rgba(31,95,99,.08);border-radius:12px;padding:12px}
+    .inside-mission .report-next .label{display:block;font:800 10px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#1f5f63}
+    .inside-mission .report-next a{display:inline-flex;align-items:center;gap:8px;margin-top:8px;color:#0b1020;text-decoration:none;font:800 13px Inter,Arial,sans-serif}
+    .inside-mission .report-next a:hover{text-decoration:underline}
+    .inside-mission .report-next .hint{margin-top:6px;color:#39536b;font:600 12px Inter,Arial,sans-serif;line-height:1.4}
+    .inside-mission .report-scan{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .inside-mission .scan-card{border:1px solid #e4e8ef;border-radius:12px;background:#ffffff;padding:12px}
+    .inside-mission .scan-card b{display:block;font:900 10px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#16223a}
+    .inside-mission .scan-card ul{margin:10px 0 0;padding-left:16px;display:grid;gap:6px;font-size:13px;color:#4a5568;line-height:1.5}
+    .inside-mission .report-mini{border:1px dashed rgba(201,162,39,.65);border-radius:12px;background:rgba(201,162,39,.08);padding:12px}
+    .inside-mission .report-mini b{display:block;font:900 10px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#0b1020}
+    .inside-mission .report-mini p{margin:8px 0 0;color:#324357;font-size:13px;line-height:1.55}
     @media (max-width:1000px){.inside-mission{grid-template-columns:1fr}}
     @media (max-width:620px){.inside-mission{grid-template-columns:1fr}.inside-mission .screenshot-card img{max-height:280px;object-fit:contain}}
     @media (max-width:620px){.inside-mission{gap:16px}}
@@ -365,7 +385,52 @@
           <figcaption>Mission screen</figcaption>
         </figure>
         <figure class="screenshot-card" role="listitem" id="sample-report">
-          <img src="assets/branding-images/inside-mission/mission-report.png" alt="Mission Report showing accuracy percentage, score, and next-step recommendation.">
+          <div class="report-preview" aria-label="Sample mission report preview">
+            <div class="report-title">
+              <div>
+                <b>Mission report</b>
+                <span>Mission 01 · Retell What Happened</span>
+              </div>
+              <div style="text-align:right">
+                <b style="color:#5c6677">Class</b>
+                <span>Period 3 ELD</span>
+              </div>
+            </div>
+
+            <div class="report-kpi" role="group" aria-label="Report highlights">
+              <div class="kpi"><i>84%</i><small>Accuracy</small></div>
+              <div class="kpi"><i>10</i><small>Rounds</small></div>
+              <div class="kpi"><i>2</i><small>Patterns</small></div>
+            </div>
+
+            <div class="report-next" role="group" aria-label="Next game suggestion">
+              <span class="label">Next game suggestion (click)</span>
+              <a href="dialogue-repair.html?pack=pack01">Dialogue Builder <span aria-hidden="true">→</span></a>
+              <div class="hint">Goal: fix tense choices inside a short conversation, then replay for spaced review.</div>
+            </div>
+
+            <div class="report-scan" role="group" aria-label="Strengths and weaknesses">
+              <div class="scan-card">
+                <b>Strengths</b>
+                <ul>
+                  <li>Time markers (while / when)</li>
+                  <li>Background actions (past continuous)</li>
+                </ul>
+              </div>
+              <div class="scan-card">
+                <b>Needs support</b>
+                <ul>
+                  <li>Completed actions (simple past)</li>
+                  <li>Sequence connectors (then / after)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="report-mini" role="group" aria-label="Mini lesson suggestion">
+              <b>Mini-lesson suggestion</b>
+              <p>2 minutes: circle the time marker, underline the completed action, box the background action. Then re-run the Mission at Rookie level for quick recall.</p>
+            </div>
+          </div>
           <figcaption>Sample report</figcaption>
         </figure>
       </div>
