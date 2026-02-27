@@ -5,14 +5,14 @@
     sidebar: 'components/sidebar.html'
   };
 
-  var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase';
+  var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc';
   var dropdownLinkStyle = 'display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap';
-  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px;background:#fff;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px';
+  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none';
   var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
 
   var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 16px;padding:12px 40px 14px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
-    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:88px;width:auto;display:block;background:transparent;border:none"></a>' +
-    '<span style="display:flex;flex:1 1 420px;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">' +
+    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:74px;width:auto;display:block;background:transparent;border:none"></a>' +
+    '<span style="display:flex;flex:1 1 520px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center">' +
     '<a href="index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
     '<details id="gsMissionMenu" style="position:relative">' +
     '<summary style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
@@ -22,12 +22,17 @@
     '<a href="clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
     '</span>' +
     '</details>' +
+    '<a href="teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
+    '<a href="pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
+    '<details id="gsResourcesMenu" style="position:relative">' +
+    '<summary style="' + menuSummaryStyle + '">Resources &#9662;</summary>' +
+    '<span style="' + menuPanelStyle + '">' +
+    '<a href="community.html" style="' + dropdownLinkStyle + '">Community</a>' +
+    '<a href="insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
+    '</span>' +
+    '</details>' +
     '</span>' +
     '<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">' +
-    '<a href="teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
-    '<a href="community.html" style="' + navLinkStyle + '">Community</a>' +
-    '<a href="insights.html" data-i18n="nav_blog" style="' + navLinkStyle + '">Blog</a>' +
-    '<a href="pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
     '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center">' +
     '<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
     '<option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option><option value="fr">🇫🇷 Français</option>' +

@@ -18,45 +18,50 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   if (!targetEl) return;
 
   const currentPage = (window.location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
-  const navLinkStyle = "text-decoration:none;font:700 13px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase";
+  const navLinkStyle = "text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc";
   const dropdownLinkStyle = "display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap";
-  const menuSummaryStyle = "cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:6px 12px;background:#fff;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px";
+  const menuSummaryStyle = "cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none";
   const menuPanelStyle = "position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30";
 
   const primaryLinks = [
-    { label: "Home", href: "index.html" }
+    { label: "Home", href: "index.html" },
+    { label: "Teacher", href: "teacher-home.html" },
+    { label: "Pricing", href: "pricing.html" }
   ];
   const missionMenuLinks = [
     { label: "Missions", href: "packs.html" },
     { label: "Training Path", href: "progression.html" },
     { label: "CLUES", href: "clues.html" }
   ];
-  const rightLinks = [
-    { label: "Teacher", href: "teacher-home.html" },
+  const resourceLinks = [
     { label: "Community", href: "community.html" },
     { label: "Blog", href: "insights.html" },
-    { label: "Pricing", href: "pricing.html" }
   ];
 
   const buildPrimaryLink = (link) => {
     const isActive = currentPage === link.href.toLowerCase();
-    const color = isActive ? "#0f5c5c" : "#4a5568";
-    return `<a href="${link.href}" style="${navLinkStyle};color:${color}">${link.label}</a>`;
+    const tone = isActive
+      ? "color:#0f5c5c;border-color:#1f5f63;background:#e8f4f5;"
+      : "color:#4a5568;border-color:#d9dee6;background:#f8fafc;";
+    return `<a href="${link.href}" style="${navLinkStyle};${tone}">${link.label}</a>`;
   };
   const missionMenuIsActive = missionMenuLinks.some((l) => currentPage === l.href.toLowerCase());
-  const missionMenuSummaryStyle = `${menuSummaryStyle};color:${missionMenuIsActive ? "#0f5c5c" : "#4a5568"};border-color:${missionMenuIsActive ? "#1f5f63" : "#d9dee6"}`;
+  const missionMenuSummaryStyle = `${menuSummaryStyle};color:${missionMenuIsActive ? "#0f5c5c" : "#4a5568"};border-color:${missionMenuIsActive ? "#1f5f63" : "#d9dee6"};background:${missionMenuIsActive ? "#e8f4f5" : "#f8fafc"}`;
   const missionMenuLinksHtml = missionMenuLinks.map((l) => {
     const isActive = currentPage === l.href.toLowerCase();
     const activeStyle = isActive ? "background:#e8f4f5;color:#0f5c5c;" : "";
     return `<a href="${l.href}" style="${dropdownLinkStyle};${activeStyle}">${l.label}</a>`;
   }).join("");
-  const primaryLinksHtml = primaryLinks.map(buildPrimaryLink).join("") +
-    `<details style="position:relative"><summary style="${missionMenuSummaryStyle}">Missions &#9662;</summary><span style="${menuPanelStyle}">${missionMenuLinksHtml}</span></details>`;
-  const rightLinksHtml = rightLinks.map((link) => {
-    const isActive = currentPage === link.href.toLowerCase();
-    const color = isActive ? "#0f5c5c" : "#4a5568";
-    return `<a href="${link.href}" style="${navLinkStyle};color:${color}">${link.label}</a>`;
+  const resourcesMenuIsActive = resourceLinks.some((l) => currentPage === l.href.toLowerCase());
+  const resourcesMenuSummaryStyle = `${menuSummaryStyle};color:${resourcesMenuIsActive ? "#0f5c5c" : "#4a5568"};border-color:${resourcesMenuIsActive ? "#1f5f63" : "#d9dee6"};background:${resourcesMenuIsActive ? "#e8f4f5" : "#f8fafc"}`;
+  const resourceLinksHtml = resourceLinks.map((l) => {
+    const isActive = currentPage === l.href.toLowerCase();
+    const activeStyle = isActive ? "background:#e8f4f5;color:#0f5c5c;" : "";
+    return `<a href="${l.href}" style="${dropdownLinkStyle};${activeStyle}">${l.label}</a>`;
   }).join("");
+  const primaryLinksHtml = primaryLinks.map(buildPrimaryLink).join("") +
+    `<details style="position:relative"><summary style="${missionMenuSummaryStyle}">Missions &#9662;</summary><span style="${menuPanelStyle}">${missionMenuLinksHtml}</span></details>` +
+    `<details style="position:relative"><summary style="${resourcesMenuSummaryStyle}">Resources &#9662;</summary><span style="${menuPanelStyle}">${resourceLinksHtml}</span></details>`;
 
   const langSelect = `<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +
     `<option value="en">\u{1F1FA}\u{1F1F8} English</option><option value="es">\u{1F1EA}\u{1F1F8} Español</option><option value="fr">\u{1F1EB}\u{1F1F7} Français</option>` +
@@ -69,13 +74,12 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   targetEl.innerHTML = `
     <nav aria-label="Primary navigation" style="margin:0 0 16px;padding:12px 40px 14px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">
       <a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent">
-        <img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:88px;width:auto;display:block;background:transparent;border:none">
+        <img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:74px;width:auto;display:block;background:transparent;border:none">
       </a>
-      <span style="display:flex;flex:1 1 420px;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">
+      <span style="display:flex;flex:1 1 520px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center">
         ${primaryLinksHtml}
       </span>
       <span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">
-        ${rightLinksHtml}
         <span id="gsLangSwitcher" style="display:inline-flex;align-items:center">
           ${langSelect}
         </span>
