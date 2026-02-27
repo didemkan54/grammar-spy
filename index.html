@@ -295,12 +295,12 @@
       <div class="hero-grid">
         <div>
           <p class="k">Grammar Spy™</p>
-          <h1>Structured grammar practice. Clear results. No classroom chaos.</h1>
+          <h1 id="heroHeadline">Structured grammar practice. Clear results. No classroom chaos.</h1>
           <div class="hero-accent" aria-hidden="true"></div>
-          <p class="subcopy hero-who">Missions are short, focused grammar practice tasks you can run in minutes.</p>
+          <p class="subcopy hero-who" id="heroSubcopy">Missions are short, focused grammar practice tasks you can run in minutes.</p>
           <div class="mission-panel">
             <p class="mission-label start-here">Choose your role</p>
-            <p class="hero-cta-copy">Teacher path: start with Mission 01 Free, review a sample report, then create your classroom. Student path: join with a class code and complete assigned Missions.</p>
+            <p class="hero-cta-copy" id="heroCtaCopy">Teacher path: start with Mission 01 Free, review a sample report, then create your classroom. Student path: join with a class code and complete assigned Missions.</p>
             <div class="segmented" role="tablist" aria-label="Mode selection">
               <button id="modeTeacher" class="seg active" type="button" aria-selected="true">Teacher</button>
               <button id="modeStudent" class="seg" type="button" aria-selected="false">Student</button>
@@ -534,6 +534,30 @@
 
     const saved = localStorage.getItem(useKey);
     applyMode(saved === 'individual' ? 'individual' : 'class');
+
+    (function applyHeroVariant(){
+      var variants = {
+        a: {
+          headline: 'Structured grammar practice. Clear results. No classroom chaos.',
+          subcopy: 'Missions are short, focused grammar practice tasks you can run in minutes.',
+          ctaCopy: 'Teacher path: start with Mission 01 Free, review a sample report, then create your classroom. Student path: join with a class code and complete assigned Missions.'
+        },
+        b: {
+          headline: 'Teach grammar with less prep and more confidence.',
+          subcopy: 'Missions are short, focused grammar practice tasks built for quick recall, spaced review, and repeatable practice.',
+          ctaCopy: 'Run one Mission, check one clear report, then decide your next move. Start free with Mission 01 and create your classroom when ready.'
+        }
+      };
+      var qp = new URLSearchParams(location.search);
+      var key = (qp.get('hero_variant') || 'a').toLowerCase();
+      if (!variants[key]) key = 'a';
+      var h = document.getElementById('heroHeadline');
+      var s = document.getElementById('heroSubcopy');
+      var c = document.getElementById('heroCtaCopy');
+      if (h) h.textContent = variants[key].headline;
+      if (s) s.textContent = variants[key].subcopy;
+      if (c) c.textContent = variants[key].ctaCopy;
+    })();
 
     function normalizePromoCode(raw) {
       var value = String(raw || '').trim();
