@@ -8,8 +8,7 @@
   <style>
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 8px 18px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 40px}
-    .wrap{max-width:960px;margin:0 auto;display:grid;gap:24px}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 40px;margin:0;display:grid;gap:24px}
     .section{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow);padding:24px}
     .k{margin:0 0 10px;font:800 11px Inter,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1f5f63}
     h1,h2{margin:0;color:#0b1020;line-height:1.12}
@@ -29,22 +28,30 @@
     .pack-card-caption{margin-top:6px;font:700 11px Inter,Arial,sans-serif;color:#16223a;line-height:1.25}
     .pack-card img,.pack-tile img{width:100%;max-height:96px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(11,16,32,.1);transition:transform .2s ease, box-shadow .2s ease}
     .pack-tile:hover img{transform:translateY(-2px);box-shadow:0 12px 24px rgba(11,16,32,.14)}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}.section{padding:20px}}
-    @media (max-width:900px){.pack-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
+    @media (max-width:100%){.grid{grid-template-columns:1fr}.section{padding:20px}}
+    @media (max-width:100%){.pack-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
   </style>
 </head>
 <body>
   <script src="i18n.js"></script>
   <div data-include="header"></div>
   <main class="wrap">
-    <section class="section">
-      <p class="k">Student Home</p>
-      <h1>Your mission start dashboard</h1>
-      <p>Pick a mission, play, and review your progress one step at a time.</p>
-      <div class="segmented" role="tablist" aria-label="Mode selection">
-        <a class="seg" aria-selected="false" href="teacher-home.html">Teacher</a>
-        <a class="seg active" aria-selected="true" href="individual-home.html">Student</a>
+    <section class="section" style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center">
+      <div>
+        <p class="k">Student Home</p>
+        <h1>Your mission start dashboard</h1>
+        <p>Pick a mission, play, and review your progress one step at a time.</p>
+        <div class="segmented" role="tablist" aria-label="Mode selection">
+          <a class="seg" aria-selected="false" href="teacher-home.html">Teacher</a>
+          <a class="seg active" aria-selected="true" href="individual-home.html">Student</a>
+        </div>
       </div>
+      <img src="assets/illustrations/student-dashboard.svg" alt="" style="width:220px;height:auto;opacity:.85" aria-hidden="true" />
+    </section>
+
+    <section class="section" id="joinClassSection" aria-label="Join a classroom">
+      <p class="k">Join a Classroom</p>
+      <div id="joinState"></div>
     </section>
 
     <section class="section" aria-label="Student welcome video">
@@ -69,7 +76,7 @@
         <article class="card">
           <h2>Try Sample Mission</h2>
           <p>Quick practice with no setup required.</p>
-          <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=8&timer=off">Open sample</a>
+          <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=20&timer=off">Open sample</a>
         </article>
       </div>
     </section>
@@ -83,11 +90,92 @@
   <div data-include="footer"></div>
   <script src="billing-scaffold.js"></script>
   <script src="auth-scaffold.js"></script>
+  <script src="classroom.js"></script>
   <script src="layout-loader.js"></script>
   <script src="app-shell.js"></script>
   <script>
     (function(){
       try { localStorage.setItem('gs_use_context_v3', 'individual'); } catch(e) {}
+
+      function renderJoinSection() {
+        var el = document.getElementById("joinState");
+        if (!el || !window.GSClassroom) return;
+        var current = window.GSClassroom.getStudentClassroom();
+        var studentData = null;
+        try { studentData = JSON.parse(localStorage.getItem('gs_student_classroom')); } catch(e){}
+        if (current || studentData) {
+          var displayName = (current && current.classroomName) || (studentData && studentData.code) || 'your classroom';
+          var studentName = (current && current.studentName) || (studentData && studentData.studentName) || 'Student';
+          var teacherName = (current && current.teacherName) || '';
+          el.innerHTML = '<div style="background:#e6f2f2;border:2px solid #1f5f63;border-radius:16px;padding:24px">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">' +
+            '<div><h2 style="margin:0;font-size:22px;color:#1f5f63">Welcome, ' + studentName + '!</h2>' +
+            '<p style="margin:4px 0 0;color:#4a5568;font-size:14px">Class: ' + displayName + (teacherName ? ' &middot; Teacher: ' + teacherName : '') + '</p></div>' +
+            '<button id="leaveClassBtn" type="button" style="padding:6px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;color:#7a8698;font:600 11px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Leave class</button>' +
+            '</div>' +
+            '<p style="margin:0 0 14px;color:#16223a;font-weight:600">Your missions are ready. Pick one to start practicing:</p>' +
+            '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">' +
+            '<a href="packs.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📋</span><span>All Missions</span></a>' +
+            '<a href="pack.html?pack=pack01" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🕵️</span><span>Mission 01: Past Tense</span></a>' +
+            '<a href="pack.html?pack=pack02" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🔍</span><span>Mission 02: Present</span></a>' +
+            '<a href="pack.html?pack=pack03" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🎯</span><span>Mission 03: Be-Verbs</span></a>' +
+            '<a href="clues.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📖</span><span>CLUES Archive</span></a>' +
+            '<a href="progression.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📈</span><span>Training Path</span></a>' +
+            '</div></div>';
+          var leaveBtn = document.getElementById("leaveClassBtn");
+          if (leaveBtn) leaveBtn.addEventListener("click", function() {
+            window.GSClassroom.leaveClassroom();
+            renderJoinSection();
+          });
+        } else {
+          el.innerHTML = '<h2 style="margin:0 0 6px;font-size:20px">Enter your teacher\'s code</h2>' +
+            '<p style="margin:0 0 14px;color:#4a5568;font-size:14px">Your teacher will show a 6-letter code on screen. Type it below to join their classroom.</p>' +
+            '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">' +
+              '<input type="text" id="joinCodeInput" placeholder="Enter code" maxlength="10" autocomplete="off" autocapitalize="characters" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 16px;font-size:20px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;width:200px;text-align:center;font-family:Courier New,monospace" />' +
+              '<input type="text" id="joinNameInput" placeholder="Your name" maxlength="25" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 16px;font-size:15px;min-width:180px" />' +
+              '<button class="btn-primary" id="joinBtn" type="button" style="display:inline-flex;align-items:center;padding:12px 20px;border:1px solid #194f53;border-radius:10px;background:#1f5f63;color:#fff;font:700 13px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Join</button>' +
+            '</div>' +
+            '<p id="joinError" style="display:none;color:#b04444;font-size:13px;font-weight:600;margin-top:8px"></p>';
+
+          var joinBtn = document.getElementById("joinBtn");
+          var codeInput = document.getElementById("joinCodeInput");
+          var nameInput = document.getElementById("joinNameInput");
+          var errEl = document.getElementById("joinError");
+          if (joinBtn) joinBtn.addEventListener("click", function() {
+            var code = (codeInput.value || "").trim();
+            var name = (nameInput.value || "").trim();
+            errEl.style.display = "none";
+            if (!code || code.length < 4) { errEl.textContent = "Please enter your class code."; errEl.style.display = "block"; codeInput.focus(); return; }
+            if (!name) { errEl.textContent = "Please enter your name."; errEl.style.display = "block"; nameInput.focus(); return; }
+            var result = window.GSClassroom && window.GSClassroom.addStudentToClassroom(code, name);
+            if (!result && window.GS_BILLING) {
+              if (window.GS_AUTH) window.GS_AUTH.setAccount(name, '');
+              var redeemed = window.GS_BILLING.redeemPromoCode(code);
+              if (redeemed) {
+                try { localStorage.setItem('gs_student_classroom', JSON.stringify({ code: code.toUpperCase(), studentName: name, joinedAt: new Date().toISOString() })); } catch(e){}
+                result = true;
+              }
+            }
+            if (!result) { errEl.textContent = "Code not found. Check with your teacher and try again."; errEl.style.display = "block"; return; }
+            renderJoinSection();
+          });
+          if (codeInput) codeInput.addEventListener("keydown", function(e) { if (e.key === "Enter") joinBtn.click(); });
+          if (nameInput) nameInput.addEventListener("keydown", function(e) { if (e.key === "Enter") joinBtn.click(); });
+        }
+      }
+      renderJoinSection();
+      if (location.search.indexOf('join=1') >= 0 || location.hash.indexOf('joinClass') >= 0) {
+        var joinEl = document.getElementById('joinClassSection');
+        if (joinEl) {
+          joinEl.style.border = '2px solid #1f5f63';
+          joinEl.style.borderRadius = '16px';
+          joinEl.style.padding = '20px';
+          joinEl.style.background = '#e6f2f2';
+          setTimeout(function() { joinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+          setTimeout(function() { joinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 500);
+          setTimeout(function() { joinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 1000);
+        }
+      }
       var FEATURED = [
         { id: 'pack01', num: '01', name: 'Retell What Happened', cover: 'assets/branding-images/packs/pack01-retell-what-happened.png' },
         { id: 'pack02', num: '02', name: 'Speak In The Moment', cover: 'assets/branding-images/packs/pack02-speak-in-the-moment.png' },

@@ -43,9 +43,9 @@ body.gs-reduced-motion *::after {
 }
 
 .gs-shell {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 20px 18px 30px;
+  max-width: 100%;
+  margin: 0;
+  padding: 20px 40px 30px;
   display: grid;
   gap: 14px;
 }

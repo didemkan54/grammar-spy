@@ -1,12 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="340" height="88" viewBox="0 0 340 88" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="120" viewBox="0 0 480 120" role="img" aria-labelledby="title desc">
   <title id="title">Grammar Spy logo</title>
-  <desc id="desc">Shield with magnifier mark and Grammar Spy wordmark.</desc>
-  <g transform="translate(4 4)">
-    <path d="M32 4L52 11V28c0 14-8.6 24.8-20 29.8C20.6 52.8 12 42 12 28V11L32 4z" fill="#0B1020"/>
-    <circle cx="30.2" cy="24.2" r="9.2" fill="none" stroke="#C9A227" stroke-width="3.2"/>
-    <path d="M36 30.1l6.2 6.2" fill="none" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round"/>
-    <path d="M26.4 24.5l2.3 2.2 5-5.2" fill="none" stroke="#C9A227" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <desc id="desc">Magnifying glass over text with Grammar Spy wordmark and gold underline.</desc>
+  <defs>
+    <linearGradient id="mgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f7a7e"/>
+      <stop offset="100%" stop-color="#1a5c5f"/>
+    </linearGradient>
+    <clipPath id="lensClip">
+      <circle cx="48" cy="48" r="30"/>
+    </clipPath>
+  </defs>
+
+  <!-- Magnifying glass body -->
+  <g transform="translate(6,10)">
+    <!-- Glass lens background -->
+    <circle cx="48" cy="48" r="34" fill="#e8f4f5" opacity=".5"/>
+    <circle cx="48" cy="48" r="30" fill="#ffffff"/>
+
+    <!-- Text lines visible through lens (zoomed/magnified look) -->
+    <g clip-path="url(#lensClip)">
+      <rect x="22" y="32" width="52" height="4.5" rx="2" fill="#1f5f63" opacity=".55"/>
+      <rect x="22" y="41" width="40" height="4.5" rx="2" fill="#c9a227" opacity=".6"/>
+      <rect x="22" y="50" width="48" height="4.5" rx="2" fill="#1f5f63" opacity=".4"/>
+      <rect x="22" y="59" width="36" height="4.5" rx="2" fill="#16223a" opacity=".25"/>
+    </g>
+
+    <!-- Lens ring -->
+    <circle cx="48" cy="48" r="30" fill="none" stroke="url(#mgGrad)" stroke-width="5.5"/>
+    <!-- Lens shine -->
+    <path d="M32 30 Q38 24 46 28" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+
+    <!-- Handle -->
+    <line x1="72" y1="72" x2="92" y2="92" stroke="#1a5c5f" stroke-width="7" stroke-linecap="round"/>
+    <line x1="72" y1="72" x2="92" y2="92" stroke="#1f7a7e" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- Small pencil accent (tucked behind lens) -->
+    <g transform="translate(12,18) rotate(-35)">
+      <rect x="0" y="0" width="3.5" height="22" rx="1" fill="#c9a227" opacity=".55"/>
+      <polygon points="0,22 3.5,22 1.75,27" fill="#16223a" opacity=".4"/>
+    </g>
   </g>
-  <text x="72" y="35" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="37" fill="#16223A">Grammar</text>
-  <text x="72" y="68" font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" font-size="37" fill="#1F5F63">Spy</text>
+
+  <!-- Text: Grammar Spy -->
+  <text x="112" y="70" font-family="Inter,'Segoe UI',Arial,sans-serif" font-weight="800" font-size="52" letter-spacing="-0.5" fill="#0f1b2d">Grammar Spy</text>
+  <!-- TM symbol -->
+  <text x="430" y="46" font-family="Inter,'Segoe UI',Arial,sans-serif" font-weight="600" font-size="16" fill="#0f1b2d">™</text>
+
+  <!-- Gold underline -->
+  <line x1="112" y1="82" x2="440" y2="82" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
 </svg>
