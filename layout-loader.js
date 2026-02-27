@@ -5,17 +5,37 @@
     sidebar: 'components/sidebar.html'
   };
 
+  function ensureTopNavStyles(){
+    try {
+      if (document.getElementById('gsTopNavStyles')) return;
+      var st = document.createElement('style');
+      st.id = 'gsTopNavStyles';
+      st.textContent =
+        'nav[aria-label=\"Primary navigation\"] .gs-pill{white-space:nowrap}\\n' +
+        '@media (max-width:720px){\\n' +
+        '  nav[aria-label=\"Primary navigation\"]{padding-left:14px!important;padding-right:14px!important}\\n' +
+        '}\\n' +
+        '@media (max-width:520px){\\n' +
+        '  nav[aria-label=\"Primary navigation\"]{gap:10px!important}\\n' +
+        '  nav[aria-label=\"Primary navigation\"] .gs-logo{height:46px!important}\\n' +
+        '  nav[aria-label=\"Primary navigation\"] .gs-pill{padding:6px 10px!important;font-size:11px!important}\\n' +
+        '  nav[aria-label=\"Primary navigation\"] .gs-select{padding:6px 8px!important;font-size:11px!important}\\n' +
+        '}\\n';
+      (document.head || document.documentElement).appendChild(st);
+    } catch(_e) {}
+  }
+
   var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc';
   var dropdownLinkStyle = 'display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap';
   var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none';
   var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
 
   var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 16px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
-    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none"></a>' +
+    '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img class="gs-logo" src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none"></a>' +
     '<span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
-    '<a href="index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
+    '<a class="gs-pill" href="index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
     '<details id="gsMissionMenu" style="position:relative">' +
-    '<summary style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
+    '<summary class="gs-pill" style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
     '<a href="teacher-mode.html" style="' + dropdownLinkStyle + '">Run a Mission</a>' +
     '<a href="teacher-mode.html?play_format=whole_class" style="' + dropdownLinkStyle + '">Whole Class</a>' +
@@ -25,10 +45,10 @@
     '<a href="clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
     '</span>' +
     '</details>' +
-    '<a href="teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
-    '<a href="pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
+    '<a class="gs-pill" href="teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
+    '<a class="gs-pill" href="pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
     '<details id="gsResourcesMenu" style="position:relative">' +
-    '<summary style="' + menuSummaryStyle + '">Resources &#9662;</summary>' +
+    '<summary class="gs-pill" style="' + menuSummaryStyle + '">Resources &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
     '<a href="community.html" style="' + dropdownLinkStyle + '">Community</a>' +
     '<a href="insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
@@ -37,7 +57,7 @@
     '</span>' +
     '<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end">' +
     '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center">' +
-    '<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
+    '<select class="gs-select" id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">' +
     '<option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option><option value="fr">🇫🇷 Français</option>' +
     '<option value="am">🇪🇹 አማርኛ</option><option value="tr">🇹🇷 Türkçe</option><option value="ar">🇸🇦 العربية</option>' +
     '<option value="hi">🇮🇳 हिन्दी</option><option value="ur">🇵🇰 اردو</option><option value="ps">🇦🇫 پښتو</option>' +
@@ -45,7 +65,7 @@
     '<option value="so">🇸🇴 Soomaali</option><option value="ti">🇪🇷 ትግርኛ</option><option value="pt">🇧🇷 Português</option>' +
     '</select></span>' +
     '<details id="gsAccountMenu" style="position:relative">' +
-    '<summary id="gsAccountLabel" style="' + menuSummaryStyle + '">Account &#9662;</summary>' +
+    '<summary class="gs-pill" id="gsAccountLabel" style="' + menuSummaryStyle + '">Account &#9662;</summary>' +
     '<span id="gsAccountPanel" style="' + menuPanelStyle + '">' +
     '<a href="auth.html?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
     '<a href="auth.html?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>' +
@@ -87,6 +107,7 @@
   }
 
   function run(){
+    ensureTopNavStyles();
     const nodes = Array.prototype.slice.call(document.querySelectorAll('[data-include]'));
     Promise.all(nodes.map(includeOne)).then(function(){
       var main = document.querySelector('main');

@@ -17,6 +17,27 @@ export function resolveRouteIdFromPath(pathname = window.location.pathname) {
 export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath()) {
   if (!targetEl) return;
 
+  const ensureTopNavStyles = () => {
+    try {
+      if (document.getElementById('gsTopNavStyles')) return;
+      const st = document.createElement('style');
+      st.id = 'gsTopNavStyles';
+      st.textContent =
+        'nav[aria-label=\"Primary navigation\"] .gs-pill{white-space:nowrap}\\n' +
+        '@media (max-width:720px){\\n' +
+        '  nav[aria-label=\"Primary navigation\"]{padding-left:14px!important;padding-right:14px!important}\\n' +
+        '}\\n' +
+        '@media (max-width:520px){\\n' +
+        '  nav[aria-label=\"Primary navigation\"]{gap:10px!important}\\n' +
+        '  nav[aria-label=\"Primary navigation\"] .gs-logo{height:46px!important}\\n' +
+        '  nav[aria-label=\"Primary navigation\"] .gs-pill{padding:6px 10px!important;font-size:11px!important}\\n' +
+        '  nav[aria-label=\"Primary navigation\"] .gs-select{padding:6px 8px!important;font-size:11px!important}\\n' +
+        '}\\n';
+      (document.head || document.documentElement).appendChild(st);
+    } catch (_e) {}
+  };
+  ensureTopNavStyles();
+
   const currentPage = (window.location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
   const navLinkStyle = "text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc";
   const dropdownLinkStyle = "display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap";
@@ -46,7 +67,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     const tone = isActive
       ? "color:#0f5c5c;border-color:#1f5f63;background:#e8f4f5;"
       : "color:#4a5568;border-color:#d9dee6;background:#f8fafc;";
-    return `<a href="${link.href}" style="${navLinkStyle};${tone}">${link.label}</a>`;
+    return `<a class="gs-pill" href="${link.href}" style="${navLinkStyle};${tone}">${link.label}</a>`;
   };
   const missionMenuIsActive = missionMenuLinks.some((l) => currentPage === l.href.toLowerCase());
   const missionMenuSummaryStyle = `${menuSummaryStyle};color:${missionMenuIsActive ? "#0f5c5c" : "#4a5568"};border-color:${missionMenuIsActive ? "#1f5f63" : "#d9dee6"};background:${missionMenuIsActive ? "#e8f4f5" : "#f8fafc"}`;
@@ -63,10 +84,10 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     return `<a href="${l.href}" style="${dropdownLinkStyle};${activeStyle}">${l.label}</a>`;
   }).join("");
   const primaryLinksHtml = primaryLinks.map(buildPrimaryLink).join("") +
-    `<details style="position:relative"><summary style="${missionMenuSummaryStyle}">Missions &#9662;</summary><span style="${menuPanelStyle}">${missionMenuLinksHtml}</span></details>` +
-    `<details style="position:relative"><summary style="${resourcesMenuSummaryStyle}">Resources &#9662;</summary><span style="${menuPanelStyle}">${resourceLinksHtml}</span></details>`;
+    `<details style="position:relative"><summary class="gs-pill" style="${missionMenuSummaryStyle}">Missions &#9662;</summary><span style="${menuPanelStyle}">${missionMenuLinksHtml}</span></details>` +
+    `<details style="position:relative"><summary class="gs-pill" style="${resourcesMenuSummaryStyle}">Resources &#9662;</summary><span style="${menuPanelStyle}">${resourceLinksHtml}</span></details>`;
 
-  const langSelect = `<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +
+  const langSelect = `<select class="gs-select" id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +
     `<option value="en">\u{1F1FA}\u{1F1F8} English</option><option value="es">\u{1F1EA}\u{1F1F8} Español</option><option value="fr">\u{1F1EB}\u{1F1F7} Français</option>` +
     `<option value="am">\u{1F1EA}\u{1F1F9} አማርኛ</option><option value="tr">\u{1F1F9}\u{1F1F7} Türkçe</option><option value="ar">\u{1F1F8}\u{1F1E6} العربية</option>` +
     `<option value="hi">\u{1F1EE}\u{1F1F3} हिन्दी</option><option value="ur">\u{1F1F5}\u{1F1F0} اردو</option><option value="ps">\u{1F1E6}\u{1F1EB} پښتو</option>` +
@@ -77,7 +98,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   targetEl.innerHTML = `
     <nav aria-label="Primary navigation" style="margin:0 0 16px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">
       <a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent">
-        <img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none">
+        <img class="gs-logo" src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none">
       </a>
       <span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">
         ${primaryLinksHtml}
@@ -87,7 +108,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
           ${langSelect}
         </span>
         <details id="gsAccountMenu" style="position:relative">
-          <summary id="gsAccountLabel" style="${menuSummaryStyle}">Account &#9662;</summary>
+          <summary class="gs-pill" id="gsAccountLabel" style="${menuSummaryStyle}">Account &#9662;</summary>
           <span id="gsAccountPanel" style="${menuPanelStyle}">
             <a href="auth.html?mode=signin" style="${dropdownLinkStyle}">Sign In</a>
             <a href="auth.html?mode=create" style="${dropdownLinkStyle}">Create account</a>
