@@ -29,6 +29,8 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     { label: "Pricing", href: "pricing.html" }
   ];
   const missionMenuLinks = [
+    { label: "Run a Mission", href: "teacher-mode.html" },
+    { label: "Teams Mode", href: "teacher-mode.html?play_format=teams" },
     { label: "Missions", href: "packs.html" },
     { label: "Training Path", href: "progression.html" },
     { label: "CLUES", href: "clues.html" }
@@ -110,17 +112,8 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     }
   } catch(e) {}
 
-  try {
-    const ctx = localStorage.getItem('gs_use_context_v3');
-    const studentClassroom = localStorage.getItem('gs_student_classroom');
-    const isStudent = ctx === 'individual' || studentClassroom;
-    if (isStudent) {
-      targetEl.querySelectorAll('a').forEach((a) => {
-        const href = (a.getAttribute('href') || '').toLowerCase();
-        if (href.includes('teacher-home') || href.includes('teacher-mode')) a.style.display = 'none';
-      });
-    }
-  } catch (e) {}
+  // Keep teacher links visible even after a student-mode session.
+  // Teachers often need to switch formats (whole class / teams) mid-session.
 }
 
 export function applyReducedMotion(enabled) {

@@ -105,6 +105,16 @@
       const o=document.createElement('option'); o.value=url; o.textContent=label; gameSel.appendChild(o);
     });
 
+    (function hydrateFromQuery(){
+      try {
+        const pf = (qp.get('play_format') || '').toLowerCase();
+        const pfSel = document.getElementById('playFormat');
+        if (pfSel && (pf === 'teams' || pf === 'whole_class' || pf === 'individuals')) {
+          pfSel.value = pf;
+        }
+      } catch(e) {}
+    })();
+
     function syncHref(){
       const playFormat = document.getElementById('playFormat').value;
       const p = new URLSearchParams();

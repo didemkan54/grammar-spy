@@ -17,6 +17,8 @@
     '<details id="gsMissionMenu" style="position:relative">' +
     '<summary style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
+    '<a href="teacher-mode.html" style="' + dropdownLinkStyle + '">Run a Mission</a>' +
+    '<a href="teacher-mode.html?play_format=teams" style="' + dropdownLinkStyle + '">Teams Mode</a>' +
     '<a href="packs.html" style="' + dropdownLinkStyle + '">Missions</a>' +
     '<a href="progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
     '<a href="clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
@@ -126,19 +128,7 @@
   }
 
   function applyRoleVisibility() {
-    try {
-      var ctx = localStorage.getItem('gs_use_context_v3');
-      var studentClassroom = localStorage.getItem('gs_student_classroom');
-      var isStudent = ctx === 'individual' || studentClassroom;
-      if (!isStudent) return;
-      var navLinks = document.querySelectorAll('nav[aria-label="Primary navigation"] a');
-      navLinks.forEach(function(a) {
-        var href = (a.getAttribute('href') || '').toLowerCase();
-        if (href.indexOf('teacher-home') >= 0 || href.indexOf('teacher-mode') >= 0) {
-          a.style.display = 'none';
-        }
-      });
-    } catch(e) {}
+    // Keep teacher links visible even after a student-mode session.
   }
 
   function loadAnimations() {
