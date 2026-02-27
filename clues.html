@@ -97,15 +97,8 @@ body{background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",system-
 </head>
 <body>
 
-<nav class="nav"><div class="nav-inner">
-<a href="index.html" class="nav-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Grammar Spy™</a>
-<div class="nav-right">
-<a href="packs.html" class="nav-link">Missions</a>
-<a href="about.html" class="nav-link">About</a>
-<a href="pricing.html" class="nav-link">Pricing</a>
-<a href="index.html" class="nav-link">Home</a>
-</div>
-</div></nav>
+<script src="i18n.js"></script>
+<div data-include="header"></div>
 
 <header class="hero">
 <span class="kicker">Intel Archive</span>
@@ -139,6 +132,7 @@ body{background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",system-
 </footer>
 
 <script src="app-shell.js"></script>
+<script src="layout-loader.js"></script>
 <script>
 var CLUES=[
 // ===== TENSE INTEL =====

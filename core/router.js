@@ -30,6 +30,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   ];
   const missionMenuLinks = [
     { label: "Run a Mission", href: "teacher-mode.html" },
+    { label: "Whole Class", href: "teacher-mode.html?play_format=whole_class" },
     { label: "Teams Mode", href: "teacher-mode.html?play_format=teams" },
     { label: "Missions", href: "packs.html" },
     { label: "Training Path", href: "progression.html" },

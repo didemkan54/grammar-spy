@@ -150,22 +150,8 @@
 </head>
 <body>
 
-<!-- ========== NAV ========== -->
-<nav class="nav" id="nav" aria-label="Page navigation">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-brand" aria-label="Grammar Spy home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Grammar Spy™
-    </a>
-    <div class="nav-links">
-      <a href="#hero" class="nav-link active">Top</a>
-      <a href="#problem" class="nav-link">Problem</a>
-      <a href="#changed" class="nav-link">Method</a>
-      <a href="#what" class="nav-link">Product</a>
-      <a href="#founder" class="nav-link">Founder</a>
-    </div>
-  </div>
-</nav>
+<script src="i18n.js"></script>
+<div data-include="header"></div>
 
 <!-- ========== HERO ========== -->
 <section class="hero" id="hero">
@@ -400,9 +386,9 @@
 </button>
 
 <script src="app-shell.js"></script>
+<script src="layout-loader.js"></script>
 <script>
 (function(){
-  var nav = document.getElementById("nav");
   var btt = document.getElementById("btt");
   var links = document.querySelectorAll(".nav-link");
   var sections = [];
@@ -414,7 +400,6 @@
 
   function onScroll(){
     var y = window.scrollY;
-    nav.classList.toggle("scrolled", y > 10);
     btt.classList.toggle("show", y > 400);
     var cur = "";
     sections.forEach(function(s){

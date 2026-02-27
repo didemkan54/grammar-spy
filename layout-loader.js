@@ -18,6 +18,7 @@
     '<summary style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
     '<a href="teacher-mode.html" style="' + dropdownLinkStyle + '">Run a Mission</a>' +
+    '<a href="teacher-mode.html?play_format=whole_class" style="' + dropdownLinkStyle + '">Whole Class</a>' +
     '<a href="teacher-mode.html?play_format=teams" style="' + dropdownLinkStyle + '">Teams Mode</a>' +
     '<a href="packs.html" style="' + dropdownLinkStyle + '">Missions</a>' +
     '<a href="progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
