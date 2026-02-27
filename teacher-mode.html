@@ -122,6 +122,22 @@
       document.getElementById('count').addEventListener(ev, syncHref);
       document.getElementById('timer').addEventListener(ev, syncHref);
     });
+    document.getElementById('continueBtn').addEventListener('click', function(){
+      if (!window.GSAdminMetrics || !window.GS_BILLING || !window.GS_BILLING.getAccount) return;
+      var account = window.GS_BILLING.getAccount();
+      if (!account) return;
+      window.GSAdminMetrics.trackClassroomCreated({
+        accountId: account.id || '',
+        email: account.email || '',
+        name: account.name || '',
+        role: account.role || 'teacher',
+        plan: account.plan || 'trial',
+        mode: account.mode || 'account',
+        classroomName: 'Mission Session',
+        pack: packId,
+        playFormat: document.getElementById('playFormat').value || 'whole_class'
+      });
+    });
     function updateDifficultyLabel(){
       const sel = document.getElementById('difficulty');
       if (coverEl && sel) coverEl.textContent = DIFFICULTY_LABELS[sel.value] || 'Field Agent';

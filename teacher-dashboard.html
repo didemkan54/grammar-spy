@@ -1,26 +1,172 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0;url=teacher-home.html">
-  <script>
-    (function () {
-      var target = 'teacher-home.html';
-      var q = window.location.search || '';
-      var h = window.location.hash || '';
-      var hasQ = target.indexOf('?') !== -1;
-      var next = target + (q ? (hasQ ? '&' : '?') + q.slice(1) : '') + h;
-      window.location.replace(next);
-    })();
-  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy™ — Admin Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; color: #16223a; }
-    a { color: #1f5f63; }
+    :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--teal-soft:#e8f4f5;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 8px 18px rgba(11,16,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:24px 14px 36px}
+    .wrap{max-width:1120px;margin:0 auto;display:grid;gap:16px}
+    .panel{background:#fff;border:1px solid var(--cool);border-radius:16px;box-shadow:var(--shadow);padding:18px}
+    .k{margin:0 0 8px;font:800 11px Inter,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1f5f63}
+    h1,h2{margin:0;color:var(--navy);line-height:1.12}
+    h1{font-size:30px}
+    h2{font-size:18px}
+    p{margin:9px 0 0;color:var(--slate);line-height:1.55}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+    .metric{padding:14px;border:1px solid rgba(31,95,99,.2);background:var(--teal-soft);border-radius:12px}
+    .metric .label{font:800 10px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#1f5f63}
+    .metric .value{margin-top:6px;font:800 28px Inter,Arial,sans-serif;color:#0b3b3b;line-height:1}
+    .metric .sub{margin-top:6px;font:600 12px Inter,Arial,sans-serif;color:#3c4f5f}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid var(--cool);background:#fff;color:#16223a;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif;cursor:pointer}
+    .btn.primary{background:#1f5f63;border-color:#194f53;color:#fff}
+    .btn.danger{border-color:#d7b2b2;color:#914949;background:#fff5f5}
+    .muted{color:#6b7688;font-size:12px}
+    .table-wrap{overflow-x:auto;margin-top:10px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:9px;border-bottom:1px solid #e7edf2;text-align:left;vertical-align:top}
+    th{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5d6a7c}
+    td{color:#1f2f46;font-size:13px}
+    .pill{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font:700 11px Inter,Arial,sans-serif}
+    .pill.yes{background:#e6f7f1;color:#206852}
+    .pill.no{background:#f4f6f9;color:#5c6677}
+    .empty{padding:16px;border:1px dashed #bfd1dc;border-radius:12px;background:#f9fcff;color:#5c6677}
+    @media (max-width:1024px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:620px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <p>Redirecting... If this does not happen automatically, <a href="teacher-home.html">continue here</a>.</p>
+  <script src="i18n.js"></script>
+  <div data-include="header"></div>
+  <main class="wrap">
+    <section class="panel">
+      <p class="k">Admin Dashboard</p>
+      <h1>User and Classroom Visibility</h1>
+      <p>Operational metrics from your current deployment session.</p>
+      <div class="grid">
+        <article class="metric">
+          <div class="label">Total users</div>
+          <div class="value" id="metricTotalUsers">0</div>
+          <div class="sub">Tracked teacher accounts</div>
+        </article>
+        <article class="metric">
+          <div class="label">New users today</div>
+          <div class="value" id="metricNewUsersToday">0</div>
+          <div class="sub">Created on current day</div>
+        </article>
+        <article class="metric">
+          <div class="label">Last login</div>
+          <div class="value" id="metricLastLogin" style="font-size:18px;line-height:1.25">—</div>
+          <div class="sub">Most recent login timestamp</div>
+        </article>
+        <article class="metric">
+          <div class="label">Classroom created</div>
+          <div class="value" id="metricClassroomYesNo" style="font-size:18px;line-height:1.25">0 yes / 0 no</div>
+          <div class="sub">Whether users launched a classroom</div>
+        </article>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary" id="refreshMetricsBtn" type="button">Refresh</button>
+        <button class="btn" id="exportUsersBtn" type="button">Export CSV</button>
+        <button class="btn danger" id="clearMetricsBtn" type="button">Clear metrics</button>
+      </div>
+      <p class="muted" style="margin-top:8px">Note: this dashboard uses on-site telemetry storage. Connect cloud sync endpoint for cross-device aggregation.</p>
+    </section>
+
+    <section class="panel" aria-label="User records">
+      <h2>User Records</h2>
+      <div class="table-wrap" id="userTableWrap" aria-live="polite"></div>
+    </section>
+  </main>
+  <div data-include="footer"></div>
+  <script src="billing-scaffold.js"></script>
+  <script src="auth-scaffold.js"></script>
+  <script src="layout-loader.js"></script>
+  <script src="app-shell.js"></script>
+  <script>
+    (function(){
+      var totalEl = document.getElementById('metricTotalUsers');
+      var newTodayEl = document.getElementById('metricNewUsersToday');
+      var lastLoginEl = document.getElementById('metricLastLogin');
+      var classroomEl = document.getElementById('metricClassroomYesNo');
+      var tableWrap = document.getElementById('userTableWrap');
+
+      function fmtDate(iso){
+        if (!iso) return '—';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '—';
+        return d.toLocaleString();
+      }
+
+      function downloadText(filename, text){
+        var blob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function renderRows(users){
+        if (!users.length){
+          tableWrap.innerHTML = '<div class="empty">No users tracked yet. Create/sign in through auth flow to populate records.</div>';
+          return;
+        }
+        var body = users.map(function(user){
+          var yesNo = user.classroomCreated ? '<span class="pill yes">Yes</span>' : '<span class="pill no">No</span>';
+          return '<tr>' +
+            '<td>' + (user.name || '—') + '</td>' +
+            '<td>' + (user.email || '—') + '</td>' +
+            '<td>' + fmtDate(user.createdAt) + '</td>' +
+            '<td>' + fmtDate(user.lastLoginAt) + '</td>' +
+            '<td>' + yesNo + '</td>' +
+            '<td>' + String(user.classroomCount || 0) + '</td>' +
+            '<td>' + (user.plan || 'trial') + '</td>' +
+            '</tr>';
+        }).join('');
+        tableWrap.innerHTML = '<table>' +
+          '<thead><tr><th>Name</th><th>Email</th><th>Created</th><th>Last login</th><th>Classroom created</th><th>Classrooms</th><th>Plan</th></tr></thead>' +
+          '<tbody>' + body + '</tbody>' +
+          '</table>';
+      }
+
+      function renderDashboard(){
+        if (!window.GSAdminMetrics){
+          tableWrap.innerHTML = '<div class="empty">Admin metrics module not available.</div>';
+          return;
+        }
+        var summary = window.GSAdminMetrics.getSummary();
+        var users = window.GSAdminMetrics.getUsers({ includeGuests: false });
+        totalEl.textContent = String(summary.totalUsers || 0);
+        newTodayEl.textContent = String(summary.newUsersToday || 0);
+        lastLoginEl.textContent = fmtDate(summary.lastLoginAt);
+        classroomEl.textContent = (summary.classroomCreatedYes || 0) + ' yes / ' + (summary.classroomCreatedNo || 0) + ' no';
+        renderRows(users);
+      }
+
+      document.getElementById('refreshMetricsBtn').addEventListener('click', renderDashboard);
+      document.getElementById('exportUsersBtn').addEventListener('click', function(){
+        if (!window.GSAdminMetrics) return;
+        var csv = window.GSAdminMetrics.exportCsv();
+        downloadText('grammar-spy-users.csv', csv);
+      });
+      document.getElementById('clearMetricsBtn').addEventListener('click', function(){
+        if (!window.GSAdminMetrics) return;
+        var ok = window.confirm('Clear all tracked admin user metrics?');
+        if (!ok) return;
+        window.GSAdminMetrics.clear();
+        renderDashboard();
+      });
+
+      renderDashboard();
+    })();
+  </script>
 </body>
 </html>
