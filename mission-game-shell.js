@@ -619,243 +619,243 @@
     "narrative-builder": [
       {
         scene: "Story Step 1",
-        prompt: "Which line best continues this story clearly?",
+        prompt: "Which line sounds best?",
         options: [
-          "First, we reviewed the clue cards; then we grouped them by time.",
-          "First, we review the clue cards; then we grouped them by time.",
-          "First, we reviewed the clue cards; then we grouping them by time.",
-          "First, we were review the clue cards; then we grouped them by time."
+          "First, we read the notes and put them in order.",
+          "First, we reads the notes and put them in order.",
+          "First, we read the notes and putting them in order.",
+          "First, we read the notes and putted them in order."
         ],
         answer: 0,
-        explain: "Strong narrative flow uses stable tense and sequence markers."
+        explain: "Use one clear past-time line with simple past forms."
       },
       {
         scene: "Story Step 2",
-        prompt: "Pick the best transition sentence.",
+        prompt: "Pick the best transition line.",
         options: [
-          "Because the evidence was weak, we tested a second explanation.",
-          "Because the evidence weak, we tested a second explanation.",
-          "Because the evidence was weak, we are testing a second explanation yesterday.",
-          "Because the evidence were weak, we tested a second explanation."
+          "Because the clue was weak, we tried another idea.",
+          "Because the clue weak, we tried another idea.",
+          "Because the clue was weak, we try another idea yesterday.",
+          "Because the clue were weak, we tried another idea."
         ],
         answer: 0,
-        explain: "Cause/result logic must keep tense and clause structure consistent."
+        explain: "Use one connector and keep past tense clear in both clauses."
       },
       {
         scene: "Story Step 3",
-        prompt: "Choose the strongest line for background and event.",
+        prompt: "Choose the best line for background and event.",
         options: [
-          "The class read quietly when the speaker failed.",
-          "The class was reading quietly when the speaker failed.",
-          "The class is reading quietly when the speaker failed.",
-          "The class reads quietly when the speaker failed yesterday."
+          "We were reading when the bell rang.",
+          "We reading when the bell rang.",
+          "We are reading when the bell rang.",
+          "We were read when the bell rang."
         ],
-        answer: 1,
-        explain: "Past continuous background plus past simple interrupting verb gives correct timeline logic."
+        answer: 0,
+        explain: "Use was/were + verb-ing for background and simple past for the event."
       },
       {
         scene: "Story Step 4",
-        prompt: "Which sentence keeps pronoun reference clear?",
+        prompt: "Which sentence is clearest?",
         options: [
-          "Aylin handed Nisa the file after she corrected it.",
-          "Aylin handed Nisa the file after Aylin corrected it.",
-          "Aylin handed Nisa the file after it corrected it.",
-          "Aylin handed Nisa the file after she were correcting it."
+          "Mina gave Ada the file after Mina checked it.",
+          "Mina gave Ada the file after she checked it.",
+          "Mina gave Ada the file after it checked it.",
+          "Mina gave Ada the file after she were checking it."
         ],
-        answer: 1,
-        explain: "Naming the person removes pronoun ambiguity."
+        answer: 0,
+        explain: "Name the person again when pronouns are confusing."
       },
       {
         scene: "Story Step 5",
-        prompt: "Select the best final sentence.",
+        prompt: "Pick the best final sentence.",
         options: [
-          "At the end, we submit the report and celebrate.",
-          "At the end, we submitted the report and celebrated.",
-          "At the end, we are submitting the report and celebrated.",
-          "At the end, we submitted the report and celebrates."
+          "At the end, we finished the report and smiled.",
+          "At the end, we finish the report and smiled.",
+          "At the end, we finished the report and smile.",
+          "At the end, we were finish the report and smiled."
         ],
-        answer: 1,
-        explain: "Ending a past narrative should stay in completed past forms."
+        answer: 0,
+        explain: "A finished story should stay in simple past."
       },
       {
         scene: "Story Step 6",
         prompt: "Choose the clearest timeline link.",
         options: [
-          "After we checked the evidence, we finalize the poster.",
-          "After we checked the evidence, we finalized the poster.",
-          "After we check the evidence, we finalized the poster yesterday.",
-          "After we were checked the evidence, we finalized the poster."
+          "After we checked the list, we fixed the poster.",
+          "After we check the list, we fixed the poster.",
+          "After we checked the list, we fix the poster.",
+          "After we were checked the list, we fixed the poster."
         ],
-        answer: 1,
-        explain: "After-clause and result are both completed in the past."
+        answer: 0,
+        explain: "Both actions happened in the past."
       },
       {
         scene: "Story Step 7",
-        prompt: "Which line best continues the narrative?",
+        prompt: "Which line best continues the story?",
         options: [
-          "Meanwhile, two agents were guarding the entrance while a third searched the office.",
-          "Meanwhile, two agents guarding the entrance while a third searched the office.",
-          "Meanwhile, two agents were guarding the entrance while a third searches the office.",
-          "Meanwhile, two agents was guarding the entrance while a third searched the office."
+          "Two students were guarding the door while one searched the room.",
+          "Two students guarding the door while one searched the room.",
+          "Two students were guarding the door while one searches the room.",
+          "Two students was guarding the door while one searched the room."
         ],
         answer: 0,
-        explain: "Parallel past actions need past continuous with correct subject-verb agreement."
+        explain: "Keep both actions in the same past timeline."
       },
       {
         scene: "Story Step 8",
-        prompt: "Pick the sentence that maintains story flow.",
+        prompt: "Pick the sentence that keeps story flow.",
         options: [
-          "Next, the team gathered the clues and prepared a summary for the commander.",
-          "Next, the team gather the clues and prepared a summary for the commander.",
-          "Next, the team gathered the clues and prepares a summary for the commander.",
-          "Next, the team were gathered the clues and prepared a summary for the commander."
+          "Next, the team found notes and wrote a short summary.",
+          "Next, the team find notes and wrote a short summary.",
+          "Next, the team found notes and writes a short summary.",
+          "Next, the team was found notes and wrote a short summary."
         ],
         answer: 0,
-        explain: "Sequence markers like next require consistent simple past verbs."
+        explain: "Sequence words like next work best with consistent past verbs."
       },
       {
         scene: "Story Step 9",
-        prompt: "Choose the strongest narrative transition.",
+        prompt: "Choose the strongest transition.",
         options: [
-          "Because the evidence was strong, the squad decided to move forward.",
-          "Because the evidence strong, the squad decided to move forward.",
-          "Because the evidence was strong, the squad decides to move forward yesterday.",
-          "Because the evidence were strong, the squad decided to move forward."
+          "Because the plan was clear, the team moved forward.",
+          "Because the plan clear, the team moved forward.",
+          "Because the plan was clear, the team moves forward yesterday.",
+          "Because the plan were clear, the team moved forward."
         ],
         answer: 0,
-        explain: "Cause and result clauses should keep tense consistent in past narrative."
+        explain: "Use one connector and keep past tense consistent across clauses."
       },
       {
         scene: "Story Step 10",
-        prompt: "Select the best closing line for the story.",
+        prompt: "Select the best closing line.",
         options: [
-          "Finally, the captain reviewed the mission log and signed the report.",
-          "Finally, the captain review the mission log and signed the report.",
-          "Finally, the captain reviewed the mission log and signs the report.",
-          "Finally, the captain was review the mission log and signed the report."
+          "Finally, the captain checked the log and signed it.",
+          "Finally, the captain check the log and signed it.",
+          "Finally, the captain checked the log and signs it.",
+          "Finally, the captain was check the log and signed it."
         ],
         answer: 0,
-        explain: "A narrative conclusion uses simple past for completed actions in sequence."
+        explain: "A closing line should keep simple past forms."
       },
       {
         scene: "Story Step 11",
-        prompt: "Which line continues the story with correct tense?",
+        prompt: "Which line keeps tense correct?",
         options: [
-          "After the team gathered the evidence, the leader presents the plan.",
-          "After the team gathered the evidence, the leader presented the plan.",
-          "After the team was gather the evidence, the leader presented the plan.",
-          "After the team gathers the evidence, the leader presented the plan."
+          "After the team found clues, the leader shared the plan.",
+          "After the team find clues, the leader shared the plan.",
+          "After the team found clues, the leader shares the plan.",
+          "After the team was find clues, the leader shared the plan."
         ],
-        answer: 1,
-        explain: "Both clauses in a past narrative need consistent simple past."
+        answer: 0,
+        explain: "Both clauses should stay in past tense."
       },
       {
         scene: "Story Step 12",
-        prompt: "Select the sentence that keeps the story flowing.",
+        prompt: "Select the sentence that keeps the story moving.",
         options: [
-          "Meanwhile, the scout was mapping the trail while the others rested nearby.",
-          "Meanwhile, the scout mapping the trail while the others rested nearby.",
-          "Meanwhile, the scout was mapping the trail while the others rests nearby.",
-          "Meanwhile, the scout maps the trail while the others rested nearby."
+          "Meanwhile, one student was drawing the map while others rested.",
+          "Meanwhile, one student drawing the map while others rested.",
+          "Meanwhile, one student was drawing the map while others rests.",
+          "Meanwhile, one student draws the map while others rested."
         ],
         answer: 0,
-        explain: "Simultaneous past actions use past continuous and simple past together."
+        explain: "Past background action should use was/were + verb-ing."
       },
       {
         scene: "Story Step 13",
-        prompt: "Pick the best next story line.",
+        prompt: "Pick the best next line.",
         options: [
-          "The group decided to split up, and each member choose a different route.",
-          "The group decided to split up, and each member chose a different route.",
-          "The group decides to split up, and each member chose a different route.",
-          "The group decided to split up, and each member was choose a different route."
+          "The group split up, and each member chose a route.",
+          "The group split up, and each member choose a route.",
+          "The group splits up, and each member chose a route.",
+          "The group split up, and each member was choose a route."
         ],
-        answer: 1,
-        explain: "Parallel completed past actions both take simple past forms."
+        answer: 0,
+        explain: "Parallel past actions should both be simple past."
       },
       {
         scene: "Story Step 14",
-        prompt: "Choose the line that wraps up the chapter correctly.",
+        prompt: "Choose the line that wraps up the chapter.",
         options: [
-          "At last, the crew returned to base and files the final report.",
           "At last, the crew returned to base and filed the final report.",
+          "At last, the crew returned to base and files the final report.",
           "At last, the crew returns to base and filed the final report.",
           "At last, the crew was returned to base and filed the final report."
         ],
-        answer: 1,
-        explain: "A past narrative closing needs consistent simple past verbs."
+        answer: 0,
+        explain: "A wrap-up line should keep completed past verbs."
       },
       {
         scene: "Story Step 15",
-        prompt: "Which line best continues the narrative?",
+        prompt: "Which line best continues the story?",
         options: [
-          "Before the sun rose, the scouts prepared the trail markers.",
-          "Before the sun rose, the scouts prepare the trail markers.",
-          "Before the sun rises, the scouts prepared the trail markers.",
-          "Before the sun was rose, the scouts prepared the trail markers."
+          "Before the sun rose, the scouts placed the markers.",
+          "Before the sun rose, the scouts place the markers.",
+          "Before the sun rises, the scouts placed the markers.",
+          "Before the sun was rose, the scouts placed the markers."
         ],
         answer: 0,
-        explain: "A past narrative uses simple past consistently in both clauses."
+        explain: "Use simple past in both parts of this timeline sentence."
       },
       {
         scene: "Story Step 16",
-        prompt: "Pick the sentence that maintains story flow.",
+        prompt: "Pick the sentence that keeps story flow.",
         options: [
-          "The commander reviewed the map and assigned each team a zone.",
-          "The commander review the map and assigned each team a zone.",
-          "The commander reviewed the map and assigns each team a zone.",
-          "The commander was review the map and assigned each team a zone."
+          "The leader checked the map and gave each team a zone.",
+          "The leader check the map and gave each team a zone.",
+          "The leader checked the map and gives each team a zone.",
+          "The leader was check the map and gave each team a zone."
         ],
         answer: 0,
-        explain: "Parallel completed past actions both take simple past forms."
+        explain: "Both actions are finished, so use simple past."
       },
       {
         scene: "Story Step 17",
-        prompt: "Choose the strongest narrative transition.",
+        prompt: "Choose the strongest transition line.",
         options: [
-          "While the medic was treating the wound, the radio crackled with a new message.",
-          "While the medic treating the wound, the radio crackled with a new message.",
-          "While the medic was treating the wound, the radio crackles with a new message.",
-          "While the medic were treating the wound, the radio crackled with a new message."
+          "While the nurse was helping a student, the radio crackled.",
+          "While the nurse helping a student, the radio crackled.",
+          "While the nurse was helping a student, the radio crackles.",
+          "While the nurse were helping a student, the radio crackled."
         ],
         answer: 0,
-        explain: "Past continuous background with was plus simple past interruption keeps the narrative clear."
+        explain: "Background + interrupting event works best in past timeline form."
       },
       {
         scene: "Story Step 18",
-        prompt: "Select the best closing line for the chapter.",
+        prompt: "Select the best closing line.",
         options: [
-          "In the end, the team solved every puzzle and celebrated their victory.",
-          "In the end, the team solve every puzzle and celebrated their victory.",
-          "In the end, the team solved every puzzle and celebrates their victory.",
-          "In the end, the team was solved every puzzle and celebrated their victory."
+          "In the end, the team solved the puzzle and celebrated.",
+          "In the end, the team solve the puzzle and celebrated.",
+          "In the end, the team solved the puzzle and celebrates.",
+          "In the end, the team was solved the puzzle and celebrated."
         ],
         answer: 0,
-        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
+        explain: "Closing lines are easiest to follow with simple past verbs."
       },
       {
         scene: "Story Step 19",
-        prompt: "Which line best continues the narrative?",
+        prompt: "Which line best continues the story?",
         options: [
-          "After the scouts returned, the leader assigned new roles to each member.",
-          "After the scouts returned, the leader assigns new roles to each member.",
-          "After the scouts returns, the leader assigned new roles to each member.",
-          "After the scouts was returned, the leader assigned new roles to each member."
+          "After the scouts came back, the leader gave new jobs.",
+          "After the scouts came back, the leader gives new jobs.",
+          "After the scouts come back, the leader gave new jobs.",
+          "After the scouts was come back, the leader gave new jobs."
         ],
         answer: 0,
-        explain: "Both clauses in a past narrative need consistent simple past."
+        explain: "Keep the return and result actions in past tense."
       },
       {
         scene: "Story Step 20",
-        prompt: "Select the best closing line for the story.",
+        prompt: "Select the best final line.",
         options: [
-          "At last, the team packed the equipment and headed back to base.",
-          "At last, the team pack the equipment and headed back to base.",
-          "At last, the team packed the equipment and heads back to base.",
-          "At last, the team was packed the equipment and headed back to base."
+          "At last, the team packed the bags and went home.",
+          "At last, the team pack the bags and went home.",
+          "At last, the team packed the bags and goes home.",
+          "At last, the team was packed the bags and went home."
         ],
         answer: 0,
-        explain: "A narrative conclusion uses consistent simple past verbs for completed actions."
+        explain: "A clear ending uses simple, consistent past verbs."
       }
     ],
     "dialogue-repair": [
@@ -4345,18 +4345,22 @@
       + ".builder-bar-chip:hover{background:" + accent + "22;}"
       + ".builder-bar-label{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
       + ".builder-bar-placeholder{margin:0;font-size:13px;color:#a0aec0;font-style:italic;}"
-      + ".dialogue-wrap{display:grid;gap:14px;max-width:560px;margin:0 auto;}"
-      + ".dialogue-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc;}"
-      + ".dialogue-tag{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";}"
-      + ".dialogue-scene-name{font:600 12px Inter,Arial,sans-serif;color:#4a5568;}"
-      + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:85%;font-size:14px;line-height:1.5;position:relative;}"
-      + ".dialogue-bubble-left{background:#e8edf5;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
-      + ".dialogue-bubble-right{background:" + accent + "18;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
-      + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#a0aec0;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:48px;display:flex;align-items:center;}"
+      + ".dialogue-wrap{display:grid;gap:14px;max-width:760px;margin:0 auto;padding:18px;border:1px solid #d9dee6;border-radius:20px;background:linear-gradient(180deg,#f7fbff 0%,#ffffff 100%);box-shadow:0 10px 24px rgba(11,16,32,.08);}"
+      + ".dialogue-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid #d9dee6;border-radius:999px;background:#ffffff;}"
+      + ".dialogue-tag{font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:" + accent + ";background:" + accent + "14;padding:4px 9px;border-radius:999px;}"
+      + ".dialogue-scene-name{font:700 12px Inter,Arial,sans-serif;color:#4a5568;}"
+      + ".dialogue-thread{display:grid;gap:10px;padding:2px;}"
+      + ".dialogue-bubble{padding:12px 16px;border-radius:16px;max-width:88%;font-size:14px;line-height:1.55;position:relative;box-shadow:0 5px 14px rgba(11,16,32,.08);}"
+      + ".dialogue-bubble-left{background:#edf2f8;color:#16223a;border-bottom-left-radius:4px;justify-self:start;}"
+      + ".dialogue-bubble-right{background:" + accent + "1e;color:#16223a;border-bottom-right-radius:4px;justify-self:end;}"
+      + ".dialogue-bubble-blank{background:#fff;border:2px dashed " + accent + ";color:#8f9aac;border-bottom-right-radius:4px;justify-self:end;font-style:italic;min-height:56px;display:flex;align-items:center;box-shadow:none;}"
       + ".dialogue-speaker{font:700 11px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + accent + ";margin-bottom:4px;display:block;}"
-      + ".dialogue-objective{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4a5568;text-align:center;}"
-      + ".dialogue-choices{display:grid;gap:8px;}"
-      + ".dialogue-choice-btn{text-align:left;}"
+      + ".dialogue-draft{display:inline-block;margin-top:6px;padding:7px 10px;border-radius:10px;background:#fff2f2;border:1px solid #f1c7c7;color:#7f2a2a;font-weight:600;line-height:1.45;}"
+      + ".dialogue-objective{margin:0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#3f516a;text-align:center;background:#f3f7fc;border:1px solid #d9e3ef;border-radius:12px;padding:10px 12px;}"
+      + ".dialogue-choices{display:grid;gap:10px;}"
+      + ".dialogue-choice-btn{text-align:left;border:1px solid #d9dee6;border-radius:12px;background:#fff;padding:12px 14px;display:grid;gap:4px;box-shadow:0 3px 10px rgba(11,16,32,.05);}"
+      + ".dialogue-choice-btn:hover{transform:translateY(-1px);box-shadow:0 7px 16px rgba(11,16,32,.11);}"
+      + ".dialogue-choice-label{font:700 10px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:" + accent + ";}"
       + ".rewrite-wrap{display:grid;gap:14px;}"
       + ".rewrite-original{border:1px solid #d9dee6;border-radius:12px;background:#fbfdff;padding:14px;text-decoration:line-through;color:#8b96a9;font-size:15px;line-height:1.5;}"
       + ".rewrite-original b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a0aec0;text-decoration:none;display:block;margin-bottom:6px;}"
@@ -4661,7 +4665,84 @@
     return modeHelperText(mode);
   }
 
-  function buildDialogueThread(round, roundIndex) {
+  function dialogueCoachLine(round, wrongLine, roundIndex) {
+    var wrongText = (typeof wrongLine === "string") ? wrongLine : "";
+    var contextText = [
+      round && round.prompt ? String(round.prompt) : "",
+      round && round.explain ? String(round.explain) : "",
+      round && round.scene ? String(round.scene) : "",
+      wrongText
+    ].join(" ").toLowerCase();
+
+    if (contextText.indexOf("question") >= 0 || /\b(where|when|why|what|who|how)\b/i.test(wrongText)) {
+      return pickRoundVariant([
+        "That draft question order is off. Pick the corrected question form.",
+        "Use question order: helper + subject + base verb. Choose that line.",
+        "Find the revision that sounds like a natural question."
+      ], roundIndex, "Choose the corrected question pattern.");
+    }
+    if (contextText.indexOf("connector") >= 0 || contextText.indexOf("cause") >= 0 || contextText.indexOf("contrast") >= 0 || contextText.indexOf("purpose") >= 0 || /\b(because|so|however|although|therefore)\b/i.test(wrongText)) {
+      return pickRoundVariant([
+        "The connector is mismatched. Pick the line with one clear connector.",
+        "We only need one logical connector here - choose the best fit.",
+        "Select the revision with the strongest cause/contrast link."
+      ], roundIndex, "Pick the line with the best connector.");
+    }
+    if (contextText.indexOf("reference") >= 0 || contextText.indexOf("pronoun") >= 0 || contextText.indexOf("clear pronoun") >= 0) {
+      return pickRoundVariant([
+        "Reference is unclear in that draft. Pick the clearest version.",
+        "Choose the line that makes who/what explicit and unambiguous.",
+        "Find the revision with the clearest pronoun reference."
+      ], roundIndex, "Pick the clearest reference line.");
+    }
+    if (contextText.indexOf("agreement") >= 0 || contextText.indexOf("be-verb") >= 0 || contextText.indexOf("subject-verb") >= 0) {
+      return pickRoundVariant([
+        "Agreement is off in the draft. Choose the line with matching subject + verb.",
+        "Check subject-verb agreement and pick the correct form.",
+        "Choose the revision where the be-verb agrees with the subject."
+      ], roundIndex, "Pick the line with correct agreement.");
+    }
+    if (contextText.indexOf("modal") >= 0 || /\b(can|could|should|must|may|might)\b/i.test(wrongText)) {
+      return pickRoundVariant([
+        "After a modal, we need a base verb. Pick that revision.",
+        "Modal form is off - choose the version with base verb after the modal.",
+        "Select the line with correct modal + base verb structure."
+      ], roundIndex, "Choose the correct modal verb pattern.");
+    }
+    if (contextText.indexOf("past") >= 0 || contextText.indexOf("yesterday") >= 0) {
+      return pickRoundVariant([
+        "This should be in past-time form. Pick the correct past revision.",
+        "Past marker is present, so choose the line with correct past grammar.",
+        "Select the revision that keeps tense consistent in the past."
+      ], roundIndex, "Pick the strongest past-time revision.");
+    }
+    if (contextText.indexOf("present") >= 0 || contextText.indexOf("right now") >= 0) {
+      return pickRoundVariant([
+        "Keep this in present-time form. Choose the best present revision.",
+        "Present context is clear - pick the line that matches it.",
+        "Select the revision with the correct present-time grammar."
+      ], roundIndex, "Pick the strongest present-time revision.");
+    }
+
+    return pickRoundVariant([
+      "Good catch. Choose the clean revised line we should send.",
+      "Let's replace that draft with the strongest corrected line.",
+      "Pick the revision that keeps the meaning and fixes the grammar."
+    ], roundIndex, "Choose the best revision to replace that draft.");
+  }
+
+  function formatDialogueLine(line) {
+    var text = String(line || "");
+    var marker = " Draft: ";
+    var markerIdx = text.indexOf(marker);
+    if (markerIdx < 0) return text;
+    var prefix = text.slice(0, markerIdx);
+    var draft = text.slice(markerIdx + marker.length);
+    if (!draft) return text;
+    return prefix + "<span class=\"dialogue-draft\">Draft: " + draft + "</span>";
+  }
+
+  function buildDialogueThread(round, roundIndex, wrongLine) {
     var scene = (round && round.scene) ? String(round.scene) : "Classroom Chat";
     var lower = scene.toLowerCase();
     var pair = pickRoundVariant([
@@ -4671,39 +4752,42 @@
       { a: "Zara", b: "Daniel" }
     ], roundIndex, { a: "Student A", b: "Student B" });
 
-    var openLine = "I want to send this clearly before class starts.";
-    if (lower.indexOf("teacher") >= 0) openLine = "Ms. Lee asked me to explain this idea in one clear sentence.";
-    else if (lower.indexOf("classroom") >= 0) openLine = "I am replying to our classroom discussion thread.";
-    else if (lower.indexOf("group") >= 0) openLine = "Our group chat needs one clean response for this step.";
-    else if (lower.indexOf("partner") >= 0) openLine = "My partner asked me to rewrite this line naturally.";
-    else if (lower.indexOf("hallway") >= 0) openLine = "I am posting a quick hallway update to my team.";
-    else if (lower.indexOf("science") >= 0) openLine = "I am sending our science-lab update in the class chat.";
-    else if (lower.indexOf("library") >= 0) openLine = "I am messaging quietly from the library support desk.";
-    else if (lower.indexOf("recess") >= 0) openLine = "I am recapping what happened at recess.";
-    else if (lower.indexOf("morning") >= 0) openLine = "I am writing a morning update before homeroom.";
-    else if (lower.indexOf("cafeteria") >= 0) openLine = "I am texting from the cafeteria line with an update.";
-    else if (lower.indexOf("office") >= 0) openLine = "I am sending this message to the front office.";
-    else if (lower.indexOf("study") >= 0) openLine = "I am checking our sentence in study hall chat.";
-    else if (lower.indexOf("after-school") >= 0) openLine = "I am sending our after-school meetup update.";
-    else if (lower.indexOf("retell") >= 0) openLine = "We are retelling what happened after class.";
-    else if (lower.indexOf("present dialogue") >= 0) openLine = "We are describing what is happening right now.";
-    else if (lower.indexOf("agreement dialogue") >= 0) openLine = "We are checking subject-verb agreement before sending.";
-    else if (lower.indexOf("connector dialogue") >= 0) openLine = "We are linking two ideas with the right connector.";
-    else if (lower.indexOf("reference dialogue") >= 0) openLine = "We are making sure each pronoun reference is clear.";
-    else if (lower.indexOf("question dialogue") >= 0) openLine = "We are forming a clear question for the class chat.";
+    var openLine = "I drafted a message before class.";
+    if (lower.indexOf("teacher") >= 0) openLine = "Ms. Lee asked me to send a clear update.";
+    else if (lower.indexOf("classroom") >= 0) openLine = "I drafted this for our classroom thread.";
+    else if (lower.indexOf("group") >= 0) openLine = "I wrote this line for our group chat.";
+    else if (lower.indexOf("partner") >= 0) openLine = "I drafted this sentence for my partner.";
+    else if (lower.indexOf("hallway") >= 0) openLine = "I wrote this quick hallway update.";
+    else if (lower.indexOf("science") >= 0) openLine = "I drafted this science-lab update.";
+    else if (lower.indexOf("library") >= 0) openLine = "I wrote this note from the library desk.";
+    else if (lower.indexOf("recess") >= 0) openLine = "I drafted this recap about recess.";
+    else if (lower.indexOf("morning") >= 0) openLine = "I wrote this morning message for homeroom.";
+    else if (lower.indexOf("cafeteria") >= 0) openLine = "I drafted this cafeteria update.";
+    else if (lower.indexOf("office") >= 0) openLine = "I wrote this message for the front office.";
+    else if (lower.indexOf("study") >= 0) openLine = "I drafted this line in study hall.";
+    else if (lower.indexOf("after-school") >= 0) openLine = "I wrote this after-school meetup message.";
+    else if (lower.indexOf("retell") >= 0) openLine = "I drafted this retell line.";
+    else if (lower.indexOf("present dialogue") >= 0) openLine = "I drafted this present-time message.";
+    else if (lower.indexOf("agreement dialogue") >= 0) openLine = "I drafted this agreement sentence.";
+    else if (lower.indexOf("connector dialogue") >= 0) openLine = "I drafted this connector sentence.";
+    else if (lower.indexOf("reference dialogue") >= 0) openLine = "I drafted this reference sentence.";
+    else if (lower.indexOf("question dialogue") >= 0) openLine = "I drafted this question.";
 
-    var handoffLine = pickRoundVariant([
-      "Can you help me pick the strongest reply?",
-      "Which response should I send so it sounds natural?",
-      "Pick the corrected reply I should post."
-    ], roundIndex, "Can you help me choose the best response?");
+    var draftLine = "";
+    if (typeof wrongLine === "string" && wrongLine.trim()) draftLine = wrongLine.trim();
+    else if (round && round.options && round.options.length) draftLine = String(round.options[0]);
+    else draftLine = "I no understand this clue.";
+    var lineA = openLine + " Draft: \"" + draftLine + "\"";
+
+    var handoffLine = dialogueCoachLine(round, wrongLine, roundIndex);
 
     return {
       scene: scene,
       speakerA: pair.a,
       speakerB: pair.b,
-      lineA: openLine,
-      lineB: handoffLine
+      lineA: lineA,
+      lineB: handoffLine,
+      replySpeaker: pair.a
     };
   }
 
@@ -5624,7 +5708,9 @@
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
     currentRoundState = { mode: "dialogue", round: round };
-    var thread = buildDialogueThread(round, idx);
+    var brokenIdx = pickWrongIndex(round);
+    var brokenLine = round.options[brokenIdx];
+    var thread = buildDialogueThread(round, idx, brokenLine);
 
     var wrap = document.createElement("div");
     wrap.className = "dialogue-wrap";
@@ -5634,25 +5720,33 @@
     meta.innerHTML = "<span class=\"dialogue-tag\">Chat Thread</span><span class=\"dialogue-scene-name\">" + thread.scene + "</span>";
     wrap.appendChild(meta);
 
+    var objective = document.createElement("p");
+    objective.className = "dialogue-objective";
+    var objectiveText = modeScenarioPrompt("dialogue", round, idx);
+    if (objectiveText.toLowerCase().indexOf("draft") < 0 && objectiveText.toLowerCase().indexOf("revis") < 0) {
+      objectiveText += " Replace the draft with the best revised line.";
+    }
+    objective.textContent = objectiveText;
+    wrap.appendChild(objective);
+
+    var threadBody = document.createElement("div");
+    threadBody.className = "dialogue-thread";
+
     var bubbleA = document.createElement("div");
     bubbleA.className = "dialogue-bubble dialogue-bubble-left";
-    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerA + "</span>" + thread.lineA;
-    wrap.appendChild(bubbleA);
+    bubbleA.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerA + "</span>" + formatDialogueLine(thread.lineA);
+    threadBody.appendChild(bubbleA);
 
     var bubbleContext = document.createElement("div");
     bubbleContext.className = "dialogue-bubble dialogue-bubble-right";
     bubbleContext.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + thread.lineB;
-    wrap.appendChild(bubbleContext);
-
-    var objective = document.createElement("p");
-    objective.className = "dialogue-objective";
-    objective.textContent = modeScenarioPrompt("dialogue", round, idx);
-    wrap.appendChild(objective);
+    threadBody.appendChild(bubbleContext);
 
     var bubbleBlank = document.createElement("div");
     bubbleBlank.className = "dialogue-bubble dialogue-bubble-blank";
-    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>[Pick " + thread.speakerB + "'s best reply\u2026]";
-    wrap.appendChild(bubbleBlank);
+    bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>[Pick " + thread.replySpeaker + "'s revised line\u2026]";
+    threadBody.appendChild(bubbleBlank);
+    wrap.appendChild(threadBody);
 
     var choices = [round.answer];
     var distractorPool = [];
@@ -5667,14 +5761,14 @@
 
     var choicesWrap = document.createElement("div");
     choicesWrap.className = "dialogue-choices";
-    shuffledChoices.forEach(function (item) {
+    shuffledChoices.forEach(function (item, choiceIdx) {
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt dialogue-choice-btn dialogue-reply";
-      btn.innerHTML = "<span>" + item.text + "</span>";
+      btn.innerHTML = "<span class=\"dialogue-choice-label\">Option " + String.fromCharCode(65 + choiceIdx) + "</span><span>" + item.text + "</span>";
       btn.dataset.target = item.idx === round.answer ? "1" : "0";
       btn.addEventListener("click", function () {
-        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.speakerB + "</span>" + item.text;
+        bubbleBlank.innerHTML = "<span class=\"dialogue-speaker\">" + thread.replySpeaker + "</span>" + item.text;
         bubbleBlank.className = "dialogue-bubble dialogue-bubble-right";
         finishRound(
           item.idx === round.answer,
