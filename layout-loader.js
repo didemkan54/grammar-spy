@@ -12,7 +12,7 @@
       st.id = 'gsTopNavStyles';
       st.textContent =
         'nav[aria-label=\"Primary navigation\"] .gs-pill{white-space:nowrap}\\n' +
-        'nav[aria-label=\"Primary navigation\"] #gsMissionMenu > summary::after{content:\"\\\\25BE\";font-size:9px;line-height:1;opacity:.78;margin-left:2px}\\n' +
+        'nav[aria-label=\"Primary navigation\"] #gsMissionMenu > summary::after{content:\"▼\";font-size:9px;line-height:1;opacity:.78;margin-left:2px}\\n' +
         '@media (max-width:720px){\\n' +
         '  nav[aria-label=\"Primary navigation\"]{padding-left:14px!important;padding-right:14px!important}\\n' +
         '}\\n' +
