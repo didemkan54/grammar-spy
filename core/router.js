@@ -1,7 +1,9 @@
 export const ROUTES = [
   { id: "home", label: "Home", href: "/index.html" },
-  { id: "missions", label: "Mission Library", href: "/missions.html" },
+  { id: "missions", label: "Missions", href: "/packs.html" },
+  { id: "missionLaunch", label: "Mission Launch", href: "/missions.html" },
   { id: "progression", label: "Training Path", href: "/progression.html" },
+  { id: "clues", label: "CLUES", href: "/clues.html" },
   { id: "profile", label: "Profile", href: "/profile.html" },
   { id: "launch", label: "Launch", href: "/games/launch.html" }
 ];
@@ -22,9 +24,10 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   const menuPanelStyle = "position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30";
 
   const primaryLinks = [
-    { label: "Home", href: "index.html" },
+    { label: "Home", href: "index.html" }
+  ];
+  const missionMenuLinks = [
     { label: "Missions", href: "packs.html" },
-    { label: "Mission Library", href: "missions.html" },
     { label: "Training Path", href: "progression.html" },
     { label: "CLUES", href: "clues.html" }
   ];
@@ -41,7 +44,15 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     const color = isActive ? "#0f5c5c" : "#4a5568";
     return `<a href="${link.href}" style="${navLinkStyle};color:${color}">${link.label}</a>`;
   };
-  const primaryLinksHtml = primaryLinks.map(buildPrimaryLink).join("");
+  const missionMenuIsActive = missionMenuLinks.some((l) => currentPage === l.href.toLowerCase());
+  const missionMenuSummaryStyle = `${menuSummaryStyle};color:${missionMenuIsActive ? "#0f5c5c" : "#4a5568"};border-color:${missionMenuIsActive ? "#1f5f63" : "#d9dee6"}`;
+  const missionMenuLinksHtml = missionMenuLinks.map((l) => {
+    const isActive = currentPage === l.href.toLowerCase();
+    const activeStyle = isActive ? "background:#e8f4f5;color:#0f5c5c;" : "";
+    return `<a href="${l.href}" style="${dropdownLinkStyle};${activeStyle}">${l.label}</a>`;
+  }).join("");
+  const primaryLinksHtml = primaryLinks.map(buildPrimaryLink).join("") +
+    `<details style="position:relative"><summary style="${missionMenuSummaryStyle}">Missions &#9662;</summary><span style="${menuPanelStyle}">${missionMenuLinksHtml}</span></details>`;
   const moreLinksHtml = moreLinks.map((l) => `<a href="${l.href}" style="${dropdownLinkStyle}">${l.label}</a>`).join("");
 
   const langSelect = `<select id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.04em">` +

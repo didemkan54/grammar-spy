@@ -14,10 +14,14 @@
     '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:88px;width:auto;display:block;background:transparent;border:none"></a>' +
     '<span style="display:flex;flex:1 1 420px;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">' +
     '<a href="index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
-    '<a href="packs.html" data-i18n="nav_missions" style="' + navLinkStyle + '">Missions</a>' +
-    '<a href="missions.html" style="' + navLinkStyle + '">Mission Library</a>' +
-    '<a href="progression.html" style="' + navLinkStyle + '">Training Path</a>' +
-    '<a href="clues.html" style="' + navLinkStyle + '">CLUES</a>' +
+    '<details id="gsMissionMenu" style="position:relative">' +
+    '<summary style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
+    '<span style="' + menuPanelStyle + '">' +
+    '<a href="packs.html" style="' + dropdownLinkStyle + '">Missions</a>' +
+    '<a href="progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
+    '<a href="clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
+    '</span>' +
+    '</details>' +
     '</span>' +
     '<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto">' +
     '<details id="gsMoreMenu" style="position:relative">' +
