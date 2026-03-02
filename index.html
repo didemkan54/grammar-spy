@@ -250,6 +250,21 @@
     .email-capture .email-capture-thanks{display:none;font-size:14px;color:var(--teal);font-weight:600}
     .email-capture .email-capture-thanks.show{display:block}
     .email-capture-form.hide{display:none}
+    /* Lead magnet: diagnostic PDF */
+    .diagnostic-download{margin-top:14px;padding:20px;border:1px solid rgba(31,95,99,.24);border-radius:14px;background:linear-gradient(165deg, rgba(31,95,99,.06), rgba(11,16,32,.03));max-width:760px}
+    .diagnostic-download p{margin:0}
+    .diagnostic-form{display:grid;gap:10px}
+    .diagnostic-form.hide{display:none}
+    .diagnostic-form label{display:block;font:700 11px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
+    .diagnostic-form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .diagnostic-form-row input[type=email]{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--cool);border-radius:8px;font-size:14px;color:var(--navy)}
+    .diagnostic-form-row .btn-primary{margin:0}
+    .diagnostic-msg{display:none;margin-top:2px;font-size:14px;color:var(--teal);font-weight:700}
+    .diagnostic-msg.show{display:block}
+    .quiet-share{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(31,95,99,.3);align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:#4a5568}
+    .quiet-share.show{display:flex}
+    .diagnostic-share-btn{background:transparent;border:0;padding:0;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;color:#1f5f63;cursor:pointer;text-decoration:underline}
+    .diagnostic-share-btn:hover{color:#0d3f42}
   </style>
 </head>
 <body>
@@ -465,6 +480,26 @@
       </div>
     </section>
 
+    <section class="section section-flat" aria-label="Free grammar diagnostic PDF">
+      <p class="mission-label">Free Diagnostic PDF</p>
+      <h2>Get the Simple Present classroom diagnostic</h2>
+      <p class="subcopy">Enter your school/work email to unlock the downloadable diagnostic PDF for your class.</p>
+      <div class="diagnostic-download">
+        <form class="diagnostic-form" id="diagnosticLeadForm" novalidate>
+          <label for="diagnosticLeadEmail">School or work email</label>
+          <div class="diagnostic-form-row">
+            <input type="email" id="diagnosticLeadEmail" placeholder="name@school.org" autocomplete="email" aria-label="School or work email for diagnostic PDF">
+            <button type="submit" class="btn-primary" id="diagnosticLeadBtn">Unlock Diagnostic PDF</button>
+          </div>
+        </form>
+        <p class="diagnostic-msg" id="diagnosticLeadMsg">Download started. Check your downloads folder for the PDF.</p>
+        <div class="quiet-share" id="diagnosticQuietShare">
+          <span>If this is useful, quietly share it once with one colleague.</span>
+          <button type="button" id="diagnosticCopyShare" class="diagnostic-share-btn">Copy share link</button>
+        </div>
+      </div>
+    </section>
+
     <section class="section section-flat" aria-label="Testimonials placeholders">
       <p class="mission-label">Testimonials (Placeholders)</p>
       <h2>Teacher voices</h2>
@@ -672,6 +707,95 @@
         if (window.GS_SAVE_LEAD) window.GS_SAVE_LEAD(email);
         form.classList.add('hide');
         thanks.classList.add('show');
+      });
+    })();
+
+    (function(){
+      var ASSET_PATH = 'assets/downloads/grammar-spy-simple-present-diagnostic.pdf';
+      var QUIET_SHARE_KEY = 'gs_diagnostic_quiet_share_seen_v1';
+      var form = document.getElementById('diagnosticLeadForm');
+      var input = document.getElementById('diagnosticLeadEmail');
+      var msg = document.getElementById('diagnosticLeadMsg');
+      var share = document.getElementById('diagnosticQuietShare');
+      var copyBtn = document.getElementById('diagnosticCopyShare');
+      if (!form || !input || !msg || !share || !copyBtn) return;
+
+      function validEmail(value) {
+        var email = String(value || '').trim();
+        var at = email.indexOf('@');
+        if (at < 1) return false;
+        return email.slice(at + 1).indexOf('.') > 0;
+      }
+
+      function startDownload() {
+        var link = document.createElement('a');
+        link.href = ASSET_PATH;
+        link.download = 'grammar-spy-simple-present-diagnostic.pdf';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function shareLink() {
+        try {
+          if (location.origin && location.origin !== 'null') return location.origin + '/assets/downloads/grammar-spy-simple-present-diagnostic.pdf';
+        } catch (_err) {}
+        return 'assets/downloads/grammar-spy-simple-present-diagnostic.pdf';
+      }
+
+      function fallbackCopy(text) {
+        var el = document.createElement('textarea');
+        el.value = text;
+        el.setAttribute('readonly', 'readonly');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        try { document.execCommand('copy'); } catch (_err) {}
+        document.body.removeChild(el);
+      }
+
+      copyBtn.addEventListener('click', function(){
+        var link = shareLink();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(link).then(function(){
+            copyBtn.textContent = 'Link copied';
+          }).catch(function(){
+            fallbackCopy(link);
+            copyBtn.textContent = 'Link copied';
+          });
+          return;
+        }
+        fallbackCopy(link);
+        copyBtn.textContent = 'Link copied';
+      });
+
+      form.addEventListener('submit', function(event){
+        event.preventDefault();
+        var email = (input.value || '').trim();
+        if (!validEmail(email)) {
+          input.focus();
+          return;
+        }
+
+        if (window.GS_SAVE_LEAD) window.GS_SAVE_LEAD(email);
+        if (window.GSAnalytics && window.GSAnalytics.track) {
+          window.GSAnalytics.track('diagnostic_pdf_unlock', { asset: 'simple_present_diagnostic' });
+        }
+
+        startDownload();
+        form.classList.add('hide');
+        msg.classList.add('show');
+
+        var showQuietShare = false;
+        try {
+          showQuietShare = !localStorage.getItem(QUIET_SHARE_KEY);
+          if (showQuietShare) localStorage.setItem(QUIET_SHARE_KEY, '1');
+        } catch (_err) {
+          showQuietShare = true;
+        }
+        if (showQuietShare) share.classList.add('show');
       });
     })();
   </script>
