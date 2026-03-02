@@ -42,9 +42,9 @@
   </g>
   <!-- Floating tags -->
   <rect x="30" y="150" width="56" height="18" rx="9" fill="#1f5f63" opacity=".12"/>
-  <text x="40" y="163" font-family="Inter,Arial,sans-serif" font-size="9" font-weight="700" fill="#1f5f63" opacity=".5">ELD tips</text>
+  <text x="40" y="163" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="9" font-weight="700" fill="#1f5f63" opacity=".5">ELD tips</text>
   <rect x="100" y="155" width="70" height="18" rx="9" fill="#c9a227" opacity=".12"/>
-  <text x="108" y="168" font-family="Inter,Arial,sans-serif" font-size="9" font-weight="700" fill="#c9a227" opacity=".6">scaffolding</text>
+  <text x="108" y="168" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="9" font-weight="700" fill="#c9a227" opacity=".6">scaffolding</text>
   <rect x="185" y="150" width="62" height="18" rx="9" fill="#1f5f63" opacity=".12"/>
-  <text x="193" y="163" font-family="Inter,Arial,sans-serif" font-size="9" font-weight="700" fill="#1f5f63" opacity=".5">feedback</text>
+  <text x="193" y="163" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="9" font-weight="700" fill="#1f5f63" opacity=".5">feedback</text>
 </svg>

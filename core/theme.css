@@ -31,7 +31,7 @@ body {
   min-height: 100%;
   background: linear-gradient(180deg, var(--gs-bg) 0%, var(--gs-bg-alt) 100%);
   color: var(--gs-text);
-  font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: Inter,Segoe UI,Arial,sans-serif;
 }
 
 body.gs-reduced-motion *,

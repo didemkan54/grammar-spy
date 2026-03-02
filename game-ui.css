@@ -25,7 +25,7 @@ body {
   margin: 0;
   background: var(--light);
   color: var(--mid);
-  font-family: Inter, "Segoe UI", sans-serif;
+  font-family: Inter,Segoe UI,Arial,sans-serif;
   padding: 0 0 40px;
 }
 
@@ -42,7 +42,7 @@ body {
 /* ── Header area ── */
 .k {
   margin: 0;
-  font: 800 11px Inter, Arial, sans-serif;
+  font: 800 11px Inter,Segoe UI,Arial,sans-serif;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--teal);
@@ -260,7 +260,7 @@ h1 {
   background: #ffffff;
   text-decoration: none;
   color: var(--mid);
-  font: 700 12px Inter, Arial, sans-serif;
+  font: 700 12px Inter,Segoe UI,Arial,sans-serif;
   text-transform: uppercase;
   letter-spacing: .08em;
   cursor: pointer;

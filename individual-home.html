@@ -8,24 +8,24 @@
   <style>
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 8px 18px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 40px;margin:0;display:grid;gap:24px}
+    body{margin:0;background:var(--light);color:var(--mid);font-family:Inter,Segoe UI,Arial,sans-serif;padding:0 0 40px;margin:0;display:grid;gap:24px}
     .section{background:#fff;border:1px solid var(--cool);border-radius:18px;box-shadow:var(--shadow);padding:24px}
-    .k{margin:0 0 10px;font:800 11px Inter,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1f5f63}
+    .k{margin:0 0 10px;font:800 11px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1f5f63}
     h1,h2{margin:0;color:#0b1020;line-height:1.12}
     h1{font-size:34px} h2{font-size:20px}
     p{margin:10px 0 0;color:#4a5568;line-height:1.65;font-weight:450}
     .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
     .card{border-radius:12px;background:#f8fbfd;padding:14px;display:grid;gap:8px}
     .segmented{display:inline-flex;gap:6px;padding:4px;border:1px solid var(--cool);border-radius:999px;background:#f8fafc;margin-top:12px}
-    .seg{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;color:#4a5568;border-radius:999px;padding:7px 11px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+    .seg{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;color:#4a5568;border-radius:999px;padding:7px 11px;font:700 11px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
     .seg.active{background:#ffffff;color:#16223a;box-shadow:0 1px 3px rgba(11,16,32,.08)}
-    .btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid #194f53;background:#1f5f63;color:#fff;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif;width:fit-content}
-    .btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid var(--cool);background:#fff;color:#16223a;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Arial,sans-serif;width:fit-content}
-    .link-action{display:inline-block;color:#1f5f63;text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em}
+    .btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid #194f53;background:#1f5f63;color:#fff;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Segoe UI,Arial,sans-serif;width:fit-content}
+    .btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 13px;border:1px solid var(--cool);background:#fff;color:#16223a;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 11px Inter,Segoe UI,Arial,sans-serif;width:fit-content}
+    .link-action{display:inline-block;color:#1f5f63;text-decoration:none;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em}
     .link-action:hover{text-decoration:underline}
     .pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
     .pack-tile{display:block;text-decoration:none}
-    .pack-card-caption{margin-top:6px;font:700 11px Inter,Arial,sans-serif;color:#16223a;line-height:1.25}
+    .pack-card-caption{margin-top:6px;font:700 11px Inter,Segoe UI,Arial,sans-serif;color:#16223a;line-height:1.25}
     .pack-card img,.pack-tile img{width:100%;max-height:96px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(11,16,32,.1);transition:transform .2s ease, box-shadow .2s ease}
     .pack-tile:hover img{transform:translateY(-2px);box-shadow:0 12px 24px rgba(11,16,32,.14)}
     @media (max-width:100%){.grid{grid-template-columns:1fr}.section{padding:20px}}
@@ -111,7 +111,7 @@
             '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">' +
             '<div><h2 style="margin:0;font-size:22px;color:#1f5f63">Welcome, ' + studentName + '!</h2>' +
             '<p style="margin:4px 0 0;color:#4a5568;font-size:14px">Class: ' + displayName + (teacherName ? ' &middot; Teacher: ' + teacherName : '') + '</p></div>' +
-            '<button id="leaveClassBtn" type="button" style="padding:6px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;color:#7a8698;font:600 11px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Leave class</button>' +
+            '<button id="leaveClassBtn" type="button" style="padding:6px 14px;border:1px solid #d9dee6;border-radius:8px;background:#fff;color:#7a8698;font:600 11px Inter,Segoe UI,Arial,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Leave class</button>' +
             '</div>' +
             '<p style="margin:0 0 14px;color:#16223a;font-weight:600">Your missions are ready. Pick one to start practicing:</p>' +
             '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">' +
@@ -133,7 +133,7 @@
             '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">' +
               '<input type="text" id="joinCodeInput" placeholder="Enter code" maxlength="10" autocomplete="off" autocapitalize="characters" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 16px;font-size:20px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;width:200px;text-align:center;font-family:Courier New,monospace" />' +
               '<input type="text" id="joinNameInput" placeholder="Your name" maxlength="25" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 16px;font-size:15px;min-width:180px" />' +
-              '<button class="btn-primary" id="joinBtn" type="button" style="display:inline-flex;align-items:center;padding:12px 20px;border:1px solid #194f53;border-radius:10px;background:#1f5f63;color:#fff;font:700 13px Inter,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Join</button>' +
+              '<button class="btn-primary" id="joinBtn" type="button" style="display:inline-flex;align-items:center;padding:12px 20px;border:1px solid #194f53;border-radius:10px;background:#1f5f63;color:#fff;font:700 13px Inter,Segoe UI,Arial,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Join</button>' +
             '</div>' +
             '<p id="joinError" style="display:none;color:#b04444;font-size:13px;font-weight:600;margin-top:8px"></p>';
 

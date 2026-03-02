@@ -39,9 +39,9 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   ensureTopNavStyles();
 
   const currentPage = (window.location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
-  const navLinkStyle = "text-decoration:none;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc";
-  const dropdownLinkStyle = "display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap";
-  const menuSummaryStyle = "cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none";
+  const navLinkStyle = "text-decoration:none;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc";
+  const dropdownLinkStyle = "display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap";
+  const menuSummaryStyle = "cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none";
   const menuPanelStyle = "position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30";
 
   const primaryLinks = [
@@ -87,7 +87,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     `<details style="position:relative"><summary class="gs-pill" style="${missionMenuSummaryStyle}">Missions &#9662;</summary><span style="${menuPanelStyle}">${missionMenuLinksHtml}</span></details>` +
     `<details style="position:relative"><summary class="gs-pill" style="${resourcesMenuSummaryStyle}">Resources &#9662;</summary><span style="${menuPanelStyle}">${resourceLinksHtml}</span></details>`;
 
-  const langSelect = `<select class="gs-select" id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:none;letter-spacing:.01em">` +
+  const langSelect = `<select class="gs-select" id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Segoe UI,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:none;letter-spacing:.01em">` +
     `<option value="en">English</option><option value="es">Español</option><option value="fr">Français</option>` +
     `<option value="am">አማርኛ</option><option value="tr">Türkçe</option><option value="ar">العربية</option>` +
     `<option value="hi">हिन्दी</option><option value="ur">اردو</option><option value="ps">پښتو</option>` +

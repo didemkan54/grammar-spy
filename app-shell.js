@@ -354,9 +354,9 @@
       'min-width:240px'
     ].join(';');
     dock.innerHTML =
-      '<label style=\"font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568\">Active Learner</label>' +
-      '<input id=\"gsStudentInput\" type=\"text\" placeholder=\"Type student name\" style=\"border:1px solid #d9dee6;border-radius:8px;padding:8px 9px;font:600 13px Inter,Arial,sans-serif;color:#16223A\" />' +
-      '<div style=\"font:600 11px Inter,Arial,sans-serif;color:#4a5568\">Saved to progress tracking and game reports.</div>';
+      '<label style=\"font:700 11px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568\">Active Learner</label>' +
+      '<input id=\"gsStudentInput\" type=\"text\" placeholder=\"Type student name\" style=\"border:1px solid #d9dee6;border-radius:8px;padding:8px 9px;font:600 13px Inter,Segoe UI,Arial,sans-serif;color:#16223A\" />' +
+      '<div style=\"font:600 11px Inter,Segoe UI,Arial,sans-serif;color:#4a5568\">Saved to progress tracking and game reports.</div>';
     document.body.appendChild(dock);
     var input = document.getElementById('gsStudentInput');
     input.value = getActiveStudent();
@@ -381,11 +381,11 @@
     card.id = 'growthDetailCard';
     card.style.cssText = 'border:1px solid #d9dee6;border-radius:10px;padding:10px;background:#f8fafc;display:grid;gap:6px';
     card.innerHTML =
-      '<p style=\"margin:0;font:800 11px Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#1f5f63\">Growth Insight</p>' +
-      '<p id=\"growthLineA\" style=\"margin:0;color:#16223A;font:600 13px Inter,Arial,sans-serif\"></p>' +
-      '<p id=\"growthLineB\" style=\"margin:0;color:#4a5568;font:600 13px Inter,Arial,sans-serif\"></p>' +
-      '<p id=\"growthLineC\" style=\"margin:0;color:#4a5568;font:600 13px Inter,Arial,sans-serif\"></p>' +
-      '<p id=\"growthLineD\" style=\"margin:0;color:#4a5568;font:600 13px Inter,Arial,sans-serif\"></p>';
+      '<p style=\"margin:0;font:800 11px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#1f5f63\">Growth Insight</p>' +
+      '<p id=\"growthLineA\" style=\"margin:0;color:#16223A;font:600 13px Inter,Segoe UI,Arial,sans-serif\"></p>' +
+      '<p id=\"growthLineB\" style=\"margin:0;color:#4a5568;font:600 13px Inter,Segoe UI,Arial,sans-serif\"></p>' +
+      '<p id=\"growthLineC\" style=\"margin:0;color:#4a5568;font:600 13px Inter,Segoe UI,Arial,sans-serif\"></p>' +
+      '<p id=\"growthLineD\" style=\"margin:0;color:#4a5568;font:600 13px Inter,Segoe UI,Arial,sans-serif\"></p>';
     modal.insertBefore(card, modal.lastElementChild);
 
     function render(){

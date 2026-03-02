@@ -25,9 +25,9 @@
     } catch(_e) {}
   }
 
-  var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc';
-  var dropdownLinkStyle = 'display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap';
-  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none';
+  var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc';
+  var dropdownLinkStyle = 'display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap';
+  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none';
   var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
 
   var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 16px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
@@ -57,7 +57,7 @@
     '</span>' +
     '<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end">' +
     '<span id="gsLangSwitcher" style="display:inline-flex;align-items:center">' +
-    '<select class="gs-select" id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:none;letter-spacing:.01em">' +
+    '<select class="gs-select" id="gsLangSelect" aria-label="Language" onchange="if(window.GS_I18N)GS_I18N.setLang(this.value)" style="border:1px solid #d9dee6;border-radius:8px;padding:6px 10px;font:700 12px Inter,Segoe UI,Arial,sans-serif;color:#4a5568;background:#fff;cursor:pointer;text-transform:none;letter-spacing:.01em">' +
     '<option value="en">English</option><option value="es">Español</option><option value="fr">Français</option>' +
     '<option value="am">አማርኛ</option><option value="tr">Türkçe</option><option value="ar">العربية</option>' +
     '<option value="hi">हिन्दी</option><option value="ur">اردو</option><option value="ps">پښتو</option>' +
@@ -74,7 +74,7 @@
     '</span>' +
     '</nav>';
 
-  var footerFallback = '<footer class="site-footer" style="margin:24px 0 0;padding:24px 40px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Arial,sans-serif;font-size:13px;">' +
+  var footerFallback = '<footer class="site-footer" style="margin:24px 0 0;padding:24px 40px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:13px;">' +
     '<div style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;"><div>' +
     '<a href="/index.html" style="color:#16223a;text-decoration:none;font-weight:700;font-size:14px;">Grammar Spy™</a>' +
     '<p style="margin:6px 0 0;color:#5c6677;font-size:12px;line-height:1.4;max-width:32ch;">Mission-based grammar training for ELD and ELA classrooms.</p></div>' +
