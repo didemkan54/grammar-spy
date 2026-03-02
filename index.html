@@ -520,10 +520,10 @@
       </div>
     </section>
 
-    <section class="section section-flat" aria-label="Free grammar diagnostic PDF">
+    <section id="free-diagnostic-pdf" class="section section-flat" aria-label="Free grammar diagnostic PDF">
       <p class="mission-label">Free Diagnostic PDF</p>
       <h2>Get the Simple Present classroom diagnostic</h2>
-      <p class="subcopy">Enter your school/work email to unlock the downloadable diagnostic PDF for your class.</p>
+      <p class="subcopy">Enter your school/work email and we’ll send the diagnostic to your inbox.</p>
       <p class="proof-note" style="margin-top:8px">Takes 10 minutes. Answer key included.</p>
       <div class="diagnostic-download">
         <form class="diagnostic-form" id="diagnosticLeadForm" novalidate>
@@ -531,11 +531,11 @@
           <div class="diagnostic-form-row">
             <input type="email" id="diagnosticLeadEmail" placeholder="name@school.org" autocomplete="email" aria-label="School or work email for diagnostic PDF">
             <input type="text" id="diagnosticLeadHp" name="company" class="diagnostic-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <button type="submit" class="btn-primary" id="diagnosticLeadBtn">Unlock Diagnostic PDF</button>
+            <button type="submit" class="btn-primary" id="diagnosticLeadBtn">Email me diagnostic</button>
           </div>
           <p class="diagnostic-consent">We’ll email you the diagnostic + occasional updates. Unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
         </form>
-        <p class="diagnostic-msg" id="diagnosticLeadMsg">Download started. Check your downloads folder for the PDF.</p>
+        <p class="diagnostic-msg" id="diagnosticLeadMsg">Check your email for your diagnostic.</p>
         <p class="diagnostic-error" id="diagnosticLeadError" role="status" aria-live="polite"></p>
         <div class="quiet-share" id="diagnosticQuietShare">
           <span>If this is useful, quietly share it once with one colleague.</span>
@@ -755,7 +755,6 @@
     })();
 
     (function(){
-      var ASSET_PATH = 'assets/downloads/grammar-spy-simple-present-diagnostic.pdf';
       var QUIET_SHARE_KEY = 'gs_diagnostic_quiet_share_seen_v1';
       var THROTTLE_KEY = 'gs_diagnostic_submit_times_v1';
       var COOLDOWN_MS = 15000;
@@ -769,7 +768,6 @@
       var share = document.getElementById('diagnosticQuietShare');
       var copyBtn = document.getElementById('diagnosticCopyShare');
       var btn = document.getElementById('diagnosticLeadBtn');
-      var unlocked = false;
       if (!form || !input || !msg || !err || !share || !copyBtn || !btn) return;
 
       function setError(text){
@@ -814,22 +812,11 @@
         }
       }
 
-      function startDownload() {
-        track('diagnostic_download_start', { asset: 'simple_present_diagnostic' });
-        var link = document.createElement('a');
-        link.href = ASSET_PATH;
-        link.download = 'grammar-spy-simple-present-diagnostic.pdf';
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
       function shareLink() {
         try {
-          if (location.origin && location.origin !== 'null') return location.origin + '/assets/downloads/grammar-spy-simple-present-diagnostic.pdf';
+          if (location.origin && location.origin !== 'null') return location.origin + '/index.html#free-diagnostic-pdf';
         } catch (_err) {}
-        return 'assets/downloads/grammar-spy-simple-present-diagnostic.pdf';
+        return 'index.html#free-diagnostic-pdf';
       }
 
       function fallbackCopy(text) {
@@ -863,12 +850,6 @@
         event.preventDefault();
         setError('');
 
-        if (unlocked) {
-          startDownload();
-          msg.classList.add('show');
-          return;
-        }
-
         if (hp && (hp.value || '').trim()) return;
 
         if (throttled()) {
@@ -894,13 +875,11 @@
         Promise.resolve(leadTask).then(function(result){
           if (result && result.remote === false) throw new Error('lead_save_failed');
 
-          startDownload();
+          track('diagnostic_download_start', { asset: 'simple_present_diagnostic', delivery: 'email' });
           track('diagnostic_pdf_unlock', { asset: 'simple_present_diagnostic' });
-          unlocked = true;
-          input.setAttribute('readonly', 'readonly');
           btn.disabled = false;
-          btn.textContent = 'Download again';
-          msg.textContent = 'Download started. You can use "Download again" anytime.';
+          btn.textContent = 'Send again';
+          msg.textContent = 'Check your email for your diagnostic.';
           msg.classList.add('show');
 
           var showQuietShare = false;
@@ -913,7 +892,7 @@
           if (showQuietShare) share.classList.add('show');
         }).catch(function(){
           btn.disabled = false;
-          btn.textContent = 'Unlock Diagnostic PDF';
+          btn.textContent = 'Email me diagnostic';
           setError('Something went wrong—try again.');
         });
       });
