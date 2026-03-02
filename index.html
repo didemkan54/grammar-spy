@@ -294,7 +294,7 @@
   <script>
     (function(){
       var LEAD_KEY = 'gs_lead_emails';
-      var LEAD_ENDPOINT = 'https://formsubmit.co/support@grammarspy.net';
+      var LEAD_ENDPOINT = 'https://85a09173.sibforms.com/serve/MUIFAO0SRnqANYWp5KNsJ0-9gEonuYGrkR7O-M1kWNXREu8nqRQzm5_6XokU2C9wI1uq84-f_pml04_PTRwO-JuRO0S_jZdx62QxwBwrSPc-Q6YMi2I-FQ-_pioeFc51DQUg2z8kEMLYpzGiKjhhLiW6n8iVr5hdtd8Pf-cCxAhtRXhEZaIg46bnpSG0DynWg2n49QKz8n4y3TOhtw==';
 
       function saveLeadLocal(email){
         try {
@@ -307,14 +307,13 @@
 
       function submitLeadRemote(email, source){
         if (typeof fetch !== 'function') return Promise.resolve(false);
+        var cleanSource = String(source || 'homepage');
         var payload = [
-          ['email', email],
-          ['lead_email', email],
-          ['source', source || 'homepage'],
-          ['page', location.pathname || '/'],
-          ['_subject', 'Grammar Spy lead capture'],
-          ['_template', 'table'],
-          ['_captcha', 'false']
+          ['EMAIL', email],
+          ['locale', 'en'],
+          ['email_address_check', ''],
+          ['SOURCE', cleanSource],
+          ['PAGE', location.pathname || '/']
         ];
         var body = payload.map(function(pair){
           return encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
