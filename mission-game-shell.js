@@ -4,8 +4,12 @@
   var pack = params.get("pack") || "pack01";
   var difficulty = params.get("difficulty") || "field";
   var timerOn = (params.get("timer") || "on") !== "off";
-  var requestedCount = Number(params.get("count") || 20) || 20;
-  var count = Math.max(6, Math.min(30, requestedCount));
+  var requestedCount = Number(params.get("count") || 15) || 15;
+  var missionTypeRequested = (params.get("mission_type") || "single_rule").toLowerCase();
+  if (missionTypeRequested !== "mixed_review") missionTypeRequested = "single_rule";
+  var requestedRuleId = String(params.get("grammar_rule_id") || "").trim().toLowerCase();
+  var FIXED_MISSION_ITEM_COUNT = 15;
+  var count = FIXED_MISSION_ITEM_COUNT;
   var playFormat = params.get("play_format") || "individuals";
 
   var games = {
@@ -90,6 +94,53 @@
     "be-verb-case-interview": { accent: "#226b88", columns: 1, modeLabel: "Judge the Evidence", sceneLabel: "Case File", startText: "Open Case", replayText: "New Case", endText: "Close Case", playMode: "binary" },
     "mission-sequence-lab": { accent: "#8c5dd7", columns: 1, modeLabel: "Put in Order", sceneLabel: "Sequence Card", startText: "Start Ordering", replayText: "Reorder", endText: "End Lab", playMode: "order" },
     "evidence-sort-board": { accent: "#a66a1d", columns: 1, modeLabel: "Sort the Evidence", sceneLabel: "Evidence Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "sweep" }
+  };
+
+  var missionProfileCatalog = {
+    "rule-sprint-present": {
+      missionTitle: "Mission: Simple Present (Affirmative)",
+      grammar_rule_id: "simple_present_affirmative",
+      strictSingleRule: true,
+      singleRuleBankKey: "rule-sprint-present::simple_present_affirmative",
+      focusRule: "Use simple present for routines. Add -s with he/she/it.",
+      oneLineReminder: "Add -s with he/she/it.",
+      typicalTime: "4-6 min",
+      workedExample: "Example: She checks the board every day. (NOT: She check the board every day.)",
+      sentenceFrame: "Subject + base verb (+s for he/she/it) + time phrase.",
+      eldInstruction: "Read one routine sentence. Pick the best simple present form.",
+      glossary: [
+        { term: "routine", def: "an action that happens again and again" },
+        { term: "subject", def: "who or what does the action" },
+        { term: "verb", def: "the action word" }
+      ],
+      hintPlan: [
+        "Find the subject first.",
+        "Check if the subject is he/she/it.",
+        "If yes, look for verb + s."
+      ]
+    },
+    "dialogue-repair::pack02": {
+      missionTitle: "Mission: Dialogue Repair (Simple Present Affirmative)",
+      grammar_rule_id: "simple_present_affirmative",
+      strictSingleRule: true,
+      singleRuleBankKey: "dialogue-repair::pack02::simple_present_affirmative",
+      focusRule: "Keep dialogue replies in simple present affirmative form.",
+      oneLineReminder: "Use simple present for regular actions in dialogue.",
+      typicalTime: "5-7 min",
+      workedExample: "Example: She brings the folder every morning. (NOT: She bring the folder every morning.)",
+      sentenceFrame: "Speaker + simple present verb (+s with he/she/it) + detail.",
+      eldInstruction: "Read the chat. Choose the reply with the correct simple present verb.",
+      glossary: [
+        { term: "dialogue", def: "a conversation between speakers" },
+        { term: "reply", def: "what someone says back" },
+        { term: "affirmative", def: "a positive statement, not a question or negative" }
+      ],
+      hintPlan: [
+        "Read the subject in the reply.",
+        "Check the verb ending.",
+        "Pick the line that sounds natural and clear."
+      ]
+    }
   };
 
   var fallbackRounds = [
@@ -4218,14 +4269,575 @@
     }
   ];
 
-  function cloneRound(round) {
+  var singleRuleMissionBanks = {
+    "rule-sprint-present::simple_present_affirmative": [
+      {
+        item_id: "sp_aff_01",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Morning Briefing",
+        prompt: "Choose the correct routine sentence.",
+        eldPrompt: "Pick the sentence with the correct -s verb form.",
+        options: [
+          "The class checks the warm-up board every morning.",
+          "The class check the warm-up board every morning.",
+          "The class is checking the warm-up board every morning.",
+          "The class checked the warm-up board every morning."
+        ],
+        answer: 0,
+        explain: "Class is singular, so the verb takes -s: checks."
+      },
+      {
+        item_id: "sp_aff_02",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Hall Pass Desk",
+        prompt: "Pick the strongest simple present line.",
+        eldPrompt: "Choose the correct verb form for he/she/it.",
+        options: [
+          "Mina submit the hall-pass log at 8:00.",
+          "Mina submits the hall-pass log at 8:00.",
+          "Mina is submitting the hall-pass log at 8:00.",
+          "Mina submitted the hall-pass log at 8:00."
+        ],
+        answer: 1,
+        explain: "Mina is third-person singular, so submit becomes submits."
+      },
+      {
+        item_id: "sp_aff_03",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Library Check",
+        prompt: "Choose the sentence that follows the rule.",
+        eldPrompt: "Find the sentence with the correct -s ending.",
+        options: [
+          "The librarian opens the reading room at 7:30.",
+          "The librarian open the reading room at 7:30.",
+          "The librarian opening the reading room at 7:30.",
+          "The librarian opened the reading room at 7:30."
+        ],
+        answer: 0,
+        explain: "Singular subject librarian needs opens in simple present."
+      },
+      {
+        item_id: "sp_aff_04",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Science Lab",
+        prompt: "Select the correct affirmative sentence.",
+        eldPrompt: "Pick the sentence with correct subject-verb agreement.",
+        options: [
+          "He carry the sample tray to the lab.",
+          "He carries the sample tray to the lab.",
+          "He carrying the sample tray to the lab.",
+          "He carried the sample tray to the lab."
+        ],
+        answer: 1,
+        explain: "He takes a singular verb: carries."
+      },
+      {
+        item_id: "sp_aff_05",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Arrival Gate",
+        prompt: "Pick the best routine statement.",
+        eldPrompt: "Find the sentence with the correct present-tense verb.",
+        options: [
+          "The bus arrive at 8:05 every day.",
+          "The bus arrives at 8:05 every day.",
+          "The bus is arriving at 8:05 every day.",
+          "The bus arrived at 8:05 every day."
+        ],
+        answer: 1,
+        explain: "Bus is singular, so use arrives."
+      },
+      {
+        item_id: "sp_aff_06",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Coach Station",
+        prompt: "Choose the strongest simple present sentence.",
+        eldPrompt: "Pick the line with the correct -s verb.",
+        options: [
+          "The coach reviews attendance before practice.",
+          "The coach review attendance before practice.",
+          "The coach reviewing attendance before practice.",
+          "The coach reviewed attendance before practice."
+        ],
+        answer: 0,
+        explain: "Coach is singular; the present-tense verb is reviews."
+      },
+      {
+        item_id: "sp_aff_07",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Classroom Door",
+        prompt: "Pick the sentence that follows the focus rule.",
+        eldPrompt: "Choose the correct simple present form.",
+        options: [
+          "My brother wash his hands before lunch.",
+          "My brother washes his hands before lunch.",
+          "My brother is washing his hands before lunch.",
+          "My brother washed his hands before lunch."
+        ],
+        answer: 1,
+        explain: "Brother is singular, so wash changes to washes."
+      },
+      {
+        item_id: "sp_aff_08",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Reading Circle",
+        prompt: "Select the correct routine line.",
+        eldPrompt: "Pick the option with correct subject + verb.",
+        options: [
+          "The group discusses one chapter each Friday.",
+          "The group discuss one chapter each Friday.",
+          "The group discussed one chapter each Friday.",
+          "The group is discussing one chapter each Friday."
+        ],
+        answer: 0,
+        explain: "Group is singular, so discuss becomes discusses."
+      },
+      {
+        item_id: "sp_aff_09",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Office Window",
+        prompt: "Choose the best affirmative form.",
+        eldPrompt: "Find the line with the right -s ending.",
+        options: [
+          "The secretary record late arrivals daily.",
+          "The secretary recording late arrivals daily.",
+          "The secretary records late arrivals daily.",
+          "The secretary recorded late arrivals daily."
+        ],
+        answer: 2,
+        explain: "Secretary is singular, so records is correct."
+      },
+      {
+        item_id: "sp_aff_10",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Media Room",
+        prompt: "Pick the sentence that matches the rule.",
+        eldPrompt: "Choose the correct verb for she.",
+        options: [
+          "She watch the tutorial before class.",
+          "She watched the tutorial before class.",
+          "She is watching the tutorial before class.",
+          "She watches the tutorial before class."
+        ],
+        answer: 3,
+        explain: "With she, add -es: watches."
+      },
+      {
+        item_id: "sp_aff_11",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Front Desk",
+        prompt: "Select the strongest simple present sentence.",
+        eldPrompt: "Pick the correct singular verb form.",
+        options: [
+          "The nurse checks student IDs at the door.",
+          "The nurse check student IDs at the door.",
+          "The nurse checked student IDs at the door.",
+          "The nurse is checking student IDs at the door."
+        ],
+        answer: 0,
+        explain: "Nurse is singular, so use checks."
+      },
+      {
+        item_id: "sp_aff_12",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Progress Board",
+        prompt: "Choose the routine sentence with correct grammar.",
+        eldPrompt: "Find the correct present-tense verb.",
+        options: [
+          "The monitor records each team score after every round.",
+          "The monitor record each team score after every round.",
+          "The monitor recorded each team score after every round.",
+          "The monitor is recording each team score after every round."
+        ],
+        answer: 0,
+        explain: "Monitor is singular; records is the correct form."
+      },
+      {
+        item_id: "sp_aff_13",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Signature Table",
+        prompt: "Pick the strongest affirmative line.",
+        eldPrompt: "Choose the sentence with the correct -s verb.",
+        options: [
+          "The principal sign permission slips each week.",
+          "The principal signs permission slips each week.",
+          "The principal signed permission slips each week.",
+          "The principal is signing permission slips each week."
+        ],
+        answer: 1,
+        explain: "Principal is singular, so sign changes to signs."
+      },
+      {
+        item_id: "sp_aff_14",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Club Room",
+        prompt: "Select the sentence that follows the focus rule.",
+        eldPrompt: "Find the correct simple present agreement.",
+        options: [
+          "The robotics club meets on Thursdays.",
+          "The robotics club meet on Thursdays.",
+          "The robotics club met on Thursdays.",
+          "The robotics club is meeting on Thursdays."
+        ],
+        answer: 0,
+        explain: "Club is singular, so the correct verb is meets."
+      },
+      {
+        item_id: "sp_aff_15",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Homework Queue",
+        prompt: "Pick the best simple present sentence.",
+        eldPrompt: "Choose the line with the correct third-person verb.",
+        options: [
+          "The teacher give feedback before dismissal.",
+          "The teacher gives feedback before dismissal.",
+          "The teacher gave feedback before dismissal.",
+          "The teacher is giving feedback before dismissal."
+        ],
+        answer: 1,
+        explain: "Teacher is singular, so use gives."
+      }
+    ],
+    "dialogue-repair::pack02::simple_present_affirmative": [
+      {
+        item_id: "dr_sp_aff_01",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue A",
+        prompt: "Pick the repaired dialogue line.",
+        eldPrompt: "Choose the reply with the correct simple present verb.",
+        options: [
+          "She checks the schedule before first period.",
+          "She check the schedule before first period.",
+          "She checked the schedule before first period.",
+          "She is checking the schedule before first period."
+        ],
+        answer: 0,
+        explain: "She takes checks in simple present affirmative."
+      },
+      {
+        item_id: "dr_sp_aff_02",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue B",
+        prompt: "Choose the best repaired reply.",
+        eldPrompt: "Find the line with correct he/she/it + -s form.",
+        options: [
+          "The tutor explain the rule after lunch.",
+          "The tutor explains the rule after lunch.",
+          "The tutor explained the rule after lunch.",
+          "The tutor is explaining the rule after lunch."
+        ],
+        answer: 1,
+        explain: "Tutor is singular, so the verb is explains."
+      },
+      {
+        item_id: "dr_sp_aff_03",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue C",
+        prompt: "Select the strongest dialogue correction.",
+        eldPrompt: "Pick the sentence with the correct simple present form.",
+        options: [
+          "Our class starts the warm-up at 8:10.",
+          "Our class start the warm-up at 8:10.",
+          "Our class started the warm-up at 8:10.",
+          "Our class is starting the warm-up at 8:10."
+        ],
+        answer: 0,
+        explain: "Class is singular; starts is the correct routine form."
+      },
+      {
+        item_id: "dr_sp_aff_04",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue D",
+        prompt: "Pick the repaired line for the chat.",
+        eldPrompt: "Choose the line with subject-verb agreement.",
+        options: [
+          "The coach review the notes after practice.",
+          "The coach is reviewing the notes after practice.",
+          "The coach reviews the notes after practice.",
+          "The coach reviewed the notes after practice."
+        ],
+        answer: 2,
+        explain: "Coach is singular, so use reviews."
+      },
+      {
+        item_id: "dr_sp_aff_05",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue E",
+        prompt: "Choose the clean revised reply.",
+        eldPrompt: "Find the correct simple present verb ending.",
+        options: [
+          "Maya carrys the folder to the office.",
+          "Maya carry the folder to the office.",
+          "Maya carried the folder to the office.",
+          "Maya carries the folder to the office."
+        ],
+        answer: 3,
+        explain: "Maya is singular, so carry becomes carries."
+      },
+      {
+        item_id: "dr_sp_aff_06",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue F",
+        prompt: "Pick the strongest repaired sentence.",
+        eldPrompt: "Choose the correct third-person singular form.",
+        options: [
+          "The monitor tracks homework completion each day.",
+          "The monitor track homework completion each day.",
+          "The monitor tracked homework completion each day.",
+          "The monitor is tracking homework completion each day."
+        ],
+        answer: 0,
+        explain: "Monitor is singular, so tracks is correct."
+      },
+      {
+        item_id: "dr_sp_aff_07",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue G",
+        prompt: "Which repaired line sounds correct?",
+        eldPrompt: "Pick the line with the right present-tense verb.",
+        options: [
+          "He wash his hands before the experiment.",
+          "He washes his hands before the experiment.",
+          "He washed his hands before the experiment.",
+          "He is washing his hands before the experiment."
+        ],
+        answer: 1,
+        explain: "He needs a singular verb: washes."
+      },
+      {
+        item_id: "dr_sp_aff_08",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue H",
+        prompt: "Choose the repaired dialogue reply.",
+        eldPrompt: "Find the sentence with correct subject + verb agreement.",
+        options: [
+          "The principal signs the pass before recess.",
+          "The principal sign the pass before recess.",
+          "The principal signed the pass before recess.",
+          "The principal is signing the pass before recess."
+        ],
+        answer: 0,
+        explain: "Principal is singular, so signs is correct."
+      },
+      {
+        item_id: "dr_sp_aff_09",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue I",
+        prompt: "Pick the best simple present repair.",
+        eldPrompt: "Choose the option with the correct -s form.",
+        options: [
+          "The librarian opens the media cart every Monday.",
+          "The librarian open the media cart every Monday.",
+          "The librarian opened the media cart every Monday.",
+          "The librarian is opening the media cart every Monday."
+        ],
+        answer: 0,
+        explain: "Librarian is singular; opens fits the routine context."
+      },
+      {
+        item_id: "dr_sp_aff_10",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue J",
+        prompt: "Select the strongest repaired line.",
+        eldPrompt: "Pick the reply that uses correct simple present.",
+        options: [
+          "My sister practice piano after school.",
+          "My sister practices piano after school.",
+          "My sister practiced piano after school.",
+          "My sister is practicing piano after school."
+        ],
+        answer: 1,
+        explain: "Sister is singular, so practice becomes practices."
+      },
+      {
+        item_id: "dr_sp_aff_11",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue K",
+        prompt: "Choose the corrected dialogue sentence.",
+        eldPrompt: "Find the line with correct present-tense agreement.",
+        options: [
+          "The bus arrives at 3:20 on weekdays.",
+          "The bus arrive at 3:20 on weekdays.",
+          "The bus arrived at 3:20 on weekdays.",
+          "The bus is arriving at 3:20 on weekdays."
+        ],
+        answer: 0,
+        explain: "Bus is singular, so arrives is the correct form."
+      },
+      {
+        item_id: "dr_sp_aff_12",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue L",
+        prompt: "Pick the strongest repair for this reply.",
+        eldPrompt: "Choose the sentence with the correct singular verb.",
+        options: [
+          "The assistant file the forms after lunch.",
+          "The assistant files the forms after lunch.",
+          "The assistant filed the forms after lunch.",
+          "The assistant is filing the forms after lunch."
+        ],
+        answer: 1,
+        explain: "Assistant is singular, so use files."
+      },
+      {
+        item_id: "dr_sp_aff_13",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue M",
+        prompt: "Select the clean corrected line.",
+        eldPrompt: "Pick the option with correct he/she/it agreement.",
+        options: [
+          "The speaker gives clear directions at the start.",
+          "The speaker give clear directions at the start.",
+          "The speaker gave clear directions at the start.",
+          "The speaker is giving clear directions at the start."
+        ],
+        answer: 0,
+        explain: "Speaker is singular, so the verb is gives."
+      },
+      {
+        item_id: "dr_sp_aff_14",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue N",
+        prompt: "Choose the strongest revised reply.",
+        eldPrompt: "Find the sentence with the correct -s ending.",
+        options: [
+          "The team leader check each station.",
+          "The team leader checks each station.",
+          "The team leader checked each station.",
+          "The team leader is checking each station."
+        ],
+        answer: 1,
+        explain: "Leader is singular, so checks is correct."
+      },
+      {
+        item_id: "dr_sp_aff_15",
+        grammar_rule_id: "simple_present_affirmative",
+        scene: "Present Dialogue O",
+        prompt: "Pick the repaired line that follows the rule.",
+        eldPrompt: "Choose the dialogue reply with correct simple present.",
+        options: [
+          "The nurse record absences in the system.",
+          "The nurse records absences in the system.",
+          "The nurse recorded absences in the system.",
+          "The nurse is recording absences in the system."
+        ],
+        answer: 1,
+        explain: "Nurse is singular, so the verb takes -s: records."
+      }
+    ]
+  };
+
+  var mixedReviewRegistry = {
+    // Architecture scaffold only. Populate when single-rule mastery data is available.
+  };
+
+  var resolvedMissionType = missionTypeRequested;
+
+  function missionProfileKey(key, packId) {
+    if (key === "dialogue-repair" && packId === "pack02") return "dialogue-repair::pack02";
+    return key;
+  }
+
+  function normalizeRuleId(ruleId) {
+    return String(ruleId || "").trim().toLowerCase().replace(/\s+/g, "_");
+  }
+
+  function buildFallbackMissionProfile(key, packId, baseCfg) {
+    var readable = baseCfg && baseCfg.title ? baseCfg.title : "Grammar Mission";
     return {
+      missionTitle: "Mission: " + readable,
+      grammar_rule_id: normalizeRuleId(requestedRuleId || key),
+      strictSingleRule: false,
+      singleRuleBankKey: "",
+      focusRule: "Focus on one grammar target in this mission.",
+      oneLineReminder: "Read the subject first, then verify the verb form.",
+      typicalTime: "4-6 min",
+      workedExample: "Example: She writes clear notes. (subject + verb agreement)",
+      sentenceFrame: "Subject + correct verb form + context detail.",
+      eldInstruction: "Read each item and choose the sentence that matches the grammar rule.",
+      glossary: [
+        { term: "subject", def: "who or what does the action" },
+        { term: "verb", def: "the action word" },
+        { term: "agreement", def: "subject and verb match" }
+      ],
+      hintPlan: [
+        "Read the subject first.",
+        "Check tense and verb ending.",
+        "Choose the clearest correct line."
+      ]
+    };
+  }
+
+  function resolveMissionProfile(key, packId, baseCfg) {
+    var profileKey = missionProfileKey(key, packId);
+    var base = missionProfileCatalog[profileKey] || missionProfileCatalog[key] || {};
+    var fallback = buildFallbackMissionProfile(key, packId, baseCfg || {});
+    var grammarRuleId = normalizeRuleId(requestedRuleId || base.grammar_rule_id || fallback.grammar_rule_id);
+    return {
+      missionKey: profileKey,
+      missionTitle: base.missionTitle || fallback.missionTitle,
+      grammar_rule_id: grammarRuleId || fallback.grammar_rule_id,
+      strictSingleRule: !!base.strictSingleRule,
+      singleRuleBankKey: base.singleRuleBankKey || "",
+      focusRule: base.focusRule || fallback.focusRule,
+      oneLineReminder: base.oneLineReminder || fallback.oneLineReminder,
+      typicalTime: base.typicalTime || fallback.typicalTime,
+      workedExample: base.workedExample || fallback.workedExample,
+      sentenceFrame: base.sentenceFrame || fallback.sentenceFrame,
+      eldInstruction: base.eldInstruction || fallback.eldInstruction,
+      glossary: Array.isArray(base.glossary) && base.glossary.length ? base.glossary : fallback.glossary,
+      hintPlan: Array.isArray(base.hintPlan) && base.hintPlan.length ? base.hintPlan : fallback.hintPlan
+    };
+  }
+
+  function resolveMixedReviewBank(key, packId, profile) {
+    var profileKey = missionProfileKey(key, packId);
+    var grammarRule = normalizeRuleId(profile && profile.grammar_rule_id);
+    var typedKey = profileKey + "::" + grammarRule;
+    var bank = mixedReviewRegistry[typedKey] || mixedReviewRegistry[profileKey] || [];
+    return Array.isArray(bank) ? bank : [];
+  }
+
+  function annotateRoundsWithRule(list, profile) {
+    var source = Array.isArray(list) ? list : [];
+    return source.map(function (round, idx) {
+      var next = cloneRound(round);
+      if (!next.grammar_rule_id && profile && profile.grammar_rule_id) {
+        next.grammar_rule_id = profile.grammar_rule_id;
+      }
+      if (!next.item_id) {
+        var baseScene = String(next.scene || ("item_" + (idx + 1))).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+        next.item_id = gameKey + "__" + pack + "__" + (next.grammar_rule_id || "general_rule") + "__" + baseScene + "__" + String(idx + 1);
+      }
+      return next;
+    });
+  }
+
+  function filterRoundsByRule(list, grammarRuleId, strict) {
+    var source = Array.isArray(list) ? list : [];
+    var normalized = normalizeRuleId(grammarRuleId);
+    if (!normalized) return source;
+    var filtered = source.filter(function (round) {
+      var candidate = normalizeRuleId(round && round.grammar_rule_id);
+      if (!candidate) return !strict;
+      return candidate === normalized;
+    });
+    if (!filtered.length && !strict) return source;
+    return filtered;
+  }
+
+  function cloneRound(round) {
+    var next = {
       scene: round.scene,
       prompt: round.prompt,
       options: round.options.slice(),
       answer: round.answer,
       explain: round.explain
     };
+    if (round.grammar_rule_id) next.grammar_rule_id = round.grammar_rule_id;
+    if (round.item_id) next.item_id = round.item_id;
+    if (round.eldPrompt) next.eldPrompt = round.eldPrompt;
+    if (round.micro_tip) next.micro_tip = round.micro_tip;
+    return next;
   }
 
   function shuffle(list) {
@@ -4243,12 +4855,34 @@
     return list.map(cloneRound);
   }
 
-  function resolveRoundBank(key, packId) {
-    if (key === "past-sort") return timelineSortRounds;
-    var base = roundBanks[key] || fallbackRounds;
-    var variant = packVariantBanks[key];
-    if (variant && variant[packId]) return variant[packId].concat(base);
-    return base;
+  function resolveRoundBank(key, packId, profile) {
+    if (missionTypeRequested === "mixed_review") {
+      var mixed = resolveMixedReviewBank(key, packId, profile);
+      if (mixed.length) {
+        resolvedMissionType = "mixed_review";
+        return annotateRoundsWithRule(mixed, profile);
+      }
+    }
+
+    resolvedMissionType = "single_rule";
+    if (key === "past-sort") {
+      return filterRoundsByRule(annotateRoundsWithRule(timelineSortRounds, profile), profile && profile.grammar_rule_id, !!(profile && profile.strictSingleRule));
+    }
+
+    var source = null;
+    if (profile && profile.strictSingleRule && profile.singleRuleBankKey && singleRuleMissionBanks[profile.singleRuleBankKey]) {
+      source = singleRuleMissionBanks[profile.singleRuleBankKey];
+    }
+    if (!source) {
+      var base = roundBanks[key] || fallbackRounds;
+      var variant = packVariantBanks[key];
+      source = (variant && variant[packId]) ? variant[packId].concat(base) : base;
+    }
+
+    var annotated = annotateRoundsWithRule(source, profile);
+    var filtered = filterRoundsByRule(annotated, profile && profile.grammar_rule_id, !!(profile && profile.strictSingleRule));
+    if (!filtered.length) return annotated;
+    return filtered;
   }
 
   function resolveGameConfig(key, packId, baseCfg) {
@@ -4490,14 +5124,15 @@
       hintBtn.id = "btnHint";
       hintBtn.textContent = "Hint (1)";
 
-      var skipBtn = document.createElement("button");
-      skipBtn.type = "button";
-      skipBtn.className = "btn";
-      skipBtn.id = "btnSkip";
-      skipBtn.textContent = "Skip (1)";
-
-      row.insertBefore(skipBtn, row.firstChild);
       row.insertBefore(hintBtn, row.firstChild);
+    }
+    if (row && !document.getElementById("btnTryAgain")) {
+      var tryAgainBtn = document.createElement("button");
+      tryAgainBtn.type = "button";
+      tryAgainBtn.className = "btn";
+      tryAgainBtn.id = "btnTryAgain";
+      tryAgainBtn.textContent = "Try Again";
+      row.insertBefore(tryAgainBtn, row.firstChild);
     }
     if (row && !document.getElementById("btnNext")) {
       var nextBtn = document.createElement("button");
@@ -4508,6 +5143,148 @@
       nextBtn.style.display = "none";
       row.appendChild(nextBtn);
     }
+    if (row) {
+      var next = document.getElementById("btnNext");
+      var retry = document.getElementById("btnTryAgain");
+      var hint = document.getElementById("btnHint");
+      if (next) row.insertBefore(next, row.firstChild);
+      if (retry) row.insertBefore(retry, next ? next.nextSibling : row.firstChild);
+      if (hint) row.insertBefore(hint, retry ? retry.nextSibling : row.firstChild);
+    }
+  }
+
+  function sanitizeHtml(textValue) {
+    return String(textValue == null ? "" : textValue)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  var missionShellStylesReady = false;
+  function ensureMissionShellStyles() {
+    if (missionShellStylesReady) return;
+    missionShellStylesReady = true;
+    var style = document.createElement("style");
+    style.textContent = ""
+      + ".mission-shell-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:14px 16px;border:1px solid #d9dee6;border-radius:14px;background:#f7fbff;margin-bottom:12px;}"
+      + ".mission-shell-title{margin:0;font:800 18px Inter,Segoe UI,Arial,sans-serif;color:#0b1020;line-height:1.25;}"
+      + ".mission-shell-rule{margin:5px 0 0;font:600 14px Inter,Segoe UI,Arial,sans-serif;color:#31435d;line-height:1.5;}"
+      + ".mission-shell-meta{display:grid;gap:6px;text-align:right;}"
+      + ".mission-shell-meta span{display:inline-flex;justify-content:flex-end;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#1f5f63;}"
+      + ".mission-shell-body{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:14px;align-items:start;}"
+      + ".mission-shell-support{position:relative;}"
+      + ".mission-shell-support details{border:1px solid #d9dee6;border-radius:14px;background:#fbfdff;padding:10px 12px;}"
+      + ".mission-shell-support summary{cursor:pointer;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63;}"
+      + ".mission-support-block{display:grid;gap:5px;margin-top:10px;}"
+      + ".mission-support-block h3{margin:0;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4a5568;}"
+      + ".mission-support-block p,.mission-support-block li{margin:0;font-size:13px;line-height:1.5;color:#24334c;}"
+      + ".mission-support-block ul{margin:0;padding-left:18px;display:grid;gap:4px;}"
+      + ".mission-support-eld{margin-top:10px;display:grid;gap:8px;}"
+      + ".mission-support-eld .btn{width:100%;}"
+      + ".mission-feedback-panel{margin-top:10px;border:1px solid #d9dee6;border-radius:12px;background:#f9fbff;padding:10px 12px;display:none;}"
+      + ".mission-feedback-panel.show{display:grid;gap:6px;}"
+      + ".mission-feedback-panel .status{font:800 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}"
+      + ".mission-feedback-panel .status.ok{color:#176a49;}"
+      + ".mission-feedback-panel .status.bad{color:#8b2f2f;}"
+      + ".mission-feedback-panel p{margin:0;font-size:13px;line-height:1.45;color:#24334c;}"
+      + ".mission-feedback-panel b{color:#0b1020;}"
+      + "@media(max-width:920px){.mission-shell-top{display:grid}.mission-shell-meta{text-align:left}.mission-shell-meta span{justify-content:flex-start}.mission-shell-body{grid-template-columns:1fr}}";
+    document.head.appendChild(style);
+  }
+
+  function ensureMissionShellUI(profile) {
+    ensureMissionShellStyles();
+    var panel = document.querySelector(".panel");
+    var hud = document.querySelector(".hud");
+    var play = document.querySelector(".play");
+    if (!panel || !hud || !play) return;
+
+    if (!document.getElementById("missionShellTop")) {
+      var top = document.createElement("div");
+      top.id = "missionShellTop";
+      top.className = "mission-shell-top";
+      top.innerHTML = ""
+        + "<div><p class=\"mission-shell-title\" id=\"missionShellTitle\"></p><p class=\"mission-shell-rule\" id=\"missionShellRule\"></p></div>"
+        + "<div class=\"mission-shell-meta\">"
+        + "<span id=\"missionShellProgress\">1/" + FIXED_MISSION_ITEM_COUNT + "</span>"
+        + "<span id=\"missionShellTime\">Typical time: 4-6 min</span>"
+        + "</div>";
+      panel.insertBefore(top, hud);
+    }
+
+    if (!document.getElementById("missionShellBody")) {
+      var bodyWrap = document.createElement("div");
+      bodyWrap.id = "missionShellBody";
+      bodyWrap.className = "mission-shell-body";
+      var support = document.createElement("aside");
+      support.className = "mission-shell-support";
+      support.innerHTML = ""
+        + "<details id=\"missionSupportDetails\" open>"
+        + "<summary>Mission Support</summary>"
+        + "<div class=\"mission-support-block\"><h3>Rule reminder</h3><p id=\"missionRuleReminder\"></p></div>"
+        + "<div class=\"mission-support-block\"><h3>Worked example</h3><p id=\"missionWorkedExample\"></p></div>"
+        + "<div class=\"mission-support-eld\">"
+        + "<button type=\"button\" class=\"btn\" id=\"eldToggle\" aria-pressed=\"false\">ELD Support: Off</button>"
+        + "<div id=\"eldPanel\" hidden>"
+        + "<div class=\"mission-support-block\"><h3>Sentence frame</h3><p id=\"missionSentenceFrame\"></p></div>"
+        + "<div class=\"mission-support-block\"><h3>Glossary</h3><ul id=\"missionGlossary\"></ul></div>"
+        + "<div class=\"mission-support-block\"><h3>Hint steps</h3><ul id=\"missionHintPlan\"></ul></div>"
+        + "</div>"
+        + "</div>"
+        + "</details>";
+      panel.insertBefore(bodyWrap, play);
+      bodyWrap.appendChild(support);
+      bodyWrap.appendChild(play);
+    }
+
+    var feedback = document.getElementById("feedback");
+    if (feedback && !document.getElementById("missionFeedbackPanel")) {
+      var extra = document.createElement("div");
+      extra.id = "missionFeedbackPanel";
+      extra.className = "mission-feedback-panel";
+      feedback.insertAdjacentElement("afterend", extra);
+    }
+
+    var startModal = document.getElementById("startOverlay");
+    if (startModal && !document.getElementById("howToWorkedExample")) {
+      var howToExample = document.createElement("p");
+      howToExample.className = "lineout";
+      howToExample.id = "howToWorkedExample";
+      var row = startModal.querySelector(".row");
+      if (row && row.parentNode) row.parentNode.insertBefore(howToExample, row);
+    }
+
+    text("missionShellTitle", profile.missionTitle);
+    text("missionShellRule", profile.oneLineReminder || profile.focusRule);
+    text("missionRuleReminder", profile.focusRule);
+    text("missionWorkedExample", profile.workedExample);
+    text("missionSentenceFrame", profile.sentenceFrame);
+    text("missionShellTime", "Typical time: " + (profile.typicalTime || "4-6 min"));
+
+    var glossaryEl = document.getElementById("missionGlossary");
+    if (glossaryEl) {
+      glossaryEl.innerHTML = "";
+      (profile.glossary || []).forEach(function (item) {
+        var li = document.createElement("li");
+        li.innerHTML = "<b>" + sanitizeHtml(item.term) + ":</b> " + sanitizeHtml(item.def);
+        glossaryEl.appendChild(li);
+      });
+    }
+
+    var hintPlanEl = document.getElementById("missionHintPlan");
+    if (hintPlanEl) {
+      hintPlanEl.innerHTML = "";
+      (profile.hintPlan || []).forEach(function (step) {
+        var liStep = document.createElement("li");
+        liStep.textContent = step;
+        hintPlanEl.appendChild(liStep);
+      });
+    }
+
+    var howToExampleText = document.getElementById("howToWorkedExample");
+    if (howToExampleText) howToExampleText.textContent = profile.workedExample;
   }
 
   function pickRoundVariant(lines, roundIndex, fallback) {
@@ -4795,12 +5572,18 @@
 
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
-    var target = Math.max(1, Math.min(20, desiredCount));
+    var target = FIXED_MISSION_ITEM_COUNT;
     var pool = shuffle(cloneRounds(source));
     while (pool.length < target) {
       pool = pool.concat(shuffle(cloneRounds(source)));
     }
-    return pool.slice(0, target);
+    return pool.slice(0, target).map(function (round, i) {
+      if (!round.item_id) {
+        var scene = String(round.scene || ("item_" + (i + 1))).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+        round.item_id = gameKey + "__" + pack + "__" + (round.grammar_rule_id || "general_rule") + "__" + scene + "__" + String(i + 1);
+      }
+      return round;
+    });
   }
 
   function text(id, value) {
@@ -4813,32 +5596,56 @@
     if (el) el.innerHTML = value;
   }
 
-  var cfg = resolveGameConfig(gameKey, pack, games[gameKey] || games["error-smash"]);
+  var baseCfg = resolveGameConfig(gameKey, pack, games[gameKey] || games["error-smash"]);
+  var activeMissionProfile = resolveMissionProfile(gameKey, pack, baseCfg);
+  var cfg = {
+    title: activeMissionProfile.missionTitle || baseCfg.title,
+    subtitle: baseCfg.subtitle,
+    howTo: baseCfg.howTo
+  };
   var ux = gameUx[gameKey] || gameUx["error-smash"];
   var activeMode = ux.playMode || "best";
+  var eldSupportEnabled = false;
+  var hintUsedThisRound = false;
+  var currentRoundStartedAt = 0;
+  var missionStartAt = 0;
+  var missionStarted = false;
+  var missionExitTracked = false;
+  var missionCompleteTracked = false;
+  var retryCount = 0;
+  var wrongPatternCounts = {};
+  var lastRoundSnapshot = null;
+  var lastAnswerWasCorrect = null;
+  var endGameShown = false;
+
   applyGameUx(ux);
   ensureActionUI();
+  ensureMissionShellUI(activeMissionProfile);
   var packTitle = (window.GSPacks && window.GSPacks.meta && window.GSPacks.meta[pack] && window.GSPacks.meta[pack].short) || pack.toUpperCase();
   var teacherBtn = document.getElementById("btnTeacher");
   var homeBtn = document.getElementById("btnHome");
   if (teacherBtn) teacherBtn.setAttribute("href", "teacher-mode.html?pack=" + encodeURIComponent(pack));
   if (homeBtn) homeBtn.setAttribute("href", "index.html");
 
+  function howToCopy() {
+    if (playFormat === "teams") return "Split-screen competition. Both teams answer the same item. Track progress to 15/15.";
+    if (playFormat === "whole_class") return "Whole-class mode: discuss one item, vote, and reveal. Complete all 15 items.";
+    if (eldSupportEnabled) return activeMissionProfile.eldInstruction;
+    return modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode);
+  }
+
   text("gameTitle", cfg.title);
   text("gameSub", cfg.subtitle);
-  text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Mode: " + (ux.modeLabel || "Standard"));
-  text("howToText", playFormat === "teams"
-    ? "Split-screen competition! Both teams play the same questions simultaneously. Fastest correct answers earn bonus points."
-    : playFormat === "whole_class"
-    ? "Projector mode! The teacher controls the pace. Discuss each question as a class, vote, then reveal the answer."
-    : modeHowTo(activeMode, cfg.howTo) + " " + modeHelperText(activeMode));
+  text("gameK", "Pack: " + packTitle + " \u00b7 Difficulty: " + difficulty + " \u00b7 Rule: " + activeMissionProfile.grammar_rule_id);
+  text("howToText", howToCopy());
   text("howToTitle", "How to play: " + cfg.title);
   text("actionTip", modePrompt(activeMode, 0));
   text("hudTimer", timerOn ? "--" : "Off");
   var sceneLabelEl = document.querySelector(".scene .label");
   if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
 
-  var rounds = buildRounds(resolveRoundBank(gameKey, pack), count);
+  var rounds = buildRounds(resolveRoundBank(gameKey, pack, activeMissionProfile), count);
+  var activeMissionType = resolvedMissionType === "mixed_review" ? "mixed_review" : "single_rule";
   var idx = 0;
   var correct = 0;
   var streak = 0;
@@ -4846,7 +5653,6 @@
   var score = 0;
   var combo = 1;
   var hintsLeft = 1;
-  var skipsLeft = 1;
   var shotMax = difficulty === "rookie" ? 45 : difficulty === "field" ? 35 : 25;
   var missionSecondsPerRound = difficulty === "rookie" ? 60 : difficulty === "field" ? 50 : 38;
   var shotClock = shotMax;
@@ -4857,6 +5663,168 @@
   var timer = null;
 
   var optionsEl = document.getElementById("options");
+
+  function analyticsBasePayload() {
+    return {
+      mission_id: gameKey + "::" + pack,
+      grammar_rule_id: activeMissionProfile.grammar_rule_id,
+      mission_type: activeMissionType,
+      play_format: playFormat,
+      difficulty: difficulty
+    };
+  }
+
+  function trackMissionEvent(name, payload) {
+    if (!window.GSAnalytics || typeof window.GSAnalytics.track !== "function") return;
+    var base = analyticsBasePayload();
+    var extra = payload || {};
+    var merged = {};
+    Object.keys(base).forEach(function (k) { merged[k] = base[k]; });
+    Object.keys(extra).forEach(function (k) { merged[k] = extra[k]; });
+    window.GSAnalytics.track(name, merged);
+  }
+
+  function emitMissionStart(source) {
+    missionStarted = true;
+    missionExitTracked = false;
+    missionCompleteTracked = false;
+    endGameShown = false;
+    missionStartAt = Date.now();
+    trackMissionEvent("mission_start", {
+      total_items: rounds.length,
+      source: source || "start_button"
+    });
+    trackMissionEvent("mission_type", {
+      mission_type: activeMissionType
+    });
+  }
+
+  function emitMissionExit(reason) {
+    if (missionExitTracked || missionCompleteTracked || !missionStarted) return;
+    missionExitTracked = true;
+    var progressPct = Math.round((idx / Math.max(1, rounds.length)) * 100);
+    trackMissionEvent("mission_exit", {
+      reason: reason || "manual",
+      progress_pct: progressPct
+    });
+  }
+
+  function emitItemAnswer(round, itemNumber, wasCorrect, responseTimeMs, extra) {
+    var payload = {
+      item_id: (round && round.item_id) ? round.item_id : (gameKey + "_item_" + String(itemNumber)),
+      item_number: itemNumber,
+      correct: !!wasCorrect,
+      hint_used: !!hintUsedThisRound,
+      response_time: Math.max(0, Math.round(responseTimeMs || 0))
+    };
+    if (extra && typeof extra === "object") {
+      Object.keys(extra).forEach(function (k) { payload[k] = extra[k]; });
+    }
+    trackMissionEvent("item_answer", payload);
+    hintUsedThisRound = false;
+  }
+
+  function emitMissionComplete(accuracyPct) {
+    if (missionCompleteTracked || !missionStarted) return;
+    missionCompleteTracked = true;
+    var totalTime = missionStartAt ? Math.max(0, Math.round((Date.now() - missionStartAt) / 1000)) : 0;
+    trackMissionEvent("mission_complete", {
+      accuracy: accuracyPct,
+      total_time: totalTime,
+      retry_count: retryCount
+    });
+  }
+
+  function inferErrorPattern(round) {
+    var textBlob = String((round && round.prompt) || "") + " " + String((round && round.explain) || "");
+    var blob = textBlob.toLowerCase();
+    if (blob.indexOf("question") >= 0 || blob.indexOf("wh-") >= 0) return "Question word order";
+    if (blob.indexOf("connector") >= 0 || blob.indexOf("because") >= 0 || blob.indexOf("contrast") >= 0) return "Connector choice";
+    if (blob.indexOf("right now") >= 0 || blob.indexOf("continuous") >= 0) return "Simple present vs present continuous";
+    if (blob.indexOf("does") >= 0 || blob.indexOf("third-person") >= 0 || blob.indexOf("singular") >= 0 || blob.indexOf("agreement") >= 0) {
+      return "Subject-verb agreement";
+    }
+    return "Verb form precision";
+  }
+
+  function recordErrorPattern(round) {
+    var key = inferErrorPattern(round);
+    wrongPatternCounts[key] = (wrongPatternCounts[key] || 0) + 1;
+  }
+
+  function topErrorPattern() {
+    var topKey = "";
+    var topCount = 0;
+    Object.keys(wrongPatternCounts).forEach(function (key) {
+      if (wrongPatternCounts[key] > topCount) {
+        topKey = key;
+        topCount = wrongPatternCounts[key];
+      }
+    });
+    return topKey || "No repeated error pattern detected";
+  }
+
+  function missionPromptForRound(round, roundIndex) {
+    if (eldSupportEnabled && round && round.eldPrompt) return round.eldPrompt;
+    if (eldSupportEnabled) return "Choose the line that follows this rule: " + activeMissionProfile.oneLineReminder;
+    return modeScenarioPrompt(activeMode, round, roundIndex);
+  }
+
+  function syncMissionShellHeader() {
+    text("missionShellTitle", activeMissionProfile.missionTitle);
+    text("missionShellRule", activeMissionProfile.oneLineReminder || activeMissionProfile.focusRule);
+    text("missionShellProgress", Math.min(idx + 1, rounds.length) + "/" + rounds.length);
+    text("missionShellTime", "Typical time: " + (activeMissionProfile.typicalTime || "4-6 min"));
+    text("missionRuleReminder", activeMissionProfile.focusRule);
+    text("missionWorkedExample", activeMissionProfile.workedExample);
+    text("missionSentenceFrame", activeMissionProfile.sentenceFrame);
+  }
+
+  function syncEldUI() {
+    var toggle = document.getElementById("eldToggle");
+    var panel = document.getElementById("eldPanel");
+    if (toggle) {
+      toggle.textContent = "ELD Support: " + (eldSupportEnabled ? "On" : "Off");
+      toggle.setAttribute("aria-pressed", eldSupportEnabled ? "true" : "false");
+    }
+    if (panel) panel.hidden = !eldSupportEnabled;
+    text("howToText", howToCopy());
+  }
+
+  function clearMissionFeedbackPanel() {
+    var panel = document.getElementById("missionFeedbackPanel");
+    if (!panel) return;
+    panel.classList.remove("show");
+    panel.innerHTML = "";
+  }
+
+  function setMissionFeedbackPanel(isCorrect, round, detailText) {
+    var panel = document.getElementById("missionFeedbackPanel");
+    if (!panel || !round) return;
+    var statusClass = isCorrect ? "ok" : "bad";
+    var statusText = isCorrect ? "Correct" : "Not Yet";
+    var explanation = round.explain || "Review the rule and try again.";
+    var correctLine = (round.options && typeof round.answer === "number" && round.options[round.answer]) ? round.options[round.answer] : "No answer key available.";
+    var microTip = round.micro_tip || modeMicroTip(activeMode, Math.max(0, idx - 1));
+    panel.classList.add("show");
+    panel.innerHTML = ""
+      + "<span class=\"status " + statusClass + "\">" + statusText + "</span>"
+      + "<p><b>Why:</b> " + sanitizeHtml(explanation) + "</p>"
+      + "<p><b>Correct version:</b> " + sanitizeHtml(correctLine) + "</p>"
+      + "<p><b>Micro-tip:</b> " + sanitizeHtml(microTip) + "</p>"
+      + (detailText ? "<p><b>Result:</b> " + sanitizeHtml(detailText) + "</p>" : "");
+  }
+
+  var eldToggleBtn = document.getElementById("eldToggle");
+  if (eldToggleBtn) {
+    eldToggleBtn.addEventListener("click", function () {
+      eldSupportEnabled = !eldSupportEnabled;
+      syncEldUI();
+      if (!locked && !awaitingNext && missionStarted) showRound();
+    });
+  }
+  syncMissionShellHeader();
+  syncEldUI();
 
   function updateHud() {
     text("hudCase", Math.min(idx + 1, rounds.length) + "/" + rounds.length);
@@ -4872,9 +5840,8 @@
       progress.style.width = pct + "%";
     }
     var hintBtn = document.getElementById("btnHint");
-    var skipBtn = document.getElementById("btnSkip");
     if (hintBtn) hintBtn.textContent = "Hint (" + hintsLeft + ")";
-    if (skipBtn) skipBtn.textContent = "Skip (" + skipsLeft + ")";
+    syncMissionShellHeader();
   }
 
   function buildOptionButton(label, description) {
@@ -4900,6 +5867,16 @@
 
   function finishRound(userCorrect, successMsg, failMsg, btn) {
     if (locked) return;
+    var round = rounds[idx] || null;
+    var itemNumber = idx + 1;
+    var preState = {
+      idx: idx,
+      correct: correct,
+      streak: streak,
+      score: score,
+      combo: combo,
+      sec: sec
+    };
     locked = true;
     awaitingNext = true;
     if (shotTimer) clearInterval(shotTimer);
@@ -4921,7 +5898,13 @@
       score = Math.max(0, score - 20);
       if (btn) btn.classList.add("bad");
       html("feedback", "<span class=\"bad\"><b>WRONG.</b> " + failMsg + " -20 pts</span>");
+      if (round) recordErrorPattern(round);
     }
+    lastRoundSnapshot = preState;
+    lastAnswerWasCorrect = !!userCorrect;
+    var responseTime = Math.max(0, Date.now() - currentRoundStartedAt);
+    emitItemAnswer(round, itemNumber, !!userCorrect, responseTime);
+    setMissionFeedbackPanel(!!userCorrect, round, userCorrect ? successMsg : failMsg);
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
   }
@@ -6398,27 +7381,40 @@
   function checkTeamBothAnswered(round) {
     if (!teamA.locked || !teamB.locked) return;
     awaitingNext = true;
+    var teamACorrect = (activeMode === "smash") ? teamA.idx !== round.answer : teamA.idx === round.answer;
+    var teamBCorrect = (activeMode === "smash") ? teamB.idx !== round.answer : teamB.idx === round.answer;
+    var responseTime = Math.max(0, Date.now() - currentRoundStartedAt);
     var fb = (activeMode === "smash")
       ? "Correct answer is option " + (round.answer + 1) + ". " + (round.explain || "")
       : "Correct: \"" + round.options[round.answer] + "\". " + (round.explain || "");
     html("feedback", "<span class=\"ok\">" + fb + "</span>");
+    setMissionFeedbackPanel(teamACorrect && teamBCorrect, round, fb);
+    if (!(teamACorrect && teamBCorrect)) recordErrorPattern(round);
+    emitItemAnswer(round, idx + 1, teamACorrect && teamBCorrect, responseTime, {
+      team_a_correct: teamACorrect,
+      team_b_correct: teamBCorrect
+    });
     idx += 1;
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
+    updateHud();
   }
 
   function showTeamRound() {
-    if (idx >= rounds.length) { endGame(); return; }
+    if (idx >= rounds.length) { endGame("completed"); return; }
     locked = false;
     awaitingNext = false;
     setNextVisibility(false);
     text("feedback", "");
+    clearMissionFeedbackPanel();
+    hintUsedThisRound = false;
     teamA.locked = false;
     teamB.locked = false;
     var round = rounds[idx];
+    currentRoundStartedAt = Date.now();
     currentRoundState = { mode: activeMode, round: round };
-    text("actionTip", modePrompt(activeMode, idx));
+    text("actionTip", eldSupportEnabled ? activeMissionProfile.eldInstruction : modePrompt(activeMode, idx));
     text("scene", round.scene);
-    text("prompt", modeScenarioPrompt(activeMode, round, idx));
+    text("prompt", missionPromptForRound(round, idx));
 
     optionsEl.innerHTML = "";
     var split = document.createElement("div");
@@ -6442,16 +7438,19 @@
   var wcVotedKey = "wc_voted_";
 
   function showWholeClassRound() {
-    if (idx >= rounds.length) { endGame(); return; }
+    if (idx >= rounds.length) { endGame("completed"); return; }
     locked = false;
     awaitingNext = false;
     setNextVisibility(false);
     text("feedback", "");
+    clearMissionFeedbackPanel();
+    hintUsedThisRound = false;
     wcVotes = [0, 0, 0, 0];
     wcRevealed = false;
     var round = rounds[idx];
+    currentRoundStartedAt = Date.now();
     currentRoundState = { mode: activeMode, round: round };
-    text("actionTip", modePrompt(activeMode, idx));
+    text("actionTip", eldSupportEnabled ? activeMissionProfile.eldInstruction : modePrompt(activeMode, idx));
     var voteKey = wcVotedKey + idx;
     var alreadyVoted = false;
     try { alreadyVoted = !!sessionStorage.getItem(voteKey); } catch (e) {}
@@ -6467,7 +7466,7 @@
 
     var promptEl = document.createElement("div");
     promptEl.className = "wc-prompt";
-    promptEl.textContent = modeScenarioPrompt(activeMode, round, idx);
+    promptEl.textContent = missionPromptForRound(round, idx);
     wrap.appendChild(promptEl);
 
     var optsGrid = document.createElement("div");
@@ -6543,6 +7542,7 @@
       if (wcRevealed) return;
       wcRevealed = true;
       revealBtn.style.display = "none";
+      var responseTime = Math.max(0, Date.now() - currentRoundStartedAt);
 
       var totalVotes = 0;
       for (var v = 0; v < wcVotes.length; v++) totalVotes += wcVotes[v];
@@ -6566,6 +7566,13 @@
       explainEl.className = "wc-explain";
       explainEl.textContent = round.explain || "The correct answer is option " + labels[round.answer] + ".";
       wrap.appendChild(explainEl);
+      var classMajorityCorrect = totalVotes > 0 && correctVotes >= Math.ceil(totalVotes / 2);
+      setMissionFeedbackPanel(classMajorityCorrect, round, explainEl.textContent);
+      if (!classMajorityCorrect) recordErrorPattern(round);
+      emitItemAnswer(round, idx + 1, classMajorityCorrect, responseTime, {
+        total_votes: totalVotes,
+        correct_votes: correctVotes
+      });
 
       if (wcClassTotal > 0) {
         var pctEl = document.createElement("div");
@@ -6577,6 +7584,7 @@
       idx += 1;
       awaitingNext = true;
       setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
+      updateHud();
     });
     wrap.appendChild(revealBtn);
 
@@ -6600,18 +7608,21 @@
     if (playFormat === "teams") { showTeamRound(); return; }
     if (playFormat === "whole_class") { showWholeClassRound(); return; }
     if (idx >= rounds.length) {
-      endGame();
+      endGame("completed");
       return;
     }
     locked = false;
     awaitingNext = false;
     setNextVisibility(false);
     text("feedback", "");
+    clearMissionFeedbackPanel();
+    hintUsedThisRound = false;
     var round = rounds[idx];
+    currentRoundStartedAt = Date.now();
     currentRoundState = { mode: activeMode, round: round };
-    text("actionTip", modePrompt(activeMode, idx));
+    text("actionTip", eldSupportEnabled ? activeMissionProfile.eldInstruction : modePrompt(activeMode, idx));
     text("scene", round.scene);
-    text("prompt", modeScenarioPrompt(activeMode, round, idx));
+    text("prompt", missionPromptForRound(round, idx));
     if (activeMode === "spotlight") {
       showSpotlightOptions(round);
     } else if (activeMode === "timeline") {
@@ -6717,60 +7728,84 @@
 
     if (!used) {
       html("feedback", "<span class=\"bad\">No hint action available for this step.</span>");
+    } else {
+      hintUsedThisRound = true;
     }
     updateHud();
   }
 
-  function useSkip() {
-    if (locked) return;
-    if (skipsLeft <= 0) {
-      html("feedback", "<span class=\"bad\">Skip unavailable: no skips left.</span>");
+  function useTryAgain() {
+    if (!awaitingNext) {
+      html("feedback", "<span class=\"bad\">Submit an answer first, then choose Try Again.</span>");
       return;
     }
-    skipsLeft -= 1;
+    if (lastAnswerWasCorrect !== false || !lastRoundSnapshot) {
+      html("feedback", "<span class=\"bad\">Try Again is available after an incorrect response.</span>");
+      return;
+    }
     if (shotTimer) clearInterval(shotTimer);
-    locked = true;
-    awaitingNext = true;
-    idx += 1;
-    streak = 0;
-    combo = 1;
-    score = Math.max(0, score - 15);
-    html("feedback", "<span class=\"bad\"><b>SKIPPED.</b> Click Next to continue. -15 pts</span>");
-    setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
-    updateHud();
+    idx = lastRoundSnapshot.idx;
+    correct = lastRoundSnapshot.correct;
+    streak = lastRoundSnapshot.streak;
+    score = lastRoundSnapshot.score;
+    combo = lastRoundSnapshot.combo;
+    sec = lastRoundSnapshot.sec;
+    locked = false;
+    awaitingNext = false;
+    retryCount += 1;
+    setNextVisibility(false);
+    text("feedback", "");
+    clearMissionFeedbackPanel();
+    showRound();
   }
 
   function goNext() {
     if (!awaitingNext) return;
     if (idx >= rounds.length) {
-      endGame();
+      endGame("completed");
       return;
     }
     showRound();
   }
 
-  function endGame() {
+  function recommendationByAccuracy(accuracyPct) {
+    if (accuracyPct < 70) return "Replay this rule.";
+    if (accuracyPct >= 85) return "Move to next rule.";
+    return "Practice again or continue.";
+  }
+
+  function endGame(reason) {
+    if (endGameShown) return;
+    endGameShown = true;
     if (timer) clearInterval(timer);
     if (shotTimer) clearInterval(shotTimer);
+    clearMissionFeedbackPanel();
+
+    var finalAccuracy = 0;
 
     if (playFormat === "teams") {
       var winner = teamA.score > teamB.score ? "Team A" : (teamB.score > teamA.score ? "Team B" : "Tie");
       var accA = Math.round((teamA.correct / Math.max(1, rounds.length)) * 100);
       var accB = Math.round((teamB.correct / Math.max(1, rounds.length)) * 100);
-      text("reportAcc", "Team A: " + teamA.score + " pts (" + accA + "%) vs Team B: " + teamB.score + " pts (" + accB + "%)");
-      text("reportPlan", winner === "Tie" ? "It\u2019s a tie! Both teams matched up perfectly." : winner + " wins! Great competition.");
+      finalAccuracy = Math.round((teamA.correct + teamB.correct) / Math.max(1, rounds.length * 2) * 100);
+      text("reportAcc", "Team A: " + teamA.score + " pts (" + accA + "%) vs Team B: " + teamB.score + " pts (" + accB + "%) \u00b7 Overall Accuracy: " + finalAccuracy + "%");
+      text("reportPlan", (winner === "Tie" ? "Result: Tie. " : ("Winner: " + winner + ". ")) + "Top error pattern: " + topErrorPattern() + ". " + recommendationByAccuracy(finalAccuracy));
       text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Teams Mode");
     } else if (playFormat === "whole_class") {
-      var classAcc = wcClassTotal > 0 ? Math.round((wcClassCorrect / wcClassTotal) * 100) : 0;
-      text("reportAcc", "Class Accuracy: " + classAcc + "% \u2014 " + wcClassCorrect + "/" + wcClassTotal + " correct as a group");
-      text("reportPlan", classAcc >= 80 ? "Great class performance! Ready for the next challenge." : "Review the tricky questions and try again.");
+      finalAccuracy = wcClassTotal > 0 ? Math.round((wcClassCorrect / wcClassTotal) * 100) : 0;
+      text("reportAcc", "Class Accuracy: " + finalAccuracy + "% \u2014 " + wcClassCorrect + "/" + wcClassTotal + " correct as a group");
+      text("reportPlan", "Top error pattern: " + topErrorPattern() + ". " + recommendationByAccuracy(finalAccuracy));
       text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Whole Class Mode");
     } else {
-      var acc = Math.round((correct / Math.max(1, idx)) * 100);
-      text("reportAcc", "Accuracy: " + acc + "% (" + correct + "/" + Math.max(1, idx) + ")");
-      text("reportPlan", (acc >= 80 ? "Recommendation: advance to the next mission game." : "Recommendation: replay this game for retrieval strength.") + " Final score: " + score + " pts.");
+      finalAccuracy = Math.round((correct / Math.max(1, idx)) * 100);
+      text("reportAcc", "Accuracy: " + finalAccuracy + "% (" + correct + "/" + Math.max(1, idx) + ")");
+      text("reportPlan", "Top error pattern: " + topErrorPattern() + ". " + recommendationByAccuracy(finalAccuracy) + " Final score: " + score + " pts.");
       text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
     }
+
+    var completed = (reason === "completed") || idx >= rounds.length;
+    if (completed) emitMissionComplete(finalAccuracy);
+    else emitMissionExit(reason || "manual_end");
 
     var report = document.getElementById("reportOverlay");
     if (report) report.classList.add("show");
@@ -6783,7 +7818,7 @@
       if (awaitingNext) return;
       sec -= 1;
       text("hudTimer", Math.max(0, sec) + "s");
-      if (sec <= 0) endGame();
+      if (sec <= 0) endGame("timer_expired");
     }, 1000);
   }
 
@@ -6793,6 +7828,7 @@
   if (startBtn) {
     startBtn.addEventListener("click", function () {
       if (startOverlay) startOverlay.classList.remove("show");
+      emitMissionStart("start_button");
       showRound();
       startTimer();
     });
@@ -6800,14 +7836,16 @@
 
   var endBtn = document.getElementById("endBtn");
   if (endBtn && ux.endText) endBtn.textContent = ux.endText;
-  if (endBtn) endBtn.addEventListener("click", endGame);
+  if (endBtn) endBtn.addEventListener("click", function () { endGame("manual_end"); });
 
   var hintBtn = document.getElementById("btnHint");
   if (hintBtn) hintBtn.addEventListener("click", useHint);
-  var skipBtn = document.getElementById("btnSkip");
-  if (skipBtn) skipBtn.addEventListener("click", useSkip);
+  var retryBtn = document.getElementById("btnTryAgain");
+  if (retryBtn) retryBtn.addEventListener("click", useTryAgain);
   var nextBtn = document.getElementById("btnNext");
   if (nextBtn) nextBtn.addEventListener("click", goNext);
+  if (teacherBtn) teacherBtn.addEventListener("click", function () { emitMissionExit("nav_teacher"); });
+  if (homeBtn) homeBtn.addEventListener("click", function () { emitMissionExit("nav_home"); });
 
   var replayBtn = document.getElementById("replayBtn");
   if (replayBtn && ux.replayText) replayBtn.textContent = ux.replayText;
@@ -6816,21 +7854,27 @@
       var report = document.getElementById("reportOverlay");
       if (report) report.classList.remove("show");
       if (shotTimer) clearInterval(shotTimer);
-      rounds = buildRounds(resolveRoundBank(gameKey, pack), count);
+      rounds = buildRounds(resolveRoundBank(gameKey, pack, activeMissionProfile), count);
       idx = 0;
       correct = 0;
       streak = 0;
       score = 0;
       combo = 1;
       hintsLeft = 1;
-      skipsLeft = 1;
       shotClock = shotMax;
       awaitingNext = false;
+      locked = false;
+      retryCount = 0;
+      wrongPatternCounts = {};
+      lastRoundSnapshot = null;
+      lastAnswerWasCorrect = null;
+      hintUsedThisRound = false;
       setNextVisibility(false);
       sec = timerOn ? rounds.length * missionSecondsPerRound : null;
       teamA.score = 0; teamA.correct = 0; teamA.streak = 0; teamA.combo = 1; teamA.idx = 0; teamA.locked = false;
       teamB.score = 0; teamB.correct = 0; teamB.streak = 0; teamB.combo = 1; teamB.idx = 0; teamB.locked = false;
       wcVotes = [0, 0, 0, 0]; wcRevealed = false; wcClassCorrect = 0; wcClassTotal = 0;
+      emitMissionStart("replay_button");
       showRound();
       startTimer();
     });
