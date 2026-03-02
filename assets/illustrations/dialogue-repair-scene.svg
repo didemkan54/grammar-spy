@@ -3,7 +3,7 @@
   <!-- Broken sentence -->
   <g transform="translate(20,18)">
     <rect x="0" y="0" width="180" height="30" rx="8" fill="#ffffff" stroke="#b44040" stroke-width="1.5" stroke-dasharray="4 3" opacity=".6"/>
-    <text x="12" y="20" font-family="Inter,Arial,sans-serif" font-size="11" fill="#b44040" opacity=".6">She go to school yesterday</text>
+    <text x="12" y="20" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11" fill="#b44040" opacity=".6">She go to school yesterday</text>
     <line x1="26" y1="12" x2="52" y2="24" stroke="#b44040" stroke-width="1.5" opacity=".4"/>
   </g>
   <!-- Arrow -->
@@ -14,7 +14,7 @@
   <!-- Fixed sentence -->
   <g transform="translate(120,48)">
     <rect x="0" y="0" width="180" height="28" rx="8" fill="#1f5f63" opacity=".1" stroke="#1f5f63" stroke-width="1.5"/>
-    <text x="12" y="18" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="600" fill="#1f5f63" opacity=".7">She went to school yesterday</text>
+    <text x="12" y="18" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="11" font-weight="600" fill="#1f5f63" opacity=".7">She went to school yesterday</text>
     <circle cx="170" cy="14" r="6" fill="#1f5f63" opacity=".2"/>
     <path d="M167 14l2 2 4-4" fill="none" stroke="#1f5f63" stroke-width="1.5" opacity=".5"/>
   </g>
@@ -24,5 +24,5 @@
     <path d="M8 8l8 8M16 8l-8 8" stroke="#c9a227" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
   </g>
   <!-- Label -->
-  <text x="60" y="75" font-family="Inter,Arial,sans-serif" font-size="8" font-weight="700" letter-spacing=".08em" fill="#1f5f63" opacity=".35">FIX THE GRAMMAR</text>
+  <text x="60" y="75" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="8" font-weight="700" letter-spacing=".08em" fill="#1f5f63" opacity=".35">FIX THE GRAMMAR</text>
 </svg>
