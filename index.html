@@ -259,8 +259,13 @@
     .diagnostic-form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .diagnostic-form-row input[type=email]{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--cool);border-radius:8px;font-size:14px;color:var(--navy)}
     .diagnostic-form-row .btn-primary{margin:0}
+    .diagnostic-consent{margin-top:4px;font-size:13px;color:#5c6677;line-height:1.45}
+    .diagnostic-consent a{color:#1f5f63}
+    .diagnostic-hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
     .diagnostic-msg{display:none;margin-top:2px;font-size:14px;color:var(--teal);font-weight:700}
     .diagnostic-msg.show{display:block}
+    .diagnostic-error{display:none;margin-top:6px;font-size:13px;color:#5c6677;font-weight:600}
+    .diagnostic-error.show{display:block}
     .quiet-share{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(31,95,99,.3);align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:#4a5568}
     .quiet-share.show{display:flex}
     .diagnostic-share-btn{background:transparent;border:0;padding:0;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;color:#1f5f63;cursor:pointer;text-decoration:underline}
@@ -289,7 +294,9 @@
   <script>
     (function(){
       var LEAD_KEY = 'gs_lead_emails';
-      function saveLead(email){
+      var LEAD_ENDPOINT = 'https://formsubmit.co/support@grammarspy.net';
+
+      function saveLeadLocal(email){
         try {
           var raw = localStorage.getItem(LEAD_KEY);
           var list = raw ? JSON.parse(raw) : [];
@@ -297,6 +304,39 @@
           localStorage.setItem(LEAD_KEY, JSON.stringify(list));
         } catch(e) {}
       }
+
+      function submitLeadRemote(email, source){
+        if (typeof fetch !== 'function') return Promise.resolve(false);
+        var payload = [
+          ['email', email],
+          ['lead_email', email],
+          ['source', source || 'homepage'],
+          ['page', location.pathname || '/'],
+          ['_subject', 'Grammar Spy lead capture'],
+          ['_template', 'table'],
+          ['_captcha', 'false']
+        ];
+        var body = payload.map(function(pair){
+          return encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
+        }).join('&');
+        return fetch(LEAD_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body,
+          keepalive: true
+        }).then(function(){ return true; }).catch(function(){ return false; });
+      }
+
+      function saveLead(email, source){
+        var clean = String(email || '').trim();
+        if (!clean) return Promise.resolve({ local: false, remote: false });
+        saveLeadLocal(clean);
+        return submitLeadRemote(clean, source).then(function(remoteOk){
+          return { local: true, remote: remoteOk };
+        });
+      }
+
       function initWelcome(){
         var overlay = document.getElementById('gsWelcomeOverlay');
         if (!overlay) return;
@@ -311,7 +351,7 @@
           btn.addEventListener('click', function(){
             var email = (input.value || '').trim();
             if (!email || email.indexOf('@') < 1) return;
-            saveLead(email);
+            saveLead(email, 'welcome_overlay');
             msg.classList.add('show');
             input.style.display = 'none';
             btn.style.display = 'none';
@@ -320,6 +360,7 @@
       }
       initWelcome();
       window.GS_SAVE_LEAD = saveLead;
+      window.GS_LEAD_ENDPOINT = LEAD_ENDPOINT;
     })();
   </script>
   <script src="i18n.js"></script>
@@ -484,15 +525,19 @@
       <p class="mission-label">Free Diagnostic PDF</p>
       <h2>Get the Simple Present classroom diagnostic</h2>
       <p class="subcopy">Enter your school/work email to unlock the downloadable diagnostic PDF for your class.</p>
+      <p class="proof-note" style="margin-top:8px">Takes 10 minutes. Answer key included.</p>
       <div class="diagnostic-download">
         <form class="diagnostic-form" id="diagnosticLeadForm" novalidate>
           <label for="diagnosticLeadEmail">School or work email</label>
           <div class="diagnostic-form-row">
             <input type="email" id="diagnosticLeadEmail" placeholder="name@school.org" autocomplete="email" aria-label="School or work email for diagnostic PDF">
+            <input type="text" id="diagnosticLeadHp" name="company" class="diagnostic-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <button type="submit" class="btn-primary" id="diagnosticLeadBtn">Unlock Diagnostic PDF</button>
           </div>
+          <p class="diagnostic-consent">We’ll email you the diagnostic + occasional updates. Unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
         </form>
         <p class="diagnostic-msg" id="diagnosticLeadMsg">Download started. Check your downloads folder for the PDF.</p>
+        <p class="diagnostic-error" id="diagnosticLeadError" role="status" aria-live="polite"></p>
         <div class="quiet-share" id="diagnosticQuietShare">
           <span>If this is useful, quietly share it once with one colleague.</span>
           <button type="button" id="diagnosticCopyShare" class="diagnostic-share-btn">Copy share link</button>
@@ -713,21 +758,65 @@
     (function(){
       var ASSET_PATH = 'assets/downloads/grammar-spy-simple-present-diagnostic.pdf';
       var QUIET_SHARE_KEY = 'gs_diagnostic_quiet_share_seen_v1';
+      var THROTTLE_KEY = 'gs_diagnostic_submit_times_v1';
+      var COOLDOWN_MS = 15000;
+      var WINDOW_MS = 60 * 60 * 1000;
+      var MAX_PER_WINDOW = 8;
       var form = document.getElementById('diagnosticLeadForm');
       var input = document.getElementById('diagnosticLeadEmail');
+      var hp = document.getElementById('diagnosticLeadHp');
       var msg = document.getElementById('diagnosticLeadMsg');
+      var err = document.getElementById('diagnosticLeadError');
       var share = document.getElementById('diagnosticQuietShare');
       var copyBtn = document.getElementById('diagnosticCopyShare');
-      if (!form || !input || !msg || !share || !copyBtn) return;
+      var btn = document.getElementById('diagnosticLeadBtn');
+      var unlocked = false;
+      if (!form || !input || !msg || !err || !share || !copyBtn || !btn) return;
+
+      function setError(text){
+        err.textContent = text || '';
+        err.classList.toggle('show', Boolean(text));
+      }
+
+      function track(name, payload){
+        if (window.GSAnalytics && window.GSAnalytics.track) {
+          window.GSAnalytics.track(name, payload || {});
+        }
+      }
 
       function validEmail(value) {
         var email = String(value || '').trim();
-        var at = email.indexOf('@');
-        if (at < 1) return false;
-        return email.slice(at + 1).indexOf('.') > 0;
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      }
+
+      function throttled(){
+        try {
+          var now = Date.now();
+          var raw = localStorage.getItem(THROTTLE_KEY);
+          var stamps = raw ? JSON.parse(raw) : [];
+          if (!Array.isArray(stamps)) stamps = [];
+          stamps = stamps.filter(function(ts){
+            return typeof ts === 'number' && now - ts < WINDOW_MS;
+          });
+          var last = stamps.length ? stamps[stamps.length - 1] : 0;
+          if (last && now - last < COOLDOWN_MS) {
+            localStorage.setItem(THROTTLE_KEY, JSON.stringify(stamps));
+            return true;
+          }
+          if (stamps.length >= MAX_PER_WINDOW) {
+            localStorage.setItem(THROTTLE_KEY, JSON.stringify(stamps));
+            return true;
+          }
+          stamps.push(now);
+          localStorage.setItem(THROTTLE_KEY, JSON.stringify(stamps));
+          return false;
+        } catch (_err) {
+          return false;
+        }
       }
 
       function startDownload() {
+        track('diagnostic_download_start', { asset: 'simple_present_diagnostic' });
         var link = document.createElement('a');
         link.href = ASSET_PATH;
         link.download = 'grammar-spy-simple-present-diagnostic.pdf';
@@ -773,29 +862,61 @@
 
       form.addEventListener('submit', function(event){
         event.preventDefault();
+        setError('');
+
+        if (unlocked) {
+          startDownload();
+          msg.classList.add('show');
+          return;
+        }
+
+        if (hp && (hp.value || '').trim()) return;
+
+        if (throttled()) {
+          setError('Please wait a bit before trying again.');
+          return;
+        }
+
         var email = (input.value || '').trim();
         if (!validEmail(email)) {
+          setError('Please enter a valid school/work email.');
           input.focus();
           return;
         }
 
-        if (window.GS_SAVE_LEAD) window.GS_SAVE_LEAD(email);
-        if (window.GSAnalytics && window.GSAnalytics.track) {
-          window.GSAnalytics.track('diagnostic_pdf_unlock', { asset: 'simple_present_diagnostic' });
-        }
+        track('diagnostic_email_submit', { asset: 'simple_present_diagnostic' });
+        btn.disabled = true;
+        btn.textContent = 'Saving...';
 
-        startDownload();
-        form.classList.add('hide');
-        msg.classList.add('show');
+        var leadTask = window.GS_SAVE_LEAD
+          ? window.GS_SAVE_LEAD(email, 'diagnostic_pdf')
+          : Promise.resolve({ local: false, remote: false });
 
-        var showQuietShare = false;
-        try {
-          showQuietShare = !localStorage.getItem(QUIET_SHARE_KEY);
-          if (showQuietShare) localStorage.setItem(QUIET_SHARE_KEY, '1');
-        } catch (_err) {
-          showQuietShare = true;
-        }
-        if (showQuietShare) share.classList.add('show');
+        Promise.resolve(leadTask).then(function(result){
+          if (result && result.remote === false) throw new Error('lead_save_failed');
+
+          startDownload();
+          track('diagnostic_pdf_unlock', { asset: 'simple_present_diagnostic' });
+          unlocked = true;
+          input.setAttribute('readonly', 'readonly');
+          btn.disabled = false;
+          btn.textContent = 'Download again';
+          msg.textContent = 'Download started. You can use "Download again" anytime.';
+          msg.classList.add('show');
+
+          var showQuietShare = false;
+          try {
+            showQuietShare = !localStorage.getItem(QUIET_SHARE_KEY);
+            if (showQuietShare) localStorage.setItem(QUIET_SHARE_KEY, '1');
+          } catch (_err) {
+            showQuietShare = true;
+          }
+          if (showQuietShare) share.classList.add('show');
+        }).catch(function(){
+          btn.disabled = false;
+          btn.textContent = 'Unlock Diagnostic PDF';
+          setError('Something went wrong—try again.');
+        });
       });
     })();
   </script>
