@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Missions</title>
+  <meta name="description" content="Pick a grammar mission, choose a subskill, and launch short game rounds for mastery." />
+  <link rel="stylesheet" href="/core/mission-flow.css" />
+</head>
+<body class="mission-flow">
+  <div data-include="header"></div>
+
+  <main class="mission-main">
+    <section class="mission-hero">
+      <p class="hero-eyebrow">Mission Command</p>
+      <h1>Choose your mission.</h1>
+      <p class="mission-description">
+        Start with one grammar mission, then work through focused subskills and short 15-item games.
+      </p>
+      <div class="mission-chip-row">
+        <span class="mission-chip">Student flow ready</span>
+        <span class="mission-chip">15 items each game</span>
+        <span class="mission-chip">Single-rule focus</span>
+      </div>
+    </section>
+
+    <section class="surface-card">
+      <h2 class="section-heading">Mission library</h2>
+      <p class="section-subtext">Each mission opens a hub with subskills and three game modes per subskill.</p>
+      <div class="mission-grid mission-grid-2" id="missionGrid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module">
+    import { listMissions, buildHubUrl } from "/core/missions-catalog.js";
+
+    const missionGrid = document.getElementById("missionGrid");
+    const missions = listMissions();
+
+    if (!missions.length) {
+      missionGrid.innerHTML = '<div class="empty-state">No missions are configured yet.</div>';
+    } else {
+      missionGrid.innerHTML = missions
+        .map((mission) => {
+          const gameCount = (mission.subskills || []).reduce((sum, skill) => sum + (skill.games || []).length, 0);
+          const hubUrl = buildHubUrl(mission);
+          return `
+            <article class="mission-tile">
+              <div class="tile-title-row">
+                <span class="tile-icon" aria-hidden="true">${mission.icon || "M"}</span>
+                <div>
+                  <h3 class="tile-title">${mission.title}</h3>
+                  <p class="tile-subtitle">${mission.subtitle}</p>
+                </div>
+              </div>
+              <p class="tile-description">${mission.description}</p>
+              <div class="tile-meta">
+                <span>${(mission.subskills || []).length} subskills</span>
+                <span>${gameCount} games</span>
+                <span>Agency path</span>
+              </div>
+              <div class="action-row" style="margin-top:12px">
+                <a class="gsm-link-btn gsm-link-btn-primary" href="${hubUrl}" data-track-mission="${mission.id}">
+                  Enter Mission Hub
+                </a>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+    }
+
+    missionGrid.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-track-mission]");
+      if (!btn) return;
+      if (window.GSAnalytics && window.GSAnalytics.track) {
+        window.GSAnalytics.track("mission_hub_open", {
+          mission_id: btn.getAttribute("data-track-mission"),
+          source: "missions_landing"
+        });
+      }
+    });
+  </script>
+</body>
+</html>
