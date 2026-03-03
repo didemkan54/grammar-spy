@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Play Mission Game</title>
+  <meta name="description" content="Play a focused Grammar Spy mission game with progress, streak, and instant feedback." />
+  <link rel="stylesheet" href="/core/mission-flow.css" />
+</head>
+<body class="mission-flow">
+  <div data-include="header"></div>
+
+  <main class="mission-main">
+    <a class="back-link" id="backToHubLink" href="/missions/">&larr; Back to Mission Hub</a>
+    <section id="playRoot"></section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module">
+    import {
+      getMissionById,
+      getSubskillById,
+      getGameById,
+      buildHubUrl
+    } from "/core/missions-catalog.js";
+    import { startMissionGame } from "/core/mission-game-engine.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const missionId = String(params.get("mission") || "").trim();
+    const subskillId = String(params.get("subskill") || "").trim();
+    const gameId = String(params.get("game") || "").trim();
+    const timerValue = String(params.get("timer") || "off").trim().toLowerCase();
+    const timerEnabled = timerValue === "on";
+
+    const playRoot = document.getElementById("playRoot");
+    const backToHubLink = document.getElementById("backToHubLink");
+
+    const mission = getMissionById(missionId);
+    const subskill = getSubskillById(mission, subskillId);
+    const game = getGameById(subskill, gameId);
+
+    if (!mission || !subskill || !game) {
+      playRoot.innerHTML = `
+        <section class="mission-hero">
+          <p class="hero-eyebrow">Play</p>
+          <h1>Game not found</h1>
+          <p class="mission-description">
+            Check your mission link. Then reopen the game from the Mission Hub.
+          </p>
+        </section>
+      `;
+    } else {
+      const hubUrl = buildHubUrl(mission);
+      backToHubLink.href = hubUrl;
+      startMissionGame({
+        root: playRoot,
+        mission,
+        subskill,
+        game,
+        timerEnabled
+      });
+    }
+  </script>
+</body>
+</html>

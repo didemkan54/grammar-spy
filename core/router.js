@@ -1,6 +1,6 @@
 export const ROUTES = [
   { id: "home", label: "Home", href: "/index.html" },
-  { id: "missions", label: "Missions", href: "/packs.html" },
+  { id: "missions", label: "Missions", href: "/missions/" },
   { id: "missionLaunch", label: "Mission Launch", href: "/missions.html" },
   { id: "progression", label: "Training Path", href: "/progression.html" },
   { id: "clues", label: "CLUES", href: "/clues.html" },
@@ -53,7 +53,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
     { label: "Run a Mission", href: "teacher-mode.html" },
     { label: "Whole Class", href: "teacher-mode.html?play_format=whole_class" },
     { label: "Teams Mode", href: "teacher-mode.html?play_format=teams" },
-    { label: "Missions", href: "packs.html" },
+    { label: "Missions", href: "/missions/" },
     { label: "Training Path", href: "progression.html" },
     { label: "CLUES", href: "clues.html" }
   ];

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Mission Hub</title>
+  <meta name="description" content="Mission Hub with subskills and game library." />
+  <link rel="stylesheet" href="/core/mission-flow.css" />
+</head>
+<body class="mission-flow">
+  <div data-include="header"></div>
+
+  <main class="mission-main">
+    <a class="back-link" href="/missions/">&larr; Back to Missions</a>
+    <section class="mission-hero" id="hubHero"></section>
+    <section class="surface-card">
+      <h2 class="section-heading">Subskills and game library</h2>
+      <p class="section-subtext">
+        Pick a subskill, then launch one of three games. Each game has 15 items on one grammar rule.
+      </p>
+      <div id="subskillGrid" class="mission-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module">
+    import {
+      buildPlayUrl,
+      resolveMissionForHub
+    } from "/core/missions-catalog.js";
+
+    const hero = document.getElementById("hubHero");
+    const subskillGrid = document.getElementById("subskillGrid");
+    const mission = resolveMissionForHub();
+
+    if (!mission) {
+      hero.innerHTML = `
+        <p class="hero-eyebrow">Mission Hub</p>
+        <h1>Mission not found</h1>
+        <p class="mission-description">Check your link and return to the mission directory.</p>
+      `;
+      subskillGrid.innerHTML = '<div class="empty-state">No mission data available for this route.</div>';
+    } else {
+      const totalGames = (mission.subskills || []).reduce((sum, row) => sum + (row.games || []).length, 0);
+      hero.innerHTML = `
+        <p class="hero-eyebrow">Mission Hub</p>
+        <h1>${mission.title}</h1>
+        <p class="hero-subline">${mission.subtitle}</p>
+        <p class="mission-description">${mission.description}</p>
+        <div class="mission-chip-row">
+          <span class="mission-chip">${(mission.subskills || []).length} subskills</span>
+          <span class="mission-chip">${totalGames} games</span>
+          <span class="mission-chip">15 items each</span>
+        </div>
+      `;
+
+      subskillGrid.innerHTML = (mission.subskills || [])
+        .map((subskill) => {
+          const gameCards = (subskill.games || [])
+            .map((game, idx) => {
+              const playUrl = buildPlayUrl({
+                missionId: mission.id,
+                subskillId: subskill.id,
+                gameId: game.id
+              });
+              return `
+                <article class="game-card">
+                  <div class="game-card-top">
+                    <h4 class="game-card-title">${idx + 1}. ${game.title}</h4>
+                    <span class="game-badge">${game.gameType.replace(/_/g, " ")}</span>
+                  </div>
+                  <div class="tile-meta">
+                    <span>15 items</span>
+                    <span>Single rule</span>
+                  </div>
+                  <div class="action-row">
+                    <a
+                      class="gsm-link-btn gsm-link-btn-primary"
+                      href="${playUrl}"
+                      data-track-play="${mission.id}|${subskill.id}|${game.id}">
+                      Play game
+                    </a>
+                  </div>
+                </article>
+              `;
+            })
+            .join("");
+
+          return `
+            <article class="subskill-panel">
+              <div class="subskill-header">
+                <h3 class="subskill-title">${subskill.title}</h3>
+                <span class="game-badge">Rule focus</span>
+              </div>
+              <p class="subskill-rule">${subskill.ruleFocus}</p>
+              <p class="subskill-example"><strong>Pattern:</strong> ${subskill.examplePattern}</p>
+              <p class="subskill-eld"><strong>ELD support:</strong> ${subskill.notesForELD}</p>
+              <div class="game-card-grid">
+                ${gameCards}
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+
+      if (window.GSAnalytics && window.GSAnalytics.track) {
+        window.GSAnalytics.track("mission_hub_open", {
+          mission_id: mission.id,
+          source: "hub_route"
+        });
+      }
+    }
+
+    subskillGrid.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-track-play]");
+      if (!btn) return;
+      const parts = (btn.getAttribute("data-track-play") || "").split("|");
+      if (parts.length !== 3) return;
+      if (window.GSAnalytics && window.GSAnalytics.track) {
+        window.GSAnalytics.track("mission_game_open", {
+          mission_id: parts[0],
+          subskill_id: parts[1],
+          game_id: parts[2],
+          source: "hub_game_card"
+        });
+      }
+    });
+  </script>
+</body>
+</html>
