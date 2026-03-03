@@ -1,15 +1,15 @@
 <!doctype html>
 <!--
-Homepage refactor summary (section-by-section):
-1) HERO: Rebuilt above-the-fold message for 5-second clarity with two CTAs, mission preview card, and benefit chips.
-2) HOW IT WORKS: Added a clear 3-step teacher workflow.
-3) MISSION TYPES: Added 4 concrete mission tiles with quick preview anchors.
-4) WHY THIS WORKS: Added two-column trust bullets (student memory + teacher workflow).
-5) SOCIAL PROOF: Added beta-teacher framing and pilot CTA link.
-6) LEAD MAGNET: Kept existing diagnostic capture flow and IDs, improved copy clarity, retained anti-spam, and kept email-only delivery.
-7) FAQ: Replaced with 6 concise teacher-first FAQs.
-8) FINAL CTA: Added clean final decision section with two conversion CTAs.
-Technical updates:
+Homepage motion + engagement refactor summary:
+1) HERO: Added floating gradient shapes, stronger CTA motion, and an animated mission preview card.
+2) LIVE DEMO: Added "See a Mission in Action" mock interaction card (visual demo, not full gameplay).
+3) MISSION TYPES: Converted tiles into game-like level cards with hover glow and punchy subtitles.
+4) PROGRESSION: Added a connected node journey ("How Students Progress") with scroll-triggered reveal.
+5) STUDENT ENERGY: Added "Why Students Actually Engage" section with quick-hit motivators.
+6) TRUST + PROOF: Kept teacher credibility sections and pilot CTA.
+7) LEAD MAGNET: Preserved existing diagnostic capture IDs and flow; style refreshed only.
+8) FINAL CTA: Updated copy and button labels to mission-launch framing.
+Technical safety:
 - Added homepage tracking hooks: homepage_try_free_mission_click, homepage_create_account_click, homepage_scroll_50, homepage_leadmagnet_unlock_success.
 - Preserved existing diagnostic analytics events and Brevo submit flow.
 -->
@@ -30,37 +30,45 @@ Technical updates:
       --navy:#0b1020;
       --mid:#16223a;
       --teal:#1f5f63;
-      --teal-dark:#153f42;
-      --teal-soft:#e7f2f3;
-      --light:#f4f7fb;
+      --teal-dark:#124245;
+      --teal-soft:#e7f3f4;
+      --teal-glow:rgba(31,95,99,.2);
+      --light:#f3f7fb;
       --panel:#ffffff;
       --cool:#d9dee6;
       --slate:#4a5568;
       --gold:#c9a227;
-      --shadow:0 10px 24px rgba(11,16,32,.1);
-      --radius:14px;
+      --shadow-sm:0 8px 22px rgba(11,16,32,.08);
+      --shadow-md:0 18px 40px rgba(11,16,32,.14);
+      --radius:16px;
     }
 
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
+    html{scroll-behavior:smooth}
     body{
       font-family:Inter,Segoe UI,Arial,sans-serif;
-      background:var(--light);
+      background:radial-gradient(circle at 10% -10%, #edf6f8 0%, #f3f7fb 45%, #eff4f9 100%);
       color:var(--mid);
       line-height:1.55;
       -webkit-font-smoothing:antialiased;
     }
 
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none !important;transition:none !important}
+    }
+
     a{color:var(--teal)}
     a:hover{text-decoration:none}
     :focus-visible{
-      outline:3px solid rgba(31,95,99,.35);
+      outline:3px solid rgba(31,95,99,.34);
       outline-offset:2px;
-      border-radius:6px;
+      border-radius:8px;
     }
 
     .container{
-      width:min(1120px,100%);
+      width:min(1160px,100%);
       margin:0 auto;
       padding:0 18px;
     }
@@ -69,8 +77,8 @@ Technical updates:
       position:sticky;
       top:0;
       z-index:50;
-      background:rgba(255,255,255,.93);
-      backdrop-filter:blur(10px);
+      background:rgba(255,255,255,.9);
+      backdrop-filter:blur(12px);
       border-bottom:1px solid var(--cool);
     }
     .nav-inner{
@@ -84,9 +92,6 @@ Technical updates:
       display:inline-flex;
       align-items:center;
       text-decoration:none;
-      color:var(--mid);
-      font-weight:800;
-      letter-spacing:.01em;
     }
     .brand img{height:42px;width:auto;display:block}
     .nav-links{
@@ -105,47 +110,101 @@ Technical updates:
       border:1px solid var(--cool);
       border-radius:999px;
       background:#fff;
+      transition:all .2s ease;
     }
     .nav-links a:hover{
-      border-color:var(--teal);
+      border-color:rgba(31,95,99,.38);
       color:var(--teal);
       background:var(--teal-soft);
+      transform:translateY(-1px);
     }
 
     .hero{
-      background:
-        radial-gradient(circle at 82% 20%, rgba(201,162,39,.18), transparent 40%),
-        linear-gradient(160deg,#163740 0%,#1f5f63 55%,#245f6a 100%);
+      position:relative;
+      overflow:hidden;
+      padding:70px 0 58px;
       color:#f7fcff;
-      padding:58px 0 54px;
-      border-bottom:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(160deg,#163640 0%,#1f5f63 52%,#2e727f 100%);
+      border-bottom:1px solid rgba(255,255,255,.16);
     }
+    .hero-shapes{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .hero-shape{
+      position:absolute;
+      border-radius:999px;
+      filter:blur(.4px);
+      opacity:.4;
+      will-change:transform;
+    }
+    .hero-shape.one{
+      width:240px;height:240px;
+      background:radial-gradient(circle, rgba(255,255,255,.24), rgba(255,255,255,0));
+      top:-42px;left:-34px;
+      animation:floatOne 12s ease-in-out infinite;
+    }
+    .hero-shape.two{
+      width:170px;height:170px;
+      background:radial-gradient(circle, rgba(201,162,39,.45), rgba(201,162,39,0));
+      right:12%;top:6%;
+      animation:floatTwo 11s ease-in-out infinite;
+    }
+    .hero-shape.three{
+      width:300px;height:300px;
+      background:radial-gradient(circle, rgba(140,219,230,.26), rgba(140,219,230,0));
+      right:-80px;bottom:-120px;
+      animation:floatThree 15s ease-in-out infinite;
+    }
+    @keyframes floatOne{
+      0%,100%{transform:translate3d(0,0,0)}
+      50%{transform:translate3d(18px,12px,0)}
+    }
+    @keyframes floatTwo{
+      0%,100%{transform:translate3d(0,0,0)}
+      50%{transform:translate3d(-12px,16px,0)}
+    }
+    @keyframes floatThree{
+      0%,100%{transform:translate3d(0,0,0)}
+      50%{transform:translate3d(-16px,-18px,0)}
+    }
+
     .hero-grid{
+      position:relative;
       display:grid;
       gap:24px;
       align-items:center;
+      z-index:2;
     }
     .eyebrow{
       margin:0;
       font:700 12px Inter,Segoe UI,Arial,sans-serif;
       letter-spacing:.12em;
       text-transform:uppercase;
-      color:#c8e7e9;
+      color:#c7e7eb;
     }
     h1{
       margin:10px 0 0;
-      font-size:clamp(32px,6.5vw,52px);
-      line-height:1.05;
-      letter-spacing:-.015em;
-      color:#ffffff;
+      font-size:clamp(34px,6.5vw,56px);
+      line-height:1.04;
+      letter-spacing:-.018em;
+      color:#fff;
       max-width:14ch;
     }
     .hero-subhead{
       margin:14px 0 0;
       font-size:18px;
       line-height:1.55;
-      color:#d9edf0;
+      color:#d8edf1;
       max-width:62ch;
+    }
+    .hero-hook{
+      margin:9px 0 0;
+      font-size:16px;
+      color:#f4fdff;
+      font-weight:700;
     }
     .chips{
       list-style:none;
@@ -159,14 +218,15 @@ Technical updates:
       font:700 12px Inter,Segoe UI,Arial,sans-serif;
       letter-spacing:.05em;
       text-transform:uppercase;
-      color:#e6f7f8;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.28);
+      color:#ebf9fb;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.3);
       border-radius:999px;
       padding:6px 11px;
+      box-shadow:0 4px 10px rgba(4,16,32,.18);
     }
     .hero-ctas{
-      margin-top:20px;
+      margin-top:22px;
       display:flex;
       flex-wrap:wrap;
       gap:10px;
@@ -175,18 +235,23 @@ Technical updates:
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-height:44px;
+      min-height:46px;
       padding:0 18px;
-      border-radius:10px;
+      border-radius:11px;
       text-decoration:none;
       font:700 13px Inter,Segoe UI,Arial,sans-serif;
       letter-spacing:.08em;
       text-transform:uppercase;
       border:1px solid transparent;
       cursor:pointer;
-      transition:transform .14s ease, filter .14s ease;
+      transition:transform .18s ease, box-shadow .2s ease, filter .2s ease, background-color .2s ease;
     }
-    .btn:hover{transform:translateY(-1px)}
+    .btn:hover{
+      transform:translateY(-2px) scale(1.01);
+      box-shadow:0 10px 22px rgba(11,16,32,.2);
+      filter:saturate(1.04);
+    }
+    .btn:active{transform:translateY(-1px)}
     .btn-primary{
       background:#ffffff;
       color:#124245;
@@ -195,51 +260,113 @@ Technical updates:
     .btn-secondary{
       background:transparent;
       color:#ffffff;
-      border-color:rgba(255,255,255,.55);
+      border-color:rgba(255,255,255,.56);
+    }
+    .hero .btn-primary{
+      animation:heroPulse 3.2s ease-in-out infinite;
+    }
+    @keyframes heroPulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.06)}
+      50%{box-shadow:0 0 0 9px rgba(255,255,255,.12)}
     }
     .hero-note{
       margin-top:10px;
       font-size:13px;
-      color:#d2ebed;
+      color:#cfe9ed;
       font-weight:600;
     }
 
-    .mission-preview{
-      background:rgba(6,16,32,.42);
+    .hero-preview-panel{
+      background:linear-gradient(180deg, rgba(6,18,32,.45), rgba(6,18,32,.35));
       border:1px solid rgba(255,255,255,.24);
       border-radius:var(--radius);
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow-md);
       padding:16px;
     }
-    .mission-preview h2{
-      margin:0 0 10px;
-      font-size:20px;
-      line-height:1.2;
-      color:#ffffff;
+    .preview-kicker{
+      margin:0;
+      font:700 11px Inter,Segoe UI,Arial,sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#cbebef;
     }
-    .mission-preview img{
+    .preview-progress{
+      margin-top:10px;
+      height:8px;
       width:100%;
-      display:block;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow:0 8px 20px rgba(11,16,32,.35);
+      background:rgba(255,255,255,.18);
+      border-radius:999px;
+      overflow:hidden;
     }
-    .preview-points{
-      margin:12px 0 0;
-      padding-left:18px;
-      color:#d9edf0;
+    .preview-progress span{
+      display:block;
+      height:100%;
+      width:66%;
+      background:linear-gradient(90deg,#73d0da,#bcebf0);
+      animation:previewFill 2.6s ease-in-out infinite alternate;
+    }
+    @keyframes previewFill{
+      0%{width:38%}
+      100%{width:88%}
+    }
+    .hero-mission-card{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:12px;
+      padding:12px;
+      background:rgba(255,255,255,.07);
+      animation:heroCardBob 4.6s ease-in-out infinite;
+    }
+    @keyframes heroCardBob{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-4px)}
+    }
+    .hero-mission-card h2{
+      margin:0;
+      font-size:20px;
+      color:#fff;
+      line-height:1.2;
+    }
+    .hero-mission-card p{
+      margin:8px 0 0;
+      color:#dcf2f6;
       font-size:14px;
+      line-height:1.45;
+    }
+    .mini-options{
+      margin-top:10px;
       display:grid;
-      gap:6px;
+      gap:7px;
+    }
+    .mini-option{
+      border:1px solid rgba(255,255,255,.24);
+      background:rgba(255,255,255,.08);
+      color:#f5fdff;
+      border-radius:10px;
+      padding:8px 10px;
+      font:600 13px Inter,Segoe UI,Arial,sans-serif;
+      transition:all .16s ease;
+    }
+    .mini-option:hover{
+      border-color:rgba(255,255,255,.52);
+      transform:translateX(3px);
+      background:rgba(255,255,255,.13);
+    }
+    .mini-option.is-good{
+      border-color:#6ad3bd;
+      background:rgba(106,211,189,.18);
     }
 
-    .section{
-      padding:56px 0;
-    }
+    .section{padding:62px 0}
     .section-muted{
-      background:#ecf3f6;
+      background:#ecf4f7;
       border-top:1px solid var(--cool);
       border-bottom:1px solid var(--cool);
+    }
+    .section-live{
+      background:linear-gradient(180deg,#f3f8fb 0%,#ecf5f8 100%);
+      border-top:1px solid #e4ebf2;
+      border-bottom:1px solid #dce6ef;
     }
     .section-label{
       margin:0 0 8px;
@@ -250,59 +377,151 @@ Technical updates:
     }
     .section h2{
       margin:0;
-      font-size:clamp(26px,4vw,34px);
-      line-height:1.16;
+      font-size:clamp(28px,4vw,38px);
+      line-height:1.14;
       color:var(--navy);
-      letter-spacing:-.01em;
+      letter-spacing:-.013em;
     }
     .section-intro{
       margin:12px 0 0;
-      max-width:62ch;
+      max-width:68ch;
       color:var(--slate);
-      font-size:16px;
+      font-size:17px;
     }
     .section-note{
       margin:16px 0 0;
-      color:var(--slate);
+      color:#617089;
       font-size:14px;
       font-weight:600;
     }
 
-    .grid{
-      display:grid;
-      gap:14px;
-      margin-top:20px;
-    }
+    .grid{display:grid;gap:14px;margin-top:22px}
     .card{
       background:var(--panel);
       border:1px solid var(--cool);
       border-radius:var(--radius);
       padding:18px;
-      box-shadow:0 6px 16px rgba(11,16,32,.06);
+      box-shadow:var(--shadow-sm);
     }
     .card h3{
       margin:0;
       color:var(--navy);
-      font-size:18px;
-      line-height:1.3;
+      font-size:20px;
+      line-height:1.28;
     }
     .card p{
       margin:8px 0 0;
       color:var(--slate);
       font-size:15px;
     }
-    .step-num{
-      display:inline-flex;
+
+    .mock-play{
+      margin-top:18px;
+      border:1px solid rgba(31,95,99,.24);
+      border-radius:18px;
+      background:#fff;
+      padding:18px;
+      max-width:780px;
+      box-shadow:0 14px 34px rgba(17,40,63,.12);
+    }
+    .mock-play-title{
+      margin:0;
+      font:800 13px Inter,Segoe UI,Arial,sans-serif;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:#1f5f63;
+    }
+    .mock-play h3{
+      margin:8px 0 0;
+      font-size:24px;
+      line-height:1.2;
+      color:var(--navy);
+    }
+    .mock-play p{margin:8px 0 0;color:#4b5b73}
+    .mock-play-form{
+      margin-top:12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
       align-items:center;
-      justify-content:center;
-      width:28px;
-      height:28px;
-      margin-bottom:8px;
-      border-radius:8px;
+    }
+    .mock-play-form input{
+      flex:1;
+      min-width:250px;
+      padding:11px 12px;
+      border:1px solid #cfd8e4;
+      border-radius:10px;
+      font-size:15px;
+      color:#10243d;
+      background:#f9fcff;
+      transition:border-color .18s ease, box-shadow .18s ease;
+    }
+    .mock-play-form input:focus{
+      border-color:#479ea3;
+      box-shadow:0 0 0 3px rgba(31,95,99,.16);
+      outline:0;
+    }
+    .mock-play .btn-primary{
       background:var(--teal);
       color:#fff;
-      font-weight:800;
+      border-color:#184f52;
+    }
+    .mock-play-result{
+      display:none;
+      margin-top:12px;
+      border:1px solid #b6e3d2;
+      background:#edf9f3;
+      color:#16573f;
+      border-radius:10px;
+      padding:10px 11px;
+      font-weight:700;
+      font-size:14px;
+      animation:fadeLift .25s ease;
+    }
+    .mock-play-result.show{display:block}
+    .mock-play-result .check{font-size:16px;margin-right:6px}
+    .mock-play-hint{
+      margin-top:8px;
       font-size:13px;
+      color:#5b6982;
+      font-weight:600;
+    }
+    @keyframes fadeLift{
+      from{opacity:0;transform:translateY(6px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .mission-type-card{
+      position:relative;
+      background:linear-gradient(170deg, #ffffff 0%, #f9fdff 100%);
+      border:1px solid #d8e2ec;
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 10px 24px rgba(11,16,32,.07);
+      transition:transform .2s ease, box-shadow .22s ease, border-color .22s ease;
+      overflow:hidden;
+    }
+    .mission-type-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -30% -42% -30%;
+      height:70%;
+      background:radial-gradient(circle, rgba(31,95,99,.16), rgba(31,95,99,0));
+      transition:opacity .2s ease;
+      opacity:0;
+      pointer-events:none;
+    }
+    .mission-type-card:hover{
+      transform:translateY(-5px);
+      border-color:#8cbcc2;
+      box-shadow:0 18px 32px rgba(12,26,42,.14);
+    }
+    .mission-type-card:hover::after{opacity:1}
+    .mission-subtitle{
+      margin-top:10px;
+      color:#2b5264;
+      font-weight:700;
+      font-size:14px;
     }
     .micro-link{
       display:inline-block;
@@ -315,11 +534,133 @@ Technical updates:
     }
     .micro-link:hover{text-decoration:underline}
 
-    .two-col{
-      display:grid;
-      gap:14px;
+    .journey-wrap{
       margin-top:20px;
+      border:1px solid #d4e0ec;
+      border-radius:16px;
+      padding:18px 16px;
+      background:#fff;
+      box-shadow:0 12px 28px rgba(11,16,32,.08);
+      overflow-x:auto;
     }
+    .journey-path{
+      position:relative;
+      min-width:760px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:16px 6px 6px;
+    }
+    .journey-line{
+      position:absolute;
+      top:37px;
+      left:48px;
+      right:48px;
+      height:4px;
+      background:linear-gradient(90deg,#7fbfc8,#b6e2e8,#8ab6de,#9f98d6);
+      border-radius:999px;
+      transform:scaleX(.5);
+      transform-origin:left center;
+      opacity:.35;
+      transition:transform .9s ease, opacity .6s ease;
+    }
+    .journey-path.revealed .journey-line{
+      transform:scaleX(1);
+      opacity:1;
+    }
+    .journey-node{
+      position:relative;
+      z-index:2;
+      width:24%;
+      min-width:165px;
+      opacity:.45;
+      transform:translateY(18px);
+      transition:transform .46s ease, opacity .46s ease;
+    }
+    .journey-path.revealed .journey-node{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .journey-node:nth-child(2){transition-delay:.08s}
+    .journey-node:nth-child(3){transition-delay:.16s}
+    .journey-node:nth-child(4){transition-delay:.24s}
+    .journey-node:nth-child(5){transition-delay:.32s}
+    .journey-dot{
+      width:36px;
+      height:36px;
+      border-radius:999px;
+      border:3px solid #d0dde8;
+      background:#fff;
+      box-shadow:0 0 0 5px rgba(31,95,99,.08);
+      margin:0 auto 10px;
+      display:grid;
+      place-items:center;
+      font:800 13px Inter,Segoe UI,Arial,sans-serif;
+      color:#33506a;
+    }
+    .journey-node.active .journey-dot{
+      border-color:#2f9397;
+      color:#1f5f63;
+      background:#edf9fa;
+    }
+    .journey-node h3{
+      margin:0;
+      text-align:center;
+      color:#142b46;
+      font-size:16px;
+      line-height:1.25;
+    }
+    .journey-node p{
+      margin:6px 0 0;
+      text-align:center;
+      color:#55667f;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .section-student{
+      background:linear-gradient(175deg,#162f36 0%, #1f5f63 42%, #247887 100%);
+      color:#f3fcff;
+      border-top:1px solid rgba(255,255,255,.16);
+      border-bottom:1px solid rgba(255,255,255,.16);
+    }
+    .section-student .section-label{color:#bfe8ed}
+    .section-student h2{color:#fff}
+    .section-student .section-intro{color:#d8f0f4}
+    .engage-grid{
+      margin:20px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:12px;
+    }
+    .engage-grid li{
+      background:rgba(255,255,255,.11);
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:14px;
+      padding:14px 14px 14px 42px;
+      position:relative;
+      font-size:15px;
+      color:#f4fdff;
+      font-weight:600;
+      box-shadow:0 8px 20px rgba(4,18,32,.14);
+    }
+    .engage-grid li::before{
+      content:"v";
+      position:absolute;
+      left:14px;
+      top:13px;
+      width:20px;height:20px;
+      border-radius:999px;
+      background:rgba(255,255,255,.2);
+      display:grid;
+      place-items:center;
+      color:#dcf6f8;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .two-col{display:grid;gap:14px;margin-top:22px}
     .bullet-list{
       margin:10px 0 0;
       padding-left:18px;
@@ -327,6 +668,16 @@ Technical updates:
       display:grid;
       gap:8px;
       font-size:15px;
+    }
+    .social-proof-grid{
+      display:grid;
+      gap:12px;
+      margin-top:18px;
+    }
+    .social-proof-grid .card p{
+      margin:0;
+      font-weight:700;
+      color:#214059;
     }
     .beta-link{
       display:inline-flex;
@@ -338,14 +689,15 @@ Technical updates:
     }
     .beta-link:hover{text-decoration:underline}
 
-    /* Lead magnet card (existing flow preserved) */
+    /* Lead magnet card (flow preserved) */
     .diagnostic-download{
       margin-top:16px;
-      padding:20px;
-      border:1px solid rgba(31,95,99,.24);
-      border-radius:14px;
-      background:linear-gradient(165deg, rgba(31,95,99,.06), rgba(11,16,32,.03));
-      max-width:760px;
+      padding:22px;
+      border:1px solid rgba(31,95,99,.26);
+      border-radius:16px;
+      background:linear-gradient(170deg, rgba(31,95,99,.08), rgba(11,16,32,.03));
+      max-width:780px;
+      box-shadow:0 14px 30px rgba(11,16,32,.08);
     }
     .diagnostic-download p{margin:0}
     .diagnostic-form{display:grid;gap:10px}
@@ -367,16 +719,23 @@ Technical updates:
       min-width:220px;
       padding:10px 12px;
       border:1px solid var(--cool);
-      border-radius:8px;
+      border-radius:10px;
       font-size:14px;
       color:var(--navy);
       background:#fff;
+      transition:border-color .16s ease, box-shadow .16s ease;
+    }
+    .diagnostic-form-row input[type=email]:focus{
+      border-color:#4ba7ac;
+      box-shadow:0 0 0 3px rgba(31,95,99,.14);
+      outline:0;
     }
     .diagnostic-form-row .btn-primary{
       margin:0;
       background:var(--teal);
       color:#fff;
-      border-color:#194f53;
+      border-color:#184f52;
+      animation:none;
     }
     .diagnostic-consent{
       margin-top:4px;
@@ -442,9 +801,10 @@ Technical updates:
     .faq-list{display:grid;gap:10px;margin-top:20px}
     .faq-list details{
       border:1px solid var(--cool);
-      border-radius:10px;
+      border-radius:12px;
       background:#fff;
       padding:10px 12px;
+      box-shadow:0 5px 15px rgba(11,16,32,.04);
     }
     .faq-list summary{
       cursor:pointer;
@@ -458,21 +818,28 @@ Technical updates:
     }
 
     .final-cta{
-      background:linear-gradient(160deg,#173b42,#1f5f63);
+      background:linear-gradient(160deg,#14353d,#1f5f63 52%, #2c7280);
       color:#f7fcff;
-      border-top:1px solid rgba(255,255,255,.14);
+      border-top:1px solid rgba(255,255,255,.16);
     }
     .final-cta h2{color:#fff}
-    .final-cta .section-intro{color:#d9edf0}
+    .final-cta .section-intro{color:#d7edf1}
     .final-cta .btn-primary{
       background:#fff;
-      color:#124245;
+      color:#123f42;
       border-color:#fff;
+      animation:heroPulse 3s ease-in-out infinite;
     }
     .final-cta .btn-secondary{
-      border-color:rgba(255,255,255,.55);
+      border-color:rgba(255,255,255,.56);
       color:#fff;
       background:transparent;
+    }
+    .final-cta .final-subtext{
+      margin-top:10px;
+      font-size:14px;
+      color:#d8edf1;
+      font-weight:700;
     }
 
     @media (min-width:760px){
@@ -480,12 +847,15 @@ Technical updates:
       .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
       .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
       .two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .social-proof-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .engage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
     @media (min-width:980px){
-      .hero-grid{grid-template-columns:1.1fr .9fr;gap:34px}
+      .hero-grid{grid-template-columns:1.08fr .92fr;gap:36px}
       .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
       .nav-links{gap:10px}
       .nav-links a{padding:9px 12px}
+      .engage-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
     }
   </style>
 </head>
@@ -507,82 +877,86 @@ Technical updates:
 
   <main>
     <section class="hero">
+      <div class="hero-shapes" aria-hidden="true">
+        <span class="hero-shape one"></span>
+        <span class="hero-shape two"></span>
+        <span class="hero-shape three"></span>
+      </div>
       <div class="container hero-grid">
         <div>
           <p class="eyebrow">Built for real classrooms</p>
           <h1>Grammar practice that actually sticks.</h1>
-          <p class="hero-subhead">Grammar Spy helps middle and high school students master grammar through short, retrieval-based missions built by a classroom teacher.</p>
+          <p class="hero-subhead">Grammar Spy helps middle and high school students build lasting grammar accuracy through short, retrieval-based missions built by a classroom teacher.</p>
+          <p class="hero-hook">Students don't just answer. They complete missions.</p>
           <ul class="chips" aria-label="Core benefits">
             <li>Retrieval-based</li>
-            <li>Classroom-ready</li>
-            <li>Teacher dashboard</li>
+            <li>Mission-driven</li>
+            <li>Teacher-ready</li>
           </ul>
           <div class="hero-ctas">
-            <a href="auth.html?mode=create" class="btn btn-primary" data-track-event="homepage_try_free_mission_click">Try a Free Mission</a>
-            <a href="teacher-home.html" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create a Teacher Account</a>
+            <a href="auth.html?mode=create" class="btn btn-primary" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
+            <a href="teacher-home.html" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
           </div>
-          <p class="hero-note">No prep. Set up in minutes.</p>
+          <p class="hero-note">No prep. No grading stacks. Just progress.</p>
         </div>
-        <aside class="mission-preview" id="mission-preview" aria-label="Mission preview card">
-          <h2>Mission preview</h2>
-          <img src="assets/branding-images/inside-mission/mission-screen-1.png" alt="Grammar mission interface showing student answer choices and score">
-          <ul class="preview-points">
-            <li>Fast rounds with immediate feedback</li>
-            <li>One skill target at a time</li>
-            <li>Clear progress signals for teachers</li>
-          </ul>
+        <aside class="hero-preview-panel" id="mission-preview" aria-label="Mission Preview">
+          <p class="preview-kicker">Mission Preview</p>
+          <div class="preview-progress" aria-hidden="true"><span></span></div>
+          <div class="hero-mission-card">
+            <h2>Sentence Repair</h2>
+            <p>Find the break in grammar, fix it, and move to the next challenge.</p>
+            <div class="mini-options">
+              <button type="button" class="mini-option">"She go to school every day."</button>
+              <button type="button" class="mini-option is-good">"She goes to school every day."</button>
+              <button type="button" class="mini-option">"She going to school every day."</button>
+            </div>
+          </div>
         </aside>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-live" id="mission-live-preview">
       <div class="container">
-        <p class="section-label">How it works</p>
-        <h2>Run grammar practice in three steps</h2>
-        <div class="grid grid-3">
-          <article class="card">
-            <span class="step-num" aria-hidden="true">1</span>
-            <h3>Pick a Mission</h3>
-            <p>Choose a focus like Verb Tenses or Sentence Repair and launch in seconds.</p>
-          </article>
-          <article class="card">
-            <span class="step-num" aria-hidden="true">2</span>
-            <h3>Students Play</h3>
-            <p>Students complete short, engaging rounds with immediate corrections.</p>
-          </article>
-          <article class="card">
-            <span class="step-num" aria-hidden="true">3</span>
-            <h3>You Track Growth</h3>
-            <p>See accuracy, attempts, and mastery patterns without extra grading.</p>
-          </article>
+        <p class="section-label">Live mission preview</p>
+        <h2>See a Mission in Action</h2>
+        <p class="section-intro">A quick look at the mission loop: clear prompt, student response, instant correction, and forward momentum.</p>
+        <div class="mock-play">
+          <p class="mock-play-title">Sentence Repair</p>
+          <h3>Fix the sentence: "She go to school every day."</h3>
+          <p>This is a visual demo of the interaction style students see during missions.</p>
+          <form id="liveMissionMockForm" class="mock-play-form" novalidate>
+            <input id="liveMissionMockInput" type="text" value="She go to school every day." aria-label="Mission preview sentence input">
+            <button type="submit" class="btn btn-primary" id="liveMissionMockBtn">Submit</button>
+          </form>
+          <p class="mock-play-result" id="liveMissionMockResult" role="status" aria-live="polite"><span class="check">&#10004;</span>Correct answer: "She goes to school every day."</p>
+          <p class="mock-play-hint" id="liveMissionMockHint">Tap submit to reveal instant feedback.</p>
         </div>
-        <p class="section-note">Works in stations, homework, or warm-ups.</p>
       </div>
     </section>
 
     <section class="section section-muted">
       <div class="container">
         <p class="section-label">Mission types</p>
-        <h2>Practice that feels concrete, not random</h2>
+        <h2>Choose a mission like a level path</h2>
         <div class="grid grid-4">
-          <article class="card">
+          <article class="mission-type-card">
             <h3>Sentence Repair</h3>
-            <p>Students fix grammar mistakes and explain why the edit works.</p>
-            <a href="#mission-preview" class="micro-link">Preview</a>
+            <p class="mission-subtitle">Find it. Fix it. Explain it.</p>
+            <a href="#mission-live-preview" class="micro-link">Preview</a>
           </article>
-          <article class="card">
+          <article class="mission-type-card">
             <h3>Dialogue Repair</h3>
-            <p>Real-life chat edits strengthen grammar choices in context.</p>
+            <p class="mission-subtitle">Real conversations. Real grammar.</p>
             <a href="#mission-preview" class="micro-link">Preview</a>
           </article>
-          <article class="card">
+          <article class="mission-type-card">
             <h3>Verb Tense Missions</h3>
-            <p>Students connect time clues and meaning before selecting tense.</p>
-            <a href="#mission-preview" class="micro-link">Preview</a>
+            <p class="mission-subtitle">Time matters. So does form.</p>
+            <a href="#mission-live-preview" class="micro-link">Preview</a>
           </article>
-          <article class="card">
-            <h3>Sort and Build</h3>
-            <p>Pattern sorting and sentence building reinforce grammar structure.</p>
+          <article class="mission-type-card">
+            <h3>Sort + Build</h3>
+            <p class="mission-subtitle">Sequence rules. Lock mastery.</p>
             <a href="#mission-preview" class="micro-link">Preview</a>
           </article>
         </div>
@@ -591,23 +965,71 @@ Technical updates:
 
     <section class="section">
       <div class="container">
-        <p class="section-label">Why this works</p>
-        <h2>Built for memory and classroom flow</h2>
+        <p class="section-label">Progression</p>
+        <h2>How Students Progress</h2>
+        <p class="section-intro">Each mission advances one grammar rule at a time, then unlocks mixed review after mastery.</p>
+        <div class="journey-wrap">
+          <div class="journey-path" id="journeyPath" aria-label="Grammar progression path">
+            <div class="journey-line" aria-hidden="true"></div>
+            <article class="journey-node active">
+              <div class="journey-dot">1</div>
+              <h3>Simple Present</h3>
+              <p>Build routine form accuracy.</p>
+            </article>
+            <article class="journey-node">
+              <div class="journey-dot">2</div>
+              <h3>Present Continuous</h3>
+              <p>Practice "right now" structure.</p>
+            </article>
+            <article class="journey-node">
+              <div class="journey-dot">3</div>
+              <h3>Past Tense</h3>
+              <p>Shift from now to completed events.</p>
+            </article>
+            <article class="journey-node">
+              <div class="journey-dot">4</div>
+              <h3>Mixed Review</h3>
+              <p>Integrate mastered rules with confidence.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-student">
+      <div class="container">
+        <p class="section-label">Student engagement</p>
+        <h2>Why Students Actually Engage</h2>
+        <p class="section-intro">Mission pacing keeps the energy up while staying academically focused.</p>
+        <ul class="engage-grid">
+          <li>Short missions (5 minutes)</li>
+          <li>Instant feedback</li>
+          <li>Clear goals</li>
+          <li>Visible progress</li>
+          <li>Replay for mastery</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <p class="section-label">Teacher trust</p>
+        <h2>Structured enough for instruction, dynamic enough for students</h2>
         <div class="two-col">
           <article class="card">
-            <h3>Why students remember it</h3>
+            <h3>Classroom clarity</h3>
             <ul class="bullet-list">
-              <li>Frequent retrieval</li>
-              <li>Immediate feedback</li>
-              <li>Error-spotting builds accuracy</li>
+              <li>One grammar target at a time</li>
+              <li>Immediate explanation after each response</li>
+              <li>Consistent mission shell across activities</li>
             </ul>
           </article>
           <article class="card">
-            <h3>Why teachers like it</h3>
+            <h3>Practical workflow</h3>
             <ul class="bullet-list">
-              <li>No grading piles</li>
-              <li>Clear routines</li>
-              <li>Fast setup</li>
+              <li>Fast launch for warm-ups or stations</li>
+              <li>No grading stacks</li>
+              <li>Easy replay for reteach or intervention</li>
             </ul>
           </article>
         </div>
@@ -617,13 +1039,13 @@ Technical updates:
     <section class="section section-muted">
       <div class="container">
         <p class="section-label">Social proof</p>
-        <h2>Built with real classrooms in mind</h2>
-        <div class="grid grid-3">
-          <article class="card"><p><strong>ELD-friendly routines</strong></p></article>
-          <article class="card"><p><strong>Works for mixed levels</strong></p></article>
-          <article class="card"><p><strong>Clear language scaffolds</strong></p></article>
+        <h2>Built with real classroom feedback</h2>
+        <div class="social-proof-grid">
+          <article class="card"><p>"Students stay focused because every mission has a clear goal."</p></article>
+          <article class="card"><p>"The immediate correction loop saves me reteach time."</p></article>
+          <article class="card"><p>"The structure supports mixed-level and ELD learners."</p></article>
         </div>
-        <a class="beta-link" href="mailto:support@grammarspy.net?subject=Beta%20teacher%20pilot%20request">Want to be a beta teacher? Get a free pack code -></a>
+        <a class="beta-link" href="mailto:support@grammarspy.net?subject=Beta%20teacher%20pilot%20request">Want to join the teacher pilot? Request a free code -></a>
       </div>
     </section>
 
@@ -631,7 +1053,7 @@ Technical updates:
       <div class="container">
         <p class="section-label">Free Teacher Diagnostic</p>
         <h2>Free Teacher Diagnostic</h2>
-        <p class="section-intro">Get a quick Simple Present diagnostic PDF + answer key.</p>
+        <p class="section-intro">Get a quick Simple Present diagnostic PDF + answer key. Takes 10 minutes. Answer key included.</p>
         <div class="diagnostic-download">
           <form class="diagnostic-form" id="diagnosticLeadForm" novalidate>
             <label for="diagnosticLeadEmail">School or work email</label>
@@ -663,24 +1085,20 @@ Technical updates:
             <p>Both. Missions are designed for middle and high school grammar routines, including mixed-level classes.</p>
           </details>
           <details>
+            <summary>How long does one mission take?</summary>
+            <p>Most missions run in 5 to 15 minutes, so they fit bell ringers, stations, and homework practice.</p>
+          </details>
+          <details>
+            <summary>Can students replay missions?</summary>
+            <p>Yes. Replay is built for mastery: students can rerun the same rule and improve accuracy before moving on.</p>
+          </details>
+          <details>
+            <summary>Can I use it with ELD students?</summary>
+            <p>Yes. Missions use clear language scaffolds, goal-focused prompts, and immediate explanation after each response.</p>
+          </details>
+          <details>
             <summary>Do students need accounts?</summary>
-            <p>No account is required for student play in classroom setups. Teachers can run missions and share access quickly.</p>
-          </details>
-          <details>
-            <summary>How long does a mission take?</summary>
-            <p>Most missions fit in about 10 to 15 minutes, so they work as warm-ups, stations, or homework practice.</p>
-          </details>
-          <details>
-            <summary>Can I use it for ELD students?</summary>
-            <p>Yes. Grammar Spy includes clear language cues and structure-focused practice that supports ELD learners.</p>
-          </details>
-          <details>
-            <summary>Is it free?</summary>
-            <p>You can start with a free mission and free diagnostic resources, then decide whether to expand your access.</p>
-          </details>
-          <details>
-            <summary>How do I set up classes?</summary>
-            <p>Create a teacher account, launch your first mission, and share class access in minutes.</p>
+            <p>No account is required for classroom play flows. Teachers can launch quickly and track progress with minimal setup.</p>
           </details>
         </div>
       </div>
@@ -688,13 +1106,14 @@ Technical updates:
 
     <section class="section final-cta">
       <div class="container">
-        <p class="section-label" style="color:#cce7e9">Final CTA</p>
-        <h2>Ready to make grammar practice stick?</h2>
-        <p class="section-intro">Start free, run one mission, and see how quickly students build confidence.</p>
+        <p class="section-label" style="color:#c7e8eb">Final CTA</p>
+        <h2>Ready to launch your first mission?</h2>
+        <p class="section-intro">Start free and see how quickly students engage with structured grammar practice.</p>
         <div class="hero-ctas">
-          <a href="teacher-home.html" class="btn btn-primary" data-track-event="homepage_create_account_click">Create a Teacher Account</a>
-          <a href="auth.html?mode=create" class="btn btn-secondary" data-track-event="homepage_try_free_mission_click">Try a Free Mission</a>
+          <a href="auth.html?mode=create" class="btn btn-primary" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
+          <a href="teacher-home.html" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
         </div>
+        <p class="final-subtext">No prep. No grading stacks. Just progress.</p>
       </div>
     </section>
   </main>
@@ -711,6 +1130,51 @@ Technical updates:
         }
       }
       window.GS_TRACK_HOME = track;
+    })();
+
+    (function(){
+      var demoForm = document.getElementById('liveMissionMockForm');
+      var demoBtn = document.getElementById('liveMissionMockBtn');
+      var demoResult = document.getElementById('liveMissionMockResult');
+      var demoHint = document.getElementById('liveMissionMockHint');
+      var journeyPath = document.getElementById('journeyPath');
+
+      if (demoResult) demoResult.classList.remove('show');
+
+      if (demoForm && demoBtn && demoResult) {
+        demoForm.addEventListener('submit', function(event){
+          event.preventDefault();
+          demoBtn.disabled = true;
+          demoBtn.textContent = 'Checking...';
+          if (demoHint) demoHint.textContent = 'Analyzing grammar pattern...';
+
+          window.setTimeout(function(){
+            demoResult.classList.add('show');
+            demoBtn.disabled = false;
+            demoBtn.textContent = 'Submit';
+            if (demoHint) demoHint.textContent = 'Instant correction is what keeps missions engaging.';
+          }, 480);
+        });
+      }
+
+      if (journeyPath) {
+        if (!('IntersectionObserver' in window)) {
+          journeyPath.classList.add('revealed');
+        } else {
+          var revealOnce = false;
+          var observer = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+              if (revealOnce) return;
+              if (entry.isIntersecting) {
+                revealOnce = true;
+                journeyPath.classList.add('revealed');
+                observer.disconnect();
+              }
+            });
+          }, { threshold: 0.28 });
+          observer.observe(journeyPath);
+        }
+      }
     })();
 
     (function(){
