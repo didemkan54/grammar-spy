@@ -1,5 +1,7 @@
 import MISSIONS_DATA from "/data/missions.js";
 
+const MISSION_PROGRESS_KEY = "gs_mission_progress_v1";
+
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
@@ -94,4 +96,75 @@ export function getNextGamePointer(mission, subskillId, gameId) {
   const idx = order.findIndex((row) => row.subskillId === subskillId && row.gameId === gameId);
   if (idx < 0 || idx + 1 >= order.length) return null;
   return order[idx + 1];
+}
+
+export function formatGameTypeLabel(gameType) {
+  const lookup = {
+    multiple_choice: "Multiple Choice",
+    sentence_builder: "Sentence Builder",
+    drag_sort: "Drag Sort",
+    error_spotter: "Error Fix"
+  };
+  return lookup[gameType] || String(gameType || "").replace(/_/g, " ");
+}
+
+export function buildMissionProgressGameKey(subskillId, gameId) {
+  return `${String(subskillId || "").trim()}::${String(gameId || "").trim()}`;
+}
+
+function canUseStorage() {
+  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+}
+
+function readProgressStore() {
+  if (!canUseStorage()) return {};
+  try {
+    const raw = window.localStorage.getItem(MISSION_PROGRESS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (_err) {
+    return {};
+  }
+}
+
+function writeProgressStore(store) {
+  if (!canUseStorage()) return;
+  try {
+    window.localStorage.setItem(MISSION_PROGRESS_KEY, JSON.stringify(store));
+  } catch (_err) {}
+}
+
+export function getMissionProgress(missionId) {
+  if (!missionId) return { completedGames: {} };
+  const store = readProgressStore();
+  const row = store[missionId];
+  if (!row || typeof row !== "object") return { completedGames: {} };
+  const completedGames =
+    row.completedGames && typeof row.completedGames === "object" ? row.completedGames : {};
+  return { completedGames };
+}
+
+export function markMissionGameCompleted(payload) {
+  const missionId = String(payload?.missionId || "").trim();
+  const subskillId = String(payload?.subskillId || "").trim();
+  const gameId = String(payload?.gameId || "").trim();
+  if (!missionId || !subskillId || !gameId) return;
+
+  const store = readProgressStore();
+  if (!store[missionId] || typeof store[missionId] !== "object") {
+    store[missionId] = { completedGames: {} };
+  }
+  if (!store[missionId].completedGames || typeof store[missionId].completedGames !== "object") {
+    store[missionId].completedGames = {};
+  }
+
+  const gameKey = buildMissionProgressGameKey(subskillId, gameId);
+  store[missionId].completedGames[gameKey] = {
+    completedAt: new Date().toISOString(),
+    accuracy: Number(payload?.accuracy) || 0,
+    score: Number(payload?.score) || 0,
+    total: Number(payload?.total) || 0
+  };
+  writeProgressStore(store);
 }

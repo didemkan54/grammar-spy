@@ -14,11 +14,11 @@
     <a class="back-link" href="/missions/">&larr; Back to Missions</a>
     <section class="mission-hero" id="hubHero"></section>
     <section class="surface-card">
-      <h2 class="section-heading">Subskills and game library</h2>
+      <h2 class="section-heading">Grammar Rule Blocks</h2>
       <p class="section-subtext">
-        Pick a subskill, then launch one of three games. Each game has 15 items on one grammar rule.
+        Open one rule block at a time. Each block contains only that rule and exactly three focused games.
       </p>
-      <div id="subskillGrid" class="mission-grid" aria-live="polite"></div>
+      <div id="subskillGrid" class="rule-block-grid" aria-live="polite"></div>
     </section>
   </main>
 
@@ -29,6 +29,9 @@
   <script type="module">
     import {
       buildPlayUrl,
+      buildMissionProgressGameKey,
+      formatGameTypeLabel,
+      getMissionProgress,
       resolveMissionForHub
     } from "/core/missions-catalog.js";
 
@@ -45,22 +48,43 @@
       subskillGrid.innerHTML = '<div class="empty-state">No mission data available for this route.</div>';
     } else {
       const totalGames = (mission.subskills || []).reduce((sum, row) => sum + (row.games || []).length, 0);
+      const availableKeys = new Set();
+      (mission.subskills || []).forEach((subskill) => {
+        (subskill.games || []).forEach((game) => {
+          availableKeys.add(buildMissionProgressGameKey(subskill.id, game.id));
+        });
+      });
+      const progressState = getMissionProgress(mission.id);
+      const completedGames = Object.keys(progressState.completedGames || {}).filter((key) =>
+        availableKeys.has(key)
+      ).length;
+      const progressPct = totalGames ? Math.round((completedGames / totalGames) * 100) : 0;
+
       hero.innerHTML = `
         <p class="hero-eyebrow">Mission Hub</p>
         <h1>${mission.title}</h1>
         <p class="hero-subline">${mission.subtitle}</p>
         <p class="mission-description">${mission.description}</p>
+        <p class="hub-progress-text">${completedGames} / ${totalGames} games completed</p>
+        <div class="hub-progress-track" aria-hidden="true">
+          <div class="hub-progress-fill" style="width:${progressPct}%"></div>
+        </div>
         <div class="mission-chip-row">
           <span class="mission-chip">${(mission.subskills || []).length} subskills</span>
-          <span class="mission-chip">${totalGames} games</span>
+          <span class="mission-chip">${totalGames} total games</span>
+          <span class="mission-chip">${completedGames} completed</span>
           <span class="mission-chip">15 items each</span>
         </div>
       `;
 
       subskillGrid.innerHTML = (mission.subskills || [])
-        .map((subskill) => {
+        .map((subskill, subskillIndex) => {
+          const difficulty = String(subskill.difficulty || "Rookie");
+          const difficultyClass = `difficulty-${difficulty.toLowerCase()}`;
           const gameCards = (subskill.games || [])
             .map((game, idx) => {
+              const gameProgressKey = buildMissionProgressGameKey(subskill.id, game.id);
+              const isCompleted = Boolean((progressState.completedGames || {})[gameProgressKey]);
               const playUrl = buildPlayUrl({
                 missionId: mission.id,
                 subskillId: subskill.id,
@@ -70,18 +94,22 @@
                 <article class="game-card">
                   <div class="game-card-top">
                     <h4 class="game-card-title">${idx + 1}. ${game.title}</h4>
-                    <span class="game-badge">${game.gameType.replace(/_/g, " ")}</span>
+                    <span class="game-badge">${formatGameTypeLabel(game.gameType)}</span>
                   </div>
+                  <p class="game-card-description">${game.description || "Focused grammar round for this rule."}</p>
                   <div class="tile-meta">
-                    <span>15 items</span>
+                    <span>15 Questions</span>
                     <span>Single rule</span>
+                    <span class="game-status-tag ${isCompleted ? "is-complete" : ""}">${
+                      isCompleted ? "Completed" : "Not started"
+                    }</span>
                   </div>
                   <div class="action-row">
                     <a
                       class="gsm-link-btn gsm-link-btn-primary"
                       href="${playUrl}"
                       data-track-play="${mission.id}|${subskill.id}|${game.id}">
-                      Play game
+                      Start
                     </a>
                   </div>
                 </article>
@@ -90,18 +118,22 @@
             .join("");
 
           return `
-            <article class="subskill-panel">
-              <div class="subskill-header">
-                <h3 class="subskill-title">${subskill.title}</h3>
-                <span class="game-badge">Rule focus</span>
+            <details class="rule-block" open>
+              <summary class="rule-block-summary">
+                <div class="rule-heading-row">
+                  <h3 class="subskill-title">Rule ${subskillIndex + 1}: ${subskill.title}</h3>
+                  <span class="difficulty-tag ${difficultyClass}">${difficulty}</span>
+                </div>
+                <p class="subskill-rule">${subskill.ruleFocus}</p>
+                <p class="subskill-example"><strong>Example:</strong> ${subskill.examplePattern}</p>
+                <p class="subskill-eld"><strong>ELD support:</strong> ${subskill.notesForELD}</p>
+              </summary>
+              <div class="rule-block-content">
+                <div class="game-card-grid">
+                  ${gameCards}
+                </div>
               </div>
-              <p class="subskill-rule">${subskill.ruleFocus}</p>
-              <p class="subskill-example"><strong>Pattern:</strong> ${subskill.examplePattern}</p>
-              <p class="subskill-eld"><strong>ELD support:</strong> ${subskill.notesForELD}</p>
-              <div class="game-card-grid">
-                ${gameCards}
-              </div>
-            </article>
+            </details>
           `;
         })
         .join("");
@@ -109,6 +141,8 @@
       if (window.GSAnalytics && window.GSAnalytics.track) {
         window.GSAnalytics.track("mission_hub_open", {
           mission_id: mission.id,
+          completed_games: completedGames,
+          total_games: totalGames,
           source: "hub_route"
         });
       }

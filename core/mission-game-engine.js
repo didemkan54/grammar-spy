@@ -1,4 +1,9 @@
-import { buildHubUrl, buildPlayUrl, getNextGamePointer } from "/core/missions-catalog.js";
+import {
+  buildHubUrl,
+  buildPlayUrl,
+  getNextGamePointer,
+  markMissionGameCompleted
+} from "/core/missions-catalog.js";
 
 function normalizeText(value) {
   return String(value || "")
@@ -545,6 +550,17 @@ export class MissionGameEngine {
       accuracy,
       reason: reason || "completed"
     });
+
+    if (reason === "completed") {
+      markMissionGameCompleted({
+        missionId: this.mission.id,
+        subskillId: this.subskill.id,
+        gameId: this.game.id,
+        accuracy,
+        score: this.score,
+        total: this.items.length
+      });
+    }
 
     const missedHtml = this.missed.length
       ? `

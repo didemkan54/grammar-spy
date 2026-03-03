@@ -145,6 +145,100 @@ function buildAuxSortItems(rows) {
   });
 }
 
+function buildEdEndingLabItems(rows) {
+  return rows.map((row, idx) => {
+    const itemId = `ed_lab_${pad(idx + 1)}`;
+    return {
+      id: itemId,
+      prompt: "Sort each verb by its regular past spelling rule.",
+      columns: [
+        { id: "add_ed", label: "Add -ed" },
+        { id: "change_y", label: "Change y to ied" },
+        { id: "double_consonant", label: "Double consonant + ed" }
+      ],
+      cards: [
+        { id: `${itemId}_a`, text: row.addEd[0], columnId: "add_ed" },
+        { id: `${itemId}_b`, text: row.addEd[1], columnId: "add_ed" },
+        { id: `${itemId}_c`, text: row.changeY[0], columnId: "change_y" },
+        { id: `${itemId}_d`, text: row.changeY[1], columnId: "change_y" },
+        { id: `${itemId}_e`, text: row.doubleConsonant[0], columnId: "double_consonant" },
+        { id: `${itemId}_f`, text: row.doubleConsonant[1], columnId: "double_consonant" }
+      ],
+      explain: "Regular past spelling patterns: add -ed, change y to ied, or double a final consonant + ed."
+    };
+  });
+}
+
+function buildIrregularMatchItems(prefix, rows) {
+  return rows.map((row, idx) => {
+    const itemId = `${prefix}_${pad(idx + 1)}`;
+    const cards = [];
+    (row.pairs || []).forEach((pair, pairIdx) => {
+      cards.push(
+        { id: `${itemId}_b${pairIdx}`, text: pair.base, columnId: "base_form" },
+        { id: `${itemId}_p${pairIdx}`, text: pair.past, columnId: "irregular_past" }
+      );
+    });
+    return {
+      id: itemId,
+      prompt: "Sort each card under base verb or irregular past form.",
+      columns: [
+        { id: "base_form", label: "Base Verb" },
+        { id: "irregular_past", label: "Irregular Past" }
+      ],
+      cards,
+      explain: "Irregular past verbs do not use -ed. Match each base form with its special past form."
+    };
+  });
+}
+
+function buildWasWereSortItems(rows) {
+  return rows.map((row, idx) => {
+    const itemId = `past_be_sort_${pad(idx + 1)}`;
+    const singularSubject = row.singularSubject || "the student";
+    return {
+      id: itemId,
+      prompt: "Sort each subject sentence under was or were.",
+      columns: [
+        { id: "was", label: "was" },
+        { id: "were", label: "were" }
+      ],
+      cards: [
+        { id: `${itemId}_a`, text: `I ___ ${row.tail}.`, columnId: "was" },
+        { id: `${itemId}_b`, text: `He ___ ${row.tail}.`, columnId: "was" },
+        { id: `${itemId}_c`, text: `She ___ ${row.tail}.`, columnId: "was" },
+        { id: `${itemId}_d`, text: `It ___ ${row.tail}.`, columnId: "was" },
+        { id: `${itemId}_e`, text: `${singularSubject} ___ ${row.tail}.`, columnId: "was" },
+        { id: `${itemId}_f`, text: `You ___ ${row.tail}.`, columnId: "were" },
+        { id: `${itemId}_g`, text: `We ___ ${row.tail}.`, columnId: "were" },
+        { id: `${itemId}_h`, text: `They ___ ${row.tail}.`, columnId: "were" }
+      ],
+      explain: "Use was with I/he/she/it. Use were with you/we/they."
+    };
+  });
+}
+
+function buildPastVsActionSortItems(rows) {
+  return rows.map((row, idx) => {
+    const itemId = `past_mix_sort_${pad(idx + 1)}`;
+    return {
+      id: itemId,
+      prompt: "Sort each action by long background action or short interrupting action.",
+      columns: [
+        { id: "long_action", label: "Long action (was/were + verb-ing)" },
+        { id: "short_action", label: "Interrupting action (simple past)" }
+      ],
+      cards: [
+        { id: `${itemId}_a`, text: row.longActionOne, columnId: "long_action" },
+        { id: `${itemId}_b`, text: row.longActionTwo, columnId: "long_action" },
+        { id: `${itemId}_c`, text: row.shortActionOne, columnId: "short_action" },
+        { id: `${itemId}_d`, text: row.shortActionTwo, columnId: "short_action" }
+      ],
+      explain: "Use was/were + verb-ing for background actions. Use simple past for the interrupting action."
+    };
+  });
+}
+
 const presentContinuousNowOrNot = withIds("pc_now_or_not", [
   {
     prompt: "Choose the best sentence for right now.",
@@ -1271,6 +1365,1337 @@ const auxSortItems = buildAuxSortItems([
   { base: "play chess after school", ing: "playing chess after school" }
 ]);
 
+const regularPastYesterdayFile = withIds("past_reg_mc", [
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Yesterday, she ___ her cousin after school.",
+    options: ["visited", "visit", "visits", "visiting"],
+    answerIndex: 0,
+    explain: "Use regular past verb + ed for finished actions."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Last night, we ___ the kitchen after dinner.",
+    options: ["cleaned", "clean", "cleans", "cleaning"],
+    answerIndex: 0,
+    explain: "The action finished last night, so use cleaned."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "After class, he ___ for the grammar quiz.",
+    options: ["studied", "study", "studies", "studying"],
+    answerIndex: 0,
+    explain: "Use studied for a finished past action."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "On Saturday, they ___ boxes into the storage room.",
+    options: ["carried", "carry", "carries", "carrying"],
+    answerIndex: 0,
+    explain: "They carried the boxes in the past."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Last week, I ___ chess with my uncle.",
+    options: ["played", "play", "plays", "playing"],
+    answerIndex: 0,
+    explain: "Use played for last week."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Yesterday evening, Maya ___ a movie with her sister.",
+    options: ["watched", "watch", "watches", "watching"],
+    answerIndex: 0,
+    explain: "Yesterday evening signals simple past."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "This morning, the club ___ the lab early.",
+    options: ["opened", "open", "opens", "opening"],
+    answerIndex: 0,
+    explain: "The finished action uses opened."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Last month, Dad ___ the fence behind the house.",
+    options: ["painted", "paint", "paints", "painting"],
+    answerIndex: 0,
+    explain: "Use painted for a completed past action."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Yesterday, the team ___ the uniforms before practice.",
+    options: ["washed", "wash", "washes", "washing"],
+    answerIndex: 0,
+    explain: "Yesterday requires simple past."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Last night, you ___ your aunt after dinner.",
+    options: ["called", "call", "calls", "calling"],
+    answerIndex: 0,
+    explain: "Use called for finished action in the past."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Yesterday afternoon, I ___ to the library.",
+    options: ["walked", "walk", "walks", "walking"],
+    answerIndex: 0,
+    explain: "Use walked with yesterday afternoon."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "On Sunday, my mom ___ soup for lunch.",
+    options: ["cooked", "cook", "cooks", "cooking"],
+    answerIndex: 0,
+    explain: "Use cooked for a completed Sunday action."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Last period, we ___ to a short podcast.",
+    options: ["listened", "listen", "listens", "listening"],
+    answerIndex: 0,
+    explain: "Last period means finished, so use listened."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Yesterday, the class ___ the poster before lunch.",
+    options: ["finished", "finish", "finishes", "finishing"],
+    answerIndex: 0,
+    explain: "Use finished for completed action."
+  },
+  {
+    prompt: "Choose the best simple past sentence.",
+    context: "Last Friday, she ___ a laptop from the office.",
+    options: ["borrowed", "borrow", "borrows", "borrowing"],
+    answerIndex: 0,
+    explain: "Use borrowed because the action is done."
+  }
+]);
+
+const regularPastBuilder = buildSentenceBuilderItems(
+  "past_reg_builder",
+  [
+    { prompt: "Build the past sentence.", solution: "I cleaned my desk after class." },
+    { prompt: "Build the past sentence.", solution: "She visited her cousin on Sunday." },
+    { prompt: "Build the past sentence.", solution: "They watched a movie last night." },
+    { prompt: "Build the past sentence.", solution: "We cooked rice for dinner." },
+    { prompt: "Build the past sentence.", solution: "He played soccer after school." },
+    { prompt: "Build the past sentence.", solution: "You called your friend after practice." },
+    { prompt: "Build the past sentence.", solution: "The class started at eight this morning." },
+    { prompt: "Build the past sentence.", solution: "My sister carried the books upstairs." },
+    { prompt: "Build the past sentence.", solution: "I listened to the coach yesterday." },
+    { prompt: "Build the past sentence.", solution: "The team finished warmups before lunch." },
+    { prompt: "Build the past sentence.", solution: "Dad washed the car on Saturday." },
+    { prompt: "Build the past sentence.", solution: "The nurse checked my name at the desk." },
+    { prompt: "Build the past sentence.", solution: "We painted posters for the science fair." },
+    { prompt: "Build the past sentence.", solution: "Maya borrowed my notes yesterday." },
+    { prompt: "Build the past sentence.", solution: "The bus arrived early this morning." }
+  ],
+  "Use regular verb + ed for finished past actions."
+);
+
+const edEndingLabItems = buildEdEndingLabItems([
+  {
+    addEd: ["visit", "clean"],
+    changeY: ["study", "carry"],
+    doubleConsonant: ["stop", "plan"]
+  },
+  {
+    addEd: ["open", "wash"],
+    changeY: ["try", "copy"],
+    doubleConsonant: ["drop", "grab"]
+  },
+  {
+    addEd: ["paint", "listen"],
+    changeY: ["hurry", "worry"],
+    doubleConsonant: ["clap", "skip"]
+  },
+  {
+    addEd: ["start", "help"],
+    changeY: ["dry", "reply"],
+    doubleConsonant: ["nod", "tap"]
+  },
+  {
+    addEd: ["watch", "call"],
+    changeY: ["marry", "tidy"],
+    doubleConsonant: ["jog", "rub"]
+  },
+  {
+    addEd: ["cook", "check"],
+    changeY: ["apply", "bury"],
+    doubleConsonant: ["slip", "trip"]
+  },
+  {
+    addEd: ["walk", "answer"],
+    changeY: ["cry", "fry"],
+    doubleConsonant: ["drag", "slam"]
+  },
+  {
+    addEd: ["play", "rain"],
+    changeY: ["spy", "identify"],
+    doubleConsonant: ["hop", "shop"]
+  },
+  {
+    addEd: ["open", "close"],
+    changeY: ["occupy", "study"],
+    doubleConsonant: ["drip", "chat"]
+  },
+  {
+    addEd: ["call", "visit"],
+    changeY: ["worry", "hurry"],
+    doubleConsonant: ["pin", "slip"]
+  },
+  {
+    addEd: ["paint", "wash"],
+    changeY: ["dry", "reply"],
+    doubleConsonant: ["grab", "stop"]
+  },
+  {
+    addEd: ["check", "help"],
+    changeY: ["carry", "marry"],
+    doubleConsonant: ["clap", "nod"]
+  },
+  {
+    addEd: ["listen", "open"],
+    changeY: ["tidy", "copy"],
+    doubleConsonant: ["jog", "drop"]
+  },
+  {
+    addEd: ["walk", "call"],
+    changeY: ["try", "cry"],
+    doubleConsonant: ["plan", "rub"]
+  },
+  {
+    addEd: ["start", "watch"],
+    changeY: ["bury", "fry"],
+    doubleConsonant: ["hop", "tap"]
+  }
+]);
+
+const irregularIdMc = withIds("past_irregular_mc", [
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Yesterday, he ___ home after practice.",
+    options: ["went", "goed", "go", "goes"],
+    answerIndex: 0,
+    explain: "The past of go is went."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Last night, I ___ noodles for dinner.",
+    options: ["ate", "eated", "eat", "eats"],
+    answerIndex: 0,
+    explain: "The past of eat is ate."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "At the game, we ___ our English teacher.",
+    options: ["saw", "seed", "see", "sees"],
+    answerIndex: 0,
+    explain: "The past of see is saw."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Yesterday, she ___ a long email to her coach.",
+    options: ["wrote", "writed", "write", "writes"],
+    answerIndex: 0,
+    explain: "The past of write is wrote."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Last weekend, they ___ the train downtown.",
+    options: ["took", "taked", "take", "takes"],
+    answerIndex: 0,
+    explain: "The past of take is took."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Yesterday morning, Maya ___ her friend a note.",
+    options: ["gave", "gived", "give", "gives"],
+    answerIndex: 0,
+    explain: "The past of give is gave."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Last night, we ___ the missing key in the kitchen.",
+    options: ["found", "finded", "find", "finds"],
+    answerIndex: 0,
+    explain: "The past of find is found."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Yesterday, Dad ___ new batteries at the store.",
+    options: ["bought", "buyed", "buy", "buys"],
+    answerIndex: 0,
+    explain: "The past of buy is bought."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "In class, he ___ clearly during the presentation.",
+    options: ["spoke", "speaked", "speak", "speaks"],
+    answerIndex: 0,
+    explain: "The past of speak is spoke."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Last week, they ___ a robot model in science.",
+    options: ["made", "maked", "make", "makes"],
+    answerIndex: 0,
+    explain: "The past of make is made."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Yesterday evening, I ___ hot tea at home.",
+    options: ["drank", "drinked", "drink", "drinks"],
+    answerIndex: 0,
+    explain: "The past of drink is drank."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Last Friday, she ___ to practice late.",
+    options: ["came", "comed", "come", "comes"],
+    answerIndex: 0,
+    explain: "The past of come is came."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Yesterday, we ___ to the museum before lunch.",
+    options: ["drove", "drived", "drive", "drives"],
+    answerIndex: 0,
+    explain: "The past of drive is drove."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Last night, the glass ___ in the sink.",
+    options: ["broke", "breaked", "break", "breaks"],
+    answerIndex: 0,
+    explain: "The past of break is broke."
+  },
+  {
+    prompt: "Choose the correct irregular past verb.",
+    context: "Yesterday, you ___ the blue folder.",
+    options: ["chose", "choosed", "choose", "chooses"],
+    answerIndex: 0,
+    explain: "The past of choose is chose."
+  }
+]);
+
+const irregularVerbPairs = [
+  { base: "go", past: "went" },
+  { base: "eat", past: "ate" },
+  { base: "see", past: "saw" },
+  { base: "write", past: "wrote" },
+  { base: "take", past: "took" },
+  { base: "give", past: "gave" },
+  { base: "find", past: "found" },
+  { base: "buy", past: "bought" },
+  { base: "speak", past: "spoke" },
+  { base: "make", past: "made" },
+  { base: "drink", past: "drank" },
+  { base: "come", past: "came" },
+  { base: "drive", past: "drove" },
+  { base: "break", past: "broke" },
+  { base: "choose", past: "chose" },
+  { base: "bring", past: "brought" },
+  { base: "run", past: "ran" },
+  { base: "sing", past: "sang" },
+  { base: "sit", past: "sat" },
+  { base: "sleep", past: "slept" }
+];
+
+const irregularMatchItems = buildIrregularMatchItems(
+  "past_irregular_match",
+  Array.from({ length: ITEM_TARGET }, (_, idx) => ({
+    pairs: [0, 1, 2, 3].map((offset) => irregularVerbPairs[(idx + offset) % irregularVerbPairs.length])
+  }))
+);
+
+const fixPastErrorSpotter = withIds("past_irregular_fix", [
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "He goed home after practice.",
+    correction: "He went home after practice.",
+    explain: "The past of go is went."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "I eated lunch at school.",
+    correction: "I ate lunch at school.",
+    explain: "The past of eat is ate."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "We taked the late bus yesterday.",
+    correction: "We took the late bus yesterday.",
+    explain: "The past of take is took."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "She buyed new shoes last week.",
+    correction: "She bought new shoes last week.",
+    explain: "The past of buy is bought."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "They finded the answer quickly.",
+    correction: "They found the answer quickly.",
+    explain: "The past of find is found."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "Maya writed a note to her teacher.",
+    correction: "Maya wrote a note to her teacher.",
+    explain: "The past of write is wrote."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "Dad gived me a ride yesterday.",
+    correction: "Dad gave me a ride yesterday.",
+    explain: "The past of give is gave."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "We comed back before dark.",
+    correction: "We came back before dark.",
+    explain: "The past of come is came."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "The dog runned into the yard.",
+    correction: "The dog ran into the yard.",
+    explain: "The past of run is ran."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "I drinked too much soda last night.",
+    correction: "I drank too much soda last night.",
+    explain: "The past of drink is drank."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "He breaked his pencil in class.",
+    correction: "He broke his pencil in class.",
+    explain: "The past of break is broke."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "You choosed the wrong file.",
+    correction: "You chose the wrong file.",
+    explain: "The past of choose is chose."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "They bringed snacks for the trip.",
+    correction: "They brought snacks for the trip.",
+    explain: "The past of bring is brought."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "She singed in the school concert.",
+    correction: "She sang in the school concert.",
+    explain: "The past of sing is sang."
+  },
+  {
+    prompt: "Fix one irregular past verb bug.",
+    sentence: "We sitted in the front row.",
+    correction: "We sat in the front row.",
+    explain: "The past of sit is sat."
+  }
+]);
+
+const wasWereMc = withIds("was_were_mc", [
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "I ___ tired after practice yesterday.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with I."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "They ___ happy after the game.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 1,
+    explain: "Use were with they."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "She ___ at the clinic yesterday.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with she."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "We ___ in the gym at 3 PM.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 1,
+    explain: "Use were with we."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "The weather ___ cold last night.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with singular subject."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "You ___ my partner yesterday.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 1,
+    explain: "Use were with you."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "He ___ late for class this morning.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with he."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "My friends ___ at the library last night.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 1,
+    explain: "Use were with plural subject."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "The movie ___ interesting.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with singular noun."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "The buses ___ crowded after school.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 1,
+    explain: "Use were with buses."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "It ___ sunny in the morning.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with it."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "The students ___ ready for the test.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 1,
+    explain: "Use were with plural subject."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "Dad ___ at work all day yesterday.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with Dad."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "The shoes ___ wet after the rain.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 1,
+    explain: "Use were with plural noun."
+  },
+  {
+    prompt: "Choose the correct past be verb.",
+    context: "The cat ___ under the table.",
+    options: ["was", "were", "is", "are"],
+    answerIndex: 0,
+    explain: "Use was with singular noun."
+  }
+]);
+
+const classPhotoBuilder = buildSentenceBuilderItems(
+  "was_were_builder",
+  [
+    { prompt: "Build the past be sentence.", solution: "I was in the front row yesterday." },
+    { prompt: "Build the past be sentence.", solution: "They were very quiet in class." },
+    { prompt: "Build the past be sentence.", solution: "She was at dance practice last night." },
+    { prompt: "Build the past be sentence.", solution: "We were at the museum on Friday." },
+    { prompt: "Build the past be sentence.", solution: "He was late for the meeting." },
+    { prompt: "Build the past be sentence.", solution: "You were my lab partner yesterday." },
+    { prompt: "Build the past be sentence.", solution: "The weather was warm this morning." },
+    { prompt: "Build the past be sentence.", solution: "My cousins were in town last weekend." },
+    { prompt: "Build the past be sentence.", solution: "It was noisy near the stadium." },
+    { prompt: "Build the past be sentence.", solution: "The teachers were in the office at noon." },
+    { prompt: "Build the past be sentence.", solution: "Dad was at the store after work." },
+    { prompt: "Build the past be sentence.", solution: "The books were on my desk." },
+    { prompt: "Build the past be sentence.", solution: "Our bus was early on Monday." },
+    { prompt: "Build the past be sentence.", solution: "The students were ready for rehearsal." },
+    { prompt: "Build the past be sentence.", solution: "My notebook was in my backpack." }
+  ],
+  "Use was with I/he/she/it and were with you/we/they."
+);
+
+const pastBeSubjectSwitchItems = buildWasWereSortItems([
+  { tail: "at the gym after school", singularSubject: "the coach" },
+  { tail: "at the bus stop at 7 AM", singularSubject: "the bus driver" },
+  { tail: "happy about the project result", singularSubject: "the principal" },
+  { tail: "in the library before lunch", singularSubject: "the tutor" },
+  { tail: "ready for the science fair", singularSubject: "the nurse" },
+  { tail: "late to the meeting yesterday", singularSubject: "the manager" },
+  { tail: "in the lab at noon", singularSubject: "the intern" },
+  { tail: "inside during the storm", singularSubject: "the class monitor" },
+  { tail: "at the game last night", singularSubject: "the announcer" },
+  { tail: "in the cafeteria at break", singularSubject: "the chef" },
+  { tail: "very calm during the test", singularSubject: "the counselor" },
+  { tail: "near the office this morning", singularSubject: "the office aide" },
+  { tail: "excited about field day", singularSubject: "the teacher" },
+  { tail: "outside after rehearsal", singularSubject: "the actor" },
+  { tail: "at home last weekend", singularSubject: "the student leader" }
+]);
+
+const pastContinuousMc = withIds("past_continuous_mc", [
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 8 PM, she ___ for the math test.",
+    options: ["was studying", "were studying", "studied", "was study"],
+    answerIndex: 0,
+    explain: "Use was + verb-ing with she."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 7:30, they ___ dinner together.",
+    options: ["was eating", "were eating", "ate", "were eat"],
+    answerIndex: 1,
+    explain: "Use were + verb-ing with they."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At noon, I ___ to the office.",
+    options: ["was walking", "were walking", "walked", "was walk"],
+    answerIndex: 0,
+    explain: "Use was with I in past continuous."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 9 PM, we ___ a movie at home.",
+    options: ["was watching", "were watching", "watched", "were watch"],
+    answerIndex: 1,
+    explain: "Use were + verb-ing with we."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 6 AM, he ___ his bike to work.",
+    options: ["was riding", "were riding", "rode", "was ride"],
+    answerIndex: 0,
+    explain: "Use was + verb-ing with he."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 5 PM, you ___ your project slides.",
+    options: ["was finishing", "were finishing", "finished", "were finish"],
+    answerIndex: 1,
+    explain: "Use were + verb-ing with you."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 10 PM, the dog ___ by the door.",
+    options: ["was sleeping", "were sleeping", "slept", "was sleep"],
+    answerIndex: 0,
+    explain: "Use was + verb-ing with singular subject."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 4 PM, my friends ___ in the gym.",
+    options: ["was practicing", "were practicing", "practiced", "were practice"],
+    answerIndex: 1,
+    explain: "Use were + verb-ing with plural subject."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 3 PM, it ___ heavily outside.",
+    options: ["was raining", "were raining", "rained", "was rain"],
+    answerIndex: 0,
+    explain: "Use was with it."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 11 AM, the students ___ a quiz.",
+    options: ["was taking", "were taking", "took", "were take"],
+    answerIndex: 1,
+    explain: "Use were + verb-ing with students."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At midnight, Dad ___ in the kitchen.",
+    options: ["was cooking", "were cooking", "cooked", "was cook"],
+    answerIndex: 0,
+    explain: "Use was + verb-ing with Dad."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 8:15, we ___ for the bus.",
+    options: ["was waiting", "were waiting", "waited", "were wait"],
+    answerIndex: 1,
+    explain: "Use were + verb-ing with we."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 1 PM, she ___ to her counselor.",
+    options: ["was talking", "were talking", "talked", "was talk"],
+    answerIndex: 0,
+    explain: "Use was + verb-ing with she."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 2 PM, they ___ through the museum.",
+    options: ["was walking", "were walking", "walked", "were walk"],
+    answerIndex: 1,
+    explain: "Use were + verb-ing with they."
+  },
+  {
+    prompt: "Choose the best past continuous sentence.",
+    context: "At 9:45, I ___ my notes for history.",
+    options: ["was reviewing", "were reviewing", "reviewed", "was review"],
+    answerIndex: 0,
+    explain: "Use was + verb-ing with I."
+  }
+]);
+
+const pastContinuousBuilder = buildSentenceBuilderItems(
+  "past_continuous_builder",
+  [
+    { prompt: "Build the scene sentence.", solution: "She was studying at 8 PM." },
+    { prompt: "Build the scene sentence.", solution: "They were playing cards after dinner." },
+    { prompt: "Build the scene sentence.", solution: "I was walking home at six." },
+    { prompt: "Build the scene sentence.", solution: "We were waiting for the bus at 7 AM." },
+    { prompt: "Build the scene sentence.", solution: "He was cooking dinner at five." },
+    { prompt: "Build the scene sentence.", solution: "You were checking the map at noon." },
+    { prompt: "Build the scene sentence.", solution: "The coach was shouting from the sideline." },
+    { prompt: "Build the scene sentence.", solution: "My friends were watching a movie at night." },
+    { prompt: "Build the scene sentence.", solution: "Dad was driving home at nine." },
+    { prompt: "Build the scene sentence.", solution: "The students were cleaning the lab after class." },
+    { prompt: "Build the scene sentence.", solution: "It was raining hard at noon." },
+    { prompt: "Build the scene sentence.", solution: "She was reading in bed at ten." },
+    { prompt: "Build the scene sentence.", solution: "We were making posters after school." },
+    { prompt: "Build the scene sentence.", solution: "I was texting my cousin during lunch." },
+    { prompt: "Build the scene sentence.", solution: "They were cooking when the lights went out." }
+  ],
+  "Use was/were + verb-ing for actions in progress in the past."
+);
+
+const fixTimelineErrorSpotter = withIds("past_continuous_fix", [
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "She were studying at 8 PM.",
+    correction: "She was studying at 8 PM.",
+    explain: "Use was with she."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "They was playing cards when I arrived.",
+    correction: "They were playing cards when I arrived.",
+    explain: "Use were with they."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "I were walking home at six.",
+    correction: "I was walking home at six.",
+    explain: "Use was with I."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "We was waiting for the bus at seven.",
+    correction: "We were waiting for the bus at seven.",
+    explain: "Use were with we."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "He were cooking dinner at five.",
+    correction: "He was cooking dinner at five.",
+    explain: "Use was with he."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "You was checking the map at noon.",
+    correction: "You were checking the map at noon.",
+    explain: "Use were with you."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "The coach was shout at the team.",
+    correction: "The coach was shouting at the team.",
+    explain: "Use verb-ing in past continuous."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "My friends were watch a movie.",
+    correction: "My friends were watching a movie.",
+    explain: "Use were + verb-ing."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "Dad was drive home at nine.",
+    correction: "Dad was driving home at nine.",
+    explain: "Use was + verb-ing."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "The students were clean the lab after class.",
+    correction: "The students were cleaning the lab after class.",
+    explain: "Use were + verb-ing."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "It were raining hard at noon.",
+    correction: "It was raining hard at noon.",
+    explain: "Use was with it."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "She was read in bed at ten.",
+    correction: "She was reading in bed at ten.",
+    explain: "Use was + verb-ing."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "We were make posters after school.",
+    correction: "We were making posters after school.",
+    explain: "Use were + verb-ing."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "I was text my cousin during lunch.",
+    correction: "I was texting my cousin during lunch.",
+    explain: "Use was + verb-ing."
+  },
+  {
+    prompt: "Fix one past continuous bug.",
+    sentence: "They were cook when the lights went out.",
+    correction: "They were cooking when the lights went out.",
+    explain: "Use were + verb-ing."
+  }
+]);
+
+const pastVsPastContinuousMc = withIds("past_mix_mc", [
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "I was doing homework when the power went out.",
+      "I did homework when the power went out.",
+      "I was doing homework when the power was going out.",
+      "I did homework when the power was going out."
+    ],
+    answerIndex: 0,
+    explain: "Long action uses was/were + verb-ing. Interrupting action uses simple past."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "She was walking home when it started to rain.",
+      "She walked home when it started to rain.",
+      "She was walking home when it was starting to rain.",
+      "She walked home when it was starting to rain."
+    ],
+    answerIndex: 0,
+    explain: "Background action takes was/were + verb-ing."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "They were eating dinner when the phone rang.",
+      "They ate dinner when the phone rang.",
+      "They were eating dinner when the phone was ringing.",
+      "They ate dinner when the phone was ringing."
+    ],
+    answerIndex: 0,
+    explain: "Use simple past for the short interrupting action."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "We were waiting for the bus when it arrived.",
+      "We waited for the bus when it arrived.",
+      "We were waiting for the bus when it was arriving.",
+      "We waited for the bus when it was arriving."
+    ],
+    answerIndex: 0,
+    explain: "Long action in progress + short past interrupt."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "He was playing soccer when he fell.",
+      "He played soccer when he fell.",
+      "He was playing soccer when he was falling.",
+      "He played soccer when he was falling."
+    ],
+    answerIndex: 0,
+    explain: "Past continuous marks ongoing background action."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "I was reading when my friend texted me.",
+      "I read when my friend texted me.",
+      "I was reading when my friend was texting me.",
+      "I read when my friend was texting me."
+    ],
+    answerIndex: 0,
+    explain: "The text interrupt is simple past."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "The class was taking notes when the bell rang.",
+      "The class took notes when the bell rang.",
+      "The class was taking notes when the bell was ringing.",
+      "The class took notes when the bell was ringing."
+    ],
+    answerIndex: 0,
+    explain: "Use was/were + verb-ing for the ongoing action."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "You were washing dishes when the lights went out.",
+      "You washed dishes when the lights went out.",
+      "You were washing dishes when the lights were going out.",
+      "You washed dishes when the lights were going out."
+    ],
+    answerIndex: 0,
+    explain: "Short event takes simple past."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "Dad was driving when a tire popped.",
+      "Dad drove when a tire popped.",
+      "Dad was driving when a tire was popping.",
+      "Dad drove when a tire was popping."
+    ],
+    answerIndex: 0,
+    explain: "Driving is the long action, popped is the short event."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "The dog was sleeping when the door slammed.",
+      "The dog slept when the door slammed.",
+      "The dog was sleeping when the door was slamming.",
+      "The dog slept when the door was slamming."
+    ],
+    answerIndex: 0,
+    explain: "Use past continuous + when + simple past."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "Maya was cooking when her brother arrived.",
+      "Maya cooked when her brother arrived.",
+      "Maya was cooking when her brother was arriving.",
+      "Maya cooked when her brother was arriving."
+    ],
+    answerIndex: 0,
+    explain: "The ongoing action uses was + verb-ing."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "They were studying while the rain fell outside.",
+      "They studied while the rain fell outside.",
+      "They were studying while the rain was falling outside.",
+      "They studied while the rain was falling outside."
+    ],
+    answerIndex: 0,
+    explain: "Studying is the long action; fell is the short event."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "I was making lunch when the fire alarm rang.",
+      "I made lunch when the fire alarm rang.",
+      "I was making lunch when the fire alarm was ringing.",
+      "I made lunch when the fire alarm was ringing."
+    ],
+    answerIndex: 0,
+    explain: "Fire alarm rang is the simple past interrupt."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "We were practicing when the coach called time.",
+      "We practiced when the coach called time.",
+      "We were practicing when the coach was calling time.",
+      "We practiced when the coach was calling time."
+    ],
+    answerIndex: 0,
+    explain: "Past continuous and simple past show timeline clearly."
+  },
+  {
+    prompt: "Choose the best interrupt pattern sentence.",
+    context: "Use one long action and one interrupting action.",
+    options: [
+      "She was texting when the bus arrived.",
+      "She texted when the bus arrived.",
+      "She was texting when the bus was arriving.",
+      "She texted when the bus was arriving."
+    ],
+    answerIndex: 0,
+    explain: "Texting is in progress. Bus arrived is the interrupt."
+  }
+]);
+
+const whenWhileBuilder = buildSentenceBuilderItems(
+  "past_mix_builder",
+  [
+    { prompt: "Build the timeline sentence.", solution: "I was reading when my phone rang." },
+    { prompt: "Build the timeline sentence.", solution: "She was walking home when it started to rain." },
+    { prompt: "Build the timeline sentence.", solution: "They were eating dinner when the lights went out." },
+    { prompt: "Build the timeline sentence.", solution: "We were waiting outside when the bus arrived." },
+    { prompt: "Build the timeline sentence.", solution: "He was playing soccer when he fell." },
+    { prompt: "Build the timeline sentence.", solution: "You were studying while your brother cooked dinner." },
+    { prompt: "Build the timeline sentence.", solution: "The class was taking notes when the bell rang." },
+    { prompt: "Build the timeline sentence.", solution: "Dad was driving when a tire popped." },
+    { prompt: "Build the timeline sentence.", solution: "The dog was sleeping when the door slammed." },
+    { prompt: "Build the timeline sentence.", solution: "Maya was cooking when her friend called." },
+    { prompt: "Build the timeline sentence.", solution: "They were practicing while the rain fell outside." },
+    { prompt: "Build the timeline sentence.", solution: "I was making lunch when the fire alarm rang." },
+    { prompt: "Build the timeline sentence.", solution: "We were talking when the teacher entered." },
+    { prompt: "Build the timeline sentence.", solution: "She was texting when the train arrived." },
+    { prompt: "Build the timeline sentence.", solution: "I was cleaning my room when my cousin knocked." }
+  ],
+  "Use was/were + verb-ing for long action, then when + simple past for the interrupt."
+);
+
+const whichActionSortItems = buildPastVsActionSortItems([
+  {
+    longActionOne: "I was reading in bed",
+    longActionTwo: "We were waiting at the stop",
+    shortActionOne: "the phone rang",
+    shortActionTwo: "the bus arrived"
+  },
+  {
+    longActionOne: "She was cooking dinner",
+    longActionTwo: "They were studying in the library",
+    shortActionOne: "the alarm rang",
+    shortActionTwo: "the lights went out"
+  },
+  {
+    longActionOne: "He was driving home",
+    longActionTwo: "We were watching a movie",
+    shortActionOne: "a tire popped",
+    shortActionTwo: "the door slammed"
+  },
+  {
+    longActionOne: "The class was taking notes",
+    longActionTwo: "I was organizing my files",
+    shortActionOne: "the bell rang",
+    shortActionTwo: "my friend texted me"
+  },
+  {
+    longActionOne: "Dad was fixing the bike",
+    longActionTwo: "They were eating lunch",
+    shortActionOne: "the rain started",
+    shortActionTwo: "the coach called us"
+  },
+  {
+    longActionOne: "You were washing dishes",
+    longActionTwo: "She was practicing piano",
+    shortActionOne: "the sink clogged",
+    shortActionTwo: "the teacher arrived"
+  },
+  {
+    longActionOne: "I was walking to class",
+    longActionTwo: "We were reviewing flashcards",
+    shortActionOne: "my shoe broke",
+    shortActionTwo: "the timer beeped"
+  },
+  {
+    longActionOne: "The students were cleaning the lab",
+    longActionTwo: "He was carrying the boxes",
+    shortActionOne: "the principal entered",
+    shortActionTwo: "a box dropped"
+  },
+  {
+    longActionOne: "Maya was drawing posters",
+    longActionTwo: "They were planning the event",
+    shortActionOne: "the marker ran out",
+    shortActionTwo: "the bell rang"
+  },
+  {
+    longActionOne: "We were jogging in the park",
+    longActionTwo: "I was checking my schedule",
+    shortActionOne: "it started to rain",
+    shortActionTwo: "my coach called"
+  },
+  {
+    longActionOne: "The dog was sleeping near the door",
+    longActionTwo: "She was reading in the kitchen",
+    shortActionOne: "the package arrived",
+    shortActionTwo: "the kettle whistled"
+  },
+  {
+    longActionOne: "They were setting up the stage",
+    longActionTwo: "I was practicing my speech",
+    shortActionOne: "the microphone failed",
+    shortActionTwo: "the host announced our names"
+  },
+  {
+    longActionOne: "He was riding his bike to school",
+    longActionTwo: "We were waiting in line",
+    shortActionOne: "his chain snapped",
+    shortActionTwo: "the doors opened"
+  },
+  {
+    longActionOne: "I was doing my project",
+    longActionTwo: "They were packing their bags",
+    shortActionOne: "the internet crashed",
+    shortActionTwo: "the bus horn sounded"
+  },
+  {
+    longActionOne: "She was talking to her counselor",
+    longActionTwo: "We were organizing the classroom",
+    shortActionOne: "the bell rang",
+    shortActionTwo: "a parent called the office"
+  }
+]);
+
+const didOrWasMc = withIds("past_questions_mc", [
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ you finish the project last night?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 0,
+    explain: "Use Did + subject + base verb for past action."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ she at practice yesterday?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 1,
+    explain: "Use was for past be with she."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ they at the game last night?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 2,
+    explain: "Use were for past be with they."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ he call his grandmother after school?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 0,
+    explain: "Use Did for past action question."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ we late for class this morning?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 2,
+    explain: "Use were with we."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ I leave my notebook here yesterday?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 0,
+    explain: "Use Did + I + base verb."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ the movie interesting last night?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 1,
+    explain: "Movie is singular, so use was."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ your parents drive to work yesterday?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 0,
+    explain: "Use Did for past action."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ the students quiet during the test?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 2,
+    explain: "Students is plural, so use were."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ Maya clean her desk yesterday?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 0,
+    explain: "Use Did with action verb clean."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ it cold this morning?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 1,
+    explain: "Use was with it."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ you and Ben ready for rehearsal?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 2,
+    explain: "You and Ben is plural, so use were."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ he send the email before lunch?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 0,
+    explain: "Use Did + base verb send."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ the buses on time yesterday?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 2,
+    explain: "Use were with plural noun buses."
+  },
+  {
+    prompt: "Choose the correct question helper.",
+    context: "___ she take the late train?",
+    options: ["Did", "Was", "Were", "Does"],
+    answerIndex: 0,
+    explain: "Use Did for past action question."
+  }
+]);
+
+const pastQuestionBuilder = buildSentenceBuilderItems(
+  "past_questions_builder",
+  [
+    { prompt: "Build the past question.", solution: "Did you finish your homework last night?" },
+    { prompt: "Build the past question.", solution: "Did she call her coach after practice?" },
+    { prompt: "Build the past question.", solution: "Did they watch the game yesterday?" },
+    { prompt: "Build the past question.", solution: "Did he bring his ID to school?" },
+    { prompt: "Build the past question.", solution: "Did we leave early this morning?" },
+    { prompt: "Build the past question.", solution: "Did I send the right file?" },
+    { prompt: "Build the past question.", solution: "Did your brother clean the kitchen?" },
+    { prompt: "Build the past question.", solution: "Did Maya study for the science quiz?" },
+    { prompt: "Build the past question.", solution: "Did the class finish the poster yesterday?" },
+    { prompt: "Build the past question.", solution: "Did your parents drive to work today?" },
+    { prompt: "Build the past question.", solution: "Did the bus arrive on time?" },
+    { prompt: "Build the past question.", solution: "Did she borrow your notebook?" },
+    { prompt: "Build the past question.", solution: "Did they practice after school?" },
+    { prompt: "Build the past question.", solution: "Did he open the lab door?" },
+    { prompt: "Build the past question.", solution: "Did we meet in room twelve?" }
+  ],
+  "Use Did + subject + base verb for simple past questions."
+);
+
+const fixPastQuestionSpotter = withIds("past_questions_fix", [
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did she went to practice?",
+    correction: "Did she go to practice?",
+    explain: "After Did, use base verb go."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did he ate breakfast at home?",
+    correction: "Did he eat breakfast at home?",
+    explain: "After Did, use base verb eat."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did they saw the movie?",
+    correction: "Did they see the movie?",
+    explain: "After Did, use base verb see."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did Maya wrote the report?",
+    correction: "Did Maya write the report?",
+    explain: "After Did, use base verb write."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did you took the late bus?",
+    correction: "Did you take the late bus?",
+    explain: "After Did, use base verb take."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did we came before lunch?",
+    correction: "Did we come before lunch?",
+    explain: "After Did, use base verb come."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did Dad drove to work?",
+    correction: "Did Dad drive to work?",
+    explain: "After Did, use base verb drive."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did the team won the game?",
+    correction: "Did the team win the game?",
+    explain: "After Did, use base verb win."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did your sister sang at the concert?",
+    correction: "Did your sister sing at the concert?",
+    explain: "After Did, use base verb sing."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did I forgot my ID card?",
+    correction: "Did I forget my ID card?",
+    explain: "After Did, use base verb forget."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did the store closed early?",
+    correction: "Did the store close early?",
+    explain: "After Did, use base verb close."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did they brought snacks for class?",
+    correction: "Did they bring snacks for class?",
+    explain: "After Did, use base verb bring."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did he made coffee this morning?",
+    correction: "Did he make coffee this morning?",
+    explain: "After Did, use base verb make."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did she ran to class?",
+    correction: "Did she run to class?",
+    explain: "After Did, use base verb run."
+  },
+  {
+    prompt: "Fix one past question bug.",
+    sentence: "Did you choosed the red folder?",
+    correction: "Did you choose the red folder?",
+    explain: "After Did, use base verb choose."
+  }
+]);
+
 export const MISSIONS_DATA = {
   missions: [
     {
@@ -1286,6 +2711,7 @@ export const MISSIONS_DATA = {
         {
           id: "present_continuous_am_is_are_ing",
           title: "Present Continuous",
+          difficulty: "Rookie",
           ruleFocus: "Use am/is/are + verb-ing for actions happening now.",
           examplePattern: "She is studying. / They are talking.",
           notesForELD:
@@ -1294,6 +2720,7 @@ export const MISSIONS_DATA = {
             {
               id: "now_or_not",
               title: "Now or Not?",
+              description: "Pick the correct am/is/are + verb-ing form for right-now actions.",
               gameType: "multiple_choice",
               itemCount: ITEM_TARGET,
               items: presentContinuousNowOrNot
@@ -1301,6 +2728,7 @@ export const MISSIONS_DATA = {
             {
               id: "agent_status_update",
               title: "Agent Status Update",
+              description: "Build present continuous status updates from word tiles.",
               gameType: "sentence_builder",
               itemCount: ITEM_TARGET,
               items: presentContinuousBuilder
@@ -1308,6 +2736,7 @@ export const MISSIONS_DATA = {
             {
               id: "fix_the_bug",
               title: "Fix the Bug",
+              description: "Repair one present continuous bug in each sentence.",
               gameType: "error_spotter",
               itemCount: ITEM_TARGET,
               items: presentContinuousErrorSpotter
@@ -1317,6 +2746,7 @@ export const MISSIONS_DATA = {
         {
           id: "simple_present_affirmative",
           title: "Simple Present",
+          difficulty: "Rookie",
           ruleFocus: "Use base verb (or -s) for habits and facts.",
           examplePattern: "I play soccer. / He plays soccer.",
           notesForELD:
@@ -1325,6 +2755,7 @@ export const MISSIONS_DATA = {
             {
               id: "habit_match",
               title: "Habit Match",
+              description: "Choose the best simple present form for daily routines and facts.",
               gameType: "multiple_choice",
               itemCount: ITEM_TARGET,
               items: simplePresentHabitMatch
@@ -1332,6 +2763,7 @@ export const MISSIONS_DATA = {
             {
               id: "routine_builder",
               title: "Routine Builder",
+              description: "Assemble clear habit sentences with correct verb endings.",
               gameType: "sentence_builder",
               itemCount: ITEM_TARGET,
               items: simplePresentBuilder
@@ -1339,6 +2771,7 @@ export const MISSIONS_DATA = {
             {
               id: "subject_switch",
               title: "Subject Switch",
+              description: "Sort subjects to base verb vs verb + s lanes.",
               gameType: "drag_sort",
               itemCount: ITEM_TARGET,
               items: subjectSwitchItems
@@ -1348,6 +2781,7 @@ export const MISSIONS_DATA = {
         {
           id: "yes_no_questions_do_does",
           title: "Yes/No Questions",
+          difficulty: "Agent",
           ruleFocus: "Do/Does + subject + base verb?",
           examplePattern: "Do you like pizza? / Does she like pizza?",
           notesForELD:
@@ -1356,6 +2790,7 @@ export const MISSIONS_DATA = {
             {
               id: "interrogation_room",
               title: "Interrogation Room",
+              description: "Identify the correct Do/Does question stem.",
               gameType: "multiple_choice",
               itemCount: ITEM_TARGET,
               items: yesNoQuestionMc
@@ -1363,6 +2798,7 @@ export const MISSIONS_DATA = {
             {
               id: "build_the_question",
               title: "Build the Question",
+              description: "Build yes/no questions with Do/Does + base verb.",
               gameType: "sentence_builder",
               itemCount: ITEM_TARGET,
               items: yesNoBuilder
@@ -1370,6 +2806,7 @@ export const MISSIONS_DATA = {
             {
               id: "do_vs_does",
               title: "Do vs Does",
+              description: "Sort question stems into Do and Does lanes.",
               gameType: "drag_sort",
               itemCount: ITEM_TARGET,
               items: doDoesSortItems
@@ -1379,6 +2816,7 @@ export const MISSIONS_DATA = {
         {
           id: "wh_questions_do_does",
           title: "WH Questions",
+          difficulty: "Agent",
           ruleFocus: "WH word + do/does + subject + base verb?",
           examplePattern: "Where do they live? / When does he work?",
           notesForELD:
@@ -1387,6 +2825,7 @@ export const MISSIONS_DATA = {
             {
               id: "find_the_file",
               title: "Find the File",
+              description: "Pick the WH question with correct structure.",
               gameType: "multiple_choice",
               itemCount: ITEM_TARGET,
               items: whQuestionMc
@@ -1394,6 +2833,7 @@ export const MISSIONS_DATA = {
             {
               id: "wh_builder",
               title: "WH Builder",
+              description: "Build WH questions in the correct word order.",
               gameType: "sentence_builder",
               itemCount: ITEM_TARGET,
               items: whBuilder
@@ -1401,6 +2841,7 @@ export const MISSIONS_DATA = {
             {
               id: "wh_swap",
               title: "WH Swap",
+              description: "Match clues to the right WH word lane.",
               gameType: "drag_sort",
               itemCount: ITEM_TARGET,
               items: whSwapItems
@@ -1410,6 +2851,7 @@ export const MISSIONS_DATA = {
         {
           id: "auxiliary_verb_focus",
           title: "Auxiliary Verb Focus",
+          difficulty: "Director",
           ruleFocus: "Choose the correct auxiliary based on tense and structure.",
           examplePattern: "Are you coming? / Do you come here often?",
           notesForELD:
@@ -1418,6 +2860,7 @@ export const MISSIONS_DATA = {
             {
               id: "auxiliary_id",
               title: "Auxiliary ID",
+              description: "Choose between be auxiliaries and do auxiliaries.",
               gameType: "multiple_choice",
               itemCount: ITEM_TARGET,
               items: auxiliaryIdMc
@@ -1425,6 +2868,7 @@ export const MISSIONS_DATA = {
             {
               id: "two_truths",
               title: "Two Truths",
+              description: "Fix one auxiliary error in each sentence.",
               gameType: "error_spotter",
               itemCount: ITEM_TARGET,
               items: auxiliaryErrorSpotter
@@ -1432,9 +2876,231 @@ export const MISSIONS_DATA = {
             {
               id: "aux_sorting_desk",
               title: "Aux Sorting Desk",
+              description: "Sort sentences by be auxiliary or do auxiliary family.",
               gameType: "drag_sort",
               itemCount: ITEM_TARGET,
               items: auxSortItems
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "time_traveler",
+      slug: "time-traveler",
+      hubPath: "/missions/hub.html?mission=time_traveler",
+      title: "Time Traveler",
+      subtitle: "Past Tenses",
+      description: "Talk about finished actions and tell stories.",
+      icon: "⏳",
+      subskills: [
+        {
+          id: "simple_past_regular_verbs",
+          title: "Simple Past - Regular Verbs",
+          difficulty: "Rookie",
+          ruleFocus: "Use verb + -ed for finished past actions.",
+          examplePattern: "She visited her cousin.",
+          notesForELD:
+            "Look for time words like yesterday or last night. Use regular past forms such as visited, cleaned, and studied.",
+          games: [
+            {
+              id: "yesterday_file",
+              title: "Yesterday File",
+              description: "Choose the correct regular past verb in context.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: regularPastYesterdayFile
+            },
+            {
+              id: "past_builder_regular",
+              title: "Past Builder: Regular",
+              description: "Build clear regular past sentences from word tiles.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: regularPastBuilder
+            },
+            {
+              id: "ed_ending_lab",
+              title: "ED Ending Lab",
+              description: "Sort verbs by regular past spelling patterns.",
+              gameType: "drag_sort",
+              itemCount: ITEM_TARGET,
+              items: edEndingLabItems
+            }
+          ]
+        },
+        {
+          id: "simple_past_irregular_verbs",
+          title: "Simple Past - Irregular Verbs",
+          difficulty: "Agent",
+          ruleFocus: "Use irregular forms such as go to went.",
+          examplePattern: "He went home.",
+          notesForELD:
+            "Irregular verbs do not use -ed. Memorize pairs like go/went, see/saw, and eat/ate.",
+          games: [
+            {
+              id: "irregular_id",
+              title: "Irregular ID",
+              description: "Pick the correct irregular past form.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: irregularIdMc
+            },
+            {
+              id: "time_machine_match",
+              title: "Time Machine Match",
+              description: "Match base verbs and irregular past forms.",
+              gameType: "drag_sort",
+              itemCount: ITEM_TARGET,
+              items: irregularMatchItems
+            },
+            {
+              id: "fix_the_past",
+              title: "Fix the Past",
+              description: "Repair one irregular past mistake per sentence.",
+              gameType: "error_spotter",
+              itemCount: ITEM_TARGET,
+              items: fixPastErrorSpotter
+            }
+          ]
+        },
+        {
+          id: "was_were_past_be",
+          title: "Was / Were",
+          difficulty: "Rookie",
+          ruleFocus: "Use was with I/he/she/it and were with you/we/they.",
+          examplePattern: "They were happy.",
+          notesForELD:
+            "Match subject and past be carefully. Singular subjects use was, plural subjects use were.",
+          games: [
+            {
+              id: "was_or_were",
+              title: "Was or Were?",
+              description: "Choose the correct past be verb.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: wasWereMc
+            },
+            {
+              id: "class_photo_captions",
+              title: "Class Photo Captions",
+              description: "Build past be sentences from scene captions.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: classPhotoBuilder
+            },
+            {
+              id: "subject_switch_past_be",
+              title: "Subject Switch: Past Be",
+              description: "Sort subjects under was and were.",
+              gameType: "drag_sort",
+              itemCount: ITEM_TARGET,
+              items: pastBeSubjectSwitchItems
+            }
+          ]
+        },
+        {
+          id: "past_continuous_was_were_ing",
+          title: "Past Continuous",
+          difficulty: "Agent",
+          ruleFocus: "Use was/were + verb-ing for actions in progress in the past.",
+          examplePattern: "She was studying at 8 PM.",
+          notesForELD:
+            "Past continuous shows an action that was happening at a specific past time.",
+          games: [
+            {
+              id: "in_progress",
+              title: "In Progress",
+              description: "Identify correct was/were + verb-ing forms.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: pastContinuousMc
+            },
+            {
+              id: "scene_builder",
+              title: "Scene Builder",
+              description: "Assemble past continuous scene sentences.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: pastContinuousBuilder
+            },
+            {
+              id: "fix_the_timeline",
+              title: "Fix the Timeline",
+              description: "Correct one past continuous error each round.",
+              gameType: "error_spotter",
+              itemCount: ITEM_TARGET,
+              items: fixTimelineErrorSpotter
+            }
+          ]
+        },
+        {
+          id: "past_vs_past_continuous",
+          title: "Past vs Past Continuous",
+          difficulty: "Director",
+          ruleFocus: "Use was/were + verb-ing + when + simple past.",
+          examplePattern: "I was sleeping when the phone rang.",
+          notesForELD:
+            "The long background action uses was/were + verb-ing. The short interrupting action uses simple past.",
+          games: [
+            {
+              id: "interrupt_alert",
+              title: "Interrupt Alert",
+              description: "Choose the sentence with correct long action + interrupt pattern.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: pastVsPastContinuousMc
+            },
+            {
+              id: "when_while_builder",
+              title: "When/While Builder",
+              description: "Build timeline sentences using when and while.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: whenWhileBuilder
+            },
+            {
+              id: "which_action",
+              title: "Which Action?",
+              description: "Sort clauses into long action versus interrupting action.",
+              gameType: "drag_sort",
+              itemCount: ITEM_TARGET,
+              items: whichActionSortItems
+            }
+          ]
+        },
+        {
+          id: "past_questions_did_base",
+          title: "Past Questions",
+          difficulty: "Agent",
+          ruleFocus: "Use Did + subject + base verb.",
+          examplePattern: "Did you go?",
+          notesForELD:
+            "After Did, use the base verb, not the past form. Example: Did she go? not Did she went?",
+          games: [
+            {
+              id: "did_or_was",
+              title: "Did or Was?",
+              description: "Choose the right helper for past questions.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: didOrWasMc
+            },
+            {
+              id: "build_the_question_past",
+              title: "Build the Question: Past",
+              description: "Build Did + subject + base verb questions.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: pastQuestionBuilder
+            },
+            {
+              id: "fix_the_question",
+              title: "Fix the Question",
+              description: "Correct one past question error each round.",
+              gameType: "error_spotter",
+              itemCount: ITEM_TARGET,
+              items: fixPastQuestionSpotter
             }
           ]
         }
@@ -1444,16 +3110,37 @@ export const MISSIONS_DATA = {
 };
 
 function validateMissionData(payload) {
+  const allowedDifficulties = new Set(["Rookie", "Agent", "Director"]);
+  const allowedGameTypes = new Set([
+    "multiple_choice",
+    "sentence_builder",
+    "drag_sort",
+    "error_spotter"
+  ]);
+
   if (!payload || !Array.isArray(payload.missions)) {
     throw new Error("MISSIONS_DATA must include a missions array.");
   }
 
   payload.missions.forEach((mission) => {
+    if (!mission.id || !mission.title || !mission.subtitle || !mission.description) {
+      throw new Error("Each mission must include id, title, subtitle, and description.");
+    }
     if (!Array.isArray(mission.subskills) || !mission.subskills.length) {
       throw new Error(`Mission ${mission.id} must define subskills.`);
     }
 
     mission.subskills.forEach((subskill) => {
+      if (!subskill.id || !subskill.title || !subskill.ruleFocus || !subskill.examplePattern) {
+        throw new Error(
+          `Subskill in mission ${mission.id} must include id, title, ruleFocus, and examplePattern.`
+        );
+      }
+      if (!allowedDifficulties.has(subskill.difficulty)) {
+        throw new Error(
+          `Subskill ${subskill.id} in mission ${mission.id} must set difficulty to Rookie, Agent, or Director.`
+        );
+      }
       if (!Array.isArray(subskill.games) || subskill.games.length !== GAME_TARGET) {
         throw new Error(
           `Subskill ${subskill.id} in mission ${mission.id} must define exactly ${GAME_TARGET} games.`
@@ -1461,6 +3148,16 @@ function validateMissionData(payload) {
       }
 
       subskill.games.forEach((game) => {
+        if (!game.id || !game.title || !game.description) {
+          throw new Error(
+            `Game in subskill ${subskill.id} mission ${mission.id} must include id, title, and description.`
+          );
+        }
+        if (!allowedGameTypes.has(game.gameType)) {
+          throw new Error(
+            `Game ${game.id} in mission ${mission.id} has unsupported gameType "${game.gameType}".`
+          );
+        }
         if (game.itemCount !== ITEM_TARGET) {
           throw new Error(`Game ${game.id} in mission ${mission.id} must set itemCount=${ITEM_TARGET}.`);
         }
