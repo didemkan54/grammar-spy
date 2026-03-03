@@ -118,6 +118,27 @@ Technical safety:
       background:var(--teal-soft);
       transform:translateY(-1px);
     }
+    .nav-community-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .nav-beta-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:32px;
+      padding:2px 7px;
+      border-radius:999px;
+      background:#1f5f63;
+      color:#ffffff;
+      border:1px solid #16484b;
+      font-size:9px;
+      line-height:1;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-weight:800;
+    }
 
     .hero{
       position:relative;
@@ -305,6 +326,21 @@ Technical safety:
       background:linear-gradient(90deg,#73d0da,#bcebf0);
       animation:previewFill 2.6s ease-in-out infinite alternate;
     }
+    .demo-progress-label{
+      margin:8px 0 0;
+      color:#d6eef2;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.03em;
+    }
+    .demo-play-btn{
+      margin-top:12px;
+      width:100%;
+      background:#effbff;
+      color:#134346;
+      border-color:#effbff;
+      animation:none !important;
+    }
     @keyframes previewFill{
       0%{width:38%}
       100%{width:88%}
@@ -491,37 +527,122 @@ Technical safety:
       to{opacity:1;transform:translateY(0)}
     }
 
-    .mission-type-card{
+    .mission-map-grid{
+      margin-top:18px;
+      display:grid;
+      gap:14px;
+    }
+    .mission-map-tile{
       position:relative;
-      background:linear-gradient(170deg, #ffffff 0%, #f9fdff 100%);
-      border:1px solid #d8e2ec;
+      background:linear-gradient(170deg, #ffffff 0%, #f7fcff 100%);
+      border:1px solid #d4dfec;
       border-radius:16px;
       padding:18px;
-      box-shadow:0 10px 24px rgba(11,16,32,.07);
+      box-shadow:0 10px 24px rgba(11,16,32,.08);
       transition:transform .2s ease, box-shadow .22s ease, border-color .22s ease;
       overflow:hidden;
     }
-    .mission-type-card::after{
+    .mission-map-tile::after{
       content:"";
       position:absolute;
       inset:auto -30% -42% -30%;
       height:70%;
-      background:radial-gradient(circle, rgba(31,95,99,.16), rgba(31,95,99,0));
+      background:radial-gradient(circle, rgba(31,95,99,.2), rgba(31,95,99,0));
       transition:opacity .2s ease;
       opacity:0;
       pointer-events:none;
     }
-    .mission-type-card:hover{
+    .mission-map-tile:hover{
       transform:translateY(-5px);
-      border-color:#8cbcc2;
-      box-shadow:0 18px 32px rgba(12,26,42,.14);
+      border-color:#7eb1ba;
+      box-shadow:0 18px 32px rgba(12,26,42,.15);
     }
-    .mission-type-card:hover::after{opacity:1}
-    .mission-subtitle{
-      margin-top:10px;
+    .mission-map-tile:hover::after{opacity:1}
+    .mission-map-head{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+    .mission-map-icon{
+      width:36px;
+      height:36px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background:#e7f3f4;
+      font-size:19px;
+    }
+    .mission-map-title{
+      margin:0;
+      color:#17324e;
+      font-size:20px;
+      line-height:1.25;
+    }
+    .mission-map-subtitle{
+      margin:8px 0 0;
       color:#2b5264;
       font-weight:700;
+      font-size:15px;
+    }
+    .mission-map-meta{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+    }
+    .mission-map-meta span{
+      background:#eef4fb;
+      border:1px solid #d5e0ec;
+      color:#35536f;
+      border-radius:999px;
+      padding:4px 9px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .mission-map-start{
+      margin-top:12px;
+      width:100%;
+      text-align:center;
+    }
+
+    .section-proof-strip{
+      padding:26px 0 24px;
+      background:#f0f5fb;
+      border-top:1px solid #dde7f3;
+      border-bottom:1px solid #dde7f3;
+    }
+    .proof-strip{
+      display:grid;
+      gap:10px;
+    }
+    .proof-mini-card{
+      background:#ffffff;
+      border:1px solid #d8e3ef;
+      border-radius:14px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      box-shadow:0 7px 16px rgba(11,16,32,.06);
+    }
+    .proof-mini-icon{
+      width:32px;
+      height:32px;
+      border-radius:9px;
+      display:grid;
+      place-items:center;
+      background:#e8f3f4;
+      color:#1d5a5e;
+      font-size:16px;
+      font-weight:800;
+      flex:0 0 auto;
+    }
+    .proof-mini-text{
+      color:#29465f;
       font-size:14px;
+      font-weight:700;
     }
     .micro-link{
       display:inline-block;
@@ -699,6 +820,12 @@ Technical safety:
       max-width:780px;
       box-shadow:0 14px 30px rgba(11,16,32,.08);
     }
+    .file-drop-microcopy{
+      margin:8px 0 0;
+      color:#36526f;
+      font-size:14px;
+      font-weight:700;
+    }
     .diagnostic-download p{margin:0}
     .diagnostic-form{display:grid;gap:10px}
     .diagnostic-form label{
@@ -849,6 +976,8 @@ Technical safety:
       .two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
       .social-proof-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
       .engage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .mission-map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .proof-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
     @media (min-width:980px){
       .hero-grid{grid-template-columns:1.08fr .92fr;gap:36px}
@@ -869,7 +998,7 @@ Technical safety:
         <a href="index.html" aria-current="page">Home</a>
         <a href="/missions/">Missions</a>
         <a href="pricing.html">Pricing</a>
-        <a href="insights.html">Blog</a>
+        <a href="insights.html" class="nav-community-link">Community <span class="nav-beta-pill">Beta</span></a>
         <a href="auth.html?mode=signin">Login / Sign up</a>
       </nav>
     </div>
@@ -886,12 +1015,11 @@ Technical safety:
         <div>
           <p class="eyebrow">Built for real classrooms</p>
           <h1>Grammar practice that actually sticks.</h1>
-          <p class="hero-subhead">Grammar Spy helps middle and high school students build lasting grammar accuracy through short, retrieval-based missions built by a classroom teacher.</p>
-          <p class="hero-hook">Students don't just answer. They complete missions.</p>
+          <p class="hero-subhead">Students run 10-15 minute grammar missions - fast rounds, instant feedback, real classroom energy.</p>
           <ul class="chips" aria-label="Core benefits">
-            <li>Retrieval-based</li>
-            <li>Mission-driven</li>
-            <li>Teacher-ready</li>
+            <li>15-item micro-missions</li>
+            <li>Instant feedback</li>
+            <li>ELD-friendly</li>
           </ul>
           <div class="hero-ctas">
             <a href="/missions/" class="btn btn-primary" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
@@ -900,16 +1028,18 @@ Technical safety:
           <p class="hero-note">No prep. No grading stacks. Just progress.</p>
         </div>
         <aside class="hero-preview-panel" id="mission-preview" aria-label="Mission Preview">
-          <p class="preview-kicker">Mission Preview</p>
+          <p class="preview-kicker">Mission Demo: Speak in the Moment</p>
           <div class="preview-progress" aria-hidden="true"><span></span></div>
+          <p class="demo-progress-label">Progress simulation: 6/15</p>
           <div class="hero-mission-card">
-            <h2>Sentence Repair</h2>
-            <p>Find the break in grammar, fix it, and move to the next challenge.</p>
+            <h2>Present Tenses</h2>
+            <p>Short rounds keep students moving while each item reinforces one clear rule.</p>
             <div class="mini-options">
-              <button type="button" class="mini-option">"She go to school every day."</button>
-              <button type="button" class="mini-option is-good">"She goes to school every day."</button>
-              <button type="button" class="mini-option">"She going to school every day."</button>
+              <button type="button" class="mini-option">Rookie Track: 15 items</button>
+              <button type="button" class="mini-option is-good">Agent Track: streak + feedback</button>
+              <button type="button" class="mini-option">Classroom-ready pacing</button>
             </div>
+            <a href="#mission-live-preview" class="btn demo-play-btn">Play Demo</a>
           </div>
         </aside>
       </div>
@@ -934,30 +1064,77 @@ Technical safety:
       </div>
     </section>
 
-    <section class="section section-muted">
+    <section class="section section-muted section-mission-map">
       <div class="container">
-        <p class="section-label">Mission types</p>
-        <h2>Choose a mission like a level path</h2>
-        <div class="grid grid-4">
-          <article class="mission-type-card">
-            <h3>Sentence Repair</h3>
-            <p class="mission-subtitle">Find it. Fix it. Explain it.</p>
-            <a href="#mission-live-preview" class="micro-link">Preview</a>
+        <p class="section-label">Mission map</p>
+        <h2>Pick a Mission (students love these)</h2>
+        <div class="mission-map-grid">
+          <article class="mission-map-tile">
+            <div class="mission-map-head">
+              <span class="mission-map-icon" aria-hidden="true">🛰️</span>
+              <h3 class="mission-map-title">Speak in the Moment</h3>
+            </div>
+            <p class="mission-map-subtitle">Present Tenses</p>
+            <div class="mission-map-meta">
+              <span>10-12 min</span>
+              <span>Rookie</span>
+            </div>
+            <a href="/missions/speak-in-the-moment/" class="btn btn-primary mission-map-start">Start</a>
           </article>
-          <article class="mission-type-card">
-            <h3>Dialogue Repair</h3>
-            <p class="mission-subtitle">Real conversations. Real grammar.</p>
-            <a href="#mission-preview" class="micro-link">Preview</a>
+          <article class="mission-map-tile">
+            <div class="mission-map-head">
+              <span class="mission-map-icon" aria-hidden="true">🕵️</span>
+              <h3 class="mission-map-title">Question Protocol</h3>
+            </div>
+            <p class="mission-map-subtitle">Questions</p>
+            <div class="mission-map-meta">
+              <span>10-12 min</span>
+              <span>Agent</span>
+            </div>
+            <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
           </article>
-          <article class="mission-type-card">
-            <h3>Verb Tense Missions</h3>
-            <p class="mission-subtitle">Time matters. So does form.</p>
-            <a href="#mission-live-preview" class="micro-link">Preview</a>
+          <article class="mission-map-tile">
+            <div class="mission-map-head">
+              <span class="mission-map-icon" aria-hidden="true">⏳</span>
+              <h3 class="mission-map-title">Time Traveler</h3>
+            </div>
+            <p class="mission-map-subtitle">Past Tenses</p>
+            <div class="mission-map-meta">
+              <span>10-12 min</span>
+              <span>Rookie</span>
+            </div>
+            <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
           </article>
-          <article class="mission-type-card">
-            <h3>Sort + Build</h3>
-            <p class="mission-subtitle">Sequence rules. Lock mastery.</p>
-            <a href="#mission-preview" class="micro-link">Preview</a>
+          <article class="mission-map-tile">
+            <div class="mission-map-head">
+              <span class="mission-map-icon" aria-hidden="true">🚀</span>
+              <h3 class="mission-map-title">Future Ops</h3>
+            </div>
+            <p class="mission-map-subtitle">Future Tenses</p>
+            <div class="mission-map-meta">
+              <span>10-12 min</span>
+              <span>Agent</span>
+            </div>
+            <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-proof-strip">
+      <div class="container">
+        <div class="proof-strip" aria-label="Mission benefits">
+          <article class="proof-mini-card">
+            <span class="proof-mini-icon" aria-hidden="true">🔁</span>
+            <span class="proof-mini-text">Replayable rounds</span>
+          </article>
+          <article class="proof-mini-card">
+            <span class="proof-mini-icon" aria-hidden="true">🧭</span>
+            <span class="proof-mini-text">Clear routines</span>
+          </article>
+          <article class="proof-mini-card">
+            <span class="proof-mini-icon" aria-hidden="true">📝</span>
+            <span class="proof-mini-text">Less grading</span>
           </article>
         </div>
       </div>
@@ -1036,24 +1213,12 @@ Technical safety:
       </div>
     </section>
 
-    <section class="section section-muted">
-      <div class="container">
-        <p class="section-label">Social proof</p>
-        <h2>Built with real classroom feedback</h2>
-        <div class="social-proof-grid">
-          <article class="card"><p>"Students stay focused because every mission has a clear goal."</p></article>
-          <article class="card"><p>"The immediate correction loop saves me reteach time."</p></article>
-          <article class="card"><p>"The structure supports mixed-level and ELD learners."</p></article>
-        </div>
-        <a class="beta-link" href="mailto:support@grammarspy.net?subject=Beta%20teacher%20pilot%20request">Want to join the teacher pilot? Request a free code -></a>
-      </div>
-    </section>
-
     <section id="free-diagnostic-pdf" class="section">
       <div class="container">
-        <p class="section-label">Free Teacher Diagnostic</p>
-        <h2>Free Teacher Diagnostic</h2>
+        <p class="section-label">Free file drop</p>
+        <h2>Free Download: Simple Present Diagnostic</h2>
         <p class="section-intro">Get a quick Simple Present diagnostic PDF + answer key. Takes 10 minutes. Answer key included.</p>
+        <p class="file-drop-microcopy">One quiet email. Unsubscribe anytime.</p>
         <div class="diagnostic-download">
           <form class="diagnostic-form" id="diagnosticLeadForm" novalidate>
             <label for="diagnosticLeadEmail">School or work email</label>
