@@ -239,6 +239,37 @@ function buildPastVsActionSortItems(rows) {
   });
 }
 
+function buildFutureTimeMatchItems(rows) {
+  const columns = [
+    { id: "tomorrow", label: "tomorrow" },
+    { id: "next_week", label: "next week" },
+    { id: "next_year", label: "next year" },
+    { id: "later", label: "later" },
+    { id: "soon", label: "soon" },
+    { id: "in_the_future", label: "in the future" },
+    { id: "in_two_days", label: "in two days" }
+  ];
+
+  return rows.map((row, idx) => {
+    const itemId = `future_time_match_${pad(idx + 1)}`;
+    return {
+      id: itemId,
+      prompt: "Sort each clue under the matching future time expression.",
+      columns,
+      cards: [
+        { id: `${itemId}_a`, text: row.tomorrow, columnId: "tomorrow" },
+        { id: `${itemId}_b`, text: row.nextWeek, columnId: "next_week" },
+        { id: `${itemId}_c`, text: row.nextYear, columnId: "next_year" },
+        { id: `${itemId}_d`, text: row.later, columnId: "later" },
+        { id: `${itemId}_e`, text: row.soon, columnId: "soon" },
+        { id: `${itemId}_f`, text: row.inTheFuture, columnId: "in_the_future" },
+        { id: `${itemId}_g`, text: row.inTwoDays, columnId: "in_two_days" }
+      ],
+      explain: "Future time words help show when an action will happen."
+    };
+  });
+}
+
 const presentContinuousNowOrNot = withIds("pc_now_or_not", [
   {
     prompt: "Choose the best sentence for right now.",
@@ -2696,6 +2727,1029 @@ const fixPastQuestionSpotter = withIds("past_questions_fix", [
   }
 ]);
 
+const futureSimplePredictionChallenge = withIds("future_simple_prediction", [
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "She ___ travel tomorrow.",
+    options: ["will travel", "will travels", "is travel", "going travel"],
+    answerIndex: 0,
+    explain: "Future simple uses will + base verb."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "I ___ call you later.",
+    options: ["will call", "will calls", "am call", "going to calls"],
+    answerIndex: 0,
+    explain: "Use will + base verb."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "They ___ finish soon.",
+    options: ["will finish", "will finishes", "are finish", "going finish"],
+    answerIndex: 0,
+    explain: "Use will with all subjects."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "He ___ pass the test next week.",
+    options: ["will pass", "will passes", "is pass", "going to passs"],
+    answerIndex: 0,
+    explain: "After will, use base verb pass."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "We ___ arrive on time.",
+    options: ["will arrive", "will arrives", "are arrive", "going arrive"],
+    answerIndex: 0,
+    explain: "Future simple does not add s."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "The bus ___ come in five minutes.",
+    options: ["will come", "will comes", "is come", "going to comes"],
+    answerIndex: 0,
+    explain: "Use will + base verb come."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "You ___ like this game.",
+    options: ["will like", "will likes", "are like", "going to likes"],
+    answerIndex: 0,
+    explain: "Use will with you."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "My team ___ win later.",
+    options: ["will win", "will wins", "is win", "going to wins"],
+    answerIndex: 0,
+    explain: "Use will + base verb win."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "The weather ___ change tomorrow.",
+    options: ["will change", "will changes", "is change", "going to changes"],
+    answerIndex: 0,
+    explain: "Future simple uses will + base verb."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "Dad ___ cook tonight.",
+    options: ["will cook", "will cooks", "is cook", "going to cooks"],
+    answerIndex: 0,
+    explain: "Use will + cook."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "I ___ remember this clue.",
+    options: ["will remember", "will remembers", "am remember", "going remember"],
+    answerIndex: 0,
+    explain: "Use base verb after will."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "The students ___ submit next week.",
+    options: ["will submit", "will submits", "are submit", "going to submits"],
+    answerIndex: 0,
+    explain: "Will works with plural subjects too."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "She ___ open the file later.",
+    options: ["will open", "will opens", "is open", "going open"],
+    answerIndex: 0,
+    explain: "Use will + open."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "We ___ solve this puzzle soon.",
+    options: ["will solve", "will solves", "are solve", "going to solves"],
+    answerIndex: 0,
+    explain: "Future simple: will + base verb."
+  },
+  {
+    prompt: "Pick the correct future simple prediction.",
+    context: "The club ___ meet in two days.",
+    options: ["will meet", "will meets", "is meet", "going to meets"],
+    answerIndex: 0,
+    explain: "Use will + meet."
+  }
+]);
+
+const futureSimpleSentenceBuilder = buildSentenceBuilderItems(
+  "future_simple_builder",
+  [
+    { prompt: "Build the future simple sentence.", solution: "She will travel tomorrow." },
+    { prompt: "Build the future simple sentence.", solution: "I will call you later." },
+    { prompt: "Build the future simple sentence.", solution: "They will study next week." },
+    { prompt: "Build the future simple sentence.", solution: "He will bring the laptop soon." },
+    { prompt: "Build the future simple sentence.", solution: "We will finish in two days." },
+    { prompt: "Build the future simple sentence.", solution: "The class will start at nine tomorrow." },
+    { prompt: "Build the future simple sentence.", solution: "You will join the team next year." },
+    { prompt: "Build the future simple sentence.", solution: "My brother will text me later." },
+    { prompt: "Build the future simple sentence.", solution: "The bus will arrive soon." },
+    { prompt: "Build the future simple sentence.", solution: "I will review this mission tomorrow." },
+    { prompt: "Build the future simple sentence.", solution: "The students will submit next week." },
+    { prompt: "Build the future simple sentence.", solution: "Dad will cook dinner tonight." },
+    { prompt: "Build the future simple sentence.", solution: "The coach will announce the plan later." },
+    { prompt: "Build the future simple sentence.", solution: "We will decode the clue soon." },
+    { prompt: "Build the future simple sentence.", solution: "She will open the case file tomorrow." }
+  ],
+  "Future simple uses subject + will + base verb."
+);
+
+const futureSimpleErrorDetection = withIds("future_simple_fix", [
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "She will travels tomorrow.",
+    correction: "She will travel tomorrow.",
+    explain: "After will, use base verb."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "I will calls you later.",
+    correction: "I will call you later.",
+    explain: "Do not add s after will."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "They will studies next week.",
+    correction: "They will study next week.",
+    explain: "Use base verb study."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "He will brings the folder soon.",
+    correction: "He will bring the folder soon.",
+    explain: "Use base verb bring."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "We will finished in two days.",
+    correction: "We will finish in two days.",
+    explain: "Use base verb finish."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "The class will starts at nine.",
+    correction: "The class will start at nine.",
+    explain: "After will, use start."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "You will joining us later.",
+    correction: "You will join us later.",
+    explain: "Future simple does not use verb-ing."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "My brother will texts me soon.",
+    correction: "My brother will text me soon.",
+    explain: "Use base verb text."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "The bus will arrives soon.",
+    correction: "The bus will arrive soon.",
+    explain: "Use base verb arrive."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "I will reviewing this case tomorrow.",
+    correction: "I will review this case tomorrow.",
+    explain: "Use base verb review."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "The students will submits next week.",
+    correction: "The students will submit next week.",
+    explain: "Remove s after will."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "Dad will cooks dinner tonight.",
+    correction: "Dad will cook dinner tonight.",
+    explain: "After will, use cook."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "The coach will announcing later.",
+    correction: "The coach will announce later.",
+    explain: "Use base verb announce."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "We will solves the puzzle soon.",
+    correction: "We will solve the puzzle soon.",
+    explain: "Use base verb solve."
+  },
+  {
+    prompt: "Fix one future simple bug.",
+    sentence: "She will opens the case file tomorrow.",
+    correction: "She will open the case file tomorrow.",
+    explain: "Use base verb open."
+  }
+]);
+
+const goingToPlanOrPrediction = withIds("going_to_mc", [
+  {
+    prompt: "Pick the correct going to form.",
+    context: "They ___ study tonight.",
+    options: ["are going to", "is going to", "will be", "do going to"],
+    answerIndex: 0,
+    explain: "Use are going to with they."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "She ___ visit her aunt tomorrow.",
+    options: ["are going to", "is going to", "am going to", "will going to"],
+    answerIndex: 1,
+    explain: "Use is going to with she."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "I ___ read after dinner.",
+    options: ["am going to", "is going to", "are going to", "will going"],
+    answerIndex: 0,
+    explain: "Use am going to with I."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "We ___ leave soon.",
+    options: ["is going to", "are going to", "am going to", "will going to"],
+    answerIndex: 1,
+    explain: "Use are going to with we."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "He ___ play tomorrow.",
+    options: ["is going to", "are going to", "am going to", "will be"],
+    answerIndex: 0,
+    explain: "Use is going to with he."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "You ___ send the report later.",
+    options: ["are going to", "is going to", "am going to", "will going"],
+    answerIndex: 0,
+    explain: "Use are going to with you."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "The class ___ start in ten minutes.",
+    options: ["is going to", "are going to", "am going to", "will to"],
+    answerIndex: 0,
+    explain: "Class is singular, so use is going to."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "My friends ___ join us next week.",
+    options: ["is going to", "are going to", "am going to", "will going to"],
+    answerIndex: 1,
+    explain: "Use are going to with plural subject."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "Dad ___ cook tonight.",
+    options: ["are going to", "is going to", "am going to", "will be"],
+    answerIndex: 1,
+    explain: "Use is going to with Dad."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "I ___ practice piano later.",
+    options: ["am going to", "are going to", "is going to", "will going"],
+    answerIndex: 0,
+    explain: "Use am going to with I."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "They ___ build a model tomorrow.",
+    options: ["is going to", "are going to", "am going to", "will be going"],
+    answerIndex: 1,
+    explain: "Use are going to with they."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "She ___ bring her notebook.",
+    options: ["is going to", "are going to", "am going to", "will going"],
+    answerIndex: 0,
+    explain: "Use is going to with she."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "We ___ meet next year.",
+    options: ["is going to", "are going to", "am going to", "will to"],
+    answerIndex: 1,
+    explain: "Use are going to with we."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "The bus ___ arrive soon.",
+    options: ["is going to", "are going to", "am going to", "will going"],
+    answerIndex: 0,
+    explain: "Bus is singular, so use is going to."
+  },
+  {
+    prompt: "Pick the correct going to form.",
+    context: "You ___ solve this quickly.",
+    options: ["are going to", "is going to", "am going to", "will be going"],
+    answerIndex: 0,
+    explain: "Use are going to with you."
+  }
+]);
+
+const goingToSentenceBuilder = buildSentenceBuilderItems(
+  "going_to_builder",
+  [
+    { prompt: "Build the going to sentence.", solution: "They are going to study tonight." },
+    { prompt: "Build the going to sentence.", solution: "She is going to visit her aunt tomorrow." },
+    { prompt: "Build the going to sentence.", solution: "I am going to read later." },
+    { prompt: "Build the going to sentence.", solution: "We are going to leave soon." },
+    { prompt: "Build the going to sentence.", solution: "He is going to play next week." },
+    { prompt: "Build the going to sentence.", solution: "You are going to send the report." },
+    { prompt: "Build the going to sentence.", solution: "The class is going to start in ten minutes." },
+    { prompt: "Build the going to sentence.", solution: "My friends are going to join us later." },
+    { prompt: "Build the going to sentence.", solution: "Dad is going to cook dinner tonight." },
+    { prompt: "Build the going to sentence.", solution: "I am going to practice piano tomorrow." },
+    { prompt: "Build the going to sentence.", solution: "They are going to build a model soon." },
+    { prompt: "Build the going to sentence.", solution: "She is going to bring her notebook." },
+    { prompt: "Build the going to sentence.", solution: "We are going to meet next year." },
+    { prompt: "Build the going to sentence.", solution: "The bus is going to arrive soon." },
+    { prompt: "Build the going to sentence.", solution: "You are going to solve this quickly." }
+  ],
+  "Going to future uses subject + be + going to + base verb."
+);
+
+const goingToErrorCorrection = withIds("going_to_fix", [
+  {
+    prompt: "Fix one going to error.",
+    sentence: "They is going to study tonight.",
+    correction: "They are going to study tonight.",
+    explain: "Use are with they."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "She are going to visit tomorrow.",
+    correction: "She is going to visit tomorrow.",
+    explain: "Use is with she."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "I are going to read later.",
+    correction: "I am going to read later.",
+    explain: "Use am with I."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "We is going to leave soon.",
+    correction: "We are going to leave soon.",
+    explain: "Use are with we."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "He are going to play next week.",
+    correction: "He is going to play next week.",
+    explain: "Use is with he."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "You is going to send the report.",
+    correction: "You are going to send the report.",
+    explain: "Use are with you."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "The class are going to start soon.",
+    correction: "The class is going to start soon.",
+    explain: "Class is singular, so use is."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "My friends is going to join us later.",
+    correction: "My friends are going to join us later.",
+    explain: "Friends is plural, so use are."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "Dad are going to cook tonight.",
+    correction: "Dad is going to cook tonight.",
+    explain: "Dad takes is."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "I is going to practice tomorrow.",
+    correction: "I am going to practice tomorrow.",
+    explain: "Use am with I."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "They am going to build a model.",
+    correction: "They are going to build a model.",
+    explain: "Use are with they."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "She am going to bring her notebook.",
+    correction: "She is going to bring her notebook.",
+    explain: "Use is with she."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "We is going to meet next year.",
+    correction: "We are going to meet next year.",
+    explain: "Use are with we."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "The bus are going to arrive soon.",
+    correction: "The bus is going to arrive soon.",
+    explain: "Bus is singular, so use is."
+  },
+  {
+    prompt: "Fix one going to error.",
+    sentence: "You am going to solve this quickly.",
+    correction: "You are going to solve this quickly.",
+    explain: "Use are with you."
+  }
+]);
+
+const futureContinuousTimeDetective = withIds("future_continuous_mc", [
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "At 8 PM, she ___.",
+    options: ["will be working", "will working", "is working", "will works"],
+    answerIndex: 0,
+    explain: "Future continuous uses will be + verb-ing."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "At noon tomorrow, they ___ lunch.",
+    options: ["will be eating", "will eating", "are eating", "will eats"],
+    answerIndex: 0,
+    explain: "Use will be eating."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "This time next week, I ___ to school.",
+    options: ["will be walking", "will walking", "am walking", "will walks"],
+    answerIndex: 0,
+    explain: "Use will be + verb-ing."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "At 9 AM, we ___ the test.",
+    options: ["will be taking", "will taking", "are taking", "will takes"],
+    answerIndex: 0,
+    explain: "Future continuous is will be taking."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "Tomorrow at five, he ___ dinner.",
+    options: ["will be cooking", "will cooking", "is cooking", "will cooks"],
+    answerIndex: 0,
+    explain: "Use will be cooking."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "Later tonight, you ___ the report.",
+    options: ["will be finishing", "will finishing", "are finishing", "will finishs"],
+    answerIndex: 0,
+    explain: "Use will be finishing."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "At this time tomorrow, the bus ___ downtown.",
+    options: ["will be driving", "will driving", "is driving", "will drives"],
+    answerIndex: 0,
+    explain: "Use will be driving."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "Next year, my friends ___ in college.",
+    options: ["will be studying", "will studying", "are studying", "will studies"],
+    answerIndex: 0,
+    explain: "Use will be studying."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "Tomorrow at 7, Dad ___ to work.",
+    options: ["will be driving", "will driving", "is driving", "will drives"],
+    answerIndex: 0,
+    explain: "Future continuous uses will be driving."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "At lunch tomorrow, I ___ with the team.",
+    options: ["will be meeting", "will meeting", "am meeting", "will meets"],
+    answerIndex: 0,
+    explain: "Use will be meeting."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "In two days, the class ___ a presentation.",
+    options: ["will be giving", "will giving", "is giving", "will gives"],
+    answerIndex: 0,
+    explain: "Use will be giving."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "Tomorrow evening, she ___ the case notes.",
+    options: ["will be reviewing", "will reviewing", "is reviewing", "will reviews"],
+    answerIndex: 0,
+    explain: "Use will be reviewing."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "At 10 PM, we ___ the final clue.",
+    options: ["will be decoding", "will decoding", "are decoding", "will decodes"],
+    answerIndex: 0,
+    explain: "Future continuous is will be decoding."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "Soon, they ___ for the mission.",
+    options: ["will be preparing", "will preparing", "are preparing", "will prepares"],
+    answerIndex: 0,
+    explain: "Use will be preparing."
+  },
+  {
+    prompt: "Pick the correct future continuous sentence.",
+    context: "Tomorrow morning, he ___ the timeline.",
+    options: ["will be checking", "will checking", "is checking", "will checks"],
+    answerIndex: 0,
+    explain: "Use will be checking."
+  }
+]);
+
+const futureContinuousSentenceBuilder = buildSentenceBuilderItems(
+  "future_continuous_builder",
+  [
+    { prompt: "Build the future continuous sentence.", solution: "She will be working at 8 PM." },
+    { prompt: "Build the future continuous sentence.", solution: "They will be studying tomorrow night." },
+    { prompt: "Build the future continuous sentence.", solution: "I will be walking to class at nine." },
+    { prompt: "Build the future continuous sentence.", solution: "We will be taking notes during the meeting." },
+    { prompt: "Build the future continuous sentence.", solution: "He will be cooking dinner later." },
+    { prompt: "Build the future continuous sentence.", solution: "You will be finishing the report soon." },
+    { prompt: "Build the future continuous sentence.", solution: "The bus will be arriving in ten minutes." },
+    { prompt: "Build the future continuous sentence.", solution: "My friends will be practicing next week." },
+    { prompt: "Build the future continuous sentence.", solution: "Dad will be driving home at six." },
+    { prompt: "Build the future continuous sentence.", solution: "I will be meeting the coach tomorrow." },
+    { prompt: "Build the future continuous sentence.", solution: "The class will be giving presentations later." },
+    { prompt: "Build the future continuous sentence.", solution: "She will be reviewing the clues tonight." },
+    { prompt: "Build the future continuous sentence.", solution: "We will be decoding the message at noon." },
+    { prompt: "Build the future continuous sentence.", solution: "They will be preparing for the mission soon." },
+    { prompt: "Build the future continuous sentence.", solution: "He will be checking the timeline tomorrow." }
+  ],
+  "Future continuous uses subject + will be + verb-ing."
+);
+
+const futureContinuousErrorFix = withIds("future_continuous_fix", [
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "She will working at 8 PM.",
+    correction: "She will be working at 8 PM.",
+    explain: "Future continuous needs will be + verb-ing."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "They will be study tomorrow night.",
+    correction: "They will be studying tomorrow night.",
+    explain: "Use verb-ing after will be."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "I will be walk to class at nine.",
+    correction: "I will be walking to class at nine.",
+    explain: "Use verb-ing walk -> walking."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "We will taking notes during the meeting.",
+    correction: "We will be taking notes during the meeting.",
+    explain: "Add be after will."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "He will be cook dinner later.",
+    correction: "He will be cooking dinner later.",
+    explain: "Use cooking, not cook."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "You will be finish the report soon.",
+    correction: "You will be finishing the report soon.",
+    explain: "Use finishing after will be."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "The bus will arriving in ten minutes.",
+    correction: "The bus will be arriving in ten minutes.",
+    explain: "Add be after will."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "My friends will be practice next week.",
+    correction: "My friends will be practicing next week.",
+    explain: "Use practicing after will be."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "Dad will be drive home at six.",
+    correction: "Dad will be driving home at six.",
+    explain: "Use driving after will be."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "I will meeting the coach tomorrow.",
+    correction: "I will be meeting the coach tomorrow.",
+    explain: "Add be after will."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "The class will be give presentations later.",
+    correction: "The class will be giving presentations later.",
+    explain: "Use giving after will be."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "She will review the clues tonight.",
+    correction: "She will be reviewing the clues tonight.",
+    explain: "Future continuous needs will be reviewing."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "We will be decode the message at noon.",
+    correction: "We will be decoding the message at noon.",
+    explain: "Use decoding after will be."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "They will preparing for the mission soon.",
+    correction: "They will be preparing for the mission soon.",
+    explain: "Add be after will."
+  },
+  {
+    prompt: "Fix one future continuous error.",
+    sentence: "He will be checks the timeline tomorrow.",
+    correction: "He will be checking the timeline tomorrow.",
+    explain: "Use checking after will be."
+  }
+]);
+
+const futureTimeDragAndMatch = buildFutureTimeMatchItems([
+  {
+    tomorrow: "The class will review this clue ___ morning.",
+    nextWeek: "We will present our report ___ in science.",
+    nextYear: "She will start high school ___.",
+    later: "I will call the team ___.",
+    soon: "The bell will ring ___.",
+    inTheFuture: "Robots will help in classrooms ___.",
+    inTwoDays: "They will submit the case file ___."
+  },
+  {
+    tomorrow: "Dad will drive me to practice ___.",
+    nextWeek: "Our club will meet ___ for the final round.",
+    nextYear: "My cousin will move here ___.",
+    later: "We will decode the final clue ___.",
+    soon: "The bus will arrive ___.",
+    inTheFuture: "Students will use more AI tools ___.",
+    inTwoDays: "I will finish this mission ___."
+  },
+  {
+    tomorrow: "She will print the worksheet ___.",
+    nextWeek: "The teacher will return feedback ___.",
+    nextYear: "They will join the new program ___.",
+    later: "I will text you ___ today.",
+    soon: "The game will start ___.",
+    inTheFuture: "Cities will have cleaner transport ___.",
+    inTwoDays: "The team will travel ___."
+  },
+  {
+    tomorrow: "We will organize the folders ___.",
+    nextWeek: "He will take the quiz ___.",
+    nextYear: "Our school will open a new lab ___.",
+    later: "She will finish the chart ___.",
+    soon: "The rain will stop ___.",
+    inTheFuture: "People will live longer ___.",
+    inTwoDays: "I will send the invite ___."
+  },
+  {
+    tomorrow: "They will read chapter six ___.",
+    nextWeek: "The coach will post the schedule ___.",
+    nextYear: "My brother will graduate ___.",
+    later: "I will check the timeline ___.",
+    soon: "The timer will beep ___.",
+    inTheFuture: "Classes will be more flexible ___.",
+    inTwoDays: "She will call her aunt ___."
+  },
+  {
+    tomorrow: "The class will begin the project ___.",
+    nextWeek: "We will test the app ___.",
+    nextYear: "He will learn another language ___.",
+    later: "They will compare answers ___.",
+    soon: "The movie will begin ___.",
+    inTheFuture: "Homes will use less energy ___.",
+    inTwoDays: "Dad will buy supplies ___."
+  },
+  {
+    tomorrow: "You will bring your notebook ___.",
+    nextWeek: "I will meet the counselor ___.",
+    nextYear: "Our team will play in a new league ___.",
+    later: "She will update the plan ___.",
+    soon: "The package will arrive ___.",
+    inTheFuture: "Cars will be safer ___.",
+    inTwoDays: "The class will vote ___."
+  },
+  {
+    tomorrow: "He will solve this puzzle ___.",
+    nextWeek: "They will check the data ___.",
+    nextYear: "I will visit my uncle ___.",
+    later: "We will clean the lab ___.",
+    soon: "The lights will turn on ___.",
+    inTheFuture: "Doctors will use better tools ___.",
+    inTwoDays: "She will share the notes ___."
+  },
+  {
+    tomorrow: "I will practice guitar ___.",
+    nextWeek: "The principal will announce results ___.",
+    nextYear: "Students will have new lockers ___.",
+    later: "Dad will cook pasta ___.",
+    soon: "The game will end ___.",
+    inTheFuture: "People will travel faster ___.",
+    inTwoDays: "We will start Unit 4 ___."
+  },
+  {
+    tomorrow: "She will complete page two ___.",
+    nextWeek: "Our class will visit the museum ___.",
+    nextYear: "The city will build a park ___.",
+    later: "I will revise my answer ___.",
+    soon: "The team will begin ___.",
+    inTheFuture: "Computers will be smarter ___.",
+    inTwoDays: "They will return the books ___."
+  },
+  {
+    tomorrow: "They will watch the tutorial ___.",
+    nextWeek: "He will lead warm-up ___ at practice.",
+    nextYear: "My family will move ___.",
+    later: "We will review this chart ___.",
+    soon: "The teacher will arrive ___.",
+    inTheFuture: "Farms will use more tech ___.",
+    inTwoDays: "I will complete this chart ___."
+  },
+  {
+    tomorrow: "The bus will leave early ___.",
+    nextWeek: "I will submit my draft ___.",
+    nextYear: "Our school will add coding class ___.",
+    later: "She will answer your question ___.",
+    soon: "The clue will appear ___.",
+    inTheFuture: "People will learn online more often ___.",
+    inTwoDays: "We will call the office ___."
+  },
+  {
+    tomorrow: "He will bring snacks ___ for the trip.",
+    nextWeek: "The class will practice speeches ___.",
+    nextYear: "They will start college ___.",
+    later: "I will update the board ___.",
+    soon: "The bus will come ___.",
+    inTheFuture: "Cities will have more bikes ___.",
+    inTwoDays: "She will finish her poster ___."
+  },
+  {
+    tomorrow: "We will review vocabulary ___.",
+    nextWeek: "Dad will repair the shelf ___.",
+    nextYear: "My sister will change schools ___.",
+    later: "They will open the envelope ___.",
+    soon: "The meeting will start ___.",
+    inTheFuture: "Students will have new tools ___.",
+    inTwoDays: "I will check your draft ___."
+  },
+  {
+    tomorrow: "She will write the summary ___.",
+    nextWeek: "We will compare ideas ___.",
+    nextYear: "The club will expand ___.",
+    later: "He will return your call ___.",
+    soon: "The app will update ___.",
+    inTheFuture: "People will recycle more ___.",
+    inTwoDays: "They will decode the final clue ___."
+  }
+]);
+
+const futureTimeSentenceCompletion = withIds("future_time_completion", [
+  {
+    prompt: "Choose the best future time expression.",
+    context: "We will start the mini-mission ___.",
+    options: ["tomorrow", "yesterday", "last week", "earlier"],
+    answerIndex: 0,
+    explain: "Tomorrow signals future time."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "The class will present ___ at assembly.",
+    options: ["next week", "last week", "yesterday", "this morning"],
+    answerIndex: 0,
+    explain: "Next week is a future expression."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "She will apply for college ___.",
+    options: ["next year", "last year", "yesterday", "earlier"],
+    answerIndex: 0,
+    explain: "Next year is future time."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "I will call you ___ after class.",
+    options: ["later", "before", "last night", "yesterday"],
+    answerIndex: 0,
+    explain: "Later means after now."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "The bus will arrive ___.",
+    options: ["soon", "earlier", "last week", "yesterday"],
+    answerIndex: 0,
+    explain: "Soon points to near future."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "In many schools ___, classes will include AI projects.",
+    options: ["in the future", "last year", "yesterday", "before"],
+    answerIndex: 0,
+    explain: "In the future refers to a later time."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "They will submit the report ___.",
+    options: ["in two days", "two days ago", "yesterday", "last Monday"],
+    answerIndex: 0,
+    explain: "In two days means two days from now."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "Dad will fix the shelf ___.",
+    options: ["later", "last week", "earlier", "yesterday"],
+    answerIndex: 0,
+    explain: "Later means future time."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "Our game challenge starts ___.",
+    options: ["tomorrow", "last night", "two days ago", "earlier"],
+    answerIndex: 0,
+    explain: "Tomorrow is future."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "The team will review clues ___.",
+    options: ["next week", "yesterday", "last week", "this morning"],
+    answerIndex: 0,
+    explain: "Next week points to upcoming time."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "The school will open a new lab ___.",
+    options: ["next year", "last year", "yesterday", "before"],
+    answerIndex: 0,
+    explain: "Next year is future."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "The app will update ___.",
+    options: ["soon", "last night", "earlier", "two days ago"],
+    answerIndex: 0,
+    explain: "Soon is a future time marker."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "We will solve harder missions ___.",
+    options: ["in the future", "yesterday", "last month", "earlier"],
+    answerIndex: 0,
+    explain: "In the future is the correct marker."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "She will return the books ___.",
+    options: ["in two days", "two days ago", "last week", "yesterday"],
+    answerIndex: 0,
+    explain: "In two days is future."
+  },
+  {
+    prompt: "Choose the best future time expression.",
+    context: "I will text the answer ___.",
+    options: ["later", "last night", "earlier", "yesterday"],
+    answerIndex: 0,
+    explain: "Later shows future time."
+  }
+]);
+
+const futureTimeTimelineChallenge = withIds("future_time_timeline", [
+  {
+    prompt: "Choose the time expression that means nearest future.",
+    context: "Which expression shows the action will happen very quickly?",
+    options: ["soon", "next year", "in the future", "last week"],
+    answerIndex: 0,
+    explain: "Soon means in a short time."
+  },
+  {
+    prompt: "Choose the best expression for one day after today.",
+    context: "The mission continues ___.",
+    options: ["tomorrow", "later", "next week", "in the future"],
+    answerIndex: 0,
+    explain: "Tomorrow is exactly one day after today."
+  },
+  {
+    prompt: "Choose the best expression for seven days from now.",
+    context: "We will present the timeline ___.",
+    options: ["next week", "tomorrow", "soon", "later"],
+    answerIndex: 0,
+    explain: "Next week is the correct timeline clue."
+  },
+  {
+    prompt: "Choose the best expression for one year from now.",
+    context: "The new mission pack arrives ___.",
+    options: ["next year", "in two days", "soon", "tomorrow"],
+    answerIndex: 0,
+    explain: "Next year means one year in the future."
+  },
+  {
+    prompt: "Choose the broad long-term future expression.",
+    context: "Technology will change learning ___.",
+    options: ["in the future", "tomorrow", "in two days", "soon"],
+    answerIndex: 0,
+    explain: "In the future is broad and long-term."
+  },
+  {
+    prompt: "Choose the expression for 48 hours from now.",
+    context: "We will check this file ___.",
+    options: ["in two days", "next year", "last week", "earlier"],
+    answerIndex: 0,
+    explain: "In two days means 48 hours from now."
+  },
+  {
+    prompt: "Choose the best expression for a flexible future time.",
+    context: "I will finish the report ___.",
+    options: ["later", "last year", "yesterday", "two days ago"],
+    answerIndex: 0,
+    explain: "Later means at a time after now."
+  },
+  {
+    prompt: "Choose the earliest option among these future markers.",
+    context: "Pick the closest upcoming time.",
+    options: ["soon", "next week", "next year", "in the future"],
+    answerIndex: 0,
+    explain: "Soon is earlier than the others."
+  },
+  {
+    prompt: "Choose the marker for immediate next-day planning.",
+    context: "The class will begin Unit 5 ___.",
+    options: ["tomorrow", "next year", "in two days", "later"],
+    answerIndex: 0,
+    explain: "Tomorrow is the next day."
+  },
+  {
+    prompt: "Choose the marker for events not this week but the following one.",
+    context: "The mission challenge will restart ___.",
+    options: ["next week", "soon", "tomorrow", "later"],
+    answerIndex: 0,
+    explain: "Next week is the right phrase."
+  },
+  {
+    prompt: "Choose the marker for the most distant specific option.",
+    context: "The full program update is planned ___.",
+    options: ["next year", "in two days", "tomorrow", "soon"],
+    answerIndex: 0,
+    explain: "Next year is the farthest specific timeline."
+  },
+  {
+    prompt: "Choose the expression for something not fixed to a specific date.",
+    context: "I will call you ___.",
+    options: ["later", "tomorrow", "next week", "in two days"],
+    answerIndex: 0,
+    explain: "Later is unspecific but future."
+  },
+  {
+    prompt: "Choose the broad expression for unknown distant time.",
+    context: "People will use cleaner energy ___.",
+    options: ["in the future", "tomorrow", "soon", "in two days"],
+    answerIndex: 0,
+    explain: "In the future is broad and distant."
+  },
+  {
+    prompt: "Choose the expression that fits a short scheduled delay.",
+    context: "The coach will arrive ___ after class.",
+    options: ["soon", "next year", "last week", "yesterday"],
+    answerIndex: 0,
+    explain: "Soon fits a short delay."
+  },
+  {
+    prompt: "Choose the expression for exactly two days from now.",
+    context: "They will return to this mission ___.",
+    options: ["in two days", "next week", "later", "tomorrow"],
+    answerIndex: 0,
+    explain: "In two days is exact."
+  }
+]);
+
 export const MISSIONS_DATA = {
   missions: [
     {
@@ -3101,6 +4155,159 @@ export const MISSIONS_DATA = {
               gameType: "error_spotter",
               itemCount: ITEM_TARGET,
               items: fixPastQuestionSpotter
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "time_travelers",
+      slug: "time-travelers",
+      hubPath: "/missions/hub.html?mission=time_travelers",
+      title: "Time Travelers",
+      subtitle: "Future Tenses",
+      description:
+        "Agents must analyze future plans, predictions, and ongoing future actions to decode the timeline of upcoming events.",
+      icon: "🚀",
+      subskills: [
+        {
+          id: "future_simple_will",
+          title: "Future Simple (Will)",
+          difficulty: "Rookie",
+          ruleFocus: "Subject + will + base verb.",
+          examplePattern: "She will travel tomorrow.",
+          notesForELD:
+            "Use will with all subjects. Keep the main verb in base form after will.",
+          games: [
+            {
+              id: "future_simple_sentence_builder",
+              title: "Future Simple - Sentence Builder",
+              description: "Build correct future simple sentences with will + base verb.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: futureSimpleSentenceBuilder
+            },
+            {
+              id: "future_simple_error_detection",
+              title: "Future Simple - Error Detection",
+              description: "Find and correct future simple mistakes with will.",
+              gameType: "error_spotter",
+              itemCount: ITEM_TARGET,
+              items: futureSimpleErrorDetection
+            },
+            {
+              id: "future_simple_prediction_challenge",
+              title: "Future Simple - Prediction Challenge",
+              description: "Choose the best future simple prediction sentence.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: futureSimplePredictionChallenge
+            }
+          ]
+        },
+        {
+          id: "going_to_future",
+          title: "Going To Future",
+          difficulty: "Rookie",
+          ruleFocus: "Subject + be + going to + base verb.",
+          examplePattern: "They are going to study tonight.",
+          notesForELD:
+            "Match be verb to the subject first, then add going to and base verb.",
+          games: [
+            {
+              id: "going_to_sentence_builder",
+              title: "Going To - Sentence Builder",
+              description: "Build future plan sentences using be + going to + base verb.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: goingToSentenceBuilder
+            },
+            {
+              id: "going_to_error_correction",
+              title: "Going To - Error Correction",
+              description: "Correct one be + going to structure error in each item.",
+              gameType: "error_spotter",
+              itemCount: ITEM_TARGET,
+              items: goingToErrorCorrection
+            },
+            {
+              id: "going_to_plan_or_prediction",
+              title: "Going To - Plan or Prediction",
+              description: "Select the correct going to form for plans and predictions.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: goingToPlanOrPrediction
+            }
+          ]
+        },
+        {
+          id: "future_continuous_will_be_ing",
+          title: "Future Continuous",
+          difficulty: "Agent",
+          ruleFocus: "Subject + will be + verb-ing.",
+          examplePattern: "She will be working at 8 PM.",
+          notesForELD:
+            "Use future continuous for actions in progress at a future time point.",
+          games: [
+            {
+              id: "future_continuous_sentence_builder",
+              title: "Future Continuous - Sentence Builder",
+              description: "Assemble future continuous sentences with will be + verb-ing.",
+              gameType: "sentence_builder",
+              itemCount: ITEM_TARGET,
+              items: futureContinuousSentenceBuilder
+            },
+            {
+              id: "future_continuous_time_detective",
+              title: "Future Continuous - Time Detective",
+              description: "Identify the correct will be + verb-ing form for time clues.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: futureContinuousTimeDetective
+            },
+            {
+              id: "future_continuous_error_fix",
+              title: "Future Continuous - Error Fix",
+              description: "Fix future continuous structure errors quickly.",
+              gameType: "error_spotter",
+              itemCount: ITEM_TARGET,
+              items: futureContinuousErrorFix
+            }
+          ]
+        },
+        {
+          id: "future_time_expressions",
+          title: "Future Time Expressions",
+          difficulty: "Director",
+          ruleFocus:
+            "Use clear future markers such as tomorrow, next week, next year, later, soon, in the future, and in two days.",
+          examplePattern: "We will start tomorrow. / They will submit in two days.",
+          notesForELD:
+            "Time expressions help show exactly when future actions happen. Match the clue and timeline.",
+          games: [
+            {
+              id: "future_time_drag_match",
+              title: "Future Time Expressions - Drag and Match",
+              description: "Drag sentence clues to the correct future time expression.",
+              gameType: "drag_sort",
+              itemCount: ITEM_TARGET,
+              items: futureTimeDragAndMatch
+            },
+            {
+              id: "future_time_sentence_completion",
+              title: "Future Time Expressions - Sentence Completion",
+              description: "Complete each sentence with the best future time phrase.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: futureTimeSentenceCompletion
+            },
+            {
+              id: "future_time_timeline_challenge",
+              title: "Future Time Expressions - Timeline Challenge",
+              description: "Choose the right future time marker for timeline clues.",
+              gameType: "multiple_choice",
+              itemCount: ITEM_TARGET,
+              items: futureTimeTimelineChallenge
             }
           ]
         }
