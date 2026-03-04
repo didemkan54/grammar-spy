@@ -1,6 +1,7 @@
 export const ROUTES = [
   { id: "home", label: "Home", href: "/index.html" },
   { id: "missions", label: "Missions", href: "/missions/" },
+  { id: "freeResources", label: "Free Resources", href: "/free/" },
   { id: "missionLaunch", label: "Mission Launch", href: "/missions.html" },
   { id: "progression", label: "Training Path", href: "/progression.html" },
   { id: "clues", label: "CLUES", href: "/clues.html" },
@@ -47,7 +48,8 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   const primaryLinks = [
     { label: "Home", href: "index.html" },
     { label: "Teacher", href: "teacher-home.html" },
-    { label: "Pricing", href: "pricing.html" }
+    { label: "Pricing", href: "pricing.html" },
+    { label: "Free Resources", href: "/free/" }
   ];
   const missionMenuLinks = [
     { label: "Run a Mission", href: "teacher-mode.html" },

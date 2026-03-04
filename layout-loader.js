@@ -47,6 +47,7 @@
     '</details>' +
     '<a class="gs-pill" href="/teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
     '<a class="gs-pill" href="/pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
+    '<a class="gs-pill" href="/free/" style="' + navLinkStyle + '">Free Resources</a>' +
     '<details id="gsResourcesMenu" style="position:relative">' +
     '<summary class="gs-pill" style="' + menuSummaryStyle + '">Resources &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
