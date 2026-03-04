@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Free Teacher Resources</title>
+  <meta
+    name="description"
+    content="Free teacher resources from Grammar Spy, including printable classroom-ready grammar activities."
+  />
+  <link rel="stylesheet" href="/core/theme.css" />
+  <style>
+    :root{
+      --free-navy:#102742;
+      --free-teal:#1f5f63;
+      --free-teal-soft:#eaf5f6;
+      --free-bg:#f4f8fc;
+      --free-card:#ffffff;
+      --free-border:#d6e2ee;
+      --free-text:#233a55;
+      --free-muted:#586b83;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      background:var(--free-bg);
+      color:var(--free-text);
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+    }
+    .free-main{
+      width:min(1100px,100%);
+      margin:0 auto;
+      padding:14px 16px 36px;
+      display:grid;
+      gap:16px;
+    }
+    .free-hero{
+      border:1px solid rgba(255,255,255,.3);
+      border-radius:18px;
+      padding:20px;
+      color:#effbff;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(255,255,255,.18), transparent 42%),
+        linear-gradient(160deg,#143943 0%,#1f5f63 58%,#2a7481 100%);
+      box-shadow:0 14px 30px rgba(11,16,32,.12);
+    }
+    .free-eyebrow{
+      margin:0;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.11em;
+      font-weight:800;
+      color:#cde8eb;
+    }
+    .free-hero h1{
+      margin:8px 0 0;
+      font-size:clamp(30px,5.4vw,44px);
+      line-height:1.08;
+      letter-spacing:-.015em;
+      color:#fff;
+    }
+    .free-hero p{
+      margin:10px 0 0;
+      max-width:70ch;
+      color:#e7f7fa;
+      font-size:16px;
+      line-height:1.5;
+    }
+    .resources-surface{
+      position:relative;
+      border:1px solid var(--free-border);
+      border-radius:16px;
+      background:linear-gradient(180deg,#f6fbfd 0%,#eef6f9 100%);
+      box-shadow:0 10px 22px rgba(11,16,32,.08);
+      padding:20px;
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .resources-surface::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.11;
+      z-index:0;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(16,39,66,.15) .5px, transparent .6px) 0 0/12px 12px,
+        radial-gradient(circle at 70% 30%, rgba(31,95,99,.12) .5px, transparent .6px) 0 0/14px 14px;
+    }
+    .resources-content{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:16px;
+      align-items:stretch;
+    }
+    .resources-copy h2{
+      margin:0;
+      color:var(--free-navy);
+      font-size:clamp(27px,4vw,37px);
+      line-height:1.15;
+      letter-spacing:-.012em;
+    }
+    .resources-subhead{
+      margin:10px 0 0;
+      color:#365471;
+      font-size:17px;
+      line-height:1.5;
+      font-weight:600;
+      max-width:62ch;
+    }
+    .resource-list{
+      margin:14px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+    .resource-list li{
+      color:#2a4864;
+      font-size:15px;
+      font-weight:700;
+      line-height:1.4;
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+    }
+    .resource-list li::before{
+      content:"•";
+      color:var(--free-teal);
+      font-size:18px;
+      line-height:1;
+      margin-top:1px;
+    }
+    .resource-card{
+      border:1px solid #c7d9e9;
+      border-radius:15px;
+      background:var(--free-card);
+      box-shadow:0 10px 22px rgba(11,16,32,.08);
+      padding:16px;
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+    .resource-card-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .resource-doc{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .doc-icon{
+      width:40px;
+      height:40px;
+      border-radius:11px;
+      display:grid;
+      place-items:center;
+      border:1px solid #b9d2dd;
+      background:#eaf6f8;
+      color:#165055;
+      font-size:19px;
+      flex:0 0 auto;
+    }
+    .doc-title{
+      margin:0;
+      color:var(--free-navy);
+      font-size:20px;
+      line-height:1.25;
+    }
+    .new-pill{
+      border-radius:999px;
+      border:1px solid #c5d7ee;
+      background:#eff5ff;
+      color:#2f4f78;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      padding:4px 9px;
+    }
+    .doc-description{
+      margin:0;
+      color:#46617c;
+      line-height:1.5;
+      font-size:14px;
+    }
+    .cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:10px 12px;
+    }
+    .download-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
+      padding:0 17px;
+      border-radius:10px;
+      border:1px solid #164f53;
+      background:var(--free-teal);
+      color:#fff;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      transition:transform .17s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .download-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 20px rgba(11,16,32,.15);
+      filter:saturate(1.05);
+    }
+    .share-link{
+      border:0;
+      background:transparent;
+      padding:0;
+      color:var(--free-teal);
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      text-decoration:underline;
+      cursor:pointer;
+    }
+    .print-note{
+      margin:0;
+      font-size:13px;
+      color:#4f637a;
+      font-weight:700;
+    }
+    .copy-toast{
+      display:none;
+      margin:0;
+      color:#1f6754;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    .copy-toast.show{display:block}
+    @media (min-width:880px){
+      .resources-content{
+        grid-template-columns:1.1fr .9fr;
+        gap:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div data-include="header"></div>
+
+  <main class="free-main">
+    <section class="free-hero">
+      <p class="free-eyebrow">Resource Library</p>
+      <h1>FREE TEACHER RESOURCES</h1>
+      <p>Printable, classroom-ready grammar activities. No prep.</p>
+    </section>
+
+    <section class="resources-surface" id="free-resources">
+      <div class="resources-content">
+        <div class="resources-copy">
+          <h2>FREE DOWNLOAD: Grammar Spy Case File #001</h2>
+          <p class="resources-subhead">A 15–20 minute grammar escape mini-mission for ELD/ESL students.</p>
+          <ul class="resource-list" aria-label="Case file contents">
+            <li>2 student mission pages</li>
+            <li>Code tracker + final reveal (SPY)</li>
+            <li>Teacher guide + answer key</li>
+          </ul>
+        </div>
+
+        <article class="resource-card" id="case-file-001">
+          <div class="resource-card-top">
+            <div class="resource-doc">
+              <span class="doc-icon" aria-hidden="true">DOC</span>
+              <h3 class="doc-title">Grammar Spy - Case File #001</h3>
+            </div>
+            <span class="new-pill">New</span>
+          </div>
+          <p class="doc-description">A printable grammar escape mini-mission designed for quick classroom launch and clear teacher guidance.</p>
+          <div class="cta-row">
+            <a
+              id="caseFileDownloadBtn"
+              class="download-btn"
+              href="/assets/downloads/grammar-spy-case-file-001.pdf"
+              target="_blank"
+              rel="noopener">
+              Download (PDF)
+            </a>
+            <button type="button" class="share-link" id="caseFileShareBtn">Copy link to share</button>
+          </div>
+          <p class="print-note">Print and play. No prep.</p>
+          <p class="copy-toast" id="caseFileCopyToast" role="status" aria-live="polite">Link copied!</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script>
+    (function(){
+      function track(name, payload){
+        if (window.GSAnalytics && window.GSAnalytics.track) {
+          window.GSAnalytics.track(name, payload || {});
+        }
+      }
+
+      var downloadBtn = document.getElementById('caseFileDownloadBtn');
+      var shareBtn = document.getElementById('caseFileShareBtn');
+      var copyToast = document.getElementById('caseFileCopyToast');
+      var toastTimer = null;
+
+      function shareUrl(){
+        try {
+          if (location.origin && location.origin !== 'null') {
+            return location.origin + '/free/#case-file-001';
+          }
+        } catch (_err) {}
+        return '/free/#case-file-001';
+      }
+
+      function showCopied(){
+        if (!copyToast) return;
+        copyToast.classList.add('show');
+        if (toastTimer) window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(function(){
+          copyToast.classList.remove('show');
+        }, 1400);
+      }
+
+      function fallbackCopy(text){
+        var el = document.createElement('textarea');
+        el.value = text;
+        el.setAttribute('readonly', 'readonly');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        try { document.execCommand('copy'); } catch (_err) {}
+        document.body.removeChild(el);
+      }
+
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(){
+          track('lead_magnet_download_case_file_001', {
+            asset: 'grammar_spy_case_file_001',
+            location: '/free/'
+          });
+        });
+      }
+
+      if (shareBtn) {
+        shareBtn.addEventListener('click', function(){
+          var value = shareUrl();
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(value).then(showCopied).catch(function(){
+              fallbackCopy(value);
+              showCopied();
+            });
+            return;
+          }
+          fallbackCopy(value);
+          showCopied();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
