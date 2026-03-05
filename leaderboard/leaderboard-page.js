@@ -28,7 +28,7 @@ function init() {
             return `
               <tr>
                 <td>#${row.rank}</td>
-                <td><span class="table-avatar">${renderAvatarSvg(avatar, 36)}</span> ${row.student_name}</td>
+                <td><span class="table-avatar">${renderAvatarSvg(avatar, 36, { accentColor: row.accent_color, rankBadge: row.rank })}</span> ${row.student_name}</td>
                 <td>${row.xp}</td>
                 <td>${row.average_accuracy}%</td>
                 <td>${row.streak_days}</td>

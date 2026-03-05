@@ -42,7 +42,7 @@ export function createLobbyRanking(options) {
       if (idx < 3) row.classList.add(`rank-top-${idx + 1}`);
       row.innerHTML = `
         <span class="rank-num">#${idx + 1}</span>
-        <span class="rank-avatar">${renderAvatarSvg(avatar, 44)}</span>
+        <span class="rank-avatar">${renderAvatarSvg(avatar, 44, { accentColor: player.accentColor, rankBadge: idx + 1 })}</span>
         <span class="rank-name">${player.nickname}</span>
         <span class="rank-score">${player.score}</span>
       `;

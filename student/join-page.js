@@ -1,4 +1,4 @@
-import { AVATARS, getAvatarById, renderAvatarSvg } from "./data/avatars.js";
+import { AVATAR_ACCENTS, AVATARS, getAccentById, getAvatarById, renderAvatarSvg } from "./data/avatars.js";
 import { createAvatarPicker } from "./components/AvatarPicker.js";
 import { createJoinForm } from "./components/JoinForm.js";
 import { addPlayerToLobby, normalizePin } from "./lobby-store.js";
@@ -16,10 +16,11 @@ function track(eventName, payload) {
   }
 }
 
-function renderMascot(el, avatarId) {
+function renderMascot(el, avatarId, accentId) {
   if (!el) return;
   const avatar = getAvatarById(avatarId);
-  el.innerHTML = renderAvatarSvg(avatar, 86);
+  const accent = getAccentById(accentId);
+  el.innerHTML = renderAvatarSvg(avatar, 86, { accentColor: accent.color, rankBadge: "A" });
 }
 
 function confettiBurst(target) {
@@ -55,6 +56,7 @@ function init() {
   const avatarMount = document.getElementById("avatarPicker");
   const joinBtn = document.getElementById("joinButton");
   const mascotEl = document.getElementById("selectedAvatarPreview");
+  const accentMount = document.getElementById("accentPicker");
   const confirmation = document.getElementById("joinConfirmation");
   const ctaShell = document.getElementById("joinCtaShell");
 
@@ -63,15 +65,32 @@ function init() {
   const initialPin = resolveInitialPin();
   if (initialPin) pinInput.value = initialPin;
 
+  let selectedAccentId = AVATAR_ACCENTS[0].id;
   const avatarPicker = createAvatarPicker({
     mountEl: avatarMount,
     initialAvatarId: AVATARS[0].id,
     onChange: (avatarId) => {
-      renderMascot(mascotEl, avatarId);
+      renderMascot(mascotEl, avatarId, selectedAccentId);
       playSound("hover");
     }
   });
-  renderMascot(mascotEl, avatarPicker.getSelectedAvatarId());
+  renderMascot(mascotEl, avatarPicker.getSelectedAvatarId(), selectedAccentId);
+
+  if (accentMount) {
+    accentMount.innerHTML = AVATAR_ACCENTS.map((accent) => {
+      const activeClass = accent.id === selectedAccentId ? "is-selected" : "";
+      return `<button type="button" class="accent-chip ${activeClass}" data-accent-id="${accent.id}" style="--accent-color:${accent.color};">${accent.label}</button>`;
+    }).join("");
+    accentMount.querySelectorAll("[data-accent-id]").forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedAccentId = button.getAttribute("data-accent-id");
+        accentMount.querySelectorAll("[data-accent-id]").forEach((chip) => {
+          chip.classList.toggle("is-selected", chip.getAttribute("data-accent-id") === selectedAccentId);
+        });
+        renderMascot(mascotEl, avatarPicker.getSelectedAvatarId(), selectedAccentId);
+      });
+    });
+  }
 
   const joinForm = createJoinForm({
     formEl: form,
@@ -80,12 +99,15 @@ function init() {
     statusEl,
     joinButtonEl: joinBtn,
     getAvatarId: () => avatarPicker.getSelectedAvatarId(),
-    onValidSubmit: async ({ pin, nickname, avatarId }) => {
-      const { player } = addPlayerToLobby(pin, { nickname, avatarId });
+    getAccentColor: () => getAccentById(selectedAccentId).color,
+    onValidSubmit: async ({ pin, nickname, avatarId, accentColor }) => {
+      const { player } = addPlayerToLobby(pin, { nickname, avatarId, accentColor });
       upsertStudentProfile(player.id, {
         display_name: nickname,
         avatar_id: avatarId,
-        class_id: pin
+        accent_color: accentColor,
+        class_id: pin,
+        identity_ready: true
       });
       setActiveContext(player.id, pin);
       applyDailyLoginBonus(player.id);

@@ -12,8 +12,6 @@
       st.id = 'gsTopNavStyles';
       st.textContent =
         'nav[aria-label=\"Primary navigation\"] .gs-pill{white-space:nowrap}\\n' +
-        '.gs-sound-toggle{border:1px solid #d9dee6;border-radius:999px;background:#f8fafc;color:#2a4f69;font:700 16px Inter,Segoe UI,Arial,sans-serif;line-height:1;padding:7px 10px;cursor:pointer;min-width:40px;min-height:34px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease}\\n' +
-        '.gs-sound-toggle:hover{transform:translateY(-1px);border-color:rgba(31,95,99,.4);background:#ecf5f6}\\n' +
         '@media (max-width:720px){\\n' +
         '  nav[aria-label=\"Primary navigation\"]{padding-left:14px!important;padding-right:14px!important}\\n' +
         '}\\n' +
@@ -125,7 +123,7 @@
     try {
       if (document.querySelector('script[data-gs-sound-system="1"]')) return;
       var script = document.createElement('script');
-      script.src = '/student/sound-system.js';
+      script.src = '/core/sound-manager.js';
       script.defer = true;
       script.setAttribute('data-gs-sound-system', '1');
       (document.head || document.documentElement).appendChild(script);

@@ -63,8 +63,10 @@ function baseProfile(studentId, fields = {}) {
   return {
     student_id: studentId,
     display_name: String(fields.display_name || "Agent"),
-    avatar_id: String(fields.avatar_id || "rookie"),
+    avatar_id: String(fields.avatar_id || "spy_hacker"),
+    accent_color: String(fields.accent_color || "#1f8f8f"),
     class_id: String(fields.class_id || "DEMO"),
+    identity_ready: Boolean(fields.identity_ready),
     total_xp: totalXp,
     level,
     rank: rankFromLevel(level),

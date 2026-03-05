@@ -106,7 +106,7 @@ function renderLeaderboard(summary) {
         ${rows
           .map((row) => {
             const avatar = getAvatarById(row.avatar_id);
-            return `<tr><td>${row.rank}</td><td><span class="table-avatar">${renderAvatarSvg(avatar, 34)}</span> ${
+            return `<tr><td>${row.rank}</td><td><span class="table-avatar">${renderAvatarSvg(avatar, 34, { accentColor: row.accent_color, rankBadge: row.rank })}</span> ${
               row.student_name
             }</td><td>${row.xp}</td><td>${row.average_accuracy}%</td></tr>`;
           })
@@ -148,7 +148,7 @@ function renderStudentTable(summary) {
         const avatar = getAvatarById(row.avatar_id);
         return `
           <tr>
-            <td><span class="table-avatar">${renderAvatarSvg(avatar, 34)}</span> ${row.student_name}</td>
+            <td><span class="table-avatar">${renderAvatarSvg(avatar, 34, { accentColor: row.accent_color, rankBadge: row.xp > 0 ? "XP" : "A" })}</span> ${row.student_name}</td>
             <td>${row.progress_pct}%</td>
             <td>${row.accuracy_pct}%</td>
             <td>${row.weakest_rule}</td>

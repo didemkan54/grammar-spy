@@ -72,6 +72,10 @@ Technical safety:
       margin:0 auto;
       padding:0 18px;
     }
+    h1,h2,h3,p,a,button,li{
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
 
     .home-nav{
       position:sticky;
@@ -148,6 +152,36 @@ Technical safety:
       background:linear-gradient(160deg,#163640 0%,#1f5f63 52%,#2e727f 100%);
       border-bottom:1px solid rgba(255,255,255,.16);
     }
+    .cinematic-hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:0 0 24px 24px;
+    }
+    .cinematic-hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(7,16,24,.18), rgba(7,16,24,.35));
+      z-index:1;
+      pointer-events:none;
+    }
+    .cinematic-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:16px;
+    }
+    .cinematic-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(7,16,24,.12), rgba(7,16,24,.28));
+      opacity:.55;
+      pointer-events:none;
+    }
+    .cinematic-card > *{
+      position:relative;
+      z-index:2;
+    }
     .hero-shapes{
       position:absolute;
       inset:0;
@@ -198,6 +232,7 @@ Technical safety:
       gap:24px;
       align-items:center;
       z-index:2;
+      min-width:0;
     }
     .eyebrow{
       margin:0;
@@ -216,7 +251,7 @@ Technical safety:
     }
     .hero-subhead{
       margin:14px 0 0;
-      font-size:18px;
+      font-size:clamp(14px,1.4vw,18px);
       line-height:1.55;
       color:#d8edf1;
       max-width:62ch;
@@ -252,6 +287,7 @@ Technical safety:
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
+      min-width:0;
     }
     .btn{
       display:inline-flex;
@@ -334,6 +370,7 @@ Technical safety:
       border-radius:var(--radius);
       box-shadow:var(--shadow-md);
       padding:16px;
+      min-width:0;
     }
     .preview-kicker{
       margin:0;
@@ -562,6 +599,7 @@ Technical safety:
       margin-top:18px;
       display:grid;
       gap:14px;
+      min-width:0;
     }
     .mission-map-tile{
       position:relative;
@@ -572,6 +610,7 @@ Technical safety:
       box-shadow:0 10px 24px rgba(11,16,32,.08);
       transition:transform .2s ease, box-shadow .22s ease, border-color .22s ease;
       overflow:hidden;
+      min-width:0;
     }
     .mission-map-tile::after{
       content:"";
@@ -647,6 +686,7 @@ Technical safety:
     .proof-strip{
       display:grid;
       gap:10px;
+      min-width:0;
     }
     .proof-mini-card{
       background:#ffffff;
@@ -657,6 +697,7 @@ Technical safety:
       align-items:center;
       gap:10px;
       box-shadow:0 7px 16px rgba(11,16,32,.06);
+      min-width:0;
     }
     .proof-mini-icon{
       width:32px;
@@ -1017,6 +1058,16 @@ Technical safety:
       .nav-links a{padding:9px 12px}
       .engage-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
     }
+    @media (max-width:760px){
+      .hero{padding:52px 0 42px}
+      .hero-grid{gap:16px}
+      .hero-ctas{align-items:stretch}
+      .hero-ctas .btn{width:100%}
+      .hero-preview-panel{padding:14px}
+      .mission-map-grid{grid-template-columns:1fr}
+      .proof-strip{grid-template-columns:1fr}
+      .container{padding:0 14px}
+    }
   </style>
 </head>
 <body>
@@ -1038,7 +1089,7 @@ Technical safety:
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero cinematic-hero">
       <div class="hero-shapes" aria-hidden="true">
         <span class="hero-shape one"></span>
         <span class="hero-shape two"></span>
@@ -1074,7 +1125,7 @@ Technical safety:
             <span>Agent Lobby Live</span>
           </div>
         </div>
-        <aside class="hero-preview-panel" id="mission-preview" aria-label="Mission Preview">
+        <aside class="hero-preview-panel cinematic-card" id="mission-preview" aria-label="Mission Preview">
           <p class="preview-kicker">Mission Demo: Speak in the Moment</p>
           <div class="preview-progress" aria-hidden="true"><span></span></div>
           <p class="demo-progress-label">Progress simulation: 6/15</p>
@@ -1118,7 +1169,7 @@ Technical safety:
         <p class="section-label">Live mission preview</p>
         <h2>See a Mission in Action</h2>
         <p class="section-intro">A quick look at the mission loop: clear prompt, student response, instant correction, and forward momentum.</p>
-        <div class="mock-play">
+        <div class="mock-play cinematic-card">
           <p class="mock-play-title">Sentence Repair</p>
           <h3>Fix the sentence: "She go to school every day."</h3>
           <p>This is a visual demo of the interaction style students see during missions.</p>
@@ -1137,7 +1188,7 @@ Technical safety:
         <p class="section-label">Mission map</p>
         <h2>Pick a Mission (students love these)</h2>
         <div class="mission-map-grid">
-          <article class="mission-map-tile">
+          <article class="mission-map-tile cinematic-card">
             <div class="mission-map-head">
               <span class="mission-map-icon" aria-hidden="true">🛰️</span>
               <h3 class="mission-map-title">Speak in the Moment</h3>
@@ -1149,7 +1200,7 @@ Technical safety:
             </div>
             <a href="/missions/speak-in-the-moment/" class="btn btn-primary mission-map-start">Start</a>
           </article>
-          <article class="mission-map-tile">
+          <article class="mission-map-tile cinematic-card">
             <div class="mission-map-head">
               <span class="mission-map-icon" aria-hidden="true">🕵️</span>
               <h3 class="mission-map-title">Question Protocol</h3>
@@ -1161,7 +1212,7 @@ Technical safety:
             </div>
             <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
           </article>
-          <article class="mission-map-tile">
+          <article class="mission-map-tile cinematic-card">
             <div class="mission-map-head">
               <span class="mission-map-icon" aria-hidden="true">⏳</span>
               <h3 class="mission-map-title">Time Traveler</h3>
@@ -1173,7 +1224,7 @@ Technical safety:
             </div>
             <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
           </article>
-          <article class="mission-map-tile">
+          <article class="mission-map-tile cinematic-card">
             <div class="mission-map-head">
               <span class="mission-map-icon" aria-hidden="true">🚀</span>
               <h3 class="mission-map-title">Future Ops</h3>

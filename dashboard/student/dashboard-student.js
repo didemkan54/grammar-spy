@@ -7,7 +7,7 @@ import {
   setActiveContext,
   upsertStudentProfile
 } from "/student/identity-store.js";
-import { AVATARS, getAvatarById, renderAvatarSvg } from "/student/data/avatars.js";
+import { AVATAR_ACCENTS, AVATARS, getAvatarById, renderAvatarSvg } from "/student/data/avatars.js";
 
 const DAILY_KEY = "gs_daily_challenge_state_v1";
 const BOSS_KEY = "gs_boss_mission_state_v1";
@@ -39,7 +39,7 @@ function renderAgentSetup(summary) {
   const shell = document.getElementById("agentSetupPanel");
   if (!shell) return;
   const profile = summary.profile || {};
-  const needsSetup = !profile.display_name || profile.display_name === "student_local";
+  const needsSetup = !profile.identity_ready;
   if (!needsSetup) {
     shell.hidden = true;
     return;
@@ -47,23 +47,28 @@ function renderAgentSetup(summary) {
   shell.hidden = false;
   const nameInput = document.getElementById("setupName");
   const avatarSelect = document.getElementById("setupAvatar");
+  const accentSelect = document.getElementById("setupAccent");
   const saveBtn = document.getElementById("setupSaveBtn");
   const status = document.getElementById("setupStatus");
-  if (!nameInput || !avatarSelect || !saveBtn || !status) return;
+  if (!nameInput || !avatarSelect || !accentSelect || !saveBtn || !status) return;
 
   avatarSelect.innerHTML = AVATARS.map((row) => `<option value="${row.id}">${row.label}</option>`).join("");
+  accentSelect.innerHTML = AVATAR_ACCENTS.map((row) => `<option value="${row.color}">${row.label}</option>`).join("");
   saveBtn.addEventListener("click", () => {
     const cleanName = String(nameInput.value || "").trim();
     if (cleanName.length < 2) {
       status.textContent = "Name must be at least 2 characters.";
       return;
     }
-    const avatarId = avatarSelect.value || "rookie";
+    const avatarId = avatarSelect.value || "spy_hacker";
+    const accentColor = accentSelect.value || "#1f8f8f";
     const studentId = summary.student_id || getActiveStudentId();
     upsertStudentProfile(studentId, {
       display_name: cleanName,
       avatar_id: avatarId,
-      class_id: summary.class_id || getActiveClassId()
+      accent_color: accentColor,
+      class_id: summary.class_id || getActiveClassId(),
+      identity_ready: true
     });
     setActiveContext(studentId, summary.class_id || getActiveClassId());
     status.textContent = "Agent profile saved.";
@@ -83,7 +88,7 @@ function renderOverview(summary) {
   );
 
   target.innerHTML = `
-    <span class="agent-avatar">${renderAvatarSvg(avatar, 76)}</span>
+    <span class="agent-avatar">${renderAvatarSvg(avatar, 76, { accentColor: profile.accent_color, rankBadge: profile.level })}</span>
     <div>
       <p class="agent-name">${profile.display_name || "Agent"}</p>
       <p class="agent-rank">${profile.rank} · Level ${profile.level}</p>
@@ -309,7 +314,7 @@ function renderLeaderboardPreview(summary) {
           .slice(0, 5)
           .map((row) => {
             const avatar = getAvatarById(row.avatar_id);
-            return `<tr><td>${row.rank}</td><td><span class="table-avatar">${renderAvatarSvg(avatar, 34)}</span> ${
+            return `<tr><td>${row.rank}</td><td><span class="table-avatar">${renderAvatarSvg(avatar, 34, { accentColor: row.accent_color, rankBadge: row.rank })}</span> ${
               row.student_name
             }</td><td>${row.xp}</td><td>${row.average_accuracy}%</td></tr>`;
           })

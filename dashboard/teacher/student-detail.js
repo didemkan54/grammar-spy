@@ -5,10 +5,10 @@ function renderHeader(summary) {
   const target = document.getElementById("studentHeader");
   if (!target) return;
   const profile = summary.profile || {};
-  const avatar = getAvatarById(profile.avatar_id || "rookie");
+  const avatar = getAvatarById(profile.avatar_id || "spy_hacker");
   target.innerHTML = `
     <div class="agent-card">
-      <span class="agent-avatar">${renderAvatarSvg(avatar, 76)}</span>
+      <span class="agent-avatar">${renderAvatarSvg(avatar, 76, { accentColor: profile.accent_color, rankBadge: profile.level })}</span>
       <div>
         <p class="agent-name">${profile.display_name || summary.student_id}</p>
         <p class="agent-rank">${profile.rank} · Level ${profile.level} · Streak ${profile.streak_days} days</p>
