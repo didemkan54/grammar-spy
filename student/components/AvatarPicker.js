@@ -1,4 +1,4 @@
-import { AVATARS, renderAvatarSvg } from "../data/avatars.js";
+import { AVATAR_PACKS, AVATARS, renderAvatarSvg } from "../data/avatars.js";
 
 export function createAvatarPicker(options) {
   const {
@@ -15,18 +15,27 @@ export function createAvatarPicker(options) {
   mountEl.innerHTML = "";
   mountEl.classList.add("avatar-grid");
   const byPack = AVATARS.reduce((acc, avatar) => {
-    const key = avatar.pack || "Agents";
+    const key = avatar.pack_id || "agents";
     if (!acc[key]) acc[key] = [];
     acc[key].push(avatar);
     return acc;
   }, {});
 
-  Object.keys(byPack).forEach((packName) => {
+  AVATAR_PACKS.forEach((packMeta) => {
+    const packRows = byPack[packMeta.id] || [];
+    if (!packRows.length) return;
     const pack = document.createElement("section");
     pack.className = "avatar-pack";
-    pack.innerHTML = `<p class="avatar-pack-title">${packName}</p><div class="avatar-pack-grid"></div>`;
+    pack.innerHTML = `
+      <div class="avatar-pack-head">
+        <p class="avatar-pack-title">${packMeta.label}</p>
+        <span class="avatar-pack-glow" style="--pack-glow:${packMeta.glow}"></span>
+      </div>
+      <p class="avatar-pack-subtitle">${packMeta.subtitle}</p>
+      <div class="avatar-pack-grid"></div>
+    `;
     const grid = pack.querySelector(".avatar-pack-grid");
-    byPack[packName].forEach((avatar) => {
+    packRows.forEach((avatar) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "avatar-tile";
@@ -36,6 +45,7 @@ export function createAvatarPicker(options) {
       button.innerHTML = `
         <span class="avatar-thumb">${renderAvatarSvg(avatar, 56)}</span>
         <span class="avatar-label">${avatar.label}</span>
+        <span class="avatar-tier-chip avatar-tier-${avatar.tier || "rare"}">${avatar.tier || "rare"}</span>
       `;
 
       button.addEventListener("click", () => {

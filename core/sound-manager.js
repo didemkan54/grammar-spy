@@ -3,8 +3,9 @@
   var UNLOCK_KEY = "gs_sound_unlocked_v1";
   var DEBUG_KEY = "gs_debug_sound_v1";
   var SOUND_EVENT = "gs:sound-change";
-  var MIN_GAP_MS = 100;
+  var MIN_GAP_MS = 90;
   var POOL_SIZE = 4;
+  var MASTER_VOLUME = 0.34;
   var audioContext = null;
   var audioUnlocked = false;
   var listenersBound = false;
@@ -188,6 +189,62 @@
     return pool[index];
   }
 
+  function playSynthTone(ctx, frequency, startAt, duration, gainAmount) {
+    if (!ctx) return;
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(frequency, startAt);
+    gain.gain.setValueAtTime(0.0001, startAt);
+    gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, gainAmount), startAt + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(startAt);
+    osc.stop(startAt + duration + 0.02);
+  }
+
+  function playFallbackSynth(name) {
+    var ctx = getAudioContext();
+    if (!ctx) return false;
+    var base = ctx.currentTime + 0.01;
+    if (name === "correct") {
+      playSynthTone(ctx, 820, base, 0.1, 0.07);
+      playSynthTone(ctx, 1120, base + 0.08, 0.11, 0.06);
+      lastSound = name;
+      renderDebugPanel();
+      return true;
+    }
+    if (name === "wrong") {
+      playSynthTone(ctx, 320, base, 0.12, 0.07);
+      playSynthTone(ctx, 230, base + 0.09, 0.12, 0.06);
+      lastSound = name;
+      renderDebugPanel();
+      return true;
+    }
+    if (name === "levelup") {
+      playSynthTone(ctx, 540, base, 0.1, 0.08);
+      playSynthTone(ctx, 740, base + 0.08, 0.12, 0.07);
+      playSynthTone(ctx, 980, base + 0.16, 0.14, 0.07);
+      lastSound = name;
+      renderDebugPanel();
+      return true;
+    }
+    if (name === "missioncomplete") {
+      playSynthTone(ctx, 520, base, 0.12, 0.08);
+      playSynthTone(ctx, 680, base + 0.1, 0.14, 0.07);
+      playSynthTone(ctx, 840, base + 0.2, 0.16, 0.07);
+      playSynthTone(ctx, 1040, base + 0.3, 0.18, 0.06);
+      lastSound = name;
+      renderDebugPanel();
+      return true;
+    }
+    playSynthTone(ctx, 600, base, 0.08, 0.05);
+    lastSound = name;
+    renderDebugPanel();
+    return true;
+  }
+
   function play(name) {
     var safeName = String(name || "").toLowerCase().trim();
     if (!SOUND_PATHS[safeName]) return false;
@@ -197,13 +254,16 @@
     if (!canPlayNow(safeName)) return false;
 
     var player = pickFromPool(safeName);
-    if (!player) return false;
+    if (!player) return playFallbackSynth(safeName);
     try {
+      player.playbackRate = 1 + (Math.random() * 0.03 - 0.015);
+      player.volume = MASTER_VOLUME;
       player.currentTime = 0;
       var maybePromise = player.play();
       if (maybePromise && typeof maybePromise.catch === "function") {
         maybePromise.catch(function (err) {
           maybeWarnLoadError(safeName, err && err.message ? err.message : "");
+          playFallbackSynth(safeName);
         });
       }
       lastSound = safeName;
@@ -211,7 +271,7 @@
       return true;
     } catch (err) {
       maybeWarnLoadError(safeName, err && err.message ? err.message : "");
-      return false;
+      return playFallbackSynth(safeName);
     }
   }
 

@@ -153,6 +153,14 @@ body.dashboard-shell::before {
   filter: blur(8px);
 }
 
+.gs-avatar-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: conic-gradient(from 120deg, color-mix(in srgb, var(--avatar-accent) 85%, #fff) 0deg, transparent 130deg, color-mix(in srgb, var(--avatar-accent) 90%, #fff) 250deg, transparent 360deg);
+  animation: dbAvatarRingSpin 5.2s linear infinite;
+}
+
 .gs-avatar-img {
   width: var(--avatar-size);
   height: var(--avatar-size);
@@ -181,6 +189,10 @@ body.dashboard-shell::before {
   align-items: center;
   justify-content: center;
   z-index: 2;
+}
+
+.gs-avatar-tier-legend .gs-avatar-glow {
+  filter: blur(10px) saturate(1.2);
 }
 
 .agent-name {
@@ -504,6 +516,15 @@ body.dashboard-shell::before {
   }
 }
 
+@keyframes dbAvatarRingSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 980px) {
   .dash-grid.two-col,
   .dash-grid.three-col {
@@ -522,5 +543,8 @@ body.dashboard-shell::before {
   * {
     animation: none !important;
     transition: none !important;
+  }
+  .gs-avatar-ring {
+    display: none;
   }
 }
