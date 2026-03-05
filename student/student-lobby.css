@@ -67,6 +67,7 @@ body.student-shell::before {
   border: 1px solid rgba(255, 255, 255, 0.24);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 16px 34px rgba(11, 16, 32, 0.14);
 }
 
 .student-hero::after {
@@ -471,6 +472,18 @@ body.student-shell::before {
 
 .rank-shell {
   padding: 18px 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rank-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, #1f5f63, #44b4bf, #c79a2f);
+  opacity: 0.75;
+  pointer-events: none;
 }
 
 .lobby-header-grid {
@@ -512,6 +525,53 @@ body.student-shell::before {
   align-items: center;
 }
 
+.lobby-hype {
+  margin: 8px 0 12px;
+  border: 1px solid #d3dfeb;
+  border-radius: 12px;
+  background: linear-gradient(165deg, #ffffff 0%, #f2f8ff 100%);
+  padding: 10px;
+}
+
+.lobby-hype-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lobby-hype-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #345c78;
+}
+
+.lobby-hype-value {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  color: #12475b;
+}
+
+.lobby-hype-track {
+  margin-top: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #e2edf7;
+  overflow: hidden;
+}
+
+.lobby-hype-track > span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #2d8f97 0%, #42c0ca 58%, #c79a2f 100%);
+  transition: width 0.35s ease;
+}
+
 .demo-hint {
   font-size: 12px;
   font-weight: 700;
@@ -534,19 +594,29 @@ body.student-shell::before {
   align-items: center;
   gap: 10px;
   padding: 8px 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rank-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 16px rgba(11, 16, 32, 0.08);
 }
 
 .rank-row.rank-top-1 {
   border-color: rgba(29, 122, 104, 0.45);
   box-shadow: 0 0 0 2px rgba(40, 164, 128, 0.12) inset;
+  background: linear-gradient(90deg, rgba(236, 252, 247, 0.9), #fff);
+  animation: topRankPulse 2.8s ease-in-out infinite;
 }
 
 .rank-row.rank-top-2 {
   border-color: rgba(50, 97, 145, 0.45);
+  background: linear-gradient(90deg, rgba(240, 246, 255, 0.9), #fff);
 }
 
 .rank-row.rank-top-3 {
   border-color: rgba(88, 102, 140, 0.38);
+  background: linear-gradient(90deg, rgba(255, 249, 241, 0.9), #fff);
 }
 
 .rank-num {
@@ -765,6 +835,16 @@ body.student-shell::before {
   to {
     transform: translate3d(var(--x), var(--y), 0) rotate(var(--rot));
     opacity: 0;
+  }
+}
+
+@keyframes topRankPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 2px rgba(40, 164, 128, 0.12) inset;
+  }
+  50% {
+    box-shadow: 0 0 0 2px rgba(40, 164, 128, 0.18) inset, 0 0 22px rgba(55, 173, 138, 0.16);
   }
 }
 

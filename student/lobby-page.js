@@ -51,6 +51,8 @@ function init() {
   const winnerBtn = document.getElementById("winnerPageBtn");
   const winnerPreviewEl = document.getElementById("winnerPreview");
   const liveRegion = document.getElementById("lobbyLiveRegion");
+  const battleMeterValue = document.getElementById("battleMeterValue");
+  const battleMeterFill = document.getElementById("battleMeterFill");
 
   if (!pin || !pinEl || !playersCountEl || !statusEl || !listEl || !winnerBtn || !winnerPreviewEl) {
     return;
@@ -86,6 +88,12 @@ function init() {
     statusEl.textContent = "Same-device live demo mode. Rankings update from local storage.";
     ranking.render(sorted);
     winnerPreviewEl.innerHTML = winnerPreviewCard(lead);
+    if (battleMeterValue && battleMeterFill) {
+      const topScore = lead ? Number(lead.score || 0) : 0;
+      const meter = Math.max(0, Math.min(100, Math.round(sorted.length * 10 + topScore / 6)));
+      battleMeterValue.textContent = `${meter}%`;
+      battleMeterFill.style.width = `${meter}%`;
+    }
 
     const order = sorted.map((player) => `${player.id}:${player.score}`).join("|");
     if (order !== previousOrder) {

@@ -106,6 +106,17 @@ function renderOverview(summary) {
   `;
 }
 
+function renderBattleStrip(summary) {
+  const profile = summary.profile || {};
+  const streakEl = document.getElementById("dashBattleStreak");
+  const xpEl = document.getElementById("dashBattleXp");
+  const rankEl = document.getElementById("dashBattleRank");
+  if (!streakEl || !xpEl || !rankEl) return;
+  streakEl.textContent = String(profile.streak_days || 0);
+  xpEl.textContent = String(profile.total_xp || 0);
+  rankEl.textContent = summary.rank_in_class ? `#${summary.rank_in_class}` : "#--";
+}
+
 function renderCategoryProgress(summary) {
   const target = document.getElementById("categoryProgress");
   if (!target) return;
@@ -334,6 +345,7 @@ function init() {
   const summary = getStudentSummary(studentId);
   renderAgentSetup(summary);
   renderOverview(summary);
+  renderBattleStrip(summary);
   renderCategoryProgress(summary);
   renderRuleBars(summary);
   renderRecommendations(summary);

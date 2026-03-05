@@ -340,6 +340,38 @@ Technical safety:
       color:#cfe9ed;
       font-weight:600;
     }
+    .hero-live-badges{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      min-width:0;
+    }
+    .live-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border:1px solid rgba(255,255,255,.32);
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      color:#e9f9fb;
+      font:800 11px Inter,Segoe UI,Arial,sans-serif;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      padding:6px 10px;
+    }
+    .pulse-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#61e9c2;
+      box-shadow:0 0 0 0 rgba(97,233,194,.65);
+      animation:dotPulse 1.5s ease-out infinite;
+    }
+    @keyframes dotPulse{
+      0%{box-shadow:0 0 0 0 rgba(97,233,194,.65)}
+      100%{box-shadow:0 0 0 9px rgba(97,233,194,0)}
+    }
     .hero-join-mascot{
       margin-top:14px;
       display:inline-flex;
@@ -471,6 +503,74 @@ Technical safety:
       background:linear-gradient(180deg,#f3f8fb 0%,#ecf5f8 100%);
       border-top:1px solid #e4ebf2;
       border-bottom:1px solid #dce6ef;
+    }
+    .battle-strip{
+      margin-top:14px;
+      border:1px solid #d4e1ee;
+      border-radius:16px;
+      background:linear-gradient(165deg,#ffffff 0%,#f3f9ff 100%);
+      box-shadow:0 10px 22px rgba(11,16,32,.08);
+      padding:12px;
+      display:grid;
+      gap:10px;
+    }
+    .battle-strip-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .battle-strip-kicker{
+      margin:0;
+      font:800 11px Inter,Segoe UI,Arial,sans-serif;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:#2b5f73;
+    }
+    .battle-chip-row{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:8px;
+    }
+    .battle-chip{
+      border:1px solid #d8e6f0;
+      border-radius:12px;
+      background:#fff;
+      padding:10px 8px;
+      text-align:center;
+      min-width:0;
+    }
+    .battle-chip-label{
+      margin:0;
+      color:#54708a;
+      font:700 11px Inter,Segoe UI,Arial,sans-serif;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+    .battle-chip-value{
+      margin:6px 0 0;
+      color:#143b53;
+      font:900 24px Inter,Segoe UI,Arial,sans-serif;
+      line-height:1;
+      letter-spacing:-.01em;
+    }
+    .battle-progress{
+      height:8px;
+      border-radius:999px;
+      background:#e3edf5;
+      overflow:hidden;
+    }
+    .battle-progress > span{
+      display:block;
+      width:46%;
+      height:100%;
+      background:linear-gradient(90deg,#42b9c2,#1f5f63 72%,#c89a30);
+      animation:battleSweep 3.6s ease-in-out infinite;
+    }
+    @keyframes battleSweep{
+      0%,100%{width:34%}
+      50%{width:88%}
     }
     .section-label{
       margin:0 0 8px;
@@ -612,6 +712,21 @@ Technical safety:
       overflow:hidden;
       min-width:0;
     }
+    .mission-map-tile .btn{
+      position:relative;
+      overflow:hidden;
+    }
+    .mission-map-tile .btn::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(110deg,transparent 0%,rgba(255,255,255,.25) 46%,transparent 65%);
+      transform:translateX(-120%);
+      transition:transform .45s ease;
+    }
+    .mission-map-tile:hover .btn::before{
+      transform:translateX(120%);
+    }
     .mission-map-tile::after{
       content:"";
       position:absolute;
@@ -698,6 +813,12 @@ Technical safety:
       gap:10px;
       box-shadow:0 7px 16px rgba(11,16,32,.06);
       min-width:0;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .proof-mini-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 20px rgba(11,16,32,.12);
+      border-color:#bfd4e5;
     }
     .proof-mini-icon{
       width:32px;
@@ -1066,6 +1187,7 @@ Technical safety:
       .hero-preview-panel{padding:14px}
       .mission-map-grid{grid-template-columns:1fr}
       .proof-strip{grid-template-columns:1fr}
+      .battle-chip-row{grid-template-columns:1fr}
       .container{padding:0 14px}
     }
   </style>
@@ -1111,6 +1233,11 @@ Technical safety:
             <a href="/auth.html?mode=signin" class="btn btn-quiet" data-track-event="homepage_teacher_login_click">Teacher Login</a>
           </div>
           <p class="hero-note">No prep. No grading stacks. Just progress.</p>
+          <div class="hero-live-badges" aria-label="Live game indicators">
+            <span class="live-badge"><span class="pulse-dot" aria-hidden="true"></span>Live Class Battle</span>
+            <span class="live-badge">Fast rounds: 5 min</span>
+            <span class="live-badge">Instant rank shifts</span>
+          </div>
           <div class="hero-join-mascot" aria-hidden="true">
             <svg viewBox="0 0 52 52">
               <circle cx="26" cy="26" r="24" fill="#8ecfd7"></circle>
@@ -1169,6 +1296,27 @@ Technical safety:
         <p class="section-label">Live mission preview</p>
         <h2>See a Mission in Action</h2>
         <p class="section-intro">A quick look at the mission loop: clear prompt, student response, instant correction, and forward momentum.</p>
+        <div class="battle-strip" aria-label="Live mission momentum">
+          <div class="battle-strip-head">
+            <p class="battle-strip-kicker">Mission momentum</p>
+            <span class="live-badge" style="color:#1f5f63;border-color:#c7d8e9;background:#eef6ff;">Class race active</span>
+          </div>
+          <div class="battle-chip-row">
+            <article class="battle-chip">
+              <p class="battle-chip-label">Agents online</p>
+              <p class="battle-chip-value" data-live-counter="agents">86</p>
+            </article>
+            <article class="battle-chip">
+              <p class="battle-chip-label">Rounds finished</p>
+              <p class="battle-chip-value" data-live-counter="rounds">214</p>
+            </article>
+            <article class="battle-chip">
+              <p class="battle-chip-label">Accuracy now</p>
+              <p class="battle-chip-value" data-live-counter="accuracy">78%</p>
+            </article>
+          </div>
+          <div class="battle-progress" aria-hidden="true"><span></span></div>
+        </div>
         <div class="mock-play cinematic-card">
           <p class="mock-play-title">Sentence Repair</p>
           <h3>Fix the sentence: "She go to school every day."</h3>
@@ -1422,6 +1570,7 @@ Technical safety:
       var demoResult = document.getElementById('liveMissionMockResult');
       var demoHint = document.getElementById('liveMissionMockHint');
       var journeyPath = document.getElementById('journeyPath');
+      var liveCounterNodes = Array.prototype.slice.call(document.querySelectorAll('[data-live-counter]'));
 
       if (demoResult) demoResult.classList.remove('show');
 
@@ -1439,6 +1588,30 @@ Technical safety:
             if (demoHint) demoHint.textContent = 'Instant correction is what keeps missions engaging.';
           }, 480);
         });
+      }
+
+      if (liveCounterNodes.length) {
+        var lowMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var state = { agents: 86, rounds: 214, accuracy: 78 };
+        function renderCounters() {
+          liveCounterNodes.forEach(function(node) {
+            var key = node.getAttribute('data-live-counter');
+            if (key === 'accuracy') {
+              node.textContent = state.accuracy + '%';
+              return;
+            }
+            node.textContent = String(state[key] || 0);
+          });
+        }
+        renderCounters();
+        if (!lowMotion) {
+          window.setInterval(function() {
+            state.agents = Math.max(70, Math.min(140, state.agents + (Math.random() > 0.45 ? 1 : -1)));
+            state.rounds = state.rounds + 1;
+            state.accuracy = Math.max(62, Math.min(97, state.accuracy + (Math.random() > 0.5 ? 1 : -1)));
+            renderCounters();
+          }, 1800);
+        }
       }
 
       if (journeyPath) {

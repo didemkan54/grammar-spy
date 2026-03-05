@@ -69,6 +69,16 @@ function renderOverview(summary) {
   `;
 }
 
+function renderBattleStrip(summary) {
+  const activeEl = document.getElementById("teacherBattleActive");
+  const gamesEl = document.getElementById("teacherBattleGames");
+  const accEl = document.getElementById("teacherBattleAccuracy");
+  if (!activeEl || !gamesEl || !accEl) return;
+  activeEl.textContent = String(summary?.totals?.active_students || 0);
+  gamesEl.textContent = String(summary?.totals?.games_played || 0);
+  accEl.textContent = `${summary?.totals?.average_accuracy || 0}%`;
+}
+
 function renderSuggestions(summary) {
   const target = document.getElementById("teachingSuggestions");
   if (!target) return;
@@ -232,6 +242,7 @@ function init() {
   const classId = String(params.get("class_id") || "").trim().toUpperCase() || getActiveClassId();
   setActiveContext("", classId);
   const summary = getClassSummary(classId);
+  renderBattleStrip(summary);
   renderOverview(summary);
   renderSuggestions(summary);
   renderStudentTable(summary);
