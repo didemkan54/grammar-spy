@@ -30,7 +30,7 @@ function winnerPreviewCard(player) {
   const avatar = getAvatarById(player.avatarId);
   return `
     <div class="winner-preview-card">
-      <span class="winner-preview-avatar">${renderAvatarSvg(avatar, 56)}</span>
+      <span class="winner-preview-avatar">${renderAvatarSvg(avatar, 56, { accentColor: player.accentColor, rankBadge: 1 })}</span>
       <div>
         <p class="winner-preview-kicker">Current leader</p>
         <p class="winner-preview-name">${player.nickname}</p>

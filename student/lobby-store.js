@@ -86,7 +86,8 @@ export function sortPlayers(players) {
 
 export function addPlayerToLobby(pin, payload) {
   const nickname = String(payload.nickname || "").trim();
-  const avatarId = String(payload.avatarId || "rookie").trim();
+  const avatarId = String(payload.avatarId || "spy_hacker").trim();
+  const accentColor = String(payload.accentColor || "#1f8f8f").trim();
 
   let createdPlayer = null;
   const lobby = upsertLobby(pin, (existing) => {
@@ -100,6 +101,7 @@ export function addPlayerToLobby(pin, payload) {
       id: generatePlayerId(),
       nickname,
       avatarId,
+      accentColor,
       score: 0,
       joinedAt: Date.now()
     };

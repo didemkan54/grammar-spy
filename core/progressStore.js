@@ -214,7 +214,8 @@ export function recordAttempt(payload) {
 
   const profileSeed = upsertStudentProfile(studentId, {
     display_name: payload?.display_name || studentId,
-    avatar_id: payload?.avatar_id || "rookie",
+    avatar_id: payload?.avatar_id || "spy_hacker",
+    accent_color: payload?.accent_color || "#1f8f8f",
     class_id: classId
   });
   setActiveContext(studentId, classId);
@@ -231,6 +232,7 @@ export function recordAttempt(payload) {
   let updated = awardXp(studentId, correctXp + finishXp + perfectXp, {
     display_name: profileSeed.display_name,
     avatar_id: profileSeed.avatar_id,
+    accent_color: profileSeed.accent_color,
     class_id: classId
   });
   leveledUp = leveledUp || updated.leveledUp;
@@ -239,6 +241,7 @@ export function recordAttempt(payload) {
     const extra = awardXp(studentId, 20, {
       display_name: profileSeed.display_name,
       avatar_id: profileSeed.avatar_id,
+      accent_color: profileSeed.accent_color,
       class_id: classId
     });
     leveledUp = leveledUp || extra.leveledUp;
@@ -300,7 +303,8 @@ export function getClassSummary(classId) {
     return {
       student_id: studentId,
       student_name: profile.display_name || studentId,
-      avatar_id: profile.avatar_id || "rookie",
+      avatar_id: profile.avatar_id || "spy_hacker",
+      accent_color: profile.accent_color || "#1f8f8f",
       progress_pct: studentAttempts.length ? Math.min(100, Math.round((studentAttempts.length / 30) * 100)) : 0,
       accuracy_pct: summarizeAccuracy(studentAttempts),
       weakest_rule: weakest ? weakest.grammar_rule_id : "n/a",
@@ -336,7 +340,8 @@ export function getLeaderboard(classId) {
       return {
         student_id: studentId,
         student_name: profile.display_name || studentId,
-        avatar_id: profile.avatar_id || "rookie",
+        avatar_id: profile.avatar_id || "spy_hacker",
+        accent_color: profile.accent_color || "#1f8f8f",
         xp: Number(profile.total_xp || 0),
         average_accuracy: summarizeAccuracy(studentAttempts),
         streak_days: Number(profile.streak_days || 0),

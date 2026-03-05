@@ -43,6 +43,7 @@ export function createJoinForm(options) {
     statusEl,
     joinButtonEl,
     getAvatarId,
+    getAccentColor,
     onValidSubmit
   } = options || {};
 
@@ -83,7 +84,8 @@ export function createJoinForm(options) {
       await onValidSubmit({
         pin,
         nickname: nickResult.value,
-        avatarId: typeof getAvatarId === "function" ? getAvatarId() : null
+        avatarId: typeof getAvatarId === "function" ? getAvatarId() : null,
+        accentColor: typeof getAccentColor === "function" ? getAccentColor() : "#1f8f8f"
       });
     } catch (err) {
       setStatus(err && err.message ? err.message : "Could not join lobby.", true);

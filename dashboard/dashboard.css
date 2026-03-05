@@ -26,6 +26,8 @@ body.dashboard-shell {
   color: var(--db-mid);
   font-family: Inter, Segoe UI, Arial, sans-serif;
   position: relative;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 body.dashboard-shell::before {
@@ -79,6 +81,7 @@ body.dashboard-shell::before {
 
 .dash-hero p {
   margin: 8px 0 0;
+  font-size: clamp(14px, 1.4vw, 18px);
   color: #d7edf2;
   max-width: 72ch;
 }
@@ -113,7 +116,7 @@ body.dashboard-shell::before {
 .panel-sub {
   margin: 6px 0 0;
   color: var(--db-text-soft);
-  font-size: 14px;
+  font-size: clamp(13px, 1.3vw, 16px);
 }
 
 .agent-card {
@@ -131,6 +134,53 @@ body.dashboard-shell::before {
   width: 76px;
   height: 76px;
   display: inline-flex;
+}
+
+.gs-avatar-frame {
+  position: relative;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gs-avatar-glow {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--avatar-accent) 42%, transparent), transparent 72%);
+  filter: blur(8px);
+}
+
+.gs-avatar-img {
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--avatar-accent) 76%, #ffffff);
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+  background: #eaf1f7;
+}
+
+.gs-avatar-rank {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #fff;
+  background: color-mix(in srgb, var(--avatar-accent) 84%, #102037);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
 .agent-name {
@@ -382,6 +432,7 @@ body.dashboard-shell::before {
   padding: 8px 6px;
   text-align: left;
   color: #2d4d6a;
+  overflow-wrap: anywhere;
 }
 
 .leader-table th {
@@ -460,6 +511,10 @@ body.dashboard-shell::before {
   }
   .mission-map {
     grid-template-columns: 1fr;
+  }
+  .btn-row .btn-primary,
+  .btn-row .btn-soft {
+    width: 100%;
   }
 }
 

@@ -18,7 +18,7 @@ function renderWinnerCard(player) {
   return `
     <article class="winner-main-card">
       <p class="winner-main-kicker">WINNER</p>
-      <span class="winner-main-avatar">${renderAvatarSvg(avatar, 110)}</span>
+      <span class="winner-main-avatar">${renderAvatarSvg(avatar, 110, { accentColor: player.accentColor, rankBadge: 1 })}</span>
       <h2>${player.nickname}</h2>
       <p class="winner-main-score">${player.score} pts</p>
     </article>
@@ -33,7 +33,7 @@ function renderPodium(player, index) {
   return `
     <article class="podium-card rank-${index + 2}">
       <p class="podium-rank">#${index + 2}</p>
-      <span class="podium-avatar">${renderAvatarSvg(avatar, 64)}</span>
+      <span class="podium-avatar">${renderAvatarSvg(avatar, 64, { accentColor: player.accentColor, rankBadge: index + 2 })}</span>
       <h3>${player.nickname}</h3>
       <p class="podium-score">${player.score} pts</p>
     </article>

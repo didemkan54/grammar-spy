@@ -1,47 +1,66 @@
-export const AVATARS = [
-  { id: "rookie", label: "Rookie", tone: "#8ccfd6", accent: "#1f5f63" },
-  { id: "field_agent", label: "Field Agent", tone: "#9ddbe1", accent: "#0f4b59" },
-  { id: "analyst", label: "Analyst", tone: "#b8e6ea", accent: "#245a76" },
-  { id: "tracker", label: "Tracker", tone: "#a8d7cb", accent: "#1f6a5f" },
-  { id: "cipher", label: "Cipher", tone: "#aed4e8", accent: "#215d8b" },
-  { id: "shadow", label: "Shadow", tone: "#97c4d8", accent: "#34485f" },
-  { id: "sentinel", label: "Sentinel", tone: "#b8dfc7", accent: "#37684c" },
-  { id: "radar", label: "Radar", tone: "#d3e8f1", accent: "#21617c" },
-  { id: "scout", label: "Scout", tone: "#d7f0e3", accent: "#26735b" },
-  { id: "signal", label: "Signal", tone: "#c7dff2", accent: "#2d5d94" },
-  { id: "vanguard", label: "Vanguard", tone: "#d2ecef", accent: "#1f5f63" },
-  { id: "stealth", label: "Stealth", tone: "#c4d6e3", accent: "#40536b" }
+export const AVATAR_ACCENTS = [
+  { id: "teal", label: "Teal", color: "#1f8f8f" },
+  { id: "gold", label: "Gold", color: "#c79a2f" },
+  { id: "blue", label: "Blue", color: "#2f69c7" },
+  { id: "purple", label: "Purple", color: "#7b43c7" }
 ];
+
+export const AVATARS = [
+  { id: "spy_hacker", label: "Hacker", pack: "Spy Roles", asset: "/assets/avatars/spy_hacker.svg" },
+  { id: "spy_analyst", label: "Analyst", pack: "Spy Roles", asset: "/assets/avatars/spy_analyst.svg" },
+  { id: "spy_scout", label: "Scout", pack: "Spy Roles", asset: "/assets/avatars/spy_scout.svg" },
+  { id: "spy_forensics", label: "Forensics", pack: "Spy Roles", asset: "/assets/avatars/spy_forensics.svg" },
+  { id: "spy_interrogator", label: "Interrogator", pack: "Spy Roles", asset: "/assets/avatars/spy_interrogator.svg" },
+  { id: "spy_strategist", label: "Strategist", pack: "Spy Roles", asset: "/assets/avatars/spy_strategist.svg" },
+
+  { id: "badge_orbit", label: "Orbit Badge", pack: "Agency Badges", asset: "/assets/avatars/badge_orbit.svg" },
+  { id: "badge_vector", label: "Vector Badge", pack: "Agency Badges", asset: "/assets/avatars/badge_vector.svg" },
+  { id: "badge_guard", label: "Guard Badge", pack: "Agency Badges", asset: "/assets/avatars/badge_guard.svg" },
+  { id: "badge_cipher", label: "Cipher Badge", pack: "Agency Badges", asset: "/assets/avatars/badge_cipher.svg" },
+  { id: "badge_signal", label: "Signal Badge", pack: "Agency Badges", asset: "/assets/avatars/badge_signal.svg" },
+  { id: "badge_command", label: "Command Badge", pack: "Agency Badges", asset: "/assets/avatars/badge_command.svg" },
+
+  { id: "cyber_mask_neon", label: "Neon Mask", pack: "Cyber Masks", asset: "/assets/avatars/cyber_mask_neon.svg" },
+  { id: "cyber_mask_stealth", label: "Stealth Mask", pack: "Cyber Masks", asset: "/assets/avatars/cyber_mask_stealth.svg" },
+  { id: "cyber_mask_echo", label: "Echo Mask", pack: "Cyber Masks", asset: "/assets/avatars/cyber_mask_echo.svg" },
+  { id: "cyber_mask_flux", label: "Flux Mask", pack: "Cyber Masks", asset: "/assets/avatars/cyber_mask_flux.svg" },
+  { id: "cyber_mask_omega", label: "Omega Mask", pack: "Cyber Masks", asset: "/assets/avatars/cyber_mask_omega.svg" },
+  { id: "cyber_mask_zenith", label: "Zenith Mask", pack: "Cyber Masks", asset: "/assets/avatars/cyber_mask_zenith.svg" },
+
+  { id: "animal_raven", label: "Raven Agent", pack: "Animal Agents", asset: "/assets/avatars/animal_raven.svg" },
+  { id: "animal_fox", label: "Fox Agent", pack: "Animal Agents", asset: "/assets/avatars/animal_fox.svg" },
+  { id: "animal_wolf", label: "Wolf Agent", pack: "Animal Agents", asset: "/assets/avatars/animal_wolf.svg" },
+  { id: "animal_owl", label: "Owl Agent", pack: "Animal Agents", asset: "/assets/avatars/animal_owl.svg" },
+  { id: "animal_panther", label: "Panther Agent", pack: "Animal Agents", asset: "/assets/avatars/animal_panther.svg" },
+  { id: "animal_cobra", label: "Cobra Agent", pack: "Animal Agents", asset: "/assets/avatars/animal_cobra.svg" }
+];
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 export function getAvatarById(id) {
   return AVATARS.find((avatar) => avatar.id === id) || AVATARS[0];
 }
 
-export function renderAvatarSvg(avatar, size = 52) {
-  const safe = avatar || AVATARS[0];
-  const eyeY = Math.round(size * 0.42);
-  const eyeDX = Math.round(size * 0.13);
-  const centerX = Math.round(size / 2);
-  const faceY = Math.round(size * 0.46);
-  const faceR = Math.round(size * 0.2);
-  const shoulderY = Math.round(size * 0.73);
+export function getAccentById(id) {
+  return AVATAR_ACCENTS.find((row) => row.id === id) || AVATAR_ACCENTS[0];
+}
 
+export function renderAvatarSvg(avatar, size = 52, options = {}) {
+  const safe = avatar || AVATARS[0];
+  const accent = options.accentColor || getAccentById(options.accentId || "teal").color;
+  const rankBadge = String(options.rankBadge || "R").trim().slice(0, 2).toUpperCase();
   return `
-<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-hidden="true" focusable="false">
-  <defs>
-    <linearGradient id="bg-${safe.id}" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${safe.tone}" />
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.85" />
-    </linearGradient>
-  </defs>
-  <circle cx="${centerX}" cy="${centerX}" r="${Math.round(size * 0.47)}" fill="url(#bg-${safe.id})" />
-  <ellipse cx="${centerX}" cy="${Math.round(size * 0.3)}" rx="${Math.round(size * 0.18)}" ry="${Math.round(size * 0.08)}" fill="${safe.accent}" opacity="0.95" />
-  <circle cx="${centerX}" cy="${faceY}" r="${faceR}" fill="#f7f9fb" />
-  <rect x="${Math.round(size * 0.27)}" y="${Math.round(size * 0.38)}" width="${Math.round(size * 0.46)}" height="${Math.round(size * 0.1)}" rx="${Math.round(size * 0.04)}" fill="${safe.accent}" />
-  <circle cx="${centerX - eyeDX}" cy="${eyeY}" r="${Math.max(2, Math.round(size * 0.03))}" fill="#0b1020" />
-  <circle cx="${centerX + eyeDX}" cy="${eyeY}" r="${Math.max(2, Math.round(size * 0.03))}" fill="#0b1020" />
-  <path d="M ${Math.round(size * 0.42)} ${Math.round(size * 0.56)} Q ${centerX} ${Math.round(size * 0.6)} ${Math.round(size * 0.58)} ${Math.round(size * 0.56)}" stroke="#3f495a" stroke-width="1.5" fill="none" />
-  <ellipse cx="${centerX}" cy="${shoulderY}" rx="${Math.round(size * 0.24)}" ry="${Math.round(size * 0.1)}" fill="${safe.accent}" opacity="0.7" />
-</svg>
-`.trim();
+    <span class="gs-avatar-frame" style="--avatar-size:${Math.max(24, Number(size) || 52)}px;--avatar-accent:${escapeHtml(accent)};">
+      <span class="gs-avatar-glow" aria-hidden="true"></span>
+      <img class="gs-avatar-img" src="${escapeHtml(safe.asset)}" alt="" loading="lazy" decoding="async" />
+      <span class="gs-avatar-rank" aria-hidden="true">${escapeHtml(rankBadge)}</span>
+    </span>
+  `;
 }
