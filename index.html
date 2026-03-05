@@ -1046,18 +1046,18 @@ Technical safety:
       </div>
       <div class="container hero-grid">
         <div>
-          <p class="eyebrow">Built for real classrooms</p>
-          <h1>Grammar practice that actually sticks.</h1>
-          <p class="hero-subhead">Students run 10-15 minute grammar missions - fast rounds, instant feedback, real classroom energy.</p>
+          <p class="eyebrow">Mission control for classrooms</p>
+          <h1>Welcome, Agent. Your mission is to stop grammar errors.</h1>
+          <p class="hero-subhead">Train with quick games. Level up. Beat your class.</p>
           <ul class="chips" aria-label="Core benefits">
             <li>15-item micro-missions</li>
             <li>Instant feedback</li>
             <li>ELD-friendly</li>
           </ul>
           <div class="hero-ctas">
-            <a href="/join/" class="btn btn-primary" data-track-event="homepage_student_join_click">Student Join</a>
-            <a href="/auth.html?mode=signin" class="btn btn-secondary" data-track-event="homepage_teacher_login_click">Teacher Login</a>
-            <a href="/missions/" class="btn btn-quiet" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
+            <a href="/missions/" class="btn btn-primary" data-track-event="homepage_start_training_click">Start Training</a>
+            <a href="/join/" class="btn btn-secondary" data-track-event="homepage_join_class_click">Join Class</a>
+            <a href="/auth.html?mode=signin" class="btn btn-quiet" data-track-event="homepage_teacher_login_click">Teacher Login</a>
           </div>
           <p class="hero-note">No prep. No grading stacks. Just progress.</p>
           <div class="hero-join-mascot" aria-hidden="true">
@@ -1089,6 +1089,27 @@ Technical safety:
             <a href="#mission-live-preview" class="btn demo-play-btn">Play Demo</a>
           </div>
         </aside>
+      </div>
+    </section>
+
+    <section class="section section-muted">
+      <div class="container">
+        <p class="section-label">How it works</p>
+        <h2>Join. Play missions. Level up.</h2>
+        <div class="proof-strip" aria-label="How it works steps">
+          <article class="proof-mini-card">
+            <span class="proof-mini-icon" aria-hidden="true">🛰️</span>
+            <span class="proof-mini-text">1) Join</span>
+          </article>
+          <article class="proof-mini-card">
+            <span class="proof-mini-icon" aria-hidden="true">🎯</span>
+            <span class="proof-mini-text">2) Play Missions</span>
+          </article>
+          <article class="proof-mini-card">
+            <span class="proof-mini-icon" aria-hidden="true">🏆</span>
+            <span class="proof-mini-text">3) Level Up + Leaderboard</span>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -1439,15 +1460,21 @@ Technical safety:
 
     (function(){
       var track = window.GS_TRACK_HOME || function(){};
-      var studentJoinButtons = document.querySelectorAll('[data-track-event="homepage_student_join_click"]');
+      var startTrainingButtons = document.querySelectorAll('[data-track-event="homepage_start_training_click"]');
+      var joinClassButtons = document.querySelectorAll('[data-track-event="homepage_join_class_click"]');
       var teacherLoginButtons = document.querySelectorAll('[data-track-event="homepage_teacher_login_click"]');
       var tryButtons = document.querySelectorAll('[data-track-event="homepage_try_free_mission_click"]');
       var createButtons = document.querySelectorAll('[data-track-event="homepage_create_account_click"]');
       var scrollTracked = false;
 
-      studentJoinButtons.forEach(function(btn){
+      startTrainingButtons.forEach(function(btn){
         btn.addEventListener('click', function(){
-          track('homepage_student_join_click', { location: btn.getAttribute('href') || '' });
+          track('homepage_start_training_click', { location: btn.getAttribute('href') || '' });
+        });
+      });
+      joinClassButtons.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          track('homepage_join_class_click', { location: btn.getAttribute('href') || '' });
         });
       });
       teacherLoginButtons.forEach(function(btn){

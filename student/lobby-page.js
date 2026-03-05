@@ -1,6 +1,7 @@
 import { createLobbyRanking, sortPlayers } from "./components/LobbyRanking.js";
 import { getLobby, resolvePinFromLocation, runDemoRound } from "./lobby-store.js";
 import { getAvatarById, renderAvatarSvg } from "./data/avatars.js";
+import { setActiveContext } from "./identity-store.js";
 
 function playSound(type) {
   if (window.GSSound && typeof window.GSSound.play === "function") {
@@ -56,6 +57,9 @@ function init() {
   }
 
   const params = parseParams();
+  if (params.playerId) {
+    setActiveContext(params.playerId, pin);
+  }
   if (params.demo && demoHint) demoHint.hidden = false;
   if (demoBtn) demoBtn.hidden = !params.demo;
 

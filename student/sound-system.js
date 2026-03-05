@@ -1,8 +1,17 @@
 (function () {
   var SOUND_KEY = "gs_sound_enabled_v1";
   var SOUND_STATE_EVENT = "gs:sound-change";
+  var SOUND_UNLOCK_KEY = "gs_sound_unlocked_v1";
   var audioCtx = null;
   var reducedMotionQuery = null;
+  var unlocked = false;
+  var soundCache = {};
+  var SOUND_FILES = {
+    correct: "/assets/sfx/correct.mp3",
+    wrong: "/assets/sfx/wrong.mp3",
+    missioncomplete: "/assets/sfx/missioncomplete.mp3",
+    levelup: "/assets/sfx/levelup.mp3"
+  };
 
   function canUseStorage() {
     try {
@@ -22,9 +31,19 @@
     return raw !== "0";
   }
 
+  function readUnlockState() {
+    if (!canUseStorage()) return false;
+    return localStorage.getItem(SOUND_UNLOCK_KEY) === "1";
+  }
+
   function writeEnabled(enabled) {
     if (!canUseStorage()) return;
     localStorage.setItem(SOUND_KEY, enabled ? "1" : "0");
+  }
+
+  function writeUnlockState(enabled) {
+    if (!canUseStorage()) return;
+    localStorage.setItem(SOUND_UNLOCK_KEY, enabled ? "1" : "0");
   }
 
   function isReducedMotion() {
@@ -66,15 +85,57 @@
     osc.stop(now() + (offset || 0) + duration + 0.02);
   }
 
-  function play(type) {
-    if (!api.isEnabled()) return;
-    if (isReducedMotion() && type === "hover") return;
-    var ctx = ensureAudioContext();
-    if (!ctx) return;
-    if (ctx.state === "suspended") {
-      ctx.resume().catch(function () {});
+  function preloadSound(type) {
+    var src = SOUND_FILES[type];
+    if (!src) return null;
+    if (soundCache[type]) return soundCache[type];
+    try {
+      var audio = new Audio(src);
+      audio.preload = "auto";
+      audio.volume = 0.28;
+      soundCache[type] = audio;
+      return audio;
+    } catch (_err) {
+      return null;
     }
+  }
 
+  function playFromAsset(type) {
+    var source = preloadSound(type);
+    if (!source) return false;
+    try {
+      var player = source.cloneNode(true);
+      player.volume = source.volume;
+      player.play().catch(function () {});
+      return true;
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  function fallbackTone(type) {
+    if (type === "correct") {
+      playTone(620, 0.08, 0.02, 0);
+      playTone(820, 0.11, 0.018, 0.06);
+      return;
+    }
+    if (type === "wrong") {
+      playTone(280, 0.12, 0.02, 0);
+      playTone(220, 0.09, 0.018, 0.09);
+      return;
+    }
+    if (type === "missioncomplete") {
+      playTone(500, 0.12, 0.024, 0);
+      playTone(700, 0.13, 0.024, 0.1);
+      playTone(900, 0.16, 0.024, 0.22);
+      return;
+    }
+    if (type === "levelup") {
+      playTone(540, 0.1, 0.025, 0);
+      playTone(740, 0.11, 0.024, 0.09);
+      playTone(940, 0.12, 0.024, 0.18);
+      return;
+    }
     if (type === "confirm") {
       playTone(600, 0.1, 0.024, 0);
       playTone(800, 0.12, 0.02, 0.08);
@@ -91,6 +152,18 @@
       return;
     }
     playTone(480, 0.07, 0.012, 0);
+  }
+
+  function play(type) {
+    if (!api.isEnabled()) return;
+    if (isReducedMotion() && type === "hover") return;
+    if (!unlocked && type !== "hover") return;
+    var ctx = ensureAudioContext();
+    if (!ctx) return;
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(function () {});
+    }
+    if (!playFromAsset(type)) fallbackTone(type);
   }
 
   function emitSoundChange(enabled) {
@@ -119,8 +192,34 @@
       return next;
     },
     play: play,
+    unlock: function () {
+      unlocked = true;
+      writeUnlockState(true);
+      Object.keys(SOUND_FILES).forEach(preloadSound);
+      var ctx = ensureAudioContext();
+      if (ctx && ctx.state === "suspended") ctx.resume().catch(function () {});
+    },
     onStateChangeEvent: SOUND_STATE_EVENT
   };
+
+  function bindUnlock() {
+    var unlockOnce = function () {
+      if (unlocked) return;
+      api.unlock();
+      window.removeEventListener("pointerdown", unlockOnce, true);
+      window.removeEventListener("keydown", unlockOnce, true);
+      window.removeEventListener("touchstart", unlockOnce, true);
+    };
+    window.addEventListener("pointerdown", unlockOnce, true);
+    window.addEventListener("keydown", unlockOnce, true);
+    window.addEventListener("touchstart", unlockOnce, true);
+  }
+
+  unlocked = readUnlockState();
+  if (unlocked) {
+    Object.keys(SOUND_FILES).forEach(preloadSound);
+  }
+  bindUnlock();
 
   window.GSSound = api;
 })();

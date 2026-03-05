@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Student Mission Control</title>
+  <meta name="description" content="Student mission control dashboard with XP, streak, rule accuracy, recommendations, and leaderboard preview." />
+  <link rel="stylesheet" href="/dashboard/dashboard.css" />
+</head>
+<body class="dashboard-shell">
+  <div data-include="header"></div>
+
+  <main class="dash-main">
+    <section class="dash-hero">
+      <p class="dash-eyebrow">Student Mission Control</p>
+      <h1>Train fast. Track growth. Climb the board.</h1>
+      <p>One rule per game, clear feedback, and live progress tracking for your agent path.</p>
+    </section>
+
+    <section class="panel" id="agentSetupPanel" hidden>
+      <h2>Choose your Agent</h2>
+      <p class="panel-sub">Set your display name and avatar for dashboard + leaderboard identity.</p>
+      <div class="input-row" style="margin-top:10px;">
+        <input id="setupName" placeholder="Agent name" maxlength="20" />
+        <select id="setupAvatar"></select>
+        <button class="btn-primary" id="setupSaveBtn">Save Agent</button>
+      </div>
+      <p class="panel-sub" id="setupStatus"></p>
+    </section>
+
+    <section class="dash-grid two-col">
+      <article class="panel">
+        <h2>Agent Card</h2>
+        <div id="agentCard" class="agent-card" style="margin-top:10px;"></div>
+      </article>
+      <article class="panel confetti-zone" id="dailyChallengeCard">
+        <h2>Daily Spy Challenge</h2>
+        <p class="panel-sub" id="dailyChallengePrompt"></p>
+        <div class="btn-row" id="dailyChallengeActions"></div>
+      </article>
+    </section>
+
+    <section class="dash-grid two-col">
+      <article class="panel">
+        <h2>Mission Category Progress</h2>
+        <p class="panel-sub">Present, Past, and Future mission tracks.</p>
+        <div id="categoryProgress" class="progress-group"></div>
+      </article>
+      <article class="panel">
+        <h2>Accuracy by Grammar Rule</h2>
+        <p class="panel-sub">Lowest rules appear first so you can target weak areas.</p>
+        <div id="ruleBars" class="rule-bars"></div>
+      </article>
+    </section>
+
+    <section class="dash-grid two-col">
+      <article class="panel">
+        <h2>Recommendations</h2>
+        <p class="panel-sub">Auto-selected next games based on current weak rules.</p>
+        <ul id="recommendList" class="recommend-list"></ul>
+      </article>
+      <article class="panel">
+        <h2>Recent Activity</h2>
+        <p class="panel-sub">Last five completed games.</p>
+        <ul id="activityList" class="activity-list"></ul>
+      </article>
+    </section>
+
+    <section class="dash-grid two-col">
+      <article class="panel">
+        <h2>Mission Map</h2>
+        <p class="panel-sub">Completed, in progress, and locked mission sets.</p>
+        <div id="missionMap" class="mission-map"></div>
+      </article>
+      <article class="panel confetti-zone" id="bossMissionCard">
+        <h2>Boss Mission</h2>
+        <p class="panel-sub" id="bossMissionStatus"></p>
+        <div class="btn-row" id="bossMissionAction"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Rank in Class</h2>
+      <p class="panel-sub">XP first, then average accuracy as tiebreak.</p>
+      <div id="leaderboardPreview"></div>
+      <div class="btn-row">
+        <a class="btn-soft" href="/leaderboard/">Open Full Leaderboard</a>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module" src="/dashboard/student/dashboard-student.js"></script>
+</body>
+</html>

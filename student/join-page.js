@@ -2,6 +2,7 @@ import { AVATARS, getAvatarById, renderAvatarSvg } from "./data/avatars.js";
 import { createAvatarPicker } from "./components/AvatarPicker.js";
 import { createJoinForm } from "./components/JoinForm.js";
 import { addPlayerToLobby, normalizePin } from "./lobby-store.js";
+import { applyDailyLoginBonus, setActiveContext, upsertStudentProfile } from "./identity-store.js";
 
 function playSound(type) {
   if (window.GSSound && typeof window.GSSound.play === "function") {
@@ -81,6 +82,13 @@ function init() {
     getAvatarId: () => avatarPicker.getSelectedAvatarId(),
     onValidSubmit: async ({ pin, nickname, avatarId }) => {
       const { player } = addPlayerToLobby(pin, { nickname, avatarId });
+      upsertStudentProfile(player.id, {
+        display_name: nickname,
+        avatar_id: avatarId,
+        class_id: pin
+      });
+      setActiveContext(player.id, pin);
+      applyDailyLoginBonus(player.id);
       track("student_join_success", { pin, nickname, avatar_id: avatarId });
       playSound("confirm");
       confettiBurst(ctaShell);

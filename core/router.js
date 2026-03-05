@@ -1,6 +1,9 @@
 export const ROUTES = [
   { id: "home", label: "Home", href: "/index.html" },
   { id: "studentJoin", label: "Student Join", href: "/join/" },
+  { id: "leaderboard", label: "Leaderboard", href: "/leaderboard/" },
+  { id: "studentDashboard", label: "Student Dashboard", href: "/dashboard/student/" },
+  { id: "teacherDashboard", label: "Teacher Dashboard", href: "/dashboard/teacher/" },
   { id: "missions", label: "Missions", href: "/missions/" },
   { id: "freeResources", label: "Free Resources", href: "/free/" },
   { id: "missionLaunch", label: "Mission Launch", href: "/missions.html" },
@@ -49,6 +52,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   const primaryLinks = [
     { label: "Home", href: "index.html" },
     { label: "Student Join", href: "/join/" },
+    { label: "Leaderboard", href: "/leaderboard/" },
     { label: "Teacher", href: "teacher-home.html" },
     { label: "Pricing", href: "pricing.html" },
     { label: "Free Resources", href: "/free/" }

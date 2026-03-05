@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Class Leaderboard</title>
+  <meta name="description" content="Class leaderboard ranked by XP, then by average accuracy." />
+  <link rel="stylesheet" href="/dashboard/dashboard.css" />
+</head>
+<body class="dashboard-shell">
+  <div data-include="header"></div>
+
+  <main class="dash-main">
+    <section class="dash-hero">
+      <p class="dash-eyebrow">Kahoot-style Rankings</p>
+      <h1>Class Leaderboard</h1>
+      <p>Ranking defaults to XP, with average accuracy as the tie-breaker.</p>
+      <div class="chip-row"><span class="chip">Class <strong id="leaderboardClassLabel">DEMO</strong></span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Top 10 Agents</h2>
+      <div id="leaderboardTable"></div>
+      <div class="btn-row">
+        <a class="btn-soft" href="/join/">Student Join Class</a>
+        <a class="btn-soft" href="/dashboard/teacher/">Teacher Dashboard</a>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module" src="/leaderboard/leaderboard-page.js"></script>
+</body>
+</html>
