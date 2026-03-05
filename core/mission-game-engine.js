@@ -4,6 +4,8 @@ import {
   getNextGamePointer,
   markMissionGameCompleted
 } from "/core/missions-catalog.js";
+import { recordAttempt } from "/core/progressStore.js";
+import { getActiveClassId, getActiveStudentId } from "/student/identity-store.js";
 
 function normalizeText(value) {
   return String(value || "")
@@ -71,6 +73,7 @@ export class MissionGameEngine {
     this.syncTopStats();
     this.renderCurrentItem();
     this.startTimerIfNeeded();
+    this.gameStartedAt = Date.now();
 
     track("mission_game_start", {
       mission_id: this.mission.id,
@@ -191,6 +194,12 @@ export class MissionGameEngine {
     this.feedbackPanel.classList.add(kind || "feedback-neutral");
     this.feedbackTitle.textContent = title;
     this.feedbackBody.innerHTML = body;
+  }
+
+  playSound(type) {
+    if (window.GSSound && typeof window.GSSound.play === "function") {
+      window.GSSound.play(type);
+    }
   }
 
   renderCurrentItem() {
@@ -478,6 +487,10 @@ export class MissionGameEngine {
       this.score += 1;
       this.streak += 1;
       this.bestStreak = Math.max(this.bestStreak, this.streak);
+      this.feedbackPanel.classList.remove("answer-pop");
+      void this.feedbackPanel.offsetWidth;
+      this.feedbackPanel.classList.add("answer-pop");
+      this.playSound("correct");
       this.setFeedback(
         "feedback-ok",
         "Correct",
@@ -485,6 +498,10 @@ export class MissionGameEngine {
       );
     } else {
       this.streak = 0;
+      this.feedbackPanel.classList.remove("answer-shake");
+      void this.feedbackPanel.offsetWidth;
+      this.feedbackPanel.classList.add("answer-shake");
+      this.playSound("wrong");
       this.setFeedback(
         "feedback-warn",
         "Not yet",
@@ -520,7 +537,8 @@ export class MissionGameEngine {
       item_id: item.id,
       correct: isCorrect,
       response_time_ms: responseTimeMs,
-      game_type: this.game.gameType
+      game_type: this.game.gameType,
+      sound_played: true
     });
 
     this.syncTopStats();
@@ -548,7 +566,9 @@ export class MissionGameEngine {
       score: this.score,
       item_count: this.items.length,
       accuracy,
-      reason: reason || "completed"
+      reason: reason || "completed",
+      progress_recorded: true,
+      sound_played: true
     });
 
     if (reason === "completed") {
@@ -560,6 +580,27 @@ export class MissionGameEngine {
         score: this.score,
         total: this.items.length
       });
+    }
+
+    const durationSec = Math.max(1, Math.round((Date.now() - (this.gameStartedAt || Date.now())) / 1000));
+    const attemptResult = recordAttempt({
+      student_id: getActiveStudentId(),
+      class_id: getActiveClassId(),
+      mission_id: this.mission.id,
+      game_id: this.game.id,
+      grammar_rule_id: this.subskill.id,
+      score: this.score,
+      accuracy,
+      correct_count: this.score,
+      attempts_count: 0,
+      time_spent_seconds: durationSec,
+      play_url: window.location.pathname + window.location.search
+    });
+
+    if (attemptResult && attemptResult.leveled_up) {
+      this.playSound("levelup");
+    } else if (reason === "completed") {
+      this.playSound("missioncomplete");
     }
 
     const missedHtml = this.missed.length
@@ -588,7 +629,7 @@ export class MissionGameEngine {
         <p class="hero-subline">${escapeHtml(this.subskill.title)} | ${this.score}/${this.items.length} correct (${accuracy}%)</p>
       </section>
 
-      <section class="results-board">
+      <section class="results-board mission-celebrate">
         <div class="result-metrics">
           <article class="result-card"><h2>Score</h2><p>${this.score}/${this.items.length}</p></article>
           <article class="result-card"><h2>Accuracy</h2><p>${accuracy}%</p></article>

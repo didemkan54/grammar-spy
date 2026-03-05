@@ -684,6 +684,8 @@ body.mission-flow {
   border-radius: 12px;
   background: #f8fbff;
   padding: 12px;
+  position: relative;
+  overflow: hidden;
 }
 
 .feedback-panel h2 {
@@ -707,6 +709,27 @@ body.mission-flow {
   color: #19624f;
 }
 
+.feedback-panel.answer-pop {
+  animation: gsAnswerPop 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.feedback-panel.answer-pop::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  right: 16px;
+  top: 16px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+  box-shadow:
+    -14px 8px 0 1px rgba(157, 226, 205, 0.6),
+    10px 18px 0 1px rgba(157, 226, 205, 0.55),
+    -4px 24px 0 1px rgba(157, 226, 205, 0.5);
+  animation: gsSparkleFade 0.46s ease-out forwards;
+  pointer-events: none;
+}
+
 .feedback-panel.feedback-warn {
   border-color: #efc9b8;
   background: #fff8f4;
@@ -714,6 +737,14 @@ body.mission-flow {
 
 .feedback-panel.feedback-warn h2 {
   color: #8c4e38;
+}
+
+.feedback-panel.answer-shake {
+  animation: gsAnswerShake 0.36s ease-in-out;
+}
+
+.results-board.mission-celebrate {
+  animation: gsCelebrateGlow 0.9s ease-out;
 }
 
 .result-metrics {
@@ -834,5 +865,70 @@ body.mission-flow {
   .gsm-btn,
   .gsm-link-btn {
     width: 100%;
+  }
+}
+
+@keyframes gsAnswerPop {
+  0% {
+    transform: scale(0.98);
+  }
+  60% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes gsSparkleFade {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.65);
+  }
+}
+
+@keyframes gsAnswerShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes gsCelebrateGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(31, 95, 99, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(31, 95, 99, 0.08), var(--mf-shadow);
+  }
+  100% {
+    box-shadow: var(--mf-shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feedback-panel.answer-pop,
+  .feedback-panel.answer-shake,
+  .results-board.mission-celebrate {
+    animation: none !important;
+  }
+  .feedback-panel.answer-pop::after {
+    display: none;
   }
 }

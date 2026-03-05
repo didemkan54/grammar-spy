@@ -37,6 +37,7 @@
     '<span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
     '<a class="gs-pill" href="/index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
     '<a class="gs-pill" href="/join/" style="' + navLinkStyle + '">Student Join</a>' +
+    '<a class="gs-pill" href="/leaderboard/" style="' + navLinkStyle + '">Leaderboard</a>' +
     '<details id="gsMissionMenu" style="position:relative">' +
     '<summary class="gs-pill" style="' + menuSummaryStyle + '"><span data-i18n="nav_missions">Missions</span><span aria-hidden="true" style="font-size:9px;line-height:1;opacity:.78">▼</span></summary>' +
     '<span style="' + menuPanelStyle + '">' +
@@ -165,6 +166,18 @@
     document.addEventListener('layout:ready', attempt);
   }
 
+  function ensureProgressStoreLoaded() {
+    try {
+      if (window.__GS_PROGRESS_LOADING__) return;
+      window.__GS_PROGRESS_LOADING__ = true;
+      import('/core/progressStore.js')
+        .catch(function(){})
+        .finally(function(){
+          window.__GS_PROGRESS_LOADING__ = false;
+        });
+    } catch(_err){}
+  }
+
   function updateAuthButtons() {
     var session = null;
     try {
@@ -212,6 +225,7 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
       ensureSoundSystemScript();
+      ensureProgressStoreLoaded();
       run();
       loadAnimations();
       updateAuthButtons();
@@ -219,6 +233,7 @@
     });
   } else {
     ensureSoundSystemScript();
+    ensureProgressStoreLoaded();
     run();
     loadAnimations();
     updateAuthButtons();

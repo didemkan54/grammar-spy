@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Teacher Class Intelligence</title>
+  <meta name="description" content="Teacher dashboard for class overview, student progress, weak grammar rules, and leaderboard tools." />
+  <link rel="stylesheet" href="/dashboard/dashboard.css" />
+</head>
+<body class="dashboard-shell">
+  <div data-include="header"></div>
+
+  <main class="dash-main">
+    <section class="dash-hero">
+      <p class="dash-eyebrow">Teacher Intelligence Center</p>
+      <h1>Class performance in one mission-control view.</h1>
+      <p>Track class averages, identify weak grammar rules, and launch targeted next practice fast.</p>
+    </section>
+
+    <section class="dash-grid two-col">
+      <article class="panel">
+        <h2>Class Overview</h2>
+        <p class="panel-sub">Accuracy by mission category, active students, and pacing.</p>
+        <div id="classOverview"></div>
+      </article>
+      <article class="panel">
+        <h2>Class Tools</h2>
+        <p class="panel-sub">Generate a class join code and open leaderboard view.</p>
+        <div class="input-row" style="margin-top:10px;">
+          <input id="classJoinCode" readonly />
+          <button id="generateCodeBtn" class="btn-primary">Generate Code</button>
+          <button id="copyCodeBtn" class="btn-soft">Copy</button>
+        </div>
+        <p id="classToolStatus" class="panel-sub"></p>
+        <div class="btn-row">
+          <a id="leaderboardToggle" class="btn-soft" href="/leaderboard/">Leaderboard View</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="dash-grid two-col">
+      <article class="panel">
+        <h2>Auto Teaching Suggestions</h2>
+        <p class="panel-sub">Top weak class-wide rules with “teach this next” prompts.</p>
+        <ul id="teachingSuggestions" class="suggestion-list"></ul>
+      </article>
+      <article class="panel">
+        <h2>Top 10 Leaderboard</h2>
+        <p class="panel-sub">XP first, then average accuracy tie-break.</p>
+        <div id="leaderboardMini"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Student Table</h2>
+      <p class="panel-sub">Sortable progress, accuracy, weak rule, streak, and XP.</p>
+      <div id="studentTableWrap"></div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module" src="/dashboard/teacher/dashboard-teacher.js"></script>
+</body>
+</html>

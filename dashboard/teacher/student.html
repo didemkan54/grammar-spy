@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grammar Spy | Student Detail</title>
+  <meta name="description" content="Teacher view of student attempts, rule accuracy, and recommended practice." />
+  <link rel="stylesheet" href="/dashboard/dashboard.css" />
+</head>
+<body class="dashboard-shell">
+  <div data-include="header"></div>
+
+  <main class="dash-main">
+    <section class="dash-hero">
+      <p class="dash-eyebrow">Student Detail</p>
+      <h1>Learner timeline + targeted next practice</h1>
+      <p>Track attempts over time, identify weak rules, and assign focused mission games.</p>
+    </section>
+
+    <section class="panel" id="studentHeader"></section>
+
+    <section class="dash-grid two-col">
+      <article class="panel">
+        <h2>Accuracy by Rule</h2>
+        <div id="detailRuleBars" class="rule-bars"></div>
+      </article>
+      <article class="panel">
+        <h2>Recommended Practice</h2>
+        <ul id="detailRecommendations" class="recommend-list"></ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Attempts Over Time</h2>
+      <ul id="attemptTimeline" class="activity-list"></ul>
+      <div class="btn-row">
+        <a href="/dashboard/teacher/" class="btn-soft">Back to Teacher Dashboard</a>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module" src="/dashboard/teacher/student-detail.js"></script>
+</body>
+</html>

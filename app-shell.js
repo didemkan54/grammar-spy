@@ -173,6 +173,53 @@
     enqueueCloud('growth', growthRow);
   }
 
+  var progressModulePromise = null;
+  function loadProgressModule(){
+    if (!progressModulePromise){
+      progressModulePromise = import('/core/progressStore.js')
+        .then(function(mod){ return mod || null; })
+        .catch(function(){ return null; });
+    }
+    return progressModulePromise;
+  }
+
+  function maybeRecordProgress(row){
+    if (!row || row.progress_recorded) return;
+    var shouldRecord =
+      row.event === 'mission_game_complete' ||
+      row.event === 'mission_complete';
+    if (!shouldRecord) return;
+
+    loadProgressModule().then(function(mod){
+      if (!mod || typeof mod.recordAttempt !== 'function') return;
+      try {
+        mod.recordAttempt({
+          student_id: row.student || '',
+          class_id: row.class_id || row.classId || '',
+          mission_id: row.mission_id || row.missionId || row.pack || '',
+          game_id: row.game_id || row.game || row.module || 'unknown_game',
+          grammar_rule_id: row.grammar_rule_id || row.subskill_id || row.skillTag || 'unknown_rule',
+          score: Number(row.score || row.correct || 0),
+          accuracy: Number(row.accuracy || 0),
+          time_spent_seconds: Number(row.time_spent_seconds || row.total_time || 0),
+          created_at: row.ts
+        });
+      } catch(_err){}
+    });
+  }
+
+  function maybePlaySound(row){
+    if (!row || row.sound_played) return;
+    if (!window.GSSound || typeof window.GSSound.play !== 'function') return;
+    if (row.event === 'mission_item_answer'){
+      window.GSSound.play(row.correct ? 'correct' : 'wrong');
+      return;
+    }
+    if (row.event === 'mission_game_complete' || row.event === 'mission_complete'){
+      window.GSSound.play('missioncomplete');
+    }
+  }
+
   function summarizeGrowth(filters){
     var opts = filters || {};
     var rows = readGrowth().filter(function(r){
@@ -219,6 +266,8 @@
     writeEvents(events);
     enqueueCloud('event', row);
     pushGrowthRecord(row);
+    maybeRecordProgress(row);
+    maybePlaySound(row);
   }
 
   function clear(){
