@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy | Winner</title>
+  <meta name="description" content="Grammar Spy winner podium showing top students by score." />
+  <link rel="stylesheet" href="/student/student-lobby.css" />
+</head>
+<body class="student-shell">
+  <div data-include="header"></div>
+
+  <main class="student-main">
+    <section class="student-hero">
+      <p class="student-eyebrow">Mission Complete</p>
+      <h1>Winner Board</h1>
+      <p>PIN <strong id="winnerPin">------</strong></p>
+    </section>
+
+    <section class="winner-layout">
+      <div id="winnerShell"></div>
+      <div id="podiumCards" class="podium-grid"></div>
+      <p id="winnerEmpty" class="winner-empty" hidden>No player data yet for this PIN. Ask students to join first.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="/join/" class="btn-primary-join">Play Again</a>
+        <a href="/lobby/" class="btn-secondary-join">Back to Lobby</a>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module" src="/student/winner-page.js"></script>
+</body>
+</html>

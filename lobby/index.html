@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy | Mission Lobby</title>
+  <meta name="description" content="Grammar Spy mission lobby with joined player rankings and demo round scoring." />
+  <link rel="stylesheet" href="/student/student-lobby.css" />
+</head>
+<body class="student-shell">
+  <div data-include="header"></div>
+
+  <main class="student-main">
+    <section class="student-hero">
+      <p class="student-eyebrow">Mission Lobby</p>
+      <h1>Agents are joining...</h1>
+      <p>PIN <strong id="lobbyPin">------</strong></p>
+    </section>
+
+    <section class="student-card rank-shell">
+      <div class="lobby-header-grid">
+        <div>
+          <h2 style="margin:0;font-size:29px;">Live Ranking</h2>
+          <p class="lobby-subtle">Players Joined: <strong id="playersCount">0</strong></p>
+          <p class="lobby-subtle" id="lobbyStatus">Loading lobby data...</p>
+        </div>
+        <div class="banner-illustration" aria-hidden="true">
+          <svg viewBox="0 0 320 140" width="100%" height="100%" role="img">
+            <rect x="6" y="12" width="308" height="116" rx="16" fill="#ffffff" stroke="#b8d5dc" />
+            <rect x="20" y="28" width="126" height="20" rx="10" fill="#dff2f4" />
+            <rect x="20" y="58" width="188" height="14" rx="7" fill="#e8f4f8" />
+            <rect x="20" y="82" width="230" height="14" rx="7" fill="#e8f4f8" />
+            <circle cx="270" cy="58" r="26" fill="#1f5f63" opacity="0.15" />
+            <circle cx="270" cy="58" r="16" fill="#1f5f63" opacity="0.35" />
+            <path d="M261 56 L268 63 L281 50" stroke="#1f5f63" stroke-width="4" fill="none" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="demo-tools">
+        <button id="demoRoundBtn" class="btn-primary-join" hidden>Run Demo Round</button>
+        <span id="demoModeHint" class="demo-hint" hidden>Demo mode enabled via <code>?demo=1</code>.</span>
+        <a id="winnerPageBtn" class="btn-secondary-join" href="/winner/">Show Winner</a>
+      </div>
+
+      <div id="rankingList" class="rank-list" aria-live="polite"></div>
+      <div id="winnerPreview"></div>
+      <p id="lobbyLiveRegion" class="sr-only" aria-live="polite" style="position:absolute;left:-9999px;">Lobby initialized.</p>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module" src="/student/lobby-page.js"></script>
+</body>
+</html>

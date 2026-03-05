@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grammar Spy | Student Join</title>
+  <meta name="description" content="Join a Grammar Spy mission lobby with game PIN, nickname, and agent avatar." />
+  <link rel="stylesheet" href="/student/student-lobby.css" />
+</head>
+<body class="student-shell">
+  <div data-include="header"></div>
+
+  <main class="student-main">
+    <section class="student-hero">
+      <p class="student-eyebrow">Kahoot-style mission lobby</p>
+      <h1>Enter Game PIN</h1>
+      <p>Join individually with a nickname and an agent avatar. Rankings update live on this device.</p>
+    </section>
+
+    <section class="join-layout">
+      <article class="student-card join-form-shell" id="joinCtaShell">
+        <h2>Student Join</h2>
+        <p class="join-note">PIN is required: use 6 digits (example: 123456) or DEMO.</p>
+
+        <form id="joinForm" novalidate>
+          <div class="join-field">
+            <label for="joinPin">Game PIN</label>
+            <input class="join-input" id="joinPin" name="pin" inputmode="numeric" maxlength="6" placeholder="123456 or DEMO" required />
+          </div>
+          <div class="join-field">
+            <label for="joinNickname">Nickname</label>
+            <input class="join-input" id="joinNickname" name="nickname" maxlength="15" placeholder="AgentName" required />
+          </div>
+          <div class="join-field">
+            <p style="margin:0;font-weight:700;color:#1c344f">Choose your avatar</p>
+            <div id="avatarPicker"></div>
+          </div>
+          <div class="join-actions">
+            <button type="submit" class="btn-primary-join" id="joinButton">Join Lobby</button>
+            <a href="/auth.html?mode=signin" class="btn-secondary-join">Teacher Login</a>
+          </div>
+          <p class="join-status" id="joinStatus" role="status" aria-live="polite"></p>
+          <p class="join-confirmation" id="joinConfirmation" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <aside class="student-card join-side-panel">
+        <p class="student-eyebrow" style="color:#3f6683">Agent Profile</p>
+        <div class="selected-avatar-preview" id="selectedAvatarPreview" aria-hidden="true"></div>
+        <h3 style="margin:0 0 6px;font-size:24px;color:#173551">Mission Lobby Ready</h3>
+        <p style="margin:0;color:#4a5f78">After joining, you land in a ranked lobby where all scores start at 0.</p>
+        <p class="support-note">
+          MVP note: lobby sync currently runs on same-device localStorage for quick classroom demo flows.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="/layout-loader.js"></script>
+  <script src="/app-shell.js"></script>
+  <script type="module" src="/student/join-page.js"></script>
+</body>
+</html>

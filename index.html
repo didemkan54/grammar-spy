@@ -251,6 +251,7 @@ Technical safety:
       display:flex;
       flex-wrap:wrap;
       gap:10px;
+      align-items:center;
     }
     .btn{
       display:inline-flex;
@@ -283,6 +284,13 @@ Technical safety:
       color:#ffffff;
       border-color:rgba(255,255,255,.56);
     }
+    .btn-quiet{
+      background:rgba(255,255,255,.07);
+      color:#e6f6f8;
+      border-color:rgba(255,255,255,.38);
+      min-height:40px;
+      font-size:12px;
+    }
     .hero .btn-primary{
       animation:heroPulse 3.2s ease-in-out infinite;
     }
@@ -295,6 +303,29 @@ Technical safety:
       font-size:13px;
       color:#cfe9ed;
       font-weight:600;
+    }
+    .hero-join-mascot{
+      margin-top:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.11);
+      border:1px solid rgba(255,255,255,.28);
+      box-shadow:0 8px 16px rgba(5,18,31,.18);
+    }
+    .hero-join-mascot svg{
+      width:34px;
+      height:34px;
+      display:block;
+    }
+    .hero-join-mascot span{
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      color:#effbfd;
     }
 
     .hero-preview-panel{
@@ -996,6 +1027,7 @@ Technical safety:
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="index.html" aria-current="page">Home</a>
+        <a href="/join/">Student Join</a>
         <a href="/missions/">Missions</a>
         <a href="pricing.html">Pricing</a>
         <a href="/free/">Free Resources</a>
@@ -1023,10 +1055,24 @@ Technical safety:
             <li>ELD-friendly</li>
           </ul>
           <div class="hero-ctas">
-            <a href="/missions/" class="btn btn-primary" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
-            <a href="teacher-home.html" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
+            <a href="/join/" class="btn btn-primary" data-track-event="homepage_student_join_click">Student Join</a>
+            <a href="/auth.html?mode=signin" class="btn btn-secondary" data-track-event="homepage_teacher_login_click">Teacher Login</a>
+            <a href="/missions/" class="btn btn-quiet" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
           </div>
           <p class="hero-note">No prep. No grading stacks. Just progress.</p>
+          <div class="hero-join-mascot" aria-hidden="true">
+            <svg viewBox="0 0 52 52">
+              <circle cx="26" cy="26" r="24" fill="#8ecfd7"></circle>
+              <ellipse cx="26" cy="16" rx="10" ry="5" fill="#1f5f63"></ellipse>
+              <circle cx="26" cy="24" r="10" fill="#f6fbff"></circle>
+              <rect x="14" y="19" width="24" height="6" rx="3" fill="#1f5f63"></rect>
+              <circle cx="22" cy="22" r="1.8" fill="#0b1020"></circle>
+              <circle cx="30" cy="22" r="1.8" fill="#0b1020"></circle>
+              <path d="M20 29 Q26 33 32 29" stroke="#374a5f" stroke-width="1.6" fill="none"></path>
+              <ellipse cx="26" cy="38" rx="12" ry="5" fill="#1f5f63" opacity="0.72"></ellipse>
+            </svg>
+            <span>Agent Lobby Live</span>
+          </div>
         </div>
         <aside class="hero-preview-panel" id="mission-preview" aria-label="Mission Preview">
           <p class="preview-kicker">Mission Demo: Speak in the Moment</p>
@@ -1393,10 +1439,22 @@ Technical safety:
 
     (function(){
       var track = window.GS_TRACK_HOME || function(){};
+      var studentJoinButtons = document.querySelectorAll('[data-track-event="homepage_student_join_click"]');
+      var teacherLoginButtons = document.querySelectorAll('[data-track-event="homepage_teacher_login_click"]');
       var tryButtons = document.querySelectorAll('[data-track-event="homepage_try_free_mission_click"]');
       var createButtons = document.querySelectorAll('[data-track-event="homepage_create_account_click"]');
       var scrollTracked = false;
 
+      studentJoinButtons.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          track('homepage_student_join_click', { location: btn.getAttribute('href') || '' });
+        });
+      });
+      teacherLoginButtons.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          track('homepage_teacher_login_click', { location: btn.getAttribute('href') || '' });
+        });
+      });
       tryButtons.forEach(function(btn){
         btn.addEventListener('click', function(){
           track('homepage_try_free_mission_click', { location: btn.getAttribute('href') || '' });
