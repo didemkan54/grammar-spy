@@ -23,8 +23,11 @@
     wrong: "/assets/sounds/wrong.mp3",
     levelup: "/assets/sounds/levelup.mp3",
     missioncomplete: "/assets/sounds/missioncomplete.mp3",
-    click: "/assets/sounds/correct.mp3",
-    hover: "/assets/sounds/correct.mp3",
+    click: "/assets/sounds/button_click.mp3",
+    buttonpress: "/assets/sounds/button_click.mp3",
+    hover: "/assets/sounds/hover_tick.mp3",
+    leaderboard: "/assets/sounds/leaderboard_swoosh.mp3",
+    swoosh: "/assets/sounds/leaderboard_swoosh.mp3",
     confirm: "/assets/sounds/correct.mp3",
     victory: "/assets/sounds/missioncomplete.mp3"
   };
@@ -235,6 +238,27 @@
       playSynthTone(ctx, 680, base + 0.1, 0.14, 0.07);
       playSynthTone(ctx, 840, base + 0.2, 0.16, 0.07);
       playSynthTone(ctx, 1040, base + 0.3, 0.18, 0.06);
+      lastSound = name;
+      renderDebugPanel();
+      return true;
+    }
+    if (name === "click" || name === "buttonpress") {
+      playSynthTone(ctx, 650, base, 0.06, 0.045);
+      playSynthTone(ctx, 780, base + 0.04, 0.07, 0.04);
+      lastSound = name;
+      renderDebugPanel();
+      return true;
+    }
+    if (name === "hover") {
+      playSynthTone(ctx, 920, base, 0.045, 0.03);
+      lastSound = name;
+      renderDebugPanel();
+      return true;
+    }
+    if (name === "leaderboard" || name === "swoosh") {
+      playSynthTone(ctx, 360, base, 0.08, 0.035);
+      playSynthTone(ctx, 490, base + 0.05, 0.09, 0.035);
+      playSynthTone(ctx, 680, base + 0.11, 0.1, 0.03);
       lastSound = name;
       renderDebugPanel();
       return true;
