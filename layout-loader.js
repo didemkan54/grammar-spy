@@ -12,8 +12,10 @@
       st.id = 'gsTopNavStyles';
       st.textContent =
         'nav[aria-label=\"Primary navigation\"] .gs-pill{white-space:nowrap}\\n' +
+        'nav[aria-label=\"Primary navigation\"] .gs-link-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}\\n' +
         '@media (max-width:720px){\\n' +
         '  nav[aria-label=\"Primary navigation\"]{padding-left:14px!important;padding-right:14px!important}\\n' +
+        '  nav[aria-label=\"Primary navigation\"] .gs-link-row{flex-basis:100%;order:3}\\n' +
         '}\\n' +
         '@media (max-width:520px){\\n' +
         '  nav[aria-label=\"Primary navigation\"]{gap:10px!important}\\n' +
@@ -25,33 +27,25 @@
     } catch(_e) {}
   }
 
-  var navLinkStyle = 'text-decoration:none;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc';
+  var navLinkStyle = 'text-decoration:none;color:#324357;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 11px;border:1px solid transparent;border-radius:999px;background:transparent';
   var dropdownLinkStyle = 'display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap';
-  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none';
-  var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
+  var menuSummaryStyle = 'cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#fff;color:#4a5568;font:700 12px Inter,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none';
+  var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:190px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
 
-  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 16px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
+  var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 14px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
     '<a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img class="gs-logo" src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none"></a>' +
-    '<span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
+    '<span class="gs-link-row" style="display:flex;flex:1 1 420px;min-width:240px;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
     '<a class="gs-pill" href="index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
-    '<details id="gsMissionMenu" style="position:relative">' +
-    '<summary class="gs-pill" style="' + menuSummaryStyle + '" data-i18n="nav_missions">Missions &#9662;</summary>' +
-    '<span style="' + menuPanelStyle + '">' +
-    '<a href="teacher-mode.html" style="' + dropdownLinkStyle + '">Run a Mission</a>' +
-    '<a href="teacher-mode.html?play_format=whole_class" style="' + dropdownLinkStyle + '">Whole Class</a>' +
-    '<a href="teacher-mode.html?play_format=teams" style="' + dropdownLinkStyle + '">Teams Mode</a>' +
-    '<a href="packs.html" style="' + dropdownLinkStyle + '">Missions</a>' +
-    '<a href="progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
-    '<a href="clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
-    '</span>' +
-    '</details>' +
-    '<a class="gs-pill" href="teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
+    '<a class="gs-pill" href="packs.html" data-i18n="nav_missions" style="' + navLinkStyle + '">Missions</a>' +
+    '<a class="gs-pill" href="progression.html" style="' + navLinkStyle + '">Training Path</a>' +
     '<a class="gs-pill" href="pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
     '<details id="gsResourcesMenu" style="position:relative">' +
-    '<summary class="gs-pill" style="' + menuSummaryStyle + '">Resources &#9662;</summary>' +
+    '<summary class="gs-pill" style="' + menuSummaryStyle + '">More &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
+    '<a href="teacher-home.html" style="' + dropdownLinkStyle + '">Teacher</a>' +
     '<a href="community.html" style="' + dropdownLinkStyle + '">Community</a>' +
     '<a href="insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
+    '<a href="teacher-dashboard.html" style="' + dropdownLinkStyle + '">Admin</a>' +
     '</span>' +
     '</details>' +
     '</span>' +

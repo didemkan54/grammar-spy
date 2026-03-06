@@ -17,11 +17,11 @@
     /* Grammar Spy palette (locked): Navy + Teal primary, Gold accent only. No yellow/other accent. */
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--gold:#c9a227;--shadow:0 8px 16px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
-    body{margin:0;background:#ffffff;color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 52px}
-    .wrap{max-width:100%;margin:0;display:grid;gap:48px;padding:0 40px}
+    body{margin:0;background:#ffffff;color:var(--mid);font-family:Inter,Montserrat,Poppins,Outfit,"Segoe UI",sans-serif;padding:0 0 44px}
+    .wrap{max-width:1120px;margin:0 auto;display:grid;gap:42px;padding:0 20px}
     .section{padding:8px 0}
     .section-flat{padding:8px 4px}
-    .section-band-dark{background:linear-gradient(170deg,#2a4a5a,#1f5f63);padding:40px;color:#f0f7f8;margin:0 -40px;border-radius:0}
+    .section-band-dark{background:linear-gradient(170deg,#2a4a5a,#1f5f63);padding:34px 26px;color:#f0f7f8;border-radius:16px}
     .section-band-dark h2,.section-band-dark p,.section-band-dark li{color:#f0f7f8}
     .section-band-dark .link-action{color:#c9e8eb}
     .k{margin:0 0 10px;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
@@ -42,17 +42,16 @@
     .mission-label{margin:0 0 8px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1f5f63}
     .mission-label::before{content:"";display:block;width:16px;height:2px;border-radius:2px;background:var(--gold);margin-bottom:8px}
     .hero-accent{width:36px;height:2px;background:var(--gold);border-radius:2px;margin:14px 0 0}
-    .hero-shell{margin:0 -40px;padding:0 40px;background:linear-gradient(180deg,#f8fbfd 0%,#ffffff 100%)}
+    .hero-shell{margin:0;background:linear-gradient(180deg,#f8fbfd 0%,#ffffff 100%)}
     .hero{
       position:relative;
       overflow:hidden;
       background:transparent;
       color:var(--mid);
       border-radius:0;
-      padding:48px 0 40px;
-      max-width:100%;
-      margin:0;
-      padding:0 40px;
+      max-width:1120px;
+      margin:0 auto;
+      padding:42px 20px 34px;
     }
     .hero h1{color:var(--navy)}
     .hero .k{color:var(--teal)}
@@ -78,12 +77,12 @@
     .hero-grid{
       position:relative;
       z-index:1;
-      max-width:100%;
+      max-width:none;
       margin:0;
-      padding:0 40px;
+      padding:0;
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:48px;
+      grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+      gap:34px;
       align-items:center;
     }
     .mission-panel{
@@ -153,7 +152,7 @@
     }
     .hero-visual{
       display:flex;
-      justify-content:center;
+      justify-content:flex-end;
       align-items:center;
     }
     .hero-visual img{
@@ -208,8 +207,8 @@
     @media (max-width:1000px){.inside-mission{grid-template-columns:1fr}}
     @media (max-width:620px){.inside-mission{grid-template-columns:1fr}.inside-mission .screenshot-card img{max-height:280px;object-fit:contain}}
     @media (max-width:620px){.inside-mission{gap:16px}}
-    @media (max-width:920px){h1{font-size:38px}h2{font-size:24px}.section-band-dark{padding:24px 14px}.hero{padding:34px 0}.hero-grid{grid-template-columns:1fr;gap:20px}.hero-visual{justify-content:flex-start}.flow{grid-template-columns:1fr 1fr}.testimonial-grid{grid-template-columns:1fr}}
-    @media (max-width:620px){h1{font-size:32px}.hero{padding:24px 0}.hero-buttons{flex-direction:column;align-items:flex-start;gap:12px}.btn-primary,.seg{min-height:44px;padding:10px 16px}.flow{grid-template-columns:1fr}}
+    @media (max-width:920px){h1{font-size:38px}h2{font-size:24px}.wrap{padding:0 14px;gap:34px}.section-band-dark{padding:24px 16px}.hero{padding:32px 14px}.hero-grid{grid-template-columns:1fr;gap:22px}.hero-visual{justify-content:flex-start}.flow{grid-template-columns:1fr 1fr}.testimonial-grid{grid-template-columns:1fr}}
+    @media (max-width:620px){h1{font-size:32px}.hero{padding:24px 12px}.hero-buttons{flex-direction:column;align-items:flex-start;gap:12px}.btn-primary,.seg{min-height:44px;padding:10px 16px}.flow{grid-template-columns:1fr}}
 
     /* Welcome overlay */
     .gs-welcome-overlay{
