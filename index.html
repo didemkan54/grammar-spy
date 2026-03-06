@@ -68,7 +68,7 @@ Technical safety:
     }
 
     .container{
-      width:min(1440px,100%);
+      width:min(1240px,100%);
       margin:0 auto;
       padding:0 clamp(14px,2vw,34px);
     }
@@ -102,48 +102,26 @@ Technical safety:
       display:flex;
       flex-wrap:wrap;
       align-items:center;
-      gap:8px;
+      gap:6px;
     }
     .nav-links a{
       text-decoration:none;
-      color:var(--slate);
+      color:#2f4458;
       font:700 12px Inter,Segoe UI,Arial,sans-serif;
       letter-spacing:.06em;
       text-transform:uppercase;
-      padding:8px 11px;
-      border:1px solid var(--cool);
+      padding:8px 10px;
+      border:1px solid transparent;
       border-radius:999px;
-      background:#fff;
+      background:transparent;
       transition:all .2s ease;
     }
     .nav-links a:hover{
-      border-color:rgba(31,95,99,.38);
+      border-color:rgba(31,95,99,.24);
       color:var(--teal);
-      background:var(--teal-soft);
+      background:#f6fbfb;
       transform:translateY(-1px);
     }
-    .nav-community-link{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-    }
-    .nav-beta-pill{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:32px;
-      padding:2px 7px;
-      border-radius:999px;
-      background:#1f5f63;
-      color:#ffffff;
-      border:1px solid #16484b;
-      font-size:9px;
-      line-height:1;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-weight:800;
-    }
-
     .hero{
       position:relative;
       overflow:hidden;
@@ -1518,8 +1496,8 @@ Technical safety:
     @media (min-width:980px){
       .hero-grid{grid-template-columns:1.08fr .92fr;gap:36px}
       .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-      .nav-links{gap:10px}
-      .nav-links a{padding:9px 12px}
+      .nav-links{gap:8px}
+      .nav-links a{padding:9px 11px}
       .engage-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
     }
     @media (max-width:760px){
@@ -1545,11 +1523,9 @@ Technical safety:
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="index.html" aria-current="page">Home</a>
-        <a href="/join/">Student Join</a>
         <a href="/missions/">Missions</a>
         <a href="pricing.html">Pricing</a>
-        <a href="/free/">Free Resources</a>
-        <a href="insights.html" class="nav-community-link">Community <span class="nav-beta-pill">Beta</span></a>
+        <a href="insights.html">Community</a>
         <a href="auth.html?mode=signin">Login / Sign up</a>
       </nav>
     </div>
