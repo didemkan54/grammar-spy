@@ -47,7 +47,7 @@ export function mountSoundToggle(container) {
 
   const tooltip = document.createElement("span");
   tooltip.className = "gs-sound-tooltip";
-  tooltip.textContent = "Sound is off";
+  tooltip.textContent = "Sound is off — tap to enable mission SFX";
 
   const testButton = document.createElement("button");
   testButton.type = "button";

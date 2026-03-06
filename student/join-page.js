@@ -57,6 +57,7 @@ function init() {
   const joinBtn = document.getElementById("joinButton");
   const mascotEl = document.getElementById("selectedAvatarPreview");
   const accentMount = document.getElementById("accentPicker");
+  const randomAvatarBtn = document.getElementById("randomAvatarBtn");
   const confirmation = document.getElementById("joinConfirmation");
   const ctaShell = document.getElementById("joinCtaShell");
 
@@ -89,6 +90,24 @@ function init() {
         });
         renderMascot(mascotEl, avatarPicker.getSelectedAvatarId(), selectedAccentId);
       });
+    });
+  }
+
+  if (randomAvatarBtn) {
+    randomAvatarBtn.addEventListener("click", () => {
+      const randomAvatar = AVATARS[Math.floor(Math.random() * AVATARS.length)];
+      const randomAccent = AVATAR_ACCENTS[Math.floor(Math.random() * AVATAR_ACCENTS.length)];
+      if (randomAvatar) avatarPicker.setSelectedAvatarId(randomAvatar.id);
+      if (randomAccent) {
+        selectedAccentId = randomAccent.id;
+        if (accentMount) {
+          accentMount.querySelectorAll("[data-accent-id]").forEach((chip) => {
+            chip.classList.toggle("is-selected", chip.getAttribute("data-accent-id") === selectedAccentId);
+          });
+        }
+      }
+      renderMascot(mascotEl, avatarPicker.getSelectedAvatarId(), selectedAccentId);
+      playSound("levelup");
     });
   }
 

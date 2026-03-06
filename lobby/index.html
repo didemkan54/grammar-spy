@@ -43,6 +43,14 @@
         <a id="winnerPageBtn" class="btn-secondary-join" href="/winner/">Show Winner</a>
       </div>
 
+      <div class="lobby-hype" aria-live="polite">
+        <div class="lobby-hype-head">
+          <p class="lobby-hype-kicker">Battle meter</p>
+          <p class="lobby-hype-value" id="battleMeterValue">0%</p>
+        </div>
+        <div class="lobby-hype-track" aria-hidden="true"><span id="battleMeterFill"></span></div>
+      </div>
+
       <div id="rankingList" class="rank-list" aria-live="polite"></div>
       <div id="winnerPreview"></div>
       <p id="lobbyLiveRegion" class="sr-only" aria-live="polite" style="position:absolute;left:-9999px;">Lobby initialized.</p>
