@@ -68,9 +68,9 @@ Technical safety:
     }
 
     .container{
-      width:min(1160px,100%);
+      width:min(1440px,100%);
       margin:0 auto;
-      padding:0 18px;
+      padding:0 clamp(14px,2vw,34px);
     }
     h1,h2,h3,p,a,button,li{
       overflow-wrap:anywhere;
@@ -149,8 +149,15 @@ Technical safety:
       overflow:hidden;
       padding:70px 0 58px;
       color:#f7fcff;
-      background:linear-gradient(160deg,#163640 0%,#1f5f63 52%,#2e727f 100%);
+      background:linear-gradient(135deg,#14343e 0%,#1a4f59 46%,#226877 100%);
+      background-size:160% 160%;
+      animation:heroGradientShift 25s ease-in-out infinite;
       border-bottom:1px solid rgba(255,255,255,.16);
+    }
+    @keyframes heroGradientShift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
     }
     .cinematic-hero{
       position:relative;
@@ -191,27 +198,57 @@ Technical safety:
     .hero-shape{
       position:absolute;
       border-radius:999px;
-      filter:blur(.4px);
-      opacity:.4;
+      filter:blur(1px);
+      opacity:.1;
       will-change:transform;
     }
     .hero-shape.one{
       width:240px;height:240px;
-      background:radial-gradient(circle, rgba(255,255,255,.24), rgba(255,255,255,0));
+      background:radial-gradient(circle, rgba(255,255,255,.1), rgba(255,255,255,0));
       top:-42px;left:-34px;
-      animation:floatOne 12s ease-in-out infinite;
+      animation:floatOne 17s ease-in-out infinite;
     }
     .hero-shape.two{
       width:170px;height:170px;
-      background:radial-gradient(circle, rgba(201,162,39,.45), rgba(201,162,39,0));
+      background:radial-gradient(circle, rgba(201,162,39,.12), rgba(201,162,39,0));
       right:12%;top:6%;
-      animation:floatTwo 11s ease-in-out infinite;
+      animation:floatTwo 16s ease-in-out infinite;
     }
     .hero-shape.three{
       width:300px;height:300px;
-      background:radial-gradient(circle, rgba(140,219,230,.26), rgba(140,219,230,0));
+      background:radial-gradient(circle, rgba(140,219,230,.09), rgba(140,219,230,0));
       right:-80px;bottom:-120px;
-      animation:floatThree 15s ease-in-out infinite;
+      animation:floatThree 18s ease-in-out infinite;
+    }
+    .hero-radar{
+      position:absolute;
+      right:8%;
+      top:50%;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      pointer-events:none;
+      z-index:1;
+    }
+    .hero-radar::before,
+    .hero-radar::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+      border:1px solid rgba(214,245,250,.1);
+      background:radial-gradient(circle, rgba(220,247,251,.07) 0%, rgba(220,247,251,0) 62%);
+      transform:scale(.35);
+      opacity:0;
+      animation:radarPulse 6s ease-out infinite;
+    }
+    .hero-radar::after{
+      animation-delay:3s;
+    }
+    @keyframes radarPulse{
+      0%{transform:scale(.35);opacity:.1}
+      80%{transform:scale(1.35);opacity:0}
+      100%{transform:scale(1.35);opacity:0}
     }
     @keyframes floatOne{
       0%,100%{transform:translate3d(0,0,0)}
@@ -247,14 +284,17 @@ Technical safety:
       line-height:1.04;
       letter-spacing:-.018em;
       color:#fff;
-      max-width:14ch;
+      max-width:17ch;
+    }
+    .headline-break{
+      display:block;
     }
     .hero-subhead{
       margin:14px 0 0;
       font-size:clamp(14px,1.4vw,18px);
       line-height:1.55;
       color:#d8edf1;
-      max-width:62ch;
+      max-width:58ch;
     }
     .hero-hook{
       margin:9px 0 0;
@@ -303,6 +343,9 @@ Technical safety:
       border:1px solid transparent;
       cursor:pointer;
       transition:transform .18s ease, box-shadow .2s ease, filter .2s ease, background-color .2s ease;
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
     }
     .btn:hover{
       transform:translateY(-2px) scale(1.01);
@@ -310,6 +353,31 @@ Technical safety:
       filter:saturate(1.04);
     }
     .btn:active{transform:translateY(-1px)}
+    .btn::after{
+      content:"";
+      position:absolute;
+      left:var(--ripple-x,50%);
+      top:var(--ripple-y,50%);
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      pointer-events:none;
+      background:radial-gradient(circle, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 72%);
+      transform:translate(-50%,-50%) scale(0);
+      opacity:0;
+      z-index:0;
+    }
+    .btn > *{
+      position:relative;
+      z-index:1;
+    }
+    .btn.is-ripple::after{
+      animation:btnRipple .46s ease-out;
+    }
+    @keyframes btnRipple{
+      0%{transform:translate(-50%,-50%) scale(0);opacity:.5}
+      100%{transform:translate(-50%,-50%) scale(18);opacity:0}
+    }
     .btn-primary{
       background:#ffffff;
       color:#124245;
@@ -328,7 +396,7 @@ Technical safety:
       font-size:12px;
     }
     .hero .btn-primary{
-      animation:heroPulse 3.2s ease-in-out infinite;
+      animation:heroPulse 4.6s ease-in-out infinite;
     }
     @keyframes heroPulse{
       0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.06)}
@@ -382,6 +450,18 @@ Technical safety:
       background:rgba(255,255,255,.11);
       border:1px solid rgba(255,255,255,.28);
       box-shadow:0 8px 16px rgba(5,18,31,.18);
+      text-decoration:none;
+      cursor:pointer;
+      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .hero-join-mascot:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.16);
+      box-shadow:0 11px 22px rgba(5,18,31,.24);
+    }
+    .hero-join-mascot:focus-visible{
+      outline:3px solid rgba(255,255,255,.45);
+      outline-offset:2px;
     }
     .hero-join-mascot svg{
       width:34px;
@@ -397,12 +477,31 @@ Technical safety:
     }
 
     .hero-preview-panel{
-      background:linear-gradient(180deg, rgba(6,18,32,.45), rgba(6,18,32,.35));
-      border:1px solid rgba(255,255,255,.24);
+      background:rgba(255,255,255,.06);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.12);
       border-radius:var(--radius);
-      box-shadow:var(--shadow-md);
+      box-shadow:0 20px 50px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
       padding:16px;
       min-width:0;
+    }
+    .hero-preview-panel::after{
+      content:"";
+      position:absolute;
+      inset:-20% auto -20% -34%;
+      width:44%;
+      background:linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.16) 45%, rgba(255,255,255,0) 100%);
+      transform:translateX(-180%) skewX(-16deg);
+      animation:consoleSweep 10s ease-in-out infinite;
+      pointer-events:none;
+      z-index:0;
+    }
+    @keyframes consoleSweep{
+      0%,74%{transform:translateX(-180%) skewX(-16deg);opacity:0}
+      78%{opacity:.6}
+      92%{transform:translateX(390%) skewX(-16deg);opacity:.35}
+      100%{transform:translateX(390%) skewX(-16deg);opacity:0}
     }
     .preview-kicker{
       margin:0;
@@ -422,9 +521,8 @@ Technical safety:
     .preview-progress span{
       display:block;
       height:100%;
-      width:66%;
+      width:40%;
       background:linear-gradient(90deg,#73d0da,#bcebf0);
-      animation:previewFill 2.6s ease-in-out infinite alternate;
     }
     .demo-progress-label{
       margin:8px 0 0;
@@ -441,16 +539,12 @@ Technical safety:
       border-color:#effbff;
       animation:none !important;
     }
-    @keyframes previewFill{
-      0%{width:38%}
-      100%{width:88%}
-    }
     .hero-mission-card{
       margin-top:12px;
       border:1px solid rgba(255,255,255,.22);
       border-radius:12px;
       padding:12px;
-      background:rgba(255,255,255,.07);
+      background:rgba(255,255,255,.05);
       animation:heroCardBob 4.6s ease-in-out infinite;
     }
     @keyframes heroCardBob{
@@ -491,6 +585,245 @@ Technical safety:
     .mini-option.is-good{
       border-color:#6ad3bd;
       background:rgba(106,211,189,.18);
+    }
+    .demo-example{
+      margin:12px 0 0;
+      border:1px solid rgba(255,255,255,.2);
+      border-radius:10px;
+      padding:10px;
+      background:rgba(255,255,255,.07);
+      color:#ecfbff;
+      font-size:14px;
+      font-weight:700;
+      min-height:42px;
+      display:flex;
+      align-items:center;
+    }
+    .demo-example .hl{
+      color:#8af0ce;
+      font-weight:800;
+    }
+    .floating-agents{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+    }
+    .floating-agent{
+      position:absolute;
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(19,56,67,.56);
+      color:#e8fbff;
+      display:grid;
+      place-items:center;
+      font-size:20px;
+      box-shadow:0 8px 18px rgba(0,0,0,.22);
+      animation:agentFloat 8s ease-in-out infinite;
+    }
+    .floating-agent::after{
+      content:attr(data-role);
+      position:absolute;
+      top:calc(100% + 4px);
+      left:50%;
+      transform:translateX(-50%);
+      font:700 9px Inter,Segoe UI,Arial,sans-serif;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#def7fb;
+      white-space:nowrap;
+      opacity:.86;
+    }
+    .floating-agent.a1{left:-24px;top:16%;animation-delay:.2s}
+    .floating-agent.a2{right:-20px;top:22%;animation-delay:1s}
+    .floating-agent.a3{left:-18px;bottom:16%;animation-delay:2s}
+    .floating-agent.a4{right:-20px;bottom:12%;animation-delay:3s}
+    @keyframes agentFloat{
+      0%,100%{transform:translate3d(0,0,0)}
+      50%{transform:translate3d(0,-8px,0)}
+    }
+
+    .activity-ticker{
+      background:#0f2832;
+      border-top:1px solid rgba(255,255,255,.08);
+      border-bottom:1px solid #d4e1ed;
+      color:#dff6fb;
+    }
+    .activity-ticker-inner{
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:8px 0;
+      flex-wrap:wrap;
+    }
+    .activity-kicker{
+      margin:0;
+      font:800 11px Inter,Segoe UI,Arial,sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#8cdde7;
+      white-space:nowrap;
+    }
+    .activity-message{
+      margin:0;
+      min-height:18px;
+      font:700 13px Inter,Segoe UI,Arial,sans-serif;
+      color:#ecfcff;
+      opacity:1;
+      transform:translateY(0);
+      transition:opacity .4s ease, transform .4s ease;
+    }
+    .activity-message.is-changing{
+      opacity:0;
+      transform:translateY(-6px);
+    }
+    .activity-message.is-visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .who-section{
+      background:linear-gradient(180deg,#f7fbfd 0%,#eef5fb 100%);
+      border-bottom:1px solid #d9e4ef;
+    }
+    .who-grid{
+      margin-top:18px;
+      display:grid;
+      gap:14px;
+    }
+    .who-card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid #d4e0ec;
+      border-radius:16px;
+      padding:20px 18px;
+      background:#ffffff;
+      box-shadow:0 12px 26px rgba(11,16,32,.08);
+      transition:transform .22s ease, box-shadow .24s ease, border-color .24s ease;
+    }
+    .who-card:hover{
+      transform:translateY(-4px);
+      border-color:#9ec1d7;
+      box-shadow:0 18px 34px rgba(12,24,40,.16);
+    }
+    .who-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -12% -50% -12%;
+      height:68%;
+      background:radial-gradient(circle, rgba(31,95,99,.15), rgba(31,95,99,0));
+      opacity:0;
+      transition:opacity .24s ease;
+      pointer-events:none;
+    }
+    .who-card:hover::after{opacity:1}
+    .who-icon{
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      background:#e9f5f8;
+      color:#1f5f63;
+      font-size:22px;
+      display:grid;
+      place-items:center;
+      box-shadow:0 0 0 0 rgba(31,95,99,.2);
+      animation:whoIconPulse 3.4s ease-in-out infinite;
+    }
+    @keyframes whoIconPulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(31,95,99,.18)}
+      50%{box-shadow:0 0 0 9px rgba(31,95,99,0)}
+    }
+    .who-card h3{
+      margin:12px 0 0;
+      font-size:26px;
+      color:#132f49;
+      line-height:1.2;
+    }
+    .who-list{
+      margin:10px 0 0;
+      padding-left:18px;
+      display:grid;
+      gap:7px;
+      color:#39556f;
+      font-size:15px;
+      font-weight:600;
+    }
+    .who-btn{
+      margin-top:14px;
+    }
+
+    [data-animate-in]{
+      opacity:0;
+      transform:translateY(14px);
+      transition:opacity .45s ease, transform .45s ease;
+    }
+    [data-animate-in].is-visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .reaction-strip{
+      background:#f1f7fc;
+      border-top:1px solid #d9e5ef;
+      border-bottom:1px solid #d9e5ef;
+    }
+    .reaction-grid{
+      margin-top:18px;
+      display:grid;
+      gap:10px;
+    }
+    .reaction-bubble{
+      position:relative;
+      border:1px solid #cfdeea;
+      border-radius:14px;
+      background:#ffffff;
+      padding:12px 14px;
+      color:#294863;
+      font:700 15px Inter,Segoe UI,Arial,sans-serif;
+      box-shadow:0 8px 18px rgba(11,16,32,.06);
+    }
+    .reaction-bubble::after{
+      content:"";
+      position:absolute;
+      left:18px;
+      bottom:-8px;
+      width:14px;
+      height:14px;
+      background:#fff;
+      border-right:1px solid #cfdeea;
+      border-bottom:1px solid #cfdeea;
+      transform:rotate(45deg);
+    }
+
+    .agent-tip{
+      margin-top:18px;
+      border:1px dashed #9bc2cf;
+      border-radius:14px;
+      background:linear-gradient(170deg,#f6fcff 0%,#eef8fc 100%);
+      padding:12px;
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .agent-tip .avatar{
+      width:34px;
+      height:34px;
+      flex:0 0 auto;
+      border-radius:50%;
+      background:#d6eef2;
+      border:1px solid #8ebbc5;
+      display:grid;
+      place-items:center;
+      font-size:18px;
+    }
+    .agent-tip p{
+      margin:0;
+      color:#34536e;
+      font-size:14px;
+      font-weight:600;
     }
 
     .section{padding:62px 0}
@@ -836,6 +1169,14 @@ Technical safety:
       color:#29465f;
       font-size:14px;
       font-weight:700;
+      display:block;
+    }
+    .proof-mini-sub{
+      display:block;
+      margin-top:3px;
+      color:#5a6f84;
+      font-size:12px;
+      font-weight:600;
     }
     .micro-link{
       display:inline-block;
@@ -1163,7 +1504,7 @@ Technical safety:
     }
 
     @media (min-width:760px){
-      .container{padding:0 28px}
+      .container{padding:0 clamp(22px,2.6vw,44px)}
       .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
       .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
       .two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1171,6 +1512,8 @@ Technical safety:
       .engage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .mission-map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .proof-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .who-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .reaction-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
     @media (min-width:980px){
       .hero-grid{grid-template-columns:1.08fr .92fr;gap:36px}
@@ -1189,6 +1532,8 @@ Technical safety:
       .proof-strip{grid-template-columns:1fr}
       .battle-chip-row{grid-template-columns:1fr}
       .container{padding:0 14px}
+      .floating-agents{display:none}
+      .activity-ticker-inner{align-items:flex-start}
     }
   </style>
 </head>
@@ -1216,12 +1561,13 @@ Technical safety:
         <span class="hero-shape one"></span>
         <span class="hero-shape two"></span>
         <span class="hero-shape three"></span>
+        <span class="hero-radar"></span>
       </div>
       <div class="container hero-grid">
         <div>
           <p class="eyebrow">Mission control for classrooms</p>
-          <h1>Welcome, Agent. Your mission is to stop grammar errors.</h1>
-          <p class="hero-subhead">Train with quick games. Level up. Beat your class.</p>
+          <h1>Welcome, Agent.<span class="headline-break">Your mission: eliminate grammar errors.</span></h1>
+          <p class="hero-subhead">Students train through fast grammar missions that build real mastery.</p>
           <ul class="chips" aria-label="Core benefits">
             <li>15-item micro-missions</li>
             <li>Instant feedback</li>
@@ -1238,7 +1584,7 @@ Technical safety:
             <span class="live-badge">Fast rounds: 5 min</span>
             <span class="live-badge">Instant rank shifts</span>
           </div>
-          <div class="hero-join-mascot" aria-hidden="true">
+          <a href="/join/" class="hero-join-mascot" data-track-event="homepage_join_class_click" aria-label="Open student join lobby">
             <svg viewBox="0 0 52 52">
               <circle cx="26" cy="26" r="24" fill="#8ecfd7"></circle>
               <ellipse cx="26" cy="16" rx="10" ry="5" fill="#1f5f63"></ellipse>
@@ -1250,18 +1596,25 @@ Technical safety:
               <ellipse cx="26" cy="38" rx="12" ry="5" fill="#1f5f63" opacity="0.72"></ellipse>
             </svg>
             <span>Agent Lobby Live</span>
-          </div>
+          </a>
         </div>
         <aside class="hero-preview-panel cinematic-card" id="mission-preview" aria-label="Mission Preview">
+          <div class="floating-agents" aria-hidden="true">
+            <span class="floating-agent a1" data-role="Detective">🕵️</span>
+            <span class="floating-agent a2" data-role="Analyst">📊</span>
+            <span class="floating-agent a3" data-role="Explorer">🧭</span>
+            <span class="floating-agent a4" data-role="Hacker">💻</span>
+          </div>
           <p class="preview-kicker">Mission Demo: Speak in the Moment</p>
-          <div class="preview-progress" aria-hidden="true"><span></span></div>
-          <p class="demo-progress-label">Progress simulation: 6/15</p>
+          <div class="preview-progress" aria-hidden="true"><span id="demoProgressFill"></span></div>
+          <p class="demo-progress-label" id="demoProgressLabel">Progress simulation: 6/15</p>
           <div class="hero-mission-card">
             <h2>Present Tenses</h2>
             <p>Short rounds keep students moving while each item reinforces one clear rule.</p>
+            <p class="demo-example" id="demoExampleLine"><span>She is <span class="hl">studying</span>.</span></p>
             <div class="mini-options">
               <button type="button" class="mini-option">Rookie Track: 15 items</button>
-              <button type="button" class="mini-option is-good">Agent Track: streak + feedback</button>
+              <button type="button" class="mini-option is-good">Grammar focus: <span class="hl">is + verb-ing</span></button>
               <button type="button" class="mini-option">Classroom-ready pacing</button>
             </div>
             <a href="#mission-live-preview" class="btn demo-play-btn">Play Demo</a>
@@ -1270,22 +1623,58 @@ Technical safety:
       </div>
     </section>
 
+    <section class="activity-ticker" aria-label="Live classroom activity">
+      <div class="container activity-ticker-inner">
+        <p class="activity-kicker">Live classroom activity</p>
+        <p class="activity-message is-visible" id="activityTickerMessage">Agent Mia completed Past Tense Mission.</p>
+      </div>
+    </section>
+
+    <section class="section who-section">
+      <div class="container">
+        <p class="section-label">Who are you?</p>
+        <h2>Choose your launch path</h2>
+        <div class="who-grid">
+          <article class="who-card" data-animate-in>
+            <span class="who-icon" aria-hidden="true">🧑‍🏫</span>
+            <h3>Run your classroom like mission control.</h3>
+            <ul class="who-list">
+              <li>assign grammar missions</li>
+              <li>see student progress instantly</li>
+              <li>no grading required</li>
+            </ul>
+            <a class="btn btn-primary who-btn" href="/teacher-home.html">Start Teacher Setup</a>
+          </article>
+          <article class="who-card" data-animate-in>
+            <span class="who-icon" aria-hidden="true">🕵️</span>
+            <h3>Join the agent training program.</h3>
+            <ul class="who-list">
+              <li>play grammar missions</li>
+              <li>beat your classmates</li>
+              <li>climb the leaderboard</li>
+            </ul>
+            <a class="btn btn-secondary who-btn" href="/join/" data-track-event="homepage_join_class_click">Join a Class</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section section-muted">
       <div class="container">
         <p class="section-label">How it works</p>
         <h2>Join. Play missions. Level up.</h2>
         <div class="proof-strip" aria-label="How it works steps">
-          <article class="proof-mini-card">
+          <article class="proof-mini-card" data-animate-in>
             <span class="proof-mini-icon" aria-hidden="true">🛰️</span>
-            <span class="proof-mini-text">1) Join</span>
+            <span class="proof-mini-text">1) Join <span class="proof-mini-sub">Student enters class code</span></span>
           </article>
-          <article class="proof-mini-card">
+          <article class="proof-mini-card" data-animate-in>
             <span class="proof-mini-icon" aria-hidden="true">🎯</span>
-            <span class="proof-mini-text">2) Play Missions</span>
+            <span class="proof-mini-text">2) Play Missions <span class="proof-mini-sub">Grammar puzzle tiles + instant feedback</span></span>
           </article>
-          <article class="proof-mini-card">
+          <article class="proof-mini-card" data-animate-in>
             <span class="proof-mini-icon" aria-hidden="true">🏆</span>
-            <span class="proof-mini-text">3) Level Up + Leaderboard</span>
+            <span class="proof-mini-text">3) Level Up <span class="proof-mini-sub">Leaderboard ranks with agent avatars</span></span>
           </article>
         </div>
       </div>
@@ -1333,8 +1722,8 @@ Technical safety:
 
     <section class="section section-muted section-mission-map">
       <div class="container">
-        <p class="section-label">Mission map</p>
-        <h2>Pick a Mission (students love these)</h2>
+        <p class="section-label">Mission preview</p>
+        <h2>Choose your mission tiles</h2>
         <div class="mission-map-grid">
           <article class="mission-map-tile cinematic-card">
             <div class="mission-map-head">
@@ -1343,8 +1732,9 @@ Technical safety:
             </div>
             <p class="mission-map-subtitle">Present Tenses</p>
             <div class="mission-map-meta">
-              <span>10-12 min</span>
-              <span>Rookie</span>
+              <span>difficulty: rookie</span>
+              <span>time: 10-12 min</span>
+              <span>games: 3+</span>
             </div>
             <a href="/missions/speak-in-the-moment/" class="btn btn-primary mission-map-start">Start</a>
           </article>
@@ -1355,8 +1745,9 @@ Technical safety:
             </div>
             <p class="mission-map-subtitle">Questions</p>
             <div class="mission-map-meta">
-              <span>10-12 min</span>
-              <span>Agent</span>
+              <span>difficulty: agent</span>
+              <span>time: 10-12 min</span>
+              <span>games: 3+</span>
             </div>
             <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
           </article>
@@ -1367,8 +1758,9 @@ Technical safety:
             </div>
             <p class="mission-map-subtitle">Past Tenses</p>
             <div class="mission-map-meta">
-              <span>10-12 min</span>
-              <span>Rookie</span>
+              <span>difficulty: rookie</span>
+              <span>time: 10-12 min</span>
+              <span>games: 3+</span>
             </div>
             <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
           </article>
@@ -1379,8 +1771,9 @@ Technical safety:
             </div>
             <p class="mission-map-subtitle">Future Tenses</p>
             <div class="mission-map-meta">
-              <span>10-12 min</span>
-              <span>Agent</span>
+              <span>difficulty: agent</span>
+              <span>time: 10-12 min</span>
+              <span>games: 3+</span>
             </div>
             <a href="/missions/" class="btn btn-primary mission-map-start">Start</a>
           </article>
@@ -1452,6 +1845,22 @@ Technical safety:
           <li>Visible progress</li>
           <li>Replay for mastery</li>
         </ul>
+        <div class="agent-tip">
+          <span class="avatar" aria-hidden="true">🕵️</span>
+          <p><strong>Agent Tip:</strong> Finish missions under 5 minutes for streak bonuses.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reaction-strip">
+      <div class="container">
+        <p class="section-label">Student voice</p>
+        <h2>What students say after missions</h2>
+        <div class="reaction-grid">
+          <article class="reaction-bubble">"This is actually fun."</article>
+          <article class="reaction-bubble">"I beat everyone today."</article>
+          <article class="reaction-bubble">"Can we play another mission?"</article>
+        </div>
       </div>
     </section>
 
@@ -1569,8 +1978,43 @@ Technical safety:
       var demoBtn = document.getElementById('liveMissionMockBtn');
       var demoResult = document.getElementById('liveMissionMockResult');
       var demoHint = document.getElementById('liveMissionMockHint');
+      var demoExampleLine = document.getElementById('demoExampleLine');
+      var demoProgressFill = document.getElementById('demoProgressFill');
+      var demoProgressLabel = document.getElementById('demoProgressLabel');
+      var tickerNode = document.getElementById('activityTickerMessage');
       var journeyPath = document.getElementById('journeyPath');
+      var animateInNodes = Array.prototype.slice.call(document.querySelectorAll('[data-animate-in]'));
       var liveCounterNodes = Array.prototype.slice.call(document.querySelectorAll('[data-live-counter]'));
+      var interactiveButtons = Array.prototype.slice.call(document.querySelectorAll('.btn, .mini-option'));
+      var lowMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function playSound(name) {
+        var api = window.GSSound;
+        if (!api || typeof api.play !== 'function') return;
+        if (typeof api.initSound === 'function') api.initSound();
+        api.play(name);
+      }
+
+      function wireButtonFx() {
+        interactiveButtons.forEach(function(btn){
+          btn.addEventListener('mouseenter', function(){
+            playSound('hover');
+          });
+          btn.addEventListener('click', function(event){
+            playSound('click');
+            if (!btn.classList.contains('btn')) return;
+            var rect = btn.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            btn.style.setProperty('--ripple-x', x + 'px');
+            btn.style.setProperty('--ripple-y', y + 'px');
+            btn.classList.remove('is-ripple');
+            void btn.offsetWidth;
+            btn.classList.add('is-ripple');
+            window.setTimeout(function(){ btn.classList.remove('is-ripple'); }, 500);
+          });
+        });
+      }
 
       if (demoResult) demoResult.classList.remove('show');
 
@@ -1586,12 +2030,66 @@ Technical safety:
             demoBtn.disabled = false;
             demoBtn.textContent = 'Submit';
             if (demoHint) demoHint.textContent = 'Instant correction is what keeps missions engaging.';
+            playSound('correct');
           }, 480);
         });
       }
 
+      if (demoExampleLine && !lowMotion) {
+        var sampleLines = [
+          'She <span class="hl">is studying</span>.',
+          'They <span class="hl">were running</span>.',
+          '<span class="hl">Did</span> you finish the mission?'
+        ];
+        var sampleIndex = 0;
+        window.setInterval(function(){
+          sampleIndex = (sampleIndex + 1) % sampleLines.length;
+          demoExampleLine.innerHTML = sampleLines[sampleIndex];
+        }, 4000);
+      }
+
+      if (demoProgressFill && demoProgressLabel && !lowMotion) {
+        var progressValue = 6;
+        function renderProgress() {
+          var pct = Math.round((progressValue / 15) * 100);
+          demoProgressFill.style.width = pct + '%';
+          demoProgressLabel.textContent = 'Progress simulation: ' + progressValue + '/15';
+        }
+        renderProgress();
+        window.setInterval(function(){
+          progressValue += 1;
+          if (progressValue > 15) {
+            progressValue = 6;
+            playSound('missioncomplete');
+          }
+          renderProgress();
+        }, 1500);
+      }
+
+      if (tickerNode) {
+        var tickerMessages = [
+          'Agent Mia completed Past Tense Mission.',
+          'Agent Leo reached Level 4.',
+          'Agent Sam joined a class battle.',
+          'Agent Alex improved accuracy.'
+        ];
+        var tickerIndex = 0;
+        if (!lowMotion) {
+          window.setInterval(function(){
+            tickerNode.classList.remove('is-visible');
+            tickerNode.classList.add('is-changing');
+            window.setTimeout(function(){
+              tickerIndex = (tickerIndex + 1) % tickerMessages.length;
+              tickerNode.textContent = tickerMessages[tickerIndex];
+              tickerNode.classList.remove('is-changing');
+              tickerNode.classList.add('is-visible');
+              playSound('leaderboard');
+            }, 250);
+          }, 4000);
+        }
+      }
+
       if (liveCounterNodes.length) {
-        var lowMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var state = { agents: 86, rounds: 214, accuracy: 78 };
         function renderCounters() {
           liveCounterNodes.forEach(function(node) {
@@ -1614,24 +2112,39 @@ Technical safety:
         }
       }
 
-      if (journeyPath) {
+      function revealOnScroll() {
         if (!('IntersectionObserver' in window)) {
-          journeyPath.classList.add('revealed');
-        } else {
+          if (journeyPath) journeyPath.classList.add('revealed');
+          animateInNodes.forEach(function(node){ node.classList.add('is-visible'); });
+          return;
+        }
+        if (journeyPath) {
           var revealOnce = false;
-          var observer = new IntersectionObserver(function(entries){
+          var journeyObserver = new IntersectionObserver(function(entries){
             entries.forEach(function(entry){
               if (revealOnce) return;
               if (entry.isIntersecting) {
                 revealOnce = true;
                 journeyPath.classList.add('revealed');
-                observer.disconnect();
+                journeyObserver.disconnect();
               }
             });
           }, { threshold: 0.28 });
-          observer.observe(journeyPath);
+          journeyObserver.observe(journeyPath);
         }
+
+        var animatedObserver = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            animatedObserver.unobserve(entry.target);
+          });
+        }, { threshold: 0.22 });
+        animateInNodes.forEach(function(node){ animatedObserver.observe(node); });
       }
+
+      wireButtonFx();
+      revealOnScroll();
     })();
 
     (function(){
