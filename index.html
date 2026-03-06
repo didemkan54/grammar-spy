@@ -245,7 +245,7 @@ Technical safety:
       position:relative;
       display:grid;
       gap:24px;
-      align-items:center;
+      align-items:start;
       z-index:2;
       min-width:0;
     }
@@ -461,7 +461,10 @@ Technical safety:
       border:1px solid rgba(255,255,255,.12);
       border-radius:var(--radius);
       box-shadow:0 20px 50px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
-      padding:16px;
+      padding:18px 18px 16px;
+      width:100%;
+      max-width:560px;
+      margin-left:auto;
       min-width:0;
     }
     .hero-preview-panel::after{
@@ -510,7 +513,7 @@ Technical safety:
       letter-spacing:.03em;
     }
     .demo-play-btn{
-      margin-top:12px;
+      margin-top:2px;
       width:100%;
       background:#effbff;
       color:#134346;
@@ -524,6 +527,8 @@ Technical safety:
       padding:12px;
       background:rgba(255,255,255,.05);
       animation:heroCardBob 4.6s ease-in-out infinite;
+      display:grid;
+      gap:10px;
     }
     @keyframes heroCardBob{
       0%,100%{transform:translateY(0)}
@@ -536,13 +541,13 @@ Technical safety:
       line-height:1.2;
     }
     .hero-mission-card p{
-      margin:8px 0 0;
+      margin:0;
       color:#dcf2f6;
       font-size:14px;
       line-height:1.45;
     }
     .mini-options{
-      margin-top:10px;
+      margin-top:0;
       display:grid;
       gap:7px;
     }
@@ -565,7 +570,7 @@ Technical safety:
       background:rgba(106,211,189,.18);
     }
     .demo-example{
-      margin:12px 0 0;
+      margin:0;
       border:1px solid rgba(255,255,255,.2);
       border-radius:10px;
       padding:10px;
@@ -581,12 +586,7 @@ Technical safety:
       color:#8af0ce;
       font-weight:800;
     }
-    .floating-agents{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      z-index:1;
-    }
+    .floating-agents{display:none}
     .floating-agent{
       position:absolute;
       width:44px;
