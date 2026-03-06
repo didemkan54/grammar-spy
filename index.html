@@ -382,6 +382,18 @@ Technical safety:
       background:rgba(255,255,255,.11);
       border:1px solid rgba(255,255,255,.28);
       box-shadow:0 8px 16px rgba(5,18,31,.18);
+      text-decoration:none;
+      cursor:pointer;
+      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .hero-join-mascot:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.16);
+      box-shadow:0 11px 22px rgba(5,18,31,.24);
+    }
+    .hero-join-mascot:focus-visible{
+      outline:3px solid rgba(255,255,255,.45);
+      outline-offset:2px;
     }
     .hero-join-mascot svg{
       width:34px;
@@ -1238,7 +1250,7 @@ Technical safety:
             <span class="live-badge">Fast rounds: 5 min</span>
             <span class="live-badge">Instant rank shifts</span>
           </div>
-          <div class="hero-join-mascot" aria-hidden="true">
+          <a href="/join/" class="hero-join-mascot" data-track-event="homepage_join_class_click" aria-label="Open student join lobby">
             <svg viewBox="0 0 52 52">
               <circle cx="26" cy="26" r="24" fill="#8ecfd7"></circle>
               <ellipse cx="26" cy="16" rx="10" ry="5" fill="#1f5f63"></ellipse>
@@ -1250,7 +1262,7 @@ Technical safety:
               <ellipse cx="26" cy="38" rx="12" ry="5" fill="#1f5f63" opacity="0.72"></ellipse>
             </svg>
             <span>Agent Lobby Live</span>
-          </div>
+          </a>
         </div>
         <aside class="hero-preview-panel cinematic-card" id="mission-preview" aria-label="Mission Preview">
           <p class="preview-kicker">Mission Demo: Speak in the Moment</p>
