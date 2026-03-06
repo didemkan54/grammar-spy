@@ -936,7 +936,7 @@ Technical safety:
       border-radius:18px;
       background:#fff;
       padding:18px;
-      max-width:780px;
+      width:100%;
       box-shadow:0 14px 34px rgba(17,40,63,.12);
     }
     .mock-play-title{
@@ -955,14 +955,14 @@ Technical safety:
     .mock-play p{margin:8px 0 0;color:#4b5b73}
     .mock-play-form{
       margin-top:12px;
-      display:flex;
-      flex-wrap:wrap;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
       gap:10px;
       align-items:center;
     }
     .mock-play-form input{
-      flex:1;
-      min-width:250px;
+      min-width:0;
+      width:100%;
       padding:11px 12px;
       border:1px solid #cfd8e4;
       border-radius:10px;
@@ -980,6 +980,7 @@ Technical safety:
       background:var(--teal);
       color:#fff;
       border-color:#184f52;
+      white-space:nowrap;
     }
     .mock-play-result{
       display:none;
@@ -1506,6 +1507,8 @@ Technical safety:
       .hero-ctas{align-items:stretch}
       .hero-ctas .btn{width:100%}
       .hero-preview-panel{padding:14px}
+      .mock-play-form{grid-template-columns:1fr}
+      .mock-play .btn-primary{width:100%}
       .mission-map-grid{grid-template-columns:1fr}
       .proof-strip{grid-template-columns:1fr}
       .battle-chip-row{grid-template-columns:1fr}
