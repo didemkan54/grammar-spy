@@ -35,7 +35,6 @@
     '<span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
     '<a class="gs-pill" href="/index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
     '<a class="gs-pill" href="/join/" style="' + navLinkStyle + '">Student Join</a>' +
-    '<a class="gs-pill" href="/leaderboard/" style="' + navLinkStyle + '">Leaderboard</a>' +
     '<details id="gsMissionMenu" style="position:relative">' +
     '<summary class="gs-pill" style="' + menuSummaryStyle + '"><span data-i18n="nav_missions">Missions</span><span aria-hidden="true" style="font-size:9px;line-height:1;opacity:.78">▼</span></summary>' +
     '<span style="' + menuPanelStyle + '">' +
@@ -43,16 +42,17 @@
     '<a href="/teacher-mode.html?play_format=whole_class" style="' + dropdownLinkStyle + '">Whole Class</a>' +
     '<a href="/teacher-mode.html?play_format=teams" style="' + dropdownLinkStyle + '">Teams Mode</a>' +
     '<a href="/missions/" style="' + dropdownLinkStyle + '">Missions</a>' +
-    '<a href="/progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
-    '<a href="/clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
+    '<a href="/leaderboard/" style="' + dropdownLinkStyle + '">Leaderboard</a>' +
     '</span>' +
     '</details>' +
     '<a class="gs-pill" href="/teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
-    '<a class="gs-pill" href="/pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
-    '<a class="gs-pill" href="/free/" style="' + navLinkStyle + '">Free Resources</a>' +
-    '<details id="gsResourcesMenu" style="position:relative">' +
-    '<summary class="gs-pill" style="' + menuSummaryStyle + '">Resources &#9662;</summary>' +
+    '<details id="gsMoreMenu" style="position:relative">' +
+    '<summary class="gs-pill" style="' + menuSummaryStyle + '">More &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
+    '<a href="/pricing.html" data-i18n="nav_pricing" style="' + dropdownLinkStyle + '">Pricing</a>' +
+    '<a href="/free/" style="' + dropdownLinkStyle + '">Free Resources</a>' +
+    '<a href="/progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
+    '<a href="/clues.html" style="' + dropdownLinkStyle + '">CLUES</a>' +
     '<a href="/community.html" style="' + dropdownLinkStyle + '">Community</a>' +
     '<a href="/insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
     '</span>' +
