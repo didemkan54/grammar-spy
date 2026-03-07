@@ -8,15 +8,16 @@
   var missionTypeRequested = (params.get("mission_type") || "single_rule").toLowerCase();
   if (missionTypeRequested !== "mixed_review") missionTypeRequested = "single_rule";
   var requestedRuleId = String(params.get("grammar_rule_id") || "").trim().toLowerCase();
+  var detectiveFilterEnabled = (params.get("detective_filter") || "off").toLowerCase() === "on";
   var FIXED_MISSION_ITEM_COUNT = 15;
   var count = FIXED_MISSION_ITEM_COUNT;
   var playFormat = params.get("play_format") || "individuals";
 
   var games = {
     "error-smash": {
-      title: "Error Detector",
-      subtitle: "Scan the sentence and click the word that breaks the grammar rule.",
-      howTo: "A sentence with an error is displayed. Read carefully, then click on the exact word or phrase that contains the mistake. The correct version appears after you click."
+      title: "Grammar Detective",
+      subtitle: "Find the incorrect word fast, fix it, and earn XP.",
+      howTo: "Each sentence has one grammar mistake. Click the incorrect word, review the correction, and continue to the next case."
     },
     "past-sort": {
       title: "Timeline Sort",
@@ -81,7 +82,7 @@
   };
 
   var gameUx = {
-    "error-smash": { accent: "#b04444", columns: 1, modeLabel: "Click the Error", sceneLabel: "Grammar Card", startText: "Start Detecting", replayText: "Play Again", endText: "End Game", playMode: "detect" },
+    "error-smash": { accent: "#b04444", columns: 1, modeLabel: "Grammar Detective", sceneLabel: "Case File", startText: "Start Mission", replayText: "Play Again", endText: "End Mission", playMode: "detective" },
     "past-sort": { accent: "#2f6fd8", columns: 1, modeLabel: "Sort the Timeline", sceneLabel: "Timeline Card", startText: "Start Sorting", replayText: "Sort Again", endText: "End Sort", playMode: "classify" },
     "narrative-builder": { accent: "#7b4ad9", columns: 1, modeLabel: "Build the Sentence", sceneLabel: "Story Step", startText: "Start Building", replayText: "Build Again", endText: "End Build", playMode: "forge" },
     "dialogue-repair": { accent: "#0f8b7f", columns: 1, modeLabel: "Continue the Conversation", sceneLabel: "Dialogue", startText: "Start Chat", replayText: "Play Again", endText: "End Chat", playMode: "dialogue" },
@@ -179,6 +180,165 @@
       ],
       answer: 0,
       explain: "After did, use the base verb."
+    }
+  ];
+
+  var grammarDetectiveQuestionBank = [
+    {
+      id: "gd_rookie_01",
+      scene: "Attendance Desk",
+      prompt: "Find the one incorrect word.",
+      sentenceParts: ["She", "go", "to", "school", "every", "day."],
+      incorrectIndex: 1,
+      correction: "goes",
+      correctedSentence: "She goes to school every day.",
+      explanation: "Use verb + s with he/she/it in simple present.",
+      difficulty: "rookie",
+      xpReward: 20,
+      grammar_rule_id: "simple_present_third_person"
+    },
+    {
+      id: "gd_rookie_02",
+      scene: "Hallway Check",
+      prompt: "Tap the word that breaks agreement.",
+      sentenceParts: ["They", "was", "late", "to", "class", "yesterday."],
+      incorrectIndex: 1,
+      correction: "were",
+      correctedSentence: "They were late to class yesterday.",
+      explanation: "Plural subjects pair with were in past tense.",
+      difficulty: "rookie",
+      xpReward: 20,
+      grammar_rule_id: "be_verb_agreement"
+    },
+    {
+      id: "gd_rookie_03",
+      scene: "Notebook Audit",
+      prompt: "Identify the incorrect helper verb.",
+      sentenceParts: ["He", "don't", "like", "loud", "music."],
+      incorrectIndex: 1,
+      correction: "doesn't",
+      correctedSentence: "He doesn't like loud music.",
+      explanation: "Use doesn't with he/she/it in simple present negative.",
+      difficulty: "rookie",
+      xpReward: 20,
+      grammar_rule_id: "auxiliary_verbs_present"
+    },
+    {
+      id: "gd_rookie_04",
+      scene: "Library Log",
+      prompt: "Find the wrong verb form.",
+      sentenceParts: ["The", "students", "studies", "in", "the", "library", "after", "lunch."],
+      incorrectIndex: 2,
+      correction: "study",
+      correctedSentence: "The students study in the library after lunch.",
+      explanation: "Plural subjects use the base form in simple present.",
+      difficulty: "rookie",
+      xpReward: 20,
+      grammar_rule_id: "subject_verb_agreement"
+    },
+    {
+      id: "gd_field_01",
+      scene: "Lab Debrief",
+      prompt: "Find the extra verb in this sentence.",
+      sentenceParts: ["We", "are", "went", "to", "the", "lab", "last", "Friday."],
+      incorrectIndex: 1,
+      correction: "went",
+      correctedSentence: "We went to the lab last Friday.",
+      explanation: "Use one past-tense main verb, not a helper plus past form.",
+      difficulty: "field",
+      xpReward: 30,
+      grammar_rule_id: "simple_past"
+    },
+    {
+      id: "gd_field_02",
+      scene: "Question Patrol",
+      prompt: "Which word is wrong in this question?",
+      sentenceParts: ["Did", "she", "brought", "her", "notebook?"],
+      incorrectIndex: 2,
+      correction: "bring",
+      correctedSentence: "Did she bring her notebook?",
+      explanation: "After did, use the base verb.",
+      difficulty: "field",
+      xpReward: 30,
+      grammar_rule_id: "auxiliary_did_base_verb"
+    },
+    {
+      id: "gd_field_03",
+      scene: "Locker Report",
+      prompt: "Find the agreement error.",
+      sentenceParts: ["My", "friend", "have", "a", "new", "locker."],
+      incorrectIndex: 2,
+      correction: "has",
+      correctedSentence: "My friend has a new locker.",
+      explanation: "Singular third-person subjects use has.",
+      difficulty: "field",
+      xpReward: 30,
+      grammar_rule_id: "subject_verb_agreement"
+    },
+    {
+      id: "gd_field_04",
+      scene: "Morning Routine",
+      prompt: "Identify the incorrect token.",
+      sentenceParts: ["I", "am", "usually", "walk", "to", "school."],
+      incorrectIndex: 1,
+      correction: "walk",
+      correctedSentence: "I usually walk to school.",
+      explanation: "Simple present routines do not use be + base verb.",
+      difficulty: "field",
+      xpReward: 30,
+      grammar_rule_id: "simple_present_routines"
+    },
+    {
+      id: "gd_senior_01",
+      scene: "Late-Night Briefing",
+      prompt: "Find the tense consistency mistake.",
+      sentenceParts: ["If", "she", "was", "tired,", "she", "still", "finishes", "the", "homework", "last", "night."],
+      incorrectIndex: 6,
+      correction: "finished",
+      correctedSentence: "If she was tired, she still finished the homework last night.",
+      explanation: "The time phrase last night needs past tense in both clauses.",
+      difficulty: "senior",
+      xpReward: 40,
+      grammar_rule_id: "tense_consistency"
+    },
+    {
+      id: "gd_senior_02",
+      scene: "Breaking News Wire",
+      prompt: "Spot the be-verb agreement error.",
+      sentenceParts: ["The", "news", "are", "surprising", "everyone", "this", "morning."],
+      incorrectIndex: 2,
+      correction: "is",
+      correctedSentence: "The news is surprising everyone this morning.",
+      explanation: "News is treated as singular in standard English.",
+      difficulty: "senior",
+      xpReward: 40,
+      grammar_rule_id: "be_verb_agreement"
+    },
+    {
+      id: "gd_senior_03",
+      scene: "Arrival Timeline",
+      prompt: "Find the incorrect verb form.",
+      sentenceParts: ["By", "the", "time", "we", "arrived,", "the", "movie", "already", "start."],
+      incorrectIndex: 8,
+      correction: "started",
+      correctedSentence: "By the time we arrived, the movie already started.",
+      explanation: "A completed action in the past needs past tense.",
+      difficulty: "senior",
+      xpReward: 40,
+      grammar_rule_id: "simple_past"
+    },
+    {
+      id: "gd_senior_04",
+      scene: "Exam Brief",
+      prompt: "Find the subject-verb mismatch.",
+      sentenceParts: ["Neither", "the", "teacher", "nor", "the", "students", "was", "ready", "for", "the", "test."],
+      incorrectIndex: 6,
+      correction: "were",
+      correctedSentence: "Neither the teacher nor the students were ready for the test.",
+      explanation: "With neither...nor, the verb agrees with the nearest subject (students).",
+      difficulty: "senior",
+      xpReward: 40,
+      grammar_rule_id: "subject_verb_agreement"
     }
   ];
 
@@ -4829,14 +4989,21 @@
     var next = {
       scene: round.scene,
       prompt: round.prompt,
-      options: round.options.slice(),
-      answer: round.answer,
-      explain: round.explain
+      explain: (typeof round.explain === "string" ? round.explain : round.explanation)
     };
+    if (Array.isArray(round.options)) next.options = round.options.slice();
+    if (typeof round.answer === "number") next.answer = round.answer;
+    if (round.id) next.id = round.id;
     if (round.grammar_rule_id) next.grammar_rule_id = round.grammar_rule_id;
     if (round.item_id) next.item_id = round.item_id;
     if (round.eldPrompt) next.eldPrompt = round.eldPrompt;
     if (round.micro_tip) next.micro_tip = round.micro_tip;
+    if (Array.isArray(round.sentenceParts)) next.sentenceParts = round.sentenceParts.slice();
+    if (typeof round.incorrectIndex === "number") next.incorrectIndex = round.incorrectIndex;
+    if (typeof round.correction === "string") next.correction = round.correction;
+    if (typeof round.correctedSentence === "string") next.correctedSentence = round.correctedSentence;
+    if (typeof round.difficulty === "string") next.difficulty = round.difficulty;
+    if (typeof round.xpReward === "number") next.xpReward = round.xpReward;
     return next;
   }
 
@@ -4855,6 +5022,68 @@
     return list.map(cloneRound);
   }
 
+  function sentenceFromParts(parts) {
+    return String((parts || []).join(" "))
+      .replace(/\s+([.,!?;:])/g, "$1")
+      .replace(/\s+(['’])/g, "$1");
+  }
+
+  function normalizeDetectiveQuestion(round, index) {
+    var safeRound = round || {};
+    var sentenceParts = Array.isArray(safeRound.sentenceParts) ? safeRound.sentenceParts.slice() : [];
+    var incorrectIndex = typeof safeRound.incorrectIndex === "number" ? safeRound.incorrectIndex : -1;
+    if (!sentenceParts.length && Array.isArray(safeRound.options) && typeof safeRound.answer === "number") {
+      var wrongIndex = pickWrongIndex(safeRound, safeRound.answer);
+      var wrongLine = safeRound.options[wrongIndex] || "";
+      var rightLine = safeRound.options[safeRound.answer] || wrongLine;
+      var wrongWords = wrongLine.split(/\s+/);
+      var rightWords = rightLine.split(/\s+/);
+      sentenceParts = wrongWords.slice();
+      for (var wi = 0; wi < wrongWords.length; wi++) {
+        if (wi >= rightWords.length || wrongWords[wi] !== rightWords[wi]) {
+          incorrectIndex = wi;
+          break;
+        }
+      }
+      if (incorrectIndex < 0) incorrectIndex = 0;
+      safeRound.correctedSentence = rightLine;
+      safeRound.correction = rightWords[incorrectIndex] || "";
+    }
+    if (!sentenceParts.length) sentenceParts = ["No", "question", "data", "available."];
+    if (incorrectIndex < 0 || incorrectIndex >= sentenceParts.length) incorrectIndex = 0;
+    var correction = typeof safeRound.correction === "string" ? safeRound.correction : "";
+    var correctedSentence = typeof safeRound.correctedSentence === "string" && safeRound.correctedSentence.trim()
+      ? safeRound.correctedSentence
+      : sentenceFromParts(sentenceParts.map(function (token, idx) {
+          if (idx !== incorrectIndex || !correction) return token;
+          return correction;
+        }));
+    return {
+      id: safeRound.id || ("detective_" + String(index + 1)),
+      scene: safeRound.scene || ("Case " + String(index + 1)),
+      prompt: safeRound.prompt || "Find the one incorrect word.",
+      sentenceParts: sentenceParts,
+      incorrectIndex: incorrectIndex,
+      correction: correction || sentenceParts[incorrectIndex],
+      correctedSentence: correctedSentence,
+      explanation: safeRound.explanation || safeRound.explain || "Check subject-verb agreement and tense consistency.",
+      difficulty: (safeRound.difficulty || "field"),
+      xpReward: Math.max(5, Number(safeRound.xpReward) || 20),
+      grammar_rule_id: safeRound.grammar_rule_id || "grammar_detective_core",
+      item_id: safeRound.item_id
+    };
+  }
+
+  function selectDetectiveQuestionPool(source, difficultyKey, enableDifficultyFilter) {
+    var list = Array.isArray(source) ? source : [];
+    if (!enableDifficultyFilter) return list;
+    var normalizedDifficulty = String(difficultyKey || "").toLowerCase();
+    var filtered = list.filter(function (entry) {
+      return String((entry && entry.difficulty) || "").toLowerCase() === normalizedDifficulty;
+    });
+    return filtered.length ? filtered : list;
+  }
+
   function resolveRoundBank(key, packId, profile) {
     if (missionTypeRequested === "mixed_review") {
       var mixed = resolveMixedReviewBank(key, packId, profile);
@@ -4865,6 +5094,9 @@
     }
 
     resolvedMissionType = "single_rule";
+    if (key === "error-smash") {
+      return annotateRoundsWithRule(grammarDetectiveQuestionBank, profile);
+    }
     if (key === "past-sort") {
       return filterRoundsByRule(annotateRoundsWithRule(timelineSortRounds, profile), profile && profile.grammar_rule_id, !!(profile && profile.strictSingleRule));
     }
@@ -5041,6 +5273,31 @@
       + ".detect-word.clicked{background:#ffeaa7;border-bottom:2px solid #f39c12;}"
       + ".detect-word.error{background:#ffcccc;color:#c0392b;text-decoration:line-through;}"
       + ".detect-word.ok{background:#d4edda;color:#155724;}"
+      + ".detective-wrap{display:grid;gap:12px;}"
+      + ".detective-status{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}"
+      + ".detective-q-label{margin:0;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568;}"
+      + ".detective-difficulty{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;border:1px solid #d9dee6;background:#fff;font:800 10px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#24334c;}"
+      + ".detective-difficulty.rookie{border-color:#9dd9c9;color:#176a49;background:#eef9f4;}"
+      + ".detective-difficulty.field{border-color:#9fb8ec;color:#1f4a90;background:#f1f5ff;}"
+      + ".detective-difficulty.senior{border-color:#f2cf8c;color:#7a540a;background:#fff9eb;}"
+      + ".detective-progress{height:8px;border-radius:999px;background:#e4e9f2;overflow:hidden;}"
+      + ".detective-progress-fill{height:100%;width:0;background:linear-gradient(90deg," + accent + ",#c9a227);border-radius:999px;transition:width .25s ease;}"
+      + ".detective-sentence{display:flex;flex-wrap:wrap;gap:8px;padding:14px;border:1px solid #d9dee6;border-radius:12px;background:#fff;}"
+      + ".detective-word{padding:8px 11px;border-radius:10px;border:1px solid transparent;cursor:pointer;font-size:16px;line-height:1.2;color:#16223a;background:#f6f9ff;transition:transform .15s,box-shadow .15s,background .15s,border-color .15s;user-select:none;-webkit-user-select:none;min-height:40px;display:inline-flex;align-items:center;}"
+      + ".detective-word:hover{transform:translateY(-1px);background:#ebf2ff;border-color:#c4d4ee;box-shadow:0 3px 9px rgba(11,16,32,.08);}"
+      + ".detective-word:focus-visible{outline:2px solid " + accent + ";outline-offset:1px;}"
+      + ".detective-word.wrong{background:#fff0f0;border-color:#d98a8a;color:#8b2f2f;}"
+      + ".detective-word.wrong.shake{animation:detectiveShake .22s linear 1;}"
+      + ".detective-word.correct-target{background:#eaf8ef;border-color:#4fb28c;color:#176a49;box-shadow:0 0 0 3px rgba(31,143,99,.15);}"
+      + ".detective-word.hint{border-color:#c9a227;background:#fff8de;}"
+      + ".detective-word.locked{cursor:default;pointer-events:none;}"
+      + ".detective-feedback{border:1px solid #d9dee6;border-radius:12px;background:#f9fbff;padding:10px 12px;display:grid;gap:6px;}"
+      + ".detective-feedback p{margin:0;font-size:14px;line-height:1.5;color:#24334c;}"
+      + ".detective-feedback b{color:#0b1020;}"
+      + ".detective-feedback .xp-pop{font:800 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#176a49;animation:xpPop .32s ease;}"
+      + "@keyframes detectiveShake{0%{transform:translateX(0)}25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}"
+      + "@keyframes xpPop{0%{opacity:0;transform:translateY(4px)}100%{opacity:1;transform:translateY(0)}}"
+      + "@media(max-width:720px){.detective-word{font-size:15px;padding:9px 10px;min-height:42px}}"
       + ".order-wrap{display:grid;gap:14px;}"
       + ".order-list{display:grid;gap:8px;}"
       + ".order-item{padding:12px 16px;border:1px solid #d9dee6;border-radius:10px;background:#fff;font-size:14px;line-height:1.45;color:#16223a;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s,border-color .15s;}"
@@ -5093,14 +5350,18 @@
     if (hud && !document.getElementById("hudScore")) {
       hud.style.gridTemplateColumns = "repeat(7,minmax(0,1fr))";
       var extra = [
-        { label: "Score", id: "hudScore", value: "0" },
+        { label: "Score", labelId: "hudScoreLabel", id: "hudScore", value: "0" },
         { label: "Combo", id: "hudCombo", value: "1x" },
         { label: "Shot", id: "hudShot", value: "--" }
       ];
       extra.forEach(function (item) {
         var chip = document.createElement("div");
         chip.className = "chip";
-        chip.innerHTML = "<b>" + item.label + "</b><span id=\"" + item.id + "\">" + item.value + "</span>";
+        if (item.labelId) {
+          chip.innerHTML = "<b id=\"" + item.labelId + "\">" + item.label + "</b><span id=\"" + item.id + "\">" + item.value + "</span>";
+        } else {
+          chip.innerHTML = "<b>" + item.label + "</b><span id=\"" + item.id + "\">" + item.value + "</span>";
+        }
         hud.appendChild(chip);
       });
     }
@@ -5134,6 +5395,15 @@
       tryAgainBtn.textContent = "Try Again";
       row.insertBefore(tryAgainBtn, row.firstChild);
     }
+    if (row && !document.getElementById("btnSkip")) {
+      var skipBtn = document.createElement("button");
+      skipBtn.type = "button";
+      skipBtn.className = "btn";
+      skipBtn.id = "btnSkip";
+      skipBtn.textContent = "Skip Question";
+      skipBtn.style.display = "none";
+      row.insertBefore(skipBtn, row.firstChild);
+    }
     if (row && !document.getElementById("btnNext")) {
       var nextBtn = document.createElement("button");
       nextBtn.type = "button";
@@ -5145,10 +5415,12 @@
     }
     if (row) {
       var next = document.getElementById("btnNext");
+      var skip = document.getElementById("btnSkip");
       var retry = document.getElementById("btnTryAgain");
       var hint = document.getElementById("btnHint");
       if (next) row.insertBefore(next, row.firstChild);
-      if (retry) row.insertBefore(retry, next ? next.nextSibling : row.firstChild);
+      if (skip) row.insertBefore(skip, next ? next.nextSibling : row.firstChild);
+      if (retry) row.insertBefore(retry, skip ? skip.nextSibling : (next ? next.nextSibling : row.firstChild));
       if (hint) row.insertBefore(hint, retry ? retry.nextSibling : row.firstChild);
     }
   }
@@ -5312,7 +5584,7 @@
     if (mode === "eliminate") return "Tip: remove weak options one by one, then confirm your keeper.";
     if (mode === "sweep") return "Tip: tag each card quickly, then double-check before submit.";
     if (mode === "forge") return "Tip: ignore distractors and build around the main verb phrase.";
-    if (mode === "detect") return "Tip: one word causes the break - find the exact mismatch.";
+    if (mode === "detect" || mode === "detective") return "Tip: one word causes the break - find the exact mismatch.";
     if (mode === "order") return "Tip: anchor the opening line first, then arrange the rest.";
     return "Tip: read for meaning first, then grammar precision.";
   }
@@ -5358,7 +5630,7 @@
       "Choose the report line that preserves the original meaning.",
       "Select the most accurate grammar report."
     ], roundIndex, "Pick the accurate report.");
-    if (mode === "smash" || mode === "detect") return pickRoundVariant([
+    if (mode === "smash" || mode === "detect" || mode === "detective") return pickRoundVariant([
       "Find the word that causes the grammar error.",
       "Identify the exact word that needs correction.",
       "Tap the one word that breaks the sentence."
@@ -5408,7 +5680,7 @@
     if (mode === "eliminate") return "Remove weak lines and keep only the best line.";
     if (mode === "sweep") return "Review each evidence card. Mark correct grammar as VERIFIED and errors as FLAGGED, then submit.";
     if (mode === "forge") return "The correct sentence is split into word tiles with distractors mixed in. Click tiles in order to build the sentence, then submit.";
-    if (mode === "detect") return "A wrong sentence is displayed word by word. Click the word that contains the error to reveal the correct version.";
+    if (mode === "detect" || mode === "detective") return "A wrong sentence is displayed word by word. Click the word that contains the error, then review the correction.";
     if (mode === "order") return "Four sentences are shuffled. Click to select and move them into the best order, then submit.";
     return fallback || "Choose the strongest line.";
   }
@@ -5431,6 +5703,11 @@
       "Coach tip: look for tense or agreement mismatch.",
       "Coach tip: compare subject and verb first."
     ], roundIndex, "Coach tip: find the exact mismatch.");
+    if (mode === "detective") return pickRoundVariant([
+      "Agent tip: scan subject + verb first.",
+      "Agent tip: if time is past, check every verb tense.",
+      "Agent tip: one wrong token blocks the whole sentence."
+    ], roundIndex, "Agent tip: isolate the mismatch, then confirm the correction.");
     if (mode === "dialogue") return pickRoundVariant([
       "Coach tip: read both chat turns before picking a reply.",
       "Coach tip: keep the message meaning, then fix the grammar.",
@@ -5572,6 +5849,10 @@
 
   function buildRounds(bank, desiredCount) {
     var source = (bank && bank.length) ? bank : fallbackRounds;
+    if (activeMode === "detective") {
+      source = selectDetectiveQuestionPool(source, difficulty, detectiveFilterEnabled)
+        .map(function (entry, i) { return normalizeDetectiveQuestion(entry, i); });
+    }
     var target = FIXED_MISSION_ITEM_COUNT;
     var pool = shuffle(cloneRounds(source));
     while (pool.length < target) {
@@ -5624,8 +5905,13 @@
   var packTitle = (window.GSPacks && window.GSPacks.meta && window.GSPacks.meta[pack] && window.GSPacks.meta[pack].short) || pack.toUpperCase();
   var teacherBtn = document.getElementById("btnTeacher");
   var homeBtn = document.getElementById("btnHome");
+  var reportNavBtn = document.getElementById("closeToTeacher");
   if (teacherBtn) teacherBtn.setAttribute("href", "teacher-mode.html?pack=" + encodeURIComponent(pack));
   if (homeBtn) homeBtn.setAttribute("href", "index.html");
+  if (activeMode === "detective" && reportNavBtn) {
+    reportNavBtn.textContent = "Back to Missions";
+    reportNavBtn.setAttribute("href", "/missions/");
+  }
 
   function howToCopy() {
     if (playFormat === "teams") return "Split-screen competition. Both teams answer the same item. Track progress to 15/15.";
@@ -5641,6 +5927,11 @@
   text("howToTitle", "How to play: " + cfg.title);
   text("actionTip", modePrompt(activeMode, 0));
   text("hudTimer", timerOn ? "--" : "Off");
+  text("hudScoreLabel", activeMode === "detective" ? "XP" : "Score");
+  var hudCaseEl = document.getElementById("hudCase");
+  if (hudCaseEl && hudCaseEl.previousElementSibling && activeMode === "detective") {
+    hudCaseEl.previousElementSibling.textContent = "Question";
+  }
   var sceneLabelEl = document.querySelector(".scene .label");
   if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
 
@@ -5649,6 +5940,8 @@
   var idx = 0;
   var correct = 0;
   var streak = 0;
+  var bestStreak = 0;
+  var detectiveSkipped = 0;
   var locked = false;
   var score = 0;
   var combo = 1;
@@ -5661,6 +5954,19 @@
   var awaitingNext = false;
   var sec = timerOn ? rounds.length * missionSecondsPerRound : null;
   var timer = null;
+  var detectiveState = {
+    currentQuestionIndex: 0,
+    selectedWordIndex: -1,
+    isAnswered: false,
+    isCorrect: false,
+    totalCorrect: 0,
+    totalXP: 0,
+    streak: 0,
+    currentDifficulty: difficulty,
+    gameComplete: false,
+    timerSecondsRemaining: sec,
+    questions: rounds
+  };
 
   var optionsEl = document.getElementById("options");
 
@@ -5803,15 +6109,23 @@
     if (!panel || !round) return;
     var statusClass = isCorrect ? "ok" : "bad";
     var statusText = isCorrect ? "Correct" : "Not Yet";
-    var explanation = round.explain || "Review the rule and try again.";
-    var correctLine = (round.options && typeof round.answer === "number" && round.options[round.answer]) ? round.options[round.answer] : "No answer key available.";
+    var explanation = round.explanation || round.explain || "Review the rule and try again.";
+    var correctLine = "No answer key available.";
+    if (round.correctedSentence) {
+      correctLine = round.correctedSentence;
+    } else if (Array.isArray(round.options) && typeof round.answer === "number" && round.options[round.answer]) {
+      correctLine = round.options[round.answer];
+    } else if (Array.isArray(round.sentenceParts)) {
+      correctLine = sentenceFromParts(round.sentenceParts);
+    }
+    var correctionDetail = round.correction ? ("The corrected word is '" + round.correction + "'. ") : "";
     var microTip = round.micro_tip || modeMicroTip(activeMode, Math.max(0, idx - 1));
     panel.classList.add("show");
     panel.innerHTML = ""
       + "<span class=\"status " + statusClass + "\">" + statusText + "</span>"
       + "<p><b>Why:</b> " + sanitizeHtml(explanation) + "</p>"
       + "<p><b>Correct version:</b> " + sanitizeHtml(correctLine) + "</p>"
-      + "<p><b>Micro-tip:</b> " + sanitizeHtml(microTip) + "</p>"
+      + "<p><b>Micro-tip:</b> " + sanitizeHtml(correctionDetail + microTip) + "</p>"
       + (detailText ? "<p><b>Result:</b> " + sanitizeHtml(detailText) + "</p>" : "");
   }
 
@@ -5826,6 +6140,17 @@
   syncMissionShellHeader();
   syncEldUI();
 
+  function syncDetectiveState() {
+    detectiveState.currentQuestionIndex = idx;
+    detectiveState.totalCorrect = correct;
+    detectiveState.totalXP = score;
+    detectiveState.streak = streak;
+    detectiveState.timerSecondsRemaining = sec;
+    detectiveState.questions = rounds;
+    detectiveState.currentDifficulty = difficulty;
+    detectiveState.gameComplete = idx >= rounds.length;
+  }
+
   function updateHud() {
     text("hudCase", Math.min(idx + 1, rounds.length) + "/" + rounds.length);
     text("hudAcc", Math.round((correct / Math.max(1, idx)) * 100) + "%");
@@ -5837,10 +6162,18 @@
     var progress = document.getElementById("actionProgressFill");
     if (progress) {
       var pct = timerOn ? Math.max(0, Math.min(100, Math.round((shotClock / shotMax) * 100))) : 100;
+      if (activeMode === "detective") {
+        pct = Math.max(0, Math.min(100, Math.round((idx / Math.max(1, rounds.length)) * 100)));
+      }
       progress.style.width = pct + "%";
     }
     var hintBtn = document.getElementById("btnHint");
     if (hintBtn) hintBtn.textContent = "Hint (" + hintsLeft + ")";
+    if (activeMode === "detective") {
+      text("hudCombo", "1x");
+      text("hudShot", "--");
+    }
+    syncDetectiveState();
     syncMissionShellHeader();
   }
 
@@ -5865,6 +6198,20 @@
     nextBtn.disabled = !show;
   }
 
+  function setSkipVisibility(show) {
+    var skipBtn = document.getElementById("btnSkip");
+    if (!skipBtn) return;
+    skipBtn.style.display = show ? "inline-flex" : "none";
+    skipBtn.disabled = !show;
+  }
+
+  function setTryAgainVisibility(show) {
+    var tryBtn = document.getElementById("btnTryAgain");
+    if (!tryBtn) return;
+    tryBtn.style.display = show ? "inline-flex" : "none";
+    tryBtn.disabled = !show;
+  }
+
   function finishRound(userCorrect, successMsg, failMsg, btn) {
     if (locked) return;
     var round = rounds[idx] || null;
@@ -5884,20 +6231,28 @@
     if (userCorrect) {
       correct += 1;
       streak += 1;
-      combo = 1 + Math.floor(Math.max(0, streak - 1) / 3);
+      bestStreak = Math.max(bestStreak, streak);
+      combo = activeMode === "detective" ? 1 : (1 + Math.floor(Math.max(0, streak - 1) / 3));
       var speedBonus = timerOn ? Math.max(0, shotClock) * 6 : 0;
       var streakBonus = Math.min(80, streak * 10);
-      var award = Math.round((80 + speedBonus + streakBonus) * combo);
+      var award = activeMode === "detective" ? Math.max(5, Number(round && round.xpReward) || 20) : Math.round((80 + speedBonus + streakBonus) * combo);
       score += award;
       if (btn) btn.classList.add("good");
-      html("feedback", "<span class=\"ok\"><b>CORRECT.</b> " + successMsg + " +" + award + " pts</span>");
+      html("feedback", "<span class=\"ok\"><b>CORRECT.</b> " + successMsg + " +" + award + (activeMode === "detective" ? " XP" : " pts") + "</span>");
       if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
+      if (activeMode === "detective") setSkipVisibility(false);
     } else {
       streak = 0;
       combo = 1;
-      score = Math.max(0, score - 20);
+      if (activeMode !== "detective") {
+        score = Math.max(0, score - 20);
+      }
       if (btn) btn.classList.add("bad");
-      html("feedback", "<span class=\"bad\"><b>WRONG.</b> " + failMsg + " -20 pts</span>");
+      if (activeMode === "detective") {
+        html("feedback", "<span class=\"bad\"><b>NOT QUITE.</b> " + failMsg + "</span>");
+      } else {
+        html("feedback", "<span class=\"bad\"><b>WRONG.</b> " + failMsg + " -20 pts</span>");
+      }
       if (round) recordErrorPattern(round);
     }
     lastRoundSnapshot = preState;
@@ -5910,6 +6265,10 @@
   }
 
   function startShotClock(round) {
+    if (activeMode === "detective") {
+      shotClock = shotMax;
+      return;
+    }
     if (!timerOn) {
       shotClock = shotMax;
       return;
@@ -7159,6 +7518,123 @@
     optionsEl.appendChild(wrap);
   }
 
+  function showDetectiveOptions(round) {
+    optionsEl.style.gridTemplateColumns = "1fr";
+    optionsEl.innerHTML = "";
+
+    var question = normalizeDetectiveQuestion(round, idx);
+    rounds[idx] = question;
+    currentRoundState = {
+      mode: "detective",
+      round: question,
+      selectedWordIndex: -1,
+      isAnswered: false,
+      isCorrect: false,
+      attempts: 0
+    };
+    detectiveState.selectedWordIndex = -1;
+    detectiveState.isAnswered = false;
+    detectiveState.isCorrect = false;
+
+    setTryAgainVisibility(false);
+    setSkipVisibility(true);
+
+    var wrap = document.createElement("div");
+    wrap.className = "detective-wrap";
+
+    var status = document.createElement("div");
+    status.className = "detective-status";
+    var statusLabel = document.createElement("p");
+    statusLabel.className = "detective-q-label";
+    statusLabel.textContent = "Question " + String(idx + 1) + " / " + String(rounds.length);
+    var diffTag = document.createElement("span");
+    diffTag.className = "detective-difficulty " + String(question.difficulty || "field").toLowerCase();
+    diffTag.textContent = String(question.difficulty || "field");
+    status.appendChild(statusLabel);
+    status.appendChild(diffTag);
+    wrap.appendChild(status);
+
+    var progressTrack = document.createElement("div");
+    progressTrack.className = "detective-progress";
+    var progressFill = document.createElement("span");
+    progressFill.className = "detective-progress-fill";
+    progressFill.style.width = Math.round((idx / Math.max(1, rounds.length)) * 100) + "%";
+    progressTrack.appendChild(progressFill);
+    wrap.appendChild(progressTrack);
+
+    var sentenceDiv = document.createElement("div");
+    sentenceDiv.className = "detective-sentence";
+    sentenceDiv.setAttribute("role", "group");
+    sentenceDiv.setAttribute("aria-label", "Sentence tokens. Choose the incorrect word.");
+
+    var detailPanel = document.createElement("div");
+    detailPanel.className = "detective-feedback";
+    detailPanel.innerHTML = "<p><b>Objective:</b> Find the incorrect word.</p>";
+
+    var tokenEls = [];
+    function handleSelect(wordIndex, tokenEl) {
+      if (locked || currentRoundState.isAnswered) return;
+      currentRoundState.selectedWordIndex = wordIndex;
+      detectiveState.selectedWordIndex = wordIndex;
+      var isCorrectToken = wordIndex === question.incorrectIndex;
+      if (isCorrectToken) {
+        currentRoundState.isAnswered = true;
+        currentRoundState.isCorrect = true;
+        detectiveState.isAnswered = true;
+        detectiveState.isCorrect = true;
+        tokenEl.classList.remove("wrong", "shake", "hint");
+        tokenEl.classList.add("correct-target");
+        tokenEls.forEach(function (token) { token.classList.add("locked"); });
+        detailPanel.innerHTML = ""
+          + "<p><b>Nice catch, Agent.</b></p>"
+          + "<p><b>The correct word is '" + sanitizeHtml(question.correction) + "'.</b></p>"
+          + "<p><b>Corrected sentence:</b> " + sanitizeHtml(question.correctedSentence) + "</p>"
+          + "<p>" + sanitizeHtml(question.explanation) + "</p>"
+          + "<p class=\"xp-pop\">+" + String(question.xpReward) + " XP</p>";
+        finishRound(
+          true,
+          "Nice catch, Agent. The correct word is '" + question.correction + "'. " + question.explanation,
+          "",
+          tokenEl
+        );
+        return;
+      }
+      currentRoundState.attempts += 1;
+      tokenEl.classList.remove("hint");
+      tokenEl.classList.add("wrong", "shake");
+      setTimeout(function () {
+        tokenEl.classList.remove("shake");
+      }, 240);
+      html("feedback", "<span class=\"bad\"><b>Not quite.</b> Look again.</span>");
+      detailPanel.innerHTML = "<p><b>Not quite.</b> Look again.</p>";
+      if (window.GSSound && window.GSSound.errorTone) window.GSSound.errorTone();
+    }
+
+    question.sentenceParts.forEach(function (token, wordIndex) {
+      var tokenEl = document.createElement("button");
+      tokenEl.type = "button";
+      tokenEl.className = "detective-word";
+      tokenEl.textContent = token;
+      tokenEl.setAttribute("aria-label", "Word " + String(wordIndex + 1) + ": " + token);
+      tokenEl.addEventListener("click", function () {
+        handleSelect(wordIndex, tokenEl);
+      });
+      tokenEl.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          handleSelect(wordIndex, tokenEl);
+        }
+      });
+      tokenEls.push(tokenEl);
+      sentenceDiv.appendChild(tokenEl);
+    });
+    currentRoundState.tokenEls = tokenEls;
+
+    wrap.appendChild(sentenceDiv);
+    wrap.appendChild(detailPanel);
+    optionsEl.appendChild(wrap);
+  }
+
   function showDetectOptions(round) {
     optionsEl.style.gridTemplateColumns = "1fr";
     optionsEl.innerHTML = "";
@@ -7614,6 +8090,8 @@
     locked = false;
     awaitingNext = false;
     setNextVisibility(false);
+    setSkipVisibility(activeMode === "detective");
+    setTryAgainVisibility(activeMode !== "detective");
     text("feedback", "");
     clearMissionFeedbackPanel();
     hintUsedThisRound = false;
@@ -7657,6 +8135,8 @@
       showSweepOptions(round);
     } else if (activeMode === "forge") {
       showForgeOptions(round);
+    } else if (activeMode === "detective") {
+      showDetectiveOptions(round);
     } else if (activeMode === "detect") {
       showDetectOptions(round);
     } else if (activeMode === "order") {
@@ -7714,6 +8194,14 @@
     } else if (currentRoundState.mode === "binary" || currentRoundState.mode === "signal") {
       used = true;
       html("feedback", "<span class=\"ok\">Hint: the sentence " + (currentRoundState.candidateCorrect ? "matches the signal" : "does not match") + ".</span>");
+    } else if (currentRoundState.mode === "detective") {
+      var tokenEls = currentRoundState.tokenEls || [];
+      var targetIdx = (currentRoundState.round && typeof currentRoundState.round.incorrectIndex === "number") ? currentRoundState.round.incorrectIndex : -1;
+      if (targetIdx >= 0 && tokenEls[targetIdx]) {
+        tokenEls[targetIdx].classList.add("hint");
+        used = true;
+        html("feedback", "<span class=\"ok\">Hint: check the highlighted token carefully.</span>");
+      }
     } else {
       var decoys = Array.prototype.slice.call(optionsEl.querySelectorAll(".opt")).filter(function (btn) {
         return btn.dataset.target === "0" && !btn.classList.contains("eliminated");
@@ -7759,6 +8247,30 @@
     showRound();
   }
 
+  function skipQuestion() {
+    if (playFormat !== "individuals" || activeMode !== "detective") return;
+    if (locked || idx >= rounds.length) return;
+    var round = rounds[idx] || null;
+    var itemNumber = idx + 1;
+    var responseTime = Math.max(0, Date.now() - currentRoundStartedAt);
+    if (shotTimer) clearInterval(shotTimer);
+    detectiveSkipped += 1;
+    streak = 0;
+    combo = 1;
+    hintUsedThisRound = false;
+    emitItemAnswer(round, itemNumber, false, responseTime, { skipped: true });
+    idx += 1;
+    detectiveState.isAnswered = true;
+    detectiveState.isCorrect = false;
+    setSkipVisibility(false);
+    setNextVisibility(false);
+    if (idx >= rounds.length) {
+      endGame("completed");
+      return;
+    }
+    showRound();
+  }
+
   function goNext() {
     if (!awaitingNext) return;
     if (idx >= rounds.length) {
@@ -7798,9 +8310,15 @@
       text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Whole Class Mode");
     } else {
       finalAccuracy = Math.round((correct / Math.max(1, idx)) * 100);
-      text("reportAcc", "Accuracy: " + finalAccuracy + "% (" + correct + "/" + Math.max(1, idx) + ")");
-      text("reportPlan", "Top error pattern: " + topErrorPattern() + ". " + recommendationByAccuracy(finalAccuracy) + " Final score: " + score + " pts.");
-      text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
+      if (activeMode === "detective") {
+        text("reportAcc", "Correct answers: " + correct + "/" + Math.max(1, idx) + " \u00b7 Accuracy: " + finalAccuracy + "%");
+        text("reportPlan", "Total XP earned: " + score + " XP \u00b7 Best streak: " + bestStreak + " \u00b7 Skipped: " + detectiveSkipped);
+        text("reportPack", "Difficulty: " + difficulty + " \u00b7 " + cfg.title);
+      } else {
+        text("reportAcc", "Accuracy: " + finalAccuracy + "% (" + correct + "/" + Math.max(1, idx) + ")");
+        text("reportPlan", "Top error pattern: " + topErrorPattern() + ". " + recommendationByAccuracy(finalAccuracy) + " Final score: " + score + " pts.");
+        text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title);
+      }
     }
 
     var completed = (reason === "completed") || idx >= rounds.length;
@@ -7808,7 +8326,12 @@
     else emitMissionExit(reason || "manual_end");
 
     var report = document.getElementById("reportOverlay");
-    if (report) report.classList.add("show");
+    if (report) {
+      var reportTitle = report.querySelector("h2");
+      if (reportTitle && activeMode === "detective" && playFormat === "individuals") reportTitle.textContent = "Mission Complete";
+      else if (reportTitle) reportTitle.textContent = "Mission Report";
+      report.classList.add("show");
+    }
   }
 
   function startTimer() {
@@ -7842,6 +8365,8 @@
   if (hintBtn) hintBtn.addEventListener("click", useHint);
   var retryBtn = document.getElementById("btnTryAgain");
   if (retryBtn) retryBtn.addEventListener("click", useTryAgain);
+  var skipBtn = document.getElementById("btnSkip");
+  if (skipBtn) skipBtn.addEventListener("click", skipQuestion);
   var nextBtn = document.getElementById("btnNext");
   if (nextBtn) nextBtn.addEventListener("click", goNext);
   if (teacherBtn) teacherBtn.addEventListener("click", function () { emitMissionExit("nav_teacher"); });
@@ -7858,6 +8383,8 @@
       idx = 0;
       correct = 0;
       streak = 0;
+      bestStreak = 0;
+      detectiveSkipped = 0;
       score = 0;
       combo = 1;
       hintsLeft = 1;
@@ -7869,7 +8396,13 @@
       lastRoundSnapshot = null;
       lastAnswerWasCorrect = null;
       hintUsedThisRound = false;
+      detectiveState.selectedWordIndex = -1;
+      detectiveState.isAnswered = false;
+      detectiveState.isCorrect = false;
+      detectiveState.gameComplete = false;
       setNextVisibility(false);
+      setSkipVisibility(activeMode === "detective");
+      setTryAgainVisibility(activeMode !== "detective");
       sec = timerOn ? rounds.length * missionSecondsPerRound : null;
       teamA.score = 0; teamA.correct = 0; teamA.streak = 0; teamA.combo = 1; teamA.idx = 0; teamA.locked = false;
       teamB.score = 0; teamB.correct = 0; teamB.streak = 0; teamB.combo = 1; teamB.idx = 0; teamB.locked = false;
@@ -7879,5 +8412,7 @@
       startTimer();
     });
   }
+  setSkipVisibility(activeMode === "detective" && playFormat === "individuals");
+  setTryAgainVisibility(activeMode !== "detective");
   updateHud();
 })();
