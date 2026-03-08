@@ -215,6 +215,94 @@
       if (code && window.GS_BILLING?.redeemPromoCode) window.GS_BILLING.redeemPromoCode(code);
     }
 
+    function parseJson(raw, fallback) {
+      try {
+        const parsed = JSON.parse(raw || '');
+        return parsed && typeof parsed === 'object' ? parsed : fallback;
+      } catch (_err) {
+        return fallback;
+      }
+    }
+
+    function getAuthEmailConfig() {
+      const localCfg = parseJson(localStorage.getItem('gs_auth_email_config_v1'), null);
+      const globalCfg = (window.GS_AUTH_EMAIL_CONFIG && typeof window.GS_AUTH_EMAIL_CONFIG === 'object')
+        ? window.GS_AUTH_EMAIL_CONFIG
+        : null;
+      let cfg = globalCfg || localCfg;
+      if (!cfg) {
+        const cloudCfg = parseJson(localStorage.getItem('gs_cloud_config_v1'), null);
+        if (cloudCfg && cloudCfg.endpoint) {
+          cfg = {
+            provider: 'webhook',
+            endpoint: cloudCfg.endpoint,
+            apiKey: cloudCfg.apiKey || '',
+            fromName: 'Grammar Spy',
+            fromEmail: ''
+          };
+        }
+      }
+      if (!cfg) return null;
+      const provider = String(cfg.provider || '').toLowerCase();
+      const endpoint = String(cfg.endpoint || '').trim();
+      const apiKey = String(cfg.apiKey || '').trim();
+      const fromEmail = String(cfg.fromEmail || '').trim();
+      const fromName = String(cfg.fromName || 'Grammar Spy').trim() || 'Grammar Spy';
+      return { provider, endpoint, apiKey, fromEmail, fromName };
+    }
+
+    async function sendSignupConfirmationEmail(name, email) {
+      const cfg = getAuthEmailConfig();
+      if (!cfg) return { sent: false, reason: 'not_configured' };
+      const cleanEmail = String(email || '').trim();
+      const cleanName = String(name || 'Agent').trim() || 'Agent';
+      if (!cleanEmail) return { sent: false, reason: 'missing_email' };
+
+      const useWebhook = cfg.provider === 'webhook' || (!!cfg.endpoint && cfg.provider !== 'brevo');
+      if (useWebhook && cfg.endpoint) {
+        const headers = { 'Content-Type': 'application/json' };
+        if (cfg.apiKey) headers.Authorization = 'Bearer ' + cfg.apiKey;
+        const res = await fetch(cfg.endpoint, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({
+            type: 'signup_confirmation',
+            app: 'grammar_spy',
+            email: cleanEmail,
+            name: cleanName,
+            confirmUrl: location.origin + '/auth.html?mode=signin'
+          })
+        });
+        if (!res.ok) throw new Error('confirmation webhook failed');
+        return { sent: true, provider: 'webhook' };
+      }
+
+      if (cfg.apiKey) {
+        const senderEmail = cfg.fromEmail || cleanEmail;
+        const payload = {
+          sender: { name: cfg.fromName, email: senderEmail },
+          to: [{ email: cleanEmail, name: cleanName }],
+          subject: 'Confirm your Grammar Spy account',
+          htmlContent:
+            '<p>Welcome to Grammar Spy.</p>'
+            + '<p>Your account is now active, and you can sign in anytime with your email and password.</p>'
+            + '<p>If this was not you, please ignore this email.</p>'
+        };
+        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': cfg.apiKey
+          },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('brevo request failed');
+        return { sent: true, provider: 'brevo' };
+      }
+
+      return { sent: false, reason: 'not_configured' };
+    }
+
     function simpleHash(str) {
       var h = 0;
       for (var i = 0; i < str.length; i++) {
@@ -250,6 +338,24 @@
       saveCredentials(email, password);
       window.GS_AUTH.setAccount(name, email);
       tryRedeemPromoCode();
+      const authStatusEl = document.getElementById('authStatus');
+      try {
+        const sendResult = await sendSignupConfirmationEmail(name, email);
+        if (authStatusEl) {
+          if (sendResult.sent) {
+            authStatusEl.textContent = 'Account created. Confirmation email sent to ' + email + '.';
+            sessionStorage.setItem('gs_signup_email_feedback_v1', 'Confirmation email sent to ' + email + '.');
+          } else if (sendResult.reason === 'not_configured') {
+            authStatusEl.textContent = 'Account created. Confirmation email is not configured yet, but your account is active now.';
+            sessionStorage.setItem('gs_signup_email_feedback_v1', 'Account created. Confirmation email is not configured yet, but your account is active now.');
+          }
+        }
+      } catch (_err) {
+        if (authStatusEl) {
+          authStatusEl.textContent = 'Account created. We could not send a confirmation email right now, but your account is active.';
+        }
+        sessionStorage.setItem('gs_signup_email_feedback_v1', 'Account created. We could not send a confirmation email right now, but your account is active.');
+      }
       const useBiometric = document.getElementById('createUseBiometric')?.checked;
       if (useBiometric && window.GS_BIOMETRIC && window.GS_BILLING) {
         const account = window.GS_BILLING.getAccount();

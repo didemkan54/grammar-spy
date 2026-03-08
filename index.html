@@ -1680,7 +1680,7 @@ Technical safety:
           </ul>
           <div class="hero-ctas">
             <a href="/join/" class="btn btn-primary" data-track-event="homepage_join_class_click">Join as Student</a>
-            <a href="/auth.html?mode=create" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
+            <a id="homepageStartTrainingBtn" href="/auth.html?mode=create" class="btn btn-secondary" data-track-event="homepage_start_training_click">Start Training</a>
           </div>
           <p class="hero-note">No prep. No grading stacks. Just progress.</p>
           <div class="hero-live-badges" aria-label="Live game indicators">
@@ -2297,6 +2297,34 @@ Technical safety:
 
       window.GS_SAVE_LEAD = saveLead;
       window.GS_LEAD_ENDPOINT = LEAD_ENDPOINT;
+    })();
+
+    (function(){
+      var startBtn = document.getElementById('homepageStartTrainingBtn');
+      if (!startBtn) return;
+      var session = null;
+      if (window.GS_AUTH && typeof window.GS_AUTH.getSession === 'function') {
+        session = window.GS_AUTH.getSession();
+      }
+      if (!session) {
+        try {
+          var rawSession = localStorage.getItem('gs_auth_session');
+          var parsedSession = rawSession ? JSON.parse(rawSession) : null;
+          if (parsedSession && typeof parsedSession === 'object') session = parsedSession;
+        } catch (_err) {}
+      }
+      if (!session) {
+        try {
+          var rawAccount = localStorage.getItem('gs_account_v1');
+          var parsedAccount = rawAccount ? JSON.parse(rawAccount) : null;
+          if (parsedAccount && typeof parsedAccount === 'object') session = { name: parsedAccount.name || 'Teacher' };
+        } catch (_err) {}
+      }
+      if (session) {
+        startBtn.setAttribute('href', '/teacher-home.html');
+      } else {
+        startBtn.setAttribute('href', '/auth.html?mode=create');
+      }
     })();
 
     (function(){

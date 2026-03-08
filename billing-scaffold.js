@@ -34,6 +34,36 @@
 
   function loadAccount(){
     var a = parse(localStorage.getItem(ACCOUNT_KEY), null);
+    if (!a) {
+      // Backfill legacy sessions so "signed in" users are not treated as signed out.
+      var session = parse(localStorage.getItem('gs_auth_session'), null);
+      if (session && typeof session === 'object') {
+        var stamp = session.createdAt || nowIso();
+        var sessionMode = String(session.mode || 'account').toLowerCase();
+        a = {
+          id: session.accountId || (sessionMode === 'guest' ? ('guest_' + Math.random().toString(36).slice(2, 10)) : ('acct_' + Math.random().toString(36).slice(2, 10))),
+          mode: sessionMode === 'guest' ? 'guest' : 'account',
+          role: 'teacher',
+          name: String(session.name || 'Teacher').trim() || 'Teacher',
+          email: String(session.email || '').trim(),
+          createdAt: stamp,
+          updatedAt: nowIso(),
+          plan: sessionMode === 'guest' ? 'guest' : (session.plan || 'trial'),
+          entitlements: ['pack01'],
+          trial: {
+            startedAt: stamp,
+            endsAt: addDays(stamp, sessionMode === 'guest' ? 2 : 365),
+            status: 'active'
+          },
+          billing: {
+            status: sessionMode === 'guest' ? 'guest' : 'trialing',
+            stripeCustomerId: '',
+            lastCheckoutAt: ''
+          }
+        };
+        saveAccount(a);
+      }
+    }
     if (!a) return null;
     if ((a.plan === 'trial' || a.plan === 'guest') && Array.isArray(a.entitlements) && a.entitlements.length > 1) {
       a.entitlements = ['pack01'];
