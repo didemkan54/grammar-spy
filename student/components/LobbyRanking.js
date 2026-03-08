@@ -36,6 +36,11 @@ export function createLobbyRanking(options) {
     const fragment = document.createDocumentFragment();
     sorted.forEach((player, idx) => {
       const avatar = getAvatarById(player.avatarId);
+      const statusLabel = player.completionStatus === "completed"
+        ? "Completed"
+        : player.completionStatus === "playing"
+          ? "In Mission"
+          : "Waiting";
       const row = document.createElement("article");
       row.className = "rank-row";
       row.setAttribute("data-player-id", player.id);
@@ -43,8 +48,8 @@ export function createLobbyRanking(options) {
       row.innerHTML = `
         <span class="rank-num">#${idx + 1}</span>
         <span class="rank-avatar">${renderAvatarSvg(avatar, 44, { accentColor: player.accentColor, rankBadge: idx + 1 })}</span>
-        <span class="rank-name">${player.nickname}</span>
-        <span class="rank-score">${player.score}</span>
+        <span class="rank-name"><b>${player.nickname}</b><small class="rank-meta">Correct: ${Number(player.correctAnswers || 0)} · Status: ${statusLabel}</small></span>
+        <span class="rank-score">${player.score} XP</span>
       `;
       fragment.appendChild(row);
     });

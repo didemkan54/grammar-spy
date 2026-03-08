@@ -14,8 +14,7 @@ const PROFANITY_BLACKLIST = [
 ];
 
 export function normalizePin(value) {
-  const raw = String(value || "").trim().toUpperCase();
-  if (raw === "DEMO") return "DEMO";
+  const raw = String(value || "").replace(/\D+/g, "");
   if (/^\d{6}$/.test(raw)) return raw;
   return "";
 }
@@ -65,7 +64,7 @@ export function createJoinForm(options) {
     event.preventDefault();
     const pin = normalizePin(pinInputEl.value);
     if (!pin) {
-      setStatus('Enter a 6-digit PIN or use "DEMO".', true);
+      setStatus("Enter a valid 6-digit join code.", true);
       pinInputEl.focus();
       return;
     }

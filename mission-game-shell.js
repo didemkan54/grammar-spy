@@ -12,6 +12,70 @@
   var FIXED_MISSION_ITEM_COUNT = 15;
   var count = FIXED_MISSION_ITEM_COUNT;
   var playFormat = params.get("play_format") || "individuals";
+  var classroomSessionId = String(params.get("session_id") || params.get("sessionId") || "").trim();
+  var classroomJoinCode = String(params.get("code") || params.get("pin") || "").trim().toUpperCase();
+  var classroomPlayerId = String(params.get("player_id") || params.get("player") || "").trim();
+  var missionRunStartedAtMs = Date.now();
+  var classroomPendingAnswers = [];
+  var classroomImportStarted = false;
+
+  function canUseClassroomSession() {
+    return !!(classroomSessionId && classroomPlayerId);
+  }
+
+  function flushClassroomPendingAnswers() {
+    var api = classroomSessionApi();
+    if (!api || !classroomPendingAnswers.length) return;
+    while (classroomPendingAnswers.length) {
+      var entry = classroomPendingAnswers.shift();
+      try {
+        api.submitAnswer(classroomPlayerId, entry.questionId, entry.payload || {});
+      } catch (_err) {}
+    }
+  }
+
+  function ensureClassroomSessionApi() {
+    if (!canUseClassroomSession() || classroomImportStarted) return;
+    classroomImportStarted = true;
+    if (classroomSessionApi()) {
+      flushClassroomPendingAnswers();
+      return;
+    }
+    try {
+      import("/core/classroom-session.js")
+        .then(function () {
+          flushClassroomPendingAnswers();
+        })
+        .catch(function () {});
+    } catch (_err) {}
+  }
+
+  function classroomSessionApi() {
+    return window.GSClassroomSession && typeof window.GSClassroomSession.submitAnswer === "function"
+      ? window.GSClassroomSession
+      : null;
+  }
+
+  function classroomQuestionId(round, itemNumber) {
+    if (round && round.item_id) return String(round.item_id);
+    if (round && round.id) return String(round.id);
+    return "q_" + String(itemNumber || 0);
+  }
+
+  function submitClassroomAnswer(round, itemNumber, payload) {
+    if (!canUseClassroomSession()) return;
+    var api = classroomSessionApi();
+    var questionId = classroomQuestionId(round, itemNumber);
+    if (!api) {
+      classroomPendingAnswers.push({ questionId: questionId, payload: payload || {} });
+      ensureClassroomSessionApi();
+      return;
+    }
+    try {
+      api.submitAnswer(classroomPlayerId, questionId, payload || {});
+    } catch (_err) {}
+  }
+  ensureClassroomSessionApi();
 
   function ensureGameplayEngine() {
     if (window.GSGameplayEngine && typeof window.GSGameplayEngine.createSession === "function") return;
@@ -6664,6 +6728,7 @@
     locked = true;
     awaitingNext = true;
     if (shotTimer) clearInterval(shotTimer);
+    var awardedXp = 0;
     if (userCorrect) {
       correct += 1;
       streak += 1;
@@ -6672,6 +6737,7 @@
       var speedBonus = timerOn ? Math.max(0, shotClock) * 6 : 0;
       var streakBonus = Math.min(80, streak * 10);
       var award = activeMode === "detective" ? Math.max(5, Number(round && round.xpReward) || 20) : Math.round((80 + speedBonus + streakBonus) * combo);
+      awardedXp = award;
       if (gameSession && typeof gameSession.awardXP === "function") {
         var xpAwardState = gameSession.awardXP(award);
         score = xpAwardState.score;
@@ -6700,6 +6766,14 @@
     lastAnswerWasCorrect = !!userCorrect;
     var responseTime = Math.max(0, Date.now() - currentRoundStartedAt);
     emitItemAnswer(round, itemNumber, !!userCorrect, responseTime);
+    submitClassroomAnswer(round, itemNumber, {
+      isCorrect: !!userCorrect,
+      xpEarned: userCorrect ? awardedXp : 0,
+      scoreDelta: userCorrect ? awardedXp : 0,
+      skipped: false,
+      responseTimeMs: responseTime,
+      answer: userCorrect ? "correct" : "incorrect"
+    });
     setMissionFeedbackPanel(!!userCorrect, round, userCorrect ? successMsg : failMsg);
     if (gameSession && typeof gameSession.moveToNextQuestion === "function") {
       var nextState = gameSession.moveToNextQuestion({ wasCorrect: !!userCorrect, skipped: false });
@@ -8720,6 +8794,14 @@
     combo = 1;
     hintUsedThisRound = false;
     emitItemAnswer(round, itemNumber, false, responseTime, { skipped: true });
+    submitClassroomAnswer(round, itemNumber, {
+      isCorrect: false,
+      xpEarned: 0,
+      scoreDelta: 0,
+      skipped: true,
+      responseTimeMs: responseTime,
+      answer: "skipped"
+    });
     if (gameSession && typeof gameSession.moveToNextQuestion === "function") {
       var skipState = gameSession.moveToNextQuestion({ wasCorrect: false, skipped: true });
       idx = skipState.questionIndex;
@@ -8819,6 +8901,17 @@
     }
 
     var completed = (reason === "completed") || idx >= rounds.length;
+    var completionTimeSeconds = Math.max(1, Math.round((Date.now() - missionRunStartedAtMs) / 1000));
+    if (playFormat === "individuals") {
+      submitClassroomAnswer({ id: "mission_complete" }, idx, {
+        isCorrect: true,
+        xpEarned: 0,
+        scoreDelta: 0,
+        answer: reason || "completed",
+        completed: true,
+        completionTimeSeconds: completionTimeSeconds
+      });
+    }
     if (completed) emitMissionComplete(finalAccuracy);
     else emitMissionExit(reason || "manual_end");
 
@@ -8851,6 +8944,7 @@
   if (startBtn) {
     startBtn.addEventListener("click", function () {
       if (startOverlay) startOverlay.classList.remove("show");
+      missionRunStartedAtMs = Date.now();
       emitMissionStart("start_button");
       showRound();
       startTimer();
@@ -8901,6 +8995,7 @@
       locked = false;
       retryCount = 0;
       wrongPatternCounts = {};
+      missionRunStartedAtMs = Date.now();
       lastRoundSnapshot = null;
       lastAnswerWasCorrect = null;
       hintUsedThisRound = false;

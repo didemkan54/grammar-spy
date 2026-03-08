@@ -18,6 +18,9 @@
     label{font:700 11px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4a5568}
     select{width:100%;border:1px solid var(--cool);border-radius:10px;padding:10px 12px;font:600 14px Inter,Segoe UI,Arial,sans-serif;color:#16223a;background:#fff}
     .primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border:1px solid #194f53;background:var(--teal);color:#fff;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 12px Inter,Segoe UI,Arial,sans-serif;width:fit-content}
+    .secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border:1px solid #b8c7d9;background:#fff;color:#1f5f63;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font:700 12px Inter,Segoe UI,Arial,sans-serif;width:fit-content}
+    .action-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .status-text{margin:4px 0 0;font:600 13px Inter,Segoe UI,Arial,sans-serif;color:#385676}
     details{border:1px solid var(--cool);border-radius:12px;background:#f8fafc;padding:10px}
     summary{cursor:pointer;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#16223a}
     .row{display:grid;gap:8px;margin-top:8px}
@@ -65,7 +68,12 @@
             <div id="difficultyCover" class="difficulty-name" aria-live="polite">Field Agent</div>
           </div>
         </div>
-        <a id="continueBtn" class="primary" href="#">Continue</a>
+        <div class="action-row">
+          <a id="continueBtn" class="secondary" href="#">Open Mission Directly</a>
+          <button id="startMissionBtn" class="primary" type="button">Start Mission</button>
+          <a id="openWaitingRoomBtn" class="primary" href="#" hidden>Open Waiting Room</a>
+        </div>
+        <p id="sessionStatus" class="status-text" aria-live="polite"></p>
         <details>
           <summary>Advanced</summary>
           <div class="row">
@@ -128,6 +136,52 @@
       const join = base.includes('?') ? '&' : '?';
       document.getElementById('continueBtn').href = `${base}${join}${p.toString()}`;
     }
+    async function getSessionApi(){
+      if (window.GSClassroomSession) return window.GSClassroomSession;
+      try { await import('/core/classroom-session.js'); } catch(_err) {}
+      return window.GSClassroomSession || null;
+    }
+    function activeTeacher(){
+      if (window.GS_AUTH && typeof window.GS_AUTH.getSession === 'function') {
+        const s = window.GS_AUTH.getSession();
+        if (s) return s;
+      }
+      return { name: 'Teacher', email: '', accountId: '' };
+    }
+    async function startMissionSession(){
+      const status = document.getElementById('sessionStatus');
+      const waitingBtn = document.getElementById('openWaitingRoomBtn');
+      if (status) status.textContent = 'Starting classroom session...';
+      const api = await getSessionApi();
+      if (!api || typeof api.createSession !== 'function') {
+        if (status) status.textContent = 'Session system unavailable. Try refreshing.';
+        return;
+      }
+      try {
+        const teacher = activeTeacher();
+        const selectedOption = gameSel.options[gameSel.selectedIndex];
+        const missionName = `${pack.name} · ${selectedOption ? selectedOption.textContent : 'Mission'}`;
+        const missionId = `${packId}:${String(gameSel.value || '').split('?')[0] || 'mission'}`;
+        const missionUrlObj = new URL(document.getElementById('continueBtn').href, location.origin);
+        missionUrlObj.searchParams.set('play_format', 'individuals');
+        const missionUrl = `${missionUrlObj.pathname}${missionUrlObj.search}`;
+        const session = api.createSession(missionId, {
+          teacherId: teacher.accountId || teacher.email || 'teacher_local',
+          teacherName: teacher.name || 'Teacher',
+          missionName: missionName,
+          missionUrl: missionUrl
+        });
+        const lobbyHref = `/lobby/?pin=${encodeURIComponent(session.joinCode)}&host=1`;
+        if (waitingBtn) {
+          waitingBtn.hidden = false;
+          waitingBtn.href = lobbyHref;
+        }
+        if (status) status.textContent = `Session ready. Join code: ${session.joinCode}. Redirecting to waiting room...`;
+        window.setTimeout(function(){ location.href = lobbyHref; }, 350);
+      } catch (err) {
+        if (status) status.textContent = err && err.message ? err.message : 'Could not start session.';
+      }
+    }
     ['change','input'].forEach(ev => {
       gameSel.addEventListener(ev, syncHref);
       document.getElementById('difficulty').addEventListener(ev, syncHref);
@@ -140,6 +194,7 @@
       if (coverEl && sel) coverEl.textContent = DIFFICULTY_LABELS[sel.value] || 'Field Agent';
     }
     document.getElementById('difficulty').addEventListener('change', updateDifficultyLabel);
+    document.getElementById('startMissionBtn').addEventListener('click', startMissionSession);
     updateDifficultyLabel();
     syncHref();
   </script>

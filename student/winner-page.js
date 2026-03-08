@@ -20,7 +20,7 @@ function renderWinnerCard(player) {
       <p class="winner-main-kicker">WINNER</p>
       <span class="winner-main-avatar">${renderAvatarSvg(avatar, 110, { accentColor: player.accentColor, rankBadge: 1 })}</span>
       <h2>${player.nickname}</h2>
-      <p class="winner-main-score">${player.score} pts</p>
+      <p class="winner-main-score">${player.score} XP</p>
     </article>
   `;
 }
@@ -35,7 +35,7 @@ function renderPodium(player, index) {
       <p class="podium-rank">#${index + 2}</p>
       <span class="podium-avatar">${renderAvatarSvg(avatar, 64, { accentColor: player.accentColor, rankBadge: index + 2 })}</span>
       <h3>${player.nickname}</h3>
-      <p class="podium-score">${player.score} pts</p>
+      <p class="podium-score">${player.score} XP</p>
     </article>
   `;
 }
@@ -66,7 +66,7 @@ function init() {
   track("student_lobby_winner_view", {
     pin,
     winner_nickname: top.nickname,
-    winner_score: top.score
+    winner_xp: top.score
   });
   playSound("victory");
 }
