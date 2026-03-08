@@ -13,6 +13,238 @@
   var count = FIXED_MISSION_ITEM_COUNT;
   var playFormat = params.get("play_format") || "individuals";
 
+  function ensureGameplayEngine() {
+    if (window.GSGameplayEngine && typeof window.GSGameplayEngine.createSession === "function") return;
+
+    function safeNumber(value, fallback) {
+      var num = Number(value);
+      if (!isFinite(num)) return fallback || 0;
+      return num;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function sentenceFromParts(parts) {
+      return String((parts || []).join(" "))
+        .replace(/\s+([.,!?;:])/g, "$1")
+        .replace(/\s+(['’])/g, "$1");
+    }
+
+    function createQuestionModel(rawQuestion, index) {
+      var raw = rawQuestion || {};
+      var questionIndex = safeNumber(index, 0);
+      var sentenceParts = Array.isArray(raw.sentenceParts) ? raw.sentenceParts.slice() : [];
+      if (!sentenceParts.length && typeof raw.sentence === "string" && raw.sentence.trim()) {
+        sentenceParts = raw.sentence.trim().split(/\s+/);
+      }
+      if (!sentenceParts.length) sentenceParts = ["No", "question", "available."];
+      var incorrectIndex = safeNumber(raw.incorrectIndex, 0);
+      incorrectIndex = clamp(Math.round(incorrectIndex), 0, Math.max(0, sentenceParts.length - 1));
+      var correction = typeof raw.correction === "string" && raw.correction ? raw.correction : sentenceParts[incorrectIndex];
+      var correctedSentence = typeof raw.correctedSentence === "string" && raw.correctedSentence.trim()
+        ? raw.correctedSentence
+        : sentenceFromParts(sentenceParts.map(function (token, tokenIndex) {
+            return tokenIndex === incorrectIndex ? correction : token;
+          }));
+      return {
+        id: raw.id || ("question_" + String(questionIndex + 1)),
+        sentenceParts: sentenceParts,
+        incorrectIndex: incorrectIndex,
+        correction: correction,
+        correctedSentence: correctedSentence,
+        explanation: raw.explanation || raw.explain || "Review the grammar pattern and try again.",
+        difficulty: String(raw.difficulty || "field").toLowerCase(),
+        xpReward: Math.max(5, safeNumber(raw.xpReward, 20)),
+        scene: raw.scene || ("Case " + String(questionIndex + 1)),
+        prompt: raw.prompt || "Find the incorrect word.",
+        grammar_rule_id: raw.grammar_rule_id || "grammar_detective_core",
+        item_id: raw.item_id || ""
+      };
+    }
+
+    function rankProgress(xpAmount) {
+      var tiers = [
+        { key: "rookie", label: "Rookie Agent", minXp: 0 },
+        { key: "field", label: "Field Agent", minXp: 180 },
+        { key: "senior", label: "Senior Agent", minXp: 420 },
+        { key: "elite", label: "Elite Operative", minXp: 760 }
+      ];
+      var xp = Math.max(0, safeNumber(xpAmount, 0));
+      var current = tiers[0];
+      var next = null;
+      for (var i = 0; i < tiers.length; i++) {
+        if (xp >= tiers[i].minXp) current = tiers[i];
+      }
+      for (var j = 0; j < tiers.length; j++) {
+        if (tiers[j].minXp > current.minXp) {
+          next = tiers[j];
+          break;
+        }
+      }
+      var pct = 100;
+      if (next) {
+        var span = Math.max(1, next.minXp - current.minXp);
+        pct = clamp(Math.round(((xp - current.minXp) / span) * 100), 0, 100);
+      }
+      return {
+        currentRank: current.label,
+        currentRankKey: current.key,
+        nextRank: next ? next.label : "Max rank",
+        nextThresholdXp: next ? next.minXp : current.minXp,
+        progressPct: pct
+      };
+    }
+
+    function accuracyFromState(state) {
+      var answered = Math.max(0, safeNumber(state.answeredQuestions, 0));
+      var correct = Math.max(0, safeNumber(state.correctAnswers, 0));
+      if (!answered) return 0;
+      return clamp(Math.round((correct / answered) * 100), 0, 100);
+    }
+
+    function createSession(config) {
+      var cfg = config || {};
+      var questions = Array.isArray(cfg.questions) ? cfg.questions.slice() : [];
+      var state = {
+        currentMission: cfg.currentMission || "",
+        currentGame: cfg.currentGame || "",
+        questionIndex: 0,
+        score: 0,
+        xpEarned: 0,
+        streak: 0,
+        difficultyLevel: cfg.difficultyLevel || "field",
+        questions: questions,
+        totalQuestions: questions.length,
+        correctAnswers: 0,
+        answeredQuestions: 0,
+        skippedQuestions: 0,
+        missionComplete: false,
+        startedAt: new Date().toISOString(),
+        completedAt: null,
+        completionReason: "",
+        accuracy: 0,
+        rankProgress: rankProgress(0)
+      };
+
+      function applyDerived() {
+        state.totalQuestions = Math.max(state.totalQuestions || 0, Array.isArray(state.questions) ? state.questions.length : 0);
+        state.accuracy = accuracyFromState(state);
+        state.rankProgress = rankProgress(state.xpEarned);
+        return state;
+      }
+
+      return {
+        state: state,
+        createQuestionModel: createQuestionModel,
+        awardXP: function (amount) {
+          var awarded = Math.max(0, safeNumber(amount, 0));
+          state.xpEarned = Math.max(0, safeNumber(state.xpEarned, 0) + awarded);
+          state.score = Math.max(0, safeNumber(state.score, 0) + awarded);
+          applyDerived();
+          return { awarded: awarded, totalXP: state.xpEarned, score: state.score };
+        },
+        trackProgress: function (patch) {
+          var updates = patch || {};
+          Object.keys(updates).forEach(function (key) {
+            state[key] = updates[key];
+          });
+          applyDerived();
+          return state;
+        },
+        moveToNextQuestion: function (opts) {
+          var options = opts || {};
+          var wasCorrect = !!options.wasCorrect;
+          var wasSkipped = !!options.skipped;
+          state.answeredQuestions = Math.max(0, safeNumber(state.answeredQuestions, 0) + 1);
+          if (wasCorrect) {
+            state.correctAnswers = Math.max(0, safeNumber(state.correctAnswers, 0) + 1);
+            state.streak = Math.max(0, safeNumber(state.streak, 0) + 1);
+          } else {
+            state.streak = 0;
+          }
+          if (wasSkipped) {
+            state.skippedQuestions = Math.max(0, safeNumber(state.skippedQuestions, 0) + 1);
+          }
+          state.questionIndex = Math.max(0, safeNumber(state.questionIndex, 0) + 1);
+          state.missionComplete = state.questionIndex >= Math.max(1, safeNumber(state.totalQuestions, 0));
+          applyDerived();
+          return state;
+        },
+        calculateAccuracy: function () {
+          applyDerived();
+          return state.accuracy;
+        },
+        completeMission: function (opts) {
+          var options = opts || {};
+          state.missionComplete = true;
+          state.completedAt = new Date().toISOString();
+          state.completionReason = options.reason || state.completionReason || "completed";
+          applyDerived();
+          return this.getResults();
+        },
+        getResults: function () {
+          applyDerived();
+          return {
+            missionComplete: !!state.missionComplete,
+            currentMission: state.currentMission,
+            currentGame: state.currentGame,
+            accuracy: state.accuracy,
+            xpEarned: state.xpEarned,
+            score: state.score,
+            correctAnswers: state.correctAnswers,
+            answeredQuestions: state.answeredQuestions,
+            skippedQuestions: state.skippedQuestions,
+            totalQuestions: state.totalQuestions,
+            streak: state.streak,
+            difficultyLevel: state.difficultyLevel,
+            rankProgress: state.rankProgress
+          };
+        },
+        renderResults: function (overlayEl, copy) {
+          if (!overlayEl) return null;
+          var resultCopy = copy || {};
+          var titleEl = overlayEl.querySelector("h2");
+          var reportAcc = overlayEl.querySelector("#reportAcc");
+          var reportPlan = overlayEl.querySelector("#reportPlan");
+          var reportPack = overlayEl.querySelector("#reportPack");
+          if (titleEl && resultCopy.title) titleEl.textContent = resultCopy.title;
+          if (reportAcc && resultCopy.accuracyLine) reportAcc.textContent = resultCopy.accuracyLine;
+          if (reportPlan && resultCopy.xpLine) reportPlan.textContent = resultCopy.xpLine;
+          if (reportPack && resultCopy.rankLine) reportPack.textContent = resultCopy.rankLine;
+          return resultCopy;
+        }
+      };
+    }
+
+    function buildResultsSummary(results, options) {
+      var output = results || {};
+      var opts = options || {};
+      var rank = output.rankProgress || rankProgress(output.xpEarned || 0);
+      var answered = Math.max(0, safeNumber(output.answeredQuestions, 0));
+      var total = Math.max(answered, safeNumber(output.totalQuestions, answered));
+      var correct = Math.max(0, safeNumber(output.correctAnswers, 0));
+      var accuracy = clamp(safeNumber(output.accuracy, 0), 0, 100);
+      return {
+        title: opts.title || "Mission Complete",
+        accuracyLine: "Correct answers: " + correct + "/" + Math.max(1, total) + " · Accuracy: " + accuracy + "%",
+        xpLine: "XP earned: " + Math.max(0, safeNumber(output.xpEarned, 0)) + " · Skipped: " + Math.max(0, safeNumber(output.skippedQuestions, 0)),
+        rankLine: "Rank progress: " + rank.currentRank + " → " + rank.nextRank + " (" + rank.progressPct + "%)",
+        contextLine: "Mission: " + (opts.currentMission || output.currentMission || "") + " · Game: " + (opts.currentGame || output.currentGame || "") + " · Difficulty: " + (opts.difficulty || output.difficultyLevel || "field")
+      };
+    }
+
+    window.GSGameplayEngine = {
+      createSession: createSession,
+      createQuestionModel: createQuestionModel,
+      calculateRankProgress: rankProgress,
+      buildResultsSummary: buildResultsSummary
+    };
+  }
+
+  ensureGameplayEngine();
+
   var games = {
     "error-smash": {
       title: "Grammar Detective",
@@ -5052,26 +5284,47 @@
     if (!sentenceParts.length) sentenceParts = ["No", "question", "data", "available."];
     if (incorrectIndex < 0 || incorrectIndex >= sentenceParts.length) incorrectIndex = 0;
     var correction = typeof safeRound.correction === "string" ? safeRound.correction : "";
-    var correctedSentence = typeof safeRound.correctedSentence === "string" && safeRound.correctedSentence.trim()
-      ? safeRound.correctedSentence
-      : sentenceFromParts(sentenceParts.map(function (token, idx) {
-          if (idx !== incorrectIndex || !correction) return token;
-          return correction;
-        }));
-    return {
+    var engineModelFactory = window.GSGameplayEngine && typeof window.GSGameplayEngine.createQuestionModel === "function"
+      ? window.GSGameplayEngine.createQuestionModel
+      : null;
+    var normalized = engineModelFactory ? engineModelFactory({
       id: safeRound.id || ("detective_" + String(index + 1)),
       scene: safeRound.scene || ("Case " + String(index + 1)),
       prompt: safeRound.prompt || "Find the one incorrect word.",
       sentenceParts: sentenceParts,
       incorrectIndex: incorrectIndex,
       correction: correction || sentenceParts[incorrectIndex],
-      correctedSentence: correctedSentence,
+      correctedSentence: (typeof safeRound.correctedSentence === "string" && safeRound.correctedSentence.trim())
+        ? safeRound.correctedSentence
+        : sentenceFromParts(sentenceParts.map(function (token, idx) {
+            if (idx !== incorrectIndex || !correction) return token;
+            return correction;
+          })),
       explanation: safeRound.explanation || safeRound.explain || "Check subject-verb agreement and tense consistency.",
       difficulty: (safeRound.difficulty || "field"),
       xpReward: Math.max(5, Number(safeRound.xpReward) || 20),
       grammar_rule_id: safeRound.grammar_rule_id || "grammar_detective_core",
       item_id: safeRound.item_id
+    }, index) : {
+      id: safeRound.id || ("detective_" + String(index + 1)),
+      scene: safeRound.scene || ("Case " + String(index + 1)),
+      prompt: safeRound.prompt || "Find the one incorrect word.",
+      sentenceParts: sentenceParts,
+      incorrectIndex: incorrectIndex,
+      correction: correction || sentenceParts[incorrectIndex],
+      correctedSentence: (typeof safeRound.correctedSentence === "string" && safeRound.correctedSentence.trim())
+        ? safeRound.correctedSentence
+        : sentenceFromParts(sentenceParts.map(function (token, idx) {
+            if (idx !== incorrectIndex || !correction) return token;
+            return correction;
+          })),
+      explanation: safeRound.explanation || safeRound.explain || "Check subject-verb agreement and tense consistency.",
+      difficulty: (safeRound.difficulty || "field"),
+      xpReward: Math.max(5, Number(safeRound.xpReward) || 20),
+      grammar_rule_id: safeRound.grammar_rule_id || "grammar_detective_core"
     };
+    if (safeRound.item_id) normalized.item_id = safeRound.item_id;
+    return normalized;
   }
 
   function selectDetectiveQuestionPool(source, difficultyKey, enableDifficultyFilter) {
@@ -5906,6 +6159,7 @@
   var teacherBtn = document.getElementById("btnTeacher");
   var homeBtn = document.getElementById("btnHome");
   var reportNavBtn = document.getElementById("closeToTeacher");
+  var gameplayEngine = window.GSGameplayEngine || null;
   if (teacherBtn) teacherBtn.setAttribute("href", "teacher-mode.html?pack=" + encodeURIComponent(pack));
   if (homeBtn) homeBtn.setAttribute("href", "index.html");
   if (activeMode === "detective" && reportNavBtn) {
@@ -5936,6 +6190,14 @@
   if (sceneLabelEl && ux.sceneLabel) sceneLabelEl.textContent = ux.sceneLabel;
 
   var rounds = buildRounds(resolveRoundBank(gameKey, pack, activeMissionProfile), count);
+  var gameSession = gameplayEngine && typeof gameplayEngine.createSession === "function"
+    ? gameplayEngine.createSession({
+        currentMission: gameKey + "::" + pack,
+        currentGame: gameKey,
+        difficultyLevel: difficulty,
+        questions: rounds
+      })
+    : null;
   var activeMissionType = resolvedMissionType === "mixed_review" ? "mixed_review" : "single_rule";
   var idx = 0;
   var correct = 0;
@@ -6152,8 +6414,26 @@
   }
 
   function updateHud() {
+    if (gameSession) {
+      gameSession.trackProgress({
+        questionIndex: idx,
+        correctAnswers: correct,
+        answeredQuestions: Math.max(idx, correct + detectiveSkipped),
+        skippedQuestions: detectiveSkipped,
+        streak: streak,
+        score: score,
+        xpEarned: score,
+        totalQuestions: rounds.length,
+        difficultyLevel: difficulty,
+        missionComplete: idx >= rounds.length,
+        questions: rounds
+      });
+    }
     text("hudCase", Math.min(idx + 1, rounds.length) + "/" + rounds.length);
-    text("hudAcc", Math.round((correct / Math.max(1, idx)) * 100) + "%");
+    var accuracyPct = gameSession && typeof gameSession.calculateAccuracy === "function"
+      ? gameSession.calculateAccuracy()
+      : Math.round((correct / Math.max(1, idx)) * 100);
+    text("hudAcc", accuracyPct + "%");
     text("hudStreak", String(streak));
     if (timerOn) text("hudTimer", Math.max(0, sec) + "s");
     text("hudScore", String(score));
@@ -6227,7 +6507,6 @@
     locked = true;
     awaitingNext = true;
     if (shotTimer) clearInterval(shotTimer);
-    idx += 1;
     if (userCorrect) {
       correct += 1;
       streak += 1;
@@ -6236,7 +6515,12 @@
       var speedBonus = timerOn ? Math.max(0, shotClock) * 6 : 0;
       var streakBonus = Math.min(80, streak * 10);
       var award = activeMode === "detective" ? Math.max(5, Number(round && round.xpReward) || 20) : Math.round((80 + speedBonus + streakBonus) * combo);
-      score += award;
+      if (gameSession && typeof gameSession.awardXP === "function") {
+        var xpAwardState = gameSession.awardXP(award);
+        score = xpAwardState.score;
+      } else {
+        score += award;
+      }
       if (btn) btn.classList.add("good");
       html("feedback", "<span class=\"ok\"><b>CORRECT.</b> " + successMsg + " +" + award + (activeMode === "detective" ? " XP" : " pts") + "</span>");
       if (window.GSSound && window.GSSound.clickTone) window.GSSound.clickTone();
@@ -6260,6 +6544,14 @@
     var responseTime = Math.max(0, Date.now() - currentRoundStartedAt);
     emitItemAnswer(round, itemNumber, !!userCorrect, responseTime);
     setMissionFeedbackPanel(!!userCorrect, round, userCorrect ? successMsg : failMsg);
+    if (gameSession && typeof gameSession.moveToNextQuestion === "function") {
+      var nextState = gameSession.moveToNextQuestion({ wasCorrect: !!userCorrect, skipped: false });
+      idx = nextState.questionIndex;
+      correct = nextState.correctAnswers;
+      streak = nextState.streak;
+    } else {
+      idx += 1;
+    }
     setNextVisibility(true, idx >= rounds.length ? "Finish Mission" : "Next");
     updateHud();
   }
@@ -8241,6 +8533,18 @@
     locked = false;
     awaitingNext = false;
     retryCount += 1;
+    if (gameSession) {
+      gameSession.trackProgress({
+        questionIndex: idx,
+        correctAnswers: correct,
+        answeredQuestions: Math.max(0, idx + detectiveSkipped),
+        skippedQuestions: detectiveSkipped,
+        streak: streak,
+        score: score,
+        xpEarned: score,
+        missionComplete: false
+      });
+    }
     setNextVisibility(false);
     text("feedback", "");
     clearMissionFeedbackPanel();
@@ -8259,7 +8563,15 @@
     combo = 1;
     hintUsedThisRound = false;
     emitItemAnswer(round, itemNumber, false, responseTime, { skipped: true });
-    idx += 1;
+    if (gameSession && typeof gameSession.moveToNextQuestion === "function") {
+      var skipState = gameSession.moveToNextQuestion({ wasCorrect: false, skipped: true });
+      idx = skipState.questionIndex;
+      correct = skipState.correctAnswers;
+      streak = skipState.streak;
+      score = skipState.score;
+    } else {
+      idx += 1;
+    }
     detectiveState.isAnswered = true;
     detectiveState.isCorrect = false;
     setSkipVisibility(false);
@@ -8294,6 +8606,7 @@
     clearMissionFeedbackPanel();
 
     var finalAccuracy = 0;
+    var resultsComponentCopy = null;
 
     if (playFormat === "teams") {
       var winner = teamA.score > teamB.score ? "Team A" : (teamB.score > teamA.score ? "Team B" : "Tie");
@@ -8309,11 +8622,38 @@
       text("reportPlan", "Top error pattern: " + topErrorPattern() + ". " + recommendationByAccuracy(finalAccuracy));
       text("reportPack", "Pack: " + packTitle + " \u00b7 Game: " + cfg.title + " \u00b7 Whole Class Mode");
     } else {
-      finalAccuracy = Math.round((correct / Math.max(1, idx)) * 100);
-      if (activeMode === "detective") {
-        text("reportAcc", "Correct answers: " + correct + "/" + Math.max(1, idx) + " \u00b7 Accuracy: " + finalAccuracy + "%");
-        text("reportPlan", "Total XP earned: " + score + " XP \u00b7 Best streak: " + bestStreak + " \u00b7 Skipped: " + detectiveSkipped);
-        text("reportPack", "Difficulty: " + difficulty + " \u00b7 " + cfg.title);
+      if (gameSession) {
+        gameSession.trackProgress({
+          questionIndex: idx,
+          correctAnswers: correct,
+          answeredQuestions: Math.max(0, idx + detectiveSkipped),
+          skippedQuestions: detectiveSkipped,
+          streak: streak,
+          score: score,
+          xpEarned: score,
+          totalQuestions: rounds.length,
+          difficultyLevel: difficulty
+        });
+      }
+      finalAccuracy = gameSession && typeof gameSession.calculateAccuracy === "function"
+        ? gameSession.calculateAccuracy()
+        : Math.round((correct / Math.max(1, idx)) * 100);
+      if (gameSession && typeof gameSession.completeMission === "function" && gameplayEngine && typeof gameplayEngine.buildResultsSummary === "function") {
+        var engineResults = gameSession.completeMission({ reason: reason || "manual_end" });
+        resultsComponentCopy = gameplayEngine.buildResultsSummary(engineResults, {
+          title: activeMode === "detective" ? "Mission Complete" : "Mission Report",
+          currentMission: gameKey + "::" + pack,
+          currentGame: cfg.title,
+          difficulty: difficulty
+        });
+        if (activeMode !== "detective") {
+          resultsComponentCopy.xpLine += " \u00b7 Top error pattern: " + topErrorPattern();
+        } else {
+          resultsComponentCopy.xpLine += " \u00b7 Best streak: " + bestStreak;
+        }
+        text("reportAcc", resultsComponentCopy.accuracyLine);
+        text("reportPlan", resultsComponentCopy.xpLine);
+        text("reportPack", resultsComponentCopy.rankLine + " \u00b7 " + resultsComponentCopy.contextLine);
       } else {
         text("reportAcc", "Accuracy: " + finalAccuracy + "% (" + correct + "/" + Math.max(1, idx) + ")");
         text("reportPlan", "Top error pattern: " + topErrorPattern() + ". " + recommendationByAccuracy(finalAccuracy) + " Final score: " + score + " pts.");
@@ -8330,6 +8670,9 @@
       var reportTitle = report.querySelector("h2");
       if (reportTitle && activeMode === "detective" && playFormat === "individuals") reportTitle.textContent = "Mission Complete";
       else if (reportTitle) reportTitle.textContent = "Mission Report";
+      if (gameSession && typeof gameSession.renderResults === "function" && resultsComponentCopy) {
+        gameSession.renderResults(report, resultsComponentCopy);
+      }
       report.classList.add("show");
     }
   }
@@ -8380,6 +8723,14 @@
       if (report) report.classList.remove("show");
       if (shotTimer) clearInterval(shotTimer);
       rounds = buildRounds(resolveRoundBank(gameKey, pack, activeMissionProfile), count);
+      if (gameplayEngine && typeof gameplayEngine.createSession === "function") {
+        gameSession = gameplayEngine.createSession({
+          currentMission: gameKey + "::" + pack,
+          currentGame: gameKey,
+          difficultyLevel: difficulty,
+          questions: rounds
+        });
+      }
       idx = 0;
       correct = 0;
       streak = 0;
