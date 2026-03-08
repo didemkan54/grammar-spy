@@ -137,7 +137,7 @@ function init() {
       if (confirmation) {
         confirmation.innerHTML = `
           <strong>Welcome, ${player.nickname}.</strong>
-          Joining PIN <strong>${pin}</strong>...
+          Joining code <strong>${pin}</strong>...
         `;
         confirmation.classList.add("show");
       }

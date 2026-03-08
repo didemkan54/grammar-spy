@@ -46,6 +46,35 @@
       </article>
     </section>
 
+    <section class="panel">
+      <h2>Assignments + Generator Tools</h2>
+      <p class="panel-sub">Assign existing missions/quizzes/worksheets or generate new quiz/worksheet content first.</p>
+      <div class="input-row" style="margin-top:10px;">
+        <select id="assignmentType">
+          <option value="mission">Mission</option>
+          <option value="quiz">Quiz</option>
+          <option value="worksheet">Worksheet</option>
+        </select>
+        <input id="assignmentTarget" placeholder="Target ID (mission id, quiz id, worksheet id)" />
+        <input id="assignmentTitle" placeholder="Assignment title" />
+        <input id="assignmentDueAt" type="datetime-local" />
+        <button id="assignContentBtn" class="btn-primary">Assign</button>
+      </div>
+      <div class="input-row" style="margin-top:10px;">
+        <input id="quizTopic" value="past tense" placeholder="Topic (e.g. past tense)" />
+        <select id="quizDifficulty">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate" selected>Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        <input id="quizCount" type="number" min="3" max="30" value="10" />
+        <button id="generateQuizAssignBtn" class="btn-soft">Generate + Assign Quiz</button>
+        <button id="generateWorksheetAssignBtn" class="btn-soft">Generate + Assign Worksheet</button>
+      </div>
+      <p id="assignmentStatus" class="panel-sub"></p>
+      <ul id="classAssignmentsList" class="suggestion-list"></ul>
+    </section>
+
     <section class="dash-grid two-col">
       <article class="panel">
         <h2>Auto Teaching Suggestions</h2>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Grammar Spy | Mission Lobby</title>
-  <meta name="description" content="Grammar Spy mission lobby with joined player rankings and demo round scoring." />
+  <meta name="description" content="Grammar Spy classroom waiting room with join code, player list, and live scoreboard." />
   <link rel="stylesheet" href="/student/student-lobby.css" />
 </head>
 <body class="student-shell">
@@ -12,9 +12,10 @@
 
   <main class="student-main">
     <section class="student-hero">
-      <p class="student-eyebrow">Mission Lobby</p>
-      <h1>Agents are joining...</h1>
-      <p>PIN <strong id="lobbyPin">------</strong></p>
+      <p class="student-eyebrow">Classroom Session</p>
+      <h1 id="lobbyMissionName">Mission Lobby</h1>
+      <p><strong id="lobbyTeacherName">Teacher: --</strong></p>
+      <p>Join Code <strong id="lobbyPin">------</strong></p>
     </section>
 
     <section class="student-card rank-shell">
@@ -38,7 +39,9 @@
       </div>
 
       <div class="demo-tools">
-        <button id="demoRoundBtn" class="btn-primary-join" hidden>Run Demo Round</button>
+        <button id="startMissionBtn" class="btn-primary-join" hidden>Start Mission</button>
+        <a id="launchMissionBtn" class="btn-secondary-join" href="#" hidden>Open Mission View</a>
+        <button id="demoRoundBtn" class="btn-secondary-join" hidden>Run Demo Round</button>
         <span id="demoModeHint" class="demo-hint" hidden>Demo mode enabled via <code>?demo=1</code>.</span>
         <a id="winnerPageBtn" class="btn-secondary-join" href="/winner/">Show Winner</a>
       </div>

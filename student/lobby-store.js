@@ -1,134 +1,106 @@
-const LOBBY_STORE_KEY = "gs_student_lobbies_v1";
-
-function canUseStorage() {
-  try {
-    const key = "__gs_lobby_probe__";
-    localStorage.setItem(key, "1");
-    localStorage.removeItem(key);
-    return true;
-  } catch (_err) {
-    return false;
-  }
-}
-
-function readStore() {
-  if (!canUseStorage()) return {};
-  try {
-    const parsed = JSON.parse(localStorage.getItem(LOBBY_STORE_KEY) || "{}");
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch (_err) {
-    return {};
-  }
-}
-
-function writeStore(store) {
-  if (!canUseStorage()) return;
-  localStorage.setItem(LOBBY_STORE_KEY, JSON.stringify(store || {}));
-}
+import {
+  endSession,
+  getSessionByCode,
+  joinSession,
+  normalizeJoinCode,
+  startSession,
+  submitAnswer
+} from "/core/classroom-session.js";
 
 export function normalizePin(value) {
-  const raw = String(value || "").trim().toUpperCase();
-  if (raw === "DEMO") return "DEMO";
-  if (/^\d{6}$/.test(raw)) return raw;
-  return "";
+  return normalizeJoinCode(value);
 }
 
 export function resolvePinFromLocation(locationObj = window.location) {
-  const queryPin = normalizePin(new URLSearchParams(locationObj.search || "").get("pin"));
-  if (queryPin) return queryPin;
-  const parts = String(locationObj.pathname || "")
-    .split("/")
-    .filter(Boolean);
+  const params = new URLSearchParams(locationObj.search || "");
+  const queryCode = normalizePin(params.get("pin") || params.get("code"));
+  if (queryCode) return queryCode;
+  const parts = String(locationObj.pathname || "").split("/").filter(Boolean);
   const last = parts[parts.length - 1];
   return normalizePin(last);
 }
 
-export function getLobby(pin) {
-  const normalizedPin = normalizePin(pin);
-  if (!normalizedPin) return null;
-  const store = readStore();
-  return store[normalizedPin] || null;
-}
-
-function defaultLobby(pin) {
+function toLobbyPlayer(player) {
   return {
-    pin,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    players: []
+    id: player.id,
+    nickname: player.agentName || "Agent",
+    avatarId: player.avatarId || "spy_hacker",
+    accentColor: player.accentColor || "#1f8f8f",
+    score: Number(player.xp || 0),
+    joinedAt: player.joinedAtMs || Date.now(),
+    accuracy: Number(player.accuracy || 0),
+    correctAnswers: Number(player.correctAnswers || 0),
+    totalAnswers: Number(player.totalAnswers || 0),
+    completionStatus: player.completionStatus || "waiting"
   };
 }
 
-export function upsertLobby(pin, updater) {
-  const normalizedPin = normalizePin(pin);
-  if (!normalizedPin) throw new Error("Invalid PIN.");
-  const store = readStore();
-  const existing = store[normalizedPin] || defaultLobby(normalizedPin);
-  const next = typeof updater === "function" ? updater(existing) : existing;
-  next.pin = normalizedPin;
-  next.updatedAt = Date.now();
-  if (!Array.isArray(next.players)) next.players = [];
-  store[normalizedPin] = next;
-  writeStore(store);
-  return next;
+function toLobbyShape(session) {
+  if (!session) return null;
+  return {
+    pin: session.joinCode,
+    sessionId: session.id,
+    missionId: session.missionId,
+    missionName: session.missionName,
+    missionUrl: session.missionUrl,
+    teacherName: session.teacherName,
+    status: session.status,
+    createdAt: session.createdAt,
+    updatedAt: session.updatedAt,
+    players: (session.players || []).map(toLobbyPlayer)
+  };
 }
 
-function generatePlayerId() {
-  return `p_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+export function getLobby(pin) {
+  const code = normalizePin(pin);
+  if (!code) return null;
+  return toLobbyShape(getSessionByCode(code));
 }
 
 export function sortPlayers(players) {
   return [...(players || [])].sort((a, b) => {
-    if (b.score !== a.score) return b.score - a.score;
-    return a.joinedAt - b.joinedAt;
+    const scoreDiff = Number(b.score || 0) - Number(a.score || 0);
+    if (scoreDiff !== 0) return scoreDiff;
+    const accuracyDiff = Number(b.accuracy || 0) - Number(a.accuracy || 0);
+    if (accuracyDiff !== 0) return accuracyDiff;
+    return Number(a.joinedAt || 0) - Number(b.joinedAt || 0);
   });
 }
 
 export function addPlayerToLobby(pin, payload) {
-  const nickname = String(payload.nickname || "").trim();
-  const avatarId = String(payload.avatarId || "spy_hacker").trim();
-  const accentColor = String(payload.accentColor || "#1f8f8f").trim();
-
-  let createdPlayer = null;
-  const lobby = upsertLobby(pin, (existing) => {
-    const dupe = existing.players.some(
-      (player) => player.nickname.toLowerCase() === nickname.toLowerCase()
-    );
-    if (dupe) {
-      throw new Error("Nickname already joined this lobby. Try another one.");
-    }
-    createdPlayer = {
-      id: generatePlayerId(),
-      nickname,
-      avatarId,
-      accentColor,
-      score: 0,
-      joinedAt: Date.now()
-    };
-    return {
-      ...existing,
-      players: [...existing.players, createdPlayer]
-    };
+  const result = joinSession(pin, payload.nickname, {
+    avatarId: payload.avatarId,
+    accentColor: payload.accentColor
   });
-  return { lobby, player: createdPlayer };
+  return {
+    lobby: toLobbyShape(result.session),
+    player: toLobbyPlayer(result.player)
+  };
 }
 
 export function runDemoRound(pin) {
-  return upsertLobby(pin, (existing) => {
-    const players = existing.players.map((player) => {
-      const gain = Math.floor(Math.random() * 101);
-      return { ...player, score: player.score + gain };
+  const code = normalizePin(pin);
+  if (!code) return null;
+  const session = getSessionByCode(code);
+  if (!session) return null;
+  if (session.status === "waiting") startSession(session.id);
+  (session.players || []).forEach((player) => {
+    const xp = 8 + Math.floor(Math.random() * 24);
+    submitAnswer(player.id, `demo_${Date.now()}`, {
+      isCorrect: Math.random() > 0.25,
+      xpEarned: xp,
+      scoreDelta: xp
     });
-    return { ...existing, players };
   });
+  return getLobby(code);
 }
 
 export function clearLobby(pin) {
-  const normalizedPin = normalizePin(pin);
-  if (!normalizedPin) return;
-  const store = readStore();
-  delete store[normalizedPin];
-  writeStore(store);
+  const code = normalizePin(pin);
+  if (!code) return;
+  const session = getSessionByCode(code);
+  if (!session) return;
+  endSession(session.id, { reason: "clear_lobby" });
 }
 
 export function getPodium(pin) {

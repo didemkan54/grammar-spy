@@ -8,6 +8,7 @@ import {
   upsertStudentProfile
 } from "/student/identity-store.js";
 import { AVATAR_ACCENTS, AVATARS, getAvatarById, renderAvatarSvg } from "/student/data/avatars.js";
+import { createCoachSession, generatePracticeFollowup, listCoachSessions, sendCoachMessage } from "/core/product-system.js";
 
 const DAILY_KEY = "gs_daily_challenge_state_v1";
 const BOSS_KEY = "gs_boss_mission_state_v1";
@@ -335,6 +336,85 @@ function renderLeaderboardPreview(summary) {
   `;
 }
 
+function setupGrammarCoach(summary) {
+  const listEl = document.getElementById("coachMessages");
+  const inputEl = document.getElementById("coachInput");
+  const sendBtn = document.getElementById("coachSendBtn");
+  const practiceBtn = document.getElementById("coachPracticeBtn");
+  const statusEl = document.getElementById("coachStatus");
+  if (!listEl || !inputEl || !sendBtn || !practiceBtn || !statusEl) return;
+
+  const studentId = summary.student_id || getActiveStudentId();
+  let session = listCoachSessions(studentId)[0] || createCoachSession({ studentId }, { role: "student", id: studentId });
+
+  function renderMessages() {
+    const rows = session.messages || [];
+    if (!rows.length) {
+      listEl.innerHTML = '<div class="empty-note">Ask a grammar question to start this coaching session.</div>';
+      return;
+    }
+    listEl.innerHTML = rows
+      .slice(-8)
+      .map((msg) => {
+        const role = msg.role === "assistant" ? "Coach" : "You";
+        return `
+          <li class="activity-card">
+            <strong>${role}</strong>
+            <p class="panel-sub" style="white-space:pre-line;">${msg.content}</p>
+          </li>
+        `;
+      })
+      .join("");
+    listEl.scrollTop = listEl.scrollHeight;
+  }
+
+  async function send(content) {
+    const text = String(content || "").trim();
+    if (!text) {
+      statusEl.textContent = "Enter a grammar question first.";
+      return;
+    }
+    sendBtn.disabled = true;
+    statusEl.textContent = "Coach is analyzing...";
+    try {
+      const result = await sendCoachMessage(
+        {
+          sessionId: session.id,
+          content: text
+        },
+        { role: "student", id: studentId }
+      );
+      session = result.session;
+      renderMessages();
+      statusEl.textContent = "Response ready.";
+    } catch (err) {
+      statusEl.textContent = err?.message || "Could not send message.";
+    } finally {
+      sendBtn.disabled = false;
+    }
+  }
+
+  sendBtn.addEventListener("click", () => {
+    const text = inputEl.value;
+    inputEl.value = "";
+    send(text);
+  });
+  inputEl.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      sendBtn.click();
+    }
+  });
+  practiceBtn.addEventListener("click", () => {
+    const lastAssistant = [...(session.messages || [])].reverse().find((msg) => msg.role === "assistant");
+    const followup = generatePracticeFollowup(lastAssistant?.analysis || "subject-verb agreement");
+    inputEl.value = followup.prompt;
+    statusEl.textContent = "Practice prompt loaded. Send to get feedback.";
+  });
+
+  renderMessages();
+}
+
 function init() {
   const params = new URLSearchParams(window.location.search);
   const studentId = String(params.get("student_id") || "").trim() || getActiveStudentId();
@@ -354,6 +434,7 @@ function init() {
   renderLeaderboardPreview(summary);
   setupDailyChallenge(summary);
   setupBossMission(summary);
+  setupGrammarCoach(summary);
 }
 
 if (document.readyState === "loading") {
