@@ -46,10 +46,10 @@
     return read();
   }
 
-  function setAccount(name, email){
+  function setAccount(name, email, role){
     const billing = window.GS_BILLING;
     if (billing && billing.createAccount){
-      const account = billing.createAccount(name, email, 'teacher');
+      const account = billing.createAccount(name, email, role || 'teacher');
       const session = toSession(account);
       write(session);
       return session;
