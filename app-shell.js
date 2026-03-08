@@ -472,6 +472,7 @@
 
   function preloadProductSystem(){
     try {
+      import('/core/grammar-question-bank.js').catch(function(){});
       import('/core/product-system.js').catch(function(){});
     } catch (_err) {}
   }

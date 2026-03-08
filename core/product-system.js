@@ -8,6 +8,7 @@ import {
   setActiveContext,
   upsertStudentProfile
 } from "/student/identity-store.js";
+import { getQuestionsForGame, getRandomQuestions, normalizeDifficulty as normalizeBankDifficulty, resolveTopicKey } from "/core/grammar-question-bank.js";
 
 const STORAGE_KEYS = {
   teachers: "gs_teachers_v1",
@@ -43,141 +44,6 @@ const ROLE_PERMISSIONS = {
 
 const QUIZ_TYPES = ["multiple_choice", "error_correction", "fill_blank", "sentence_builder"];
 const WORKSHEET_TYPES = ["practice_worksheet", "exit_ticket", "homework_sheet", "quick_review"];
-
-const GRAMMAR_BANK = {
-  past_tense: [
-    {
-      incorrect: "She go to school yesterday.",
-      corrected: "She went to school yesterday.",
-      rule: "simple past irregular verbs",
-      explanation: "Use the irregular past form 'went' for yesterday."
-    },
-    {
-      incorrect: "They was late for class.",
-      corrected: "They were late for class.",
-      rule: "be-verb agreement in past tense",
-      explanation: "Use 'were' with plural subjects like 'they'."
-    },
-    {
-      incorrect: "We didn't went to the lab.",
-      corrected: "We didn't go to the lab.",
-      rule: "auxiliary + base verb",
-      explanation: "After 'didn't', use the base verb: go."
-    },
-    {
-      incorrect: "He study English last night.",
-      corrected: "He studied English last night.",
-      rule: "regular past tense -ed",
-      explanation: "Regular verbs add -ed in the simple past."
-    }
-  ],
-  present_tense: [
-    {
-      incorrect: "She go to school every day.",
-      corrected: "She goes to school every day.",
-      rule: "third person singular in simple present",
-      explanation: "Use verb + s/es for he/she/it in simple present."
-    },
-    {
-      incorrect: "They plays soccer after school.",
-      corrected: "They play soccer after school.",
-      rule: "subject-verb agreement with plural subjects",
-      explanation: "Plural subjects use the base form: play."
-    },
-    {
-      incorrect: "My brother have two notebooks.",
-      corrected: "My brother has two notebooks.",
-      rule: "has/have agreement",
-      explanation: "Use 'has' with singular third-person subjects."
-    },
-    {
-      incorrect: "I am usually walk to class.",
-      corrected: "I usually walk to class.",
-      rule: "simple present without extra auxiliary",
-      explanation: "Do not use 'am' before a simple present main verb."
-    }
-  ],
-  subject_verb_agreement: [
-    {
-      incorrect: "The students in this class is focused.",
-      corrected: "The students in this class are focused.",
-      rule: "plural subject with be-verb",
-      explanation: "The subject is 'students' (plural), so use 'are'."
-    },
-    {
-      incorrect: "Each student write a reflection.",
-      corrected: "Each student writes a reflection.",
-      rule: "each + singular verb",
-      explanation: "'Each student' is singular, so use 'writes'."
-    },
-    {
-      incorrect: "The list of rules are on the wall.",
-      corrected: "The list of rules is on the wall.",
-      rule: "head noun agreement",
-      explanation: "The subject is 'list' (singular), so use 'is'."
-    }
-  ],
-  auxiliary_verbs: [
-    {
-      incorrect: "She don't like grammar drills.",
-      corrected: "She doesn't like grammar drills.",
-      rule: "do/does agreement",
-      explanation: "Use 'doesn't' with third-person singular subjects."
-    },
-    {
-      incorrect: "Do he understand the clue?",
-      corrected: "Does he understand the clue?",
-      rule: "question auxiliary agreement",
-      explanation: "Questions with he/she/it use 'does'."
-    },
-    {
-      incorrect: "They doesn't need a hint.",
-      corrected: "They don't need a hint.",
-      rule: "plural auxiliary form",
-      explanation: "Plural subjects use 'don't', not 'doesn't'."
-    }
-  ],
-  plural_singular: [
-    {
-      incorrect: "Those notebook is on the desk.",
-      corrected: "Those notebooks are on the desk.",
-      rule: "plural noun and verb agreement",
-      explanation: "Use plural noun 'notebooks' and plural verb 'are'."
-    },
-    {
-      incorrect: "Many student likes this game.",
-      corrected: "Many students like this game.",
-      rule: "plural noun after many",
-      explanation: "After 'many', use a plural noun and matching verb."
-    },
-    {
-      incorrect: "This clues is important.",
-      corrected: "These clues are important.",
-      rule: "demonstrative + noun number agreement",
-      explanation: "Plural noun 'clues' needs 'these' and 'are'."
-    }
-  ],
-  tense_consistency: [
-    {
-      incorrect: "Yesterday we study and then we watch a movie.",
-      corrected: "Yesterday we studied and then we watched a movie.",
-      rule: "keep tense consistent in one timeline",
-      explanation: "Use past tense for both actions in a past-time sequence."
-    },
-    {
-      incorrect: "He opens his notebook and wrote the answer.",
-      corrected: "He opened his notebook and wrote the answer.",
-      rule: "parallel tense in compound verbs",
-      explanation: "Both actions should stay in the same tense."
-    },
-    {
-      incorrect: "Last week they are absent and missed the quiz.",
-      corrected: "Last week they were absent and missed the quiz.",
-      rule: "past-time be-verb",
-      explanation: "Past-time markers require past be-verb forms."
-    }
-  ]
-};
 
 function nowIso() {
   return new Date().toISOString();
@@ -925,14 +791,7 @@ function getClassProgress(classId) {
 }
 
 function normalizeTopic(topic) {
-  const clean = String(topic || "").toLowerCase().trim();
-  if (clean.includes("past")) return "past_tense";
-  if (clean.includes("present")) return "present_tense";
-  if (clean.includes("subject")) return "subject_verb_agreement";
-  if (clean.includes("aux")) return "auxiliary_verbs";
-  if (clean.includes("plural") || clean.includes("singular")) return "plural_singular";
-  if (clean.includes("consisten")) return "tense_consistency";
-  return clean.replace(/[^a-z0-9]+/g, "_") || "present_tense";
+  return resolveTopicKey(topic);
 }
 
 function difficultyLabel(difficulty) {
@@ -953,110 +812,90 @@ function shuffle(list) {
   return rows;
 }
 
-function pickBankRows(topic, count) {
-  const key = normalizeTopic(topic);
-  const rows = GRAMMAR_BANK[key] || GRAMMAR_BANK.present_tense;
-  const picks = [];
-  while (picks.length < count) {
-    const row = rows[picks.length % rows.length];
-    picks.push({ ...row });
-  }
-  return picks;
+function sentenceFromParts(parts) {
+  return String((parts || []).join(" "))
+    .replace(/\s+([.,!?;:])/g, "$1")
+    .replace(/\s+(['’])/g, "$1");
 }
 
-function splitSentence(sentence) {
-  return String(sentence || "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .split(" ")
-    .filter(Boolean);
+function toBankDifficulty(difficulty) {
+  return normalizeBankDifficulty(difficulty || "field");
 }
 
-function extractWrongToken(entry) {
-  const wrongTokens = splitSentence(entry.incorrect);
-  const rightTokens = splitSentence(entry.corrected);
-  for (let idx = 0; idx < Math.max(wrongTokens.length, rightTokens.length); idx += 1) {
-    if (wrongTokens[idx] !== rightTokens[idx]) {
-      return {
-        wrong: wrongTokens[idx] || "",
-        correct: rightTokens[idx] || ""
-      };
-    }
-  }
-  return { wrong: wrongTokens[0] || "", correct: rightTokens[0] || "" };
+function wordAtIndex(question) {
+  const parts = Array.isArray(question?.sentenceParts) ? question.sentenceParts : [];
+  const idx = Math.max(0, Number(question?.incorrectIndex || 0));
+  return String(parts[idx] || "").replace(/[.,!?;:]+$/g, "");
 }
 
-function difficultyXp(difficulty) {
-  const label = difficultyLabel(difficulty);
-  if (label === "beginner") return 15;
-  if (label === "advanced") return 30;
-  return 22;
-}
+function buildQuizQuestionFromBank(entry, requestedType, index) {
+  const safe = entry || {};
+  const type = String(requestedType || "multiple_choice");
+  const correctedSentence = safe.correctedSentence || sentenceFromParts(safe.sentenceParts || []);
+  const correction = safe.correction || wordAtIndex(safe);
+  const wrongToken = wordAtIndex(safe);
+  const xpReward = Math.max(10, Number(safe.xpReward || 20));
+  const providedOptions = Array.isArray(safe.options) ? safe.options.map((item) => String(item)) : [];
+  const options = providedOptions.length
+    ? providedOptions
+    : uniq([correction, wrongToken, `${correction}s`, `${wrongToken}s`]).filter(Boolean).slice(0, 4);
 
-function buildQuestion(entry, type, index, difficulty) {
-  const token = extractWrongToken(entry);
-  const xpReward = difficultyXp(difficulty);
   if (type === "error_correction") {
     return normalizeQuizQuestion(
       {
         id: `q_${index + 1}`,
         type,
-        prompt: `Fix the sentence: ${entry.incorrect}`,
+        prompt: safe.prompt || `Fix the sentence: ${sentenceFromParts(safe.sentenceParts || [])}`,
         options: [],
-        correctAnswer: entry.corrected,
-        explanation: entry.explanation,
+        correctAnswer: correctedSentence,
+        explanation: safe.explanation || "Review the grammar rule and rewrite the sentence correctly.",
         xpReward
       },
       index
     );
   }
   if (type === "fill_blank") {
-    const prompt = entry.incorrect.replace(token.wrong, "_____");
+    const blankParts = (safe.sentenceParts || []).slice();
+    const idx = Math.max(0, Number(safe.incorrectIndex || 0));
+    blankParts[idx] = "_____";
     return normalizeQuizQuestion(
       {
         id: `q_${index + 1}`,
         type,
-        prompt: `Fill in the blank: ${prompt}`,
-        options: [],
-        correctAnswer: token.correct || entry.corrected,
-        explanation: entry.explanation,
+        prompt: safe.prompt || `Fill in the blank: ${sentenceFromParts(blankParts)}`,
+        options,
+        correctAnswer: correction,
+        explanation: safe.explanation || "Choose the verb or word that correctly completes the sentence.",
         xpReward
       },
       index
     );
   }
   if (type === "sentence_builder") {
-    const tokens = shuffle(splitSentence(entry.corrected));
+    const tokens = shuffle((safe.correctedSentence || "").split(/\s+/).filter(Boolean));
     return normalizeQuizQuestion(
       {
         id: `q_${index + 1}`,
         type,
-        prompt: "Reorder the words to build the correct sentence.",
+        prompt: safe.prompt || "Reorder the words to build the correct sentence.",
         options: tokens,
-        correctAnswer: entry.corrected,
-        explanation: entry.explanation,
+        correctAnswer: correctedSentence,
+        explanation: safe.explanation || "Arrange the words in grammatical order.",
         xpReward
       },
       index
     );
   }
-  const distractors = shuffle(
-    uniq([
-      token.wrong,
-      token.correct,
-      `did ${token.wrong}`,
-      token.correct.endsWith("s") ? token.correct.slice(0, -1) : `${token.correct}s`
-    ])
-  ).slice(0, 4);
-  if (!distractors.includes(token.correct)) distractors[0] = token.correct;
+  const distractors = shuffle(uniq([correction, ...options])).slice(0, 4);
+  if (!distractors.includes(correction)) distractors[0] = correction;
   return normalizeQuizQuestion(
     {
       id: `q_${index + 1}`,
       type: "multiple_choice",
-      prompt: `${entry.incorrect} Choose the best correction for "${token.wrong}".`,
+      prompt: safe.prompt || `${sentenceFromParts(safe.sentenceParts || [])} Choose the best correction.`,
       options: distractors,
-      correctAnswer: token.correct,
-      explanation: entry.explanation,
+      correctAnswer: correction,
+      explanation: safe.explanation || "Select the correction that follows the grammar rule.",
       xpReward
     },
     index
@@ -1131,13 +970,28 @@ async function tryAiQuizGeneration(input, actor) {
 
 function fallbackQuizGeneration(input, actor) {
   const count = Math.max(1, Number(input?.count || 10));
-  const types = Array.isArray(input?.types) && input.types.length ? input.types.filter((row) => QUIZ_TYPES.includes(row)) : QUIZ_TYPES.slice(0, 3);
-  const picks = pickBankRows(input.topic, count);
-  const questions = picks.map((entry, idx) => buildQuestion(entry, types[idx % types.length], idx, input.difficulty));
+  const types = Array.isArray(input?.types) && input.types.length
+    ? input.types.filter((row) => QUIZ_TYPES.includes(row))
+    : QUIZ_TYPES.slice(0, 3);
+  const topicKey = normalizeTopic(input?.topic);
+  const bankDifficulty = toBankDifficulty(input?.difficulty);
+  const gamePool = getQuestionsForGame("ai_quiz", {
+    topic: topicKey,
+    difficulty: bankDifficulty,
+    count: count * 2
+  });
+  const fallbackPool = gamePool.length ? gamePool : getRandomQuestions(topicKey, "", count * 2);
+  const questions = [];
+  for (let idx = 0; idx < count; idx += 1) {
+    const base = fallbackPool[idx % fallbackPool.length];
+    const desiredType = types[idx % Math.max(1, types.length)] || "multiple_choice";
+    const mappedType = desiredType === "error_correction" ? "error_correction" : desiredType;
+    questions.push(buildQuizQuestionFromBank(base, mappedType, idx));
+  }
   return normalizeQuiz({
     id: randomId("quiz"),
     title: input.title || `${normalizeName(input.topic, "Grammar")} Quiz`,
-    topic: normalizeName(input.topic, "grammar"),
+    topic: topicKey,
     difficulty: difficultyLabel(input.difficulty),
     createdBy: resolveActor(actor).id,
     source: "fallback",
@@ -1629,11 +1483,12 @@ async function sendCoachMessage(payload, actor) {
 function generatePracticeFollowup(ruleOrAnalysis) {
   const rule = typeof ruleOrAnalysis === "string" ? ruleOrAnalysis : ruleOrAnalysis?.relatedRule || "";
   const normalized = normalizeTopic(rule);
-  const sample = pickBankRows(normalized, 1)[0];
+  const sample = getRandomQuestions(normalized, "", 1)[0];
+  const sentence = sentenceFromParts(sample?.sentenceParts || []);
   return {
-    prompt: `Try this: ${sample.incorrect}`,
-    expected: sample.corrected,
-    explanation: sample.explanation
+    prompt: `Try this: ${sentence}`,
+    expected: sample?.correctedSentence || sentence,
+    explanation: sample?.explanation || "Review subject-verb agreement and tense."
   };
 }
 

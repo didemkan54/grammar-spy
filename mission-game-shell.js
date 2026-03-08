@@ -574,6 +574,147 @@
     }
   ];
 
+  function getSharedQuestionBankApi() {
+    var api = window.GSQuestionBank;
+    if (!api) return null;
+    if (typeof api.getQuestionsForGame !== "function") return null;
+    return api;
+  }
+
+  function normalizeDifficultyKey(value) {
+    var raw = String(value || "field").toLowerCase();
+    if (raw === "beginner" || raw === "easy") return "rookie";
+    if (raw === "advanced" || raw === "hard") return "senior";
+    if (raw === "intermediate") return "field";
+    return raw || "field";
+  }
+
+  function inferTopicKey(gameKeyValue, profile) {
+    var profileRule = String((profile && profile.grammar_rule_id) || "").toLowerCase();
+    var key = String(gameKeyValue || "").toLowerCase();
+    var combined = key + "::" + profileRule + "::" + String(requestedRuleId || "");
+    if (combined.indexOf("future") >= 0) return "future_tense";
+    if (combined.indexOf("past") >= 0) return "past_tense";
+    if (combined.indexOf("question") >= 0) return "questions";
+    if (combined.indexOf("negative") >= 0) return "negatives";
+    if (combined.indexOf("pronoun") >= 0) return "pronouns";
+    if (combined.indexOf("conjunction") >= 0) return "conjunctions";
+    if (combined.indexOf("consisten") >= 0) return "tense_consistency";
+    if (combined.indexOf("agreement") >= 0) return "subject_verb_agreement";
+    return "present_tense";
+  }
+
+  function uniqueList(items) {
+    var seen = {};
+    var output = [];
+    (items || []).forEach(function (item) {
+      var key = String(item || "");
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      output.push(key);
+    });
+    return output;
+  }
+
+  function replaceToken(parts, index, token) {
+    var rows = Array.isArray(parts) ? parts.slice() : [];
+    if (!rows.length) return rows;
+    var idx = Math.max(0, Math.min(rows.length - 1, Number(index || 0)));
+    rows[idx] = token;
+    return rows;
+  }
+
+  function questionToDetectiveRound(question, index) {
+    var row = question || {};
+    var parts = Array.isArray(row.sentenceParts) ? row.sentenceParts.slice() : [];
+    if (!parts.length && typeof row.correctedSentence === "string") {
+      parts = row.correctedSentence.split(/\s+/);
+    }
+    return {
+      id: row.id || ("detective_shared_" + String(index + 1)),
+      scene: row.scene || ("Case File " + String(index + 1)),
+      prompt: row.prompt || "Find the one incorrect word.",
+      sentenceParts: parts,
+      incorrectIndex: Math.max(0, Number(row.incorrectIndex || 0)),
+      correction: row.correction || "",
+      correctedSentence: row.correctedSentence || sentenceFromParts(parts),
+      explanation: row.explanation || "Check the grammar signal and correct the mismatch.",
+      difficulty: row.difficulty || "field",
+      xpReward: Math.max(5, Number(row.xpReward) || 20),
+      grammar_rule_id: row.topic || row.grammar_rule_id || "grammar_detective_core"
+    };
+  }
+
+  function questionToOptionRound(question, index, scenePrefix) {
+    var row = question || {};
+    var parts = Array.isArray(row.sentenceParts) ? row.sentenceParts.slice() : [];
+    if (!parts.length && typeof row.correctedSentence === "string") parts = row.correctedSentence.split(/\s+/);
+    var idx = Math.max(0, Math.min(parts.length - 1, Number(row.incorrectIndex || 0)));
+    var correction = row.correction || parts[idx] || "";
+    var wrongToken = String(parts[idx] || "").replace(/[.,!?;:]+$/g, "");
+    var choiceWords = Array.isArray(row.options) ? row.options.slice() : [];
+    var altToken = "";
+    for (var i = 0; i < choiceWords.length; i++) {
+      if (choiceWords[i] && choiceWords[i] !== correction) {
+        altToken = choiceWords[i];
+        break;
+      }
+    }
+    if (!altToken) altToken = wrongToken || (correction + "s");
+    var wrongA = sentenceFromParts(parts);
+    var wrongB = sentenceFromParts(replaceToken(parts, idx, altToken));
+    var wrongC = sentenceFromParts(replaceToken(parts, idx, correction ? correction + (correction.endsWith("s") ? "" : "s") : altToken));
+    var correctLine = row.correctedSentence || sentenceFromParts(replaceToken(parts, idx, correction || altToken));
+    var options = uniqueList([correctLine, wrongA, wrongB, wrongC]);
+    while (options.length < 4) options.push(wrongA || correctLine);
+    return {
+      id: row.id || ("shared_round_" + String(index + 1)),
+      scene: (scenePrefix || "Mission Prompt") + " " + String(index + 1),
+      prompt: row.prompt || "Choose the strongest sentence.",
+      options: options.slice(0, 4),
+      answer: 0,
+      explain: row.explanation || "Use the grammar rule and select the best line.",
+      difficulty: row.difficulty || "field",
+      grammar_rule_id: row.topic || row.grammar_rule_id || "grammar_core"
+    };
+  }
+
+  function buildSharedRoundsForKey(key, profile, desiredCount) {
+    var api = getSharedQuestionBankApi();
+    if (!api) return [];
+    var gameTag = "";
+    if (key === "error-smash") gameTag = "grammar_detective";
+    else if (key === "narrative-builder") gameTag = "sentence_builder";
+    else if (key === "be-verb-agreement-sweep" || key === "speed-challenge") gameTag = "speed_challenge";
+    if (!gameTag) return [];
+
+    var topic = inferTopicKey(key, profile);
+    var difficultyKey = normalizeDifficultyKey(difficulty);
+    var take = Math.max(10, Number(desiredCount) || 15);
+    var rows = api.getQuestionsForGame(gameTag, {
+      topic: topic,
+      difficulty: difficultyKey,
+      count: take
+    }) || [];
+    if (!rows.length && typeof api.getRandomQuestions === "function") {
+      rows = api.getRandomQuestions(topic, difficultyKey, take) || [];
+    }
+    if (!rows.length) return [];
+
+    if (key === "error-smash") {
+      return rows.map(questionToDetectiveRound);
+    }
+    var scenePrefix = key === "narrative-builder" ? "Sentence Forge" : "Speed Challenge";
+    return rows.map(function (row, idx) { return questionToOptionRound(row, idx, scenePrefix); });
+  }
+
+  var sharedDetectiveSeedRounds = buildSharedRoundsForKey("error-smash", null, 30);
+  if (sharedDetectiveSeedRounds.length >= 10) {
+    grammarDetectiveQuestionBank = sharedDetectiveSeedRounds;
+  } else if (sharedDetectiveSeedRounds.length) {
+    grammarDetectiveQuestionBank = sharedDetectiveSeedRounds.concat(grammarDetectiveQuestionBank);
+  }
+
   var roundBanks = {
     "error-smash": [
       {
@@ -5348,7 +5489,23 @@
 
     resolvedMissionType = "single_rule";
     if (key === "error-smash") {
+      var detectiveShared = buildSharedRoundsForKey(key, profile, 30);
+      if (detectiveShared.length >= 10) {
+        return annotateRoundsWithRule(detectiveShared, profile);
+      }
       return annotateRoundsWithRule(grammarDetectiveQuestionBank, profile);
+    }
+    if (key === "narrative-builder") {
+      var builderShared = buildSharedRoundsForKey(key, profile, 24);
+      if (builderShared.length) {
+        return annotateRoundsWithRule(builderShared, profile);
+      }
+    }
+    if (key === "be-verb-agreement-sweep" || key === "speed-challenge") {
+      var speedShared = buildSharedRoundsForKey(key, profile, 24);
+      if (speedShared.length) {
+        return annotateRoundsWithRule(speedShared, profile);
+      }
     }
     if (key === "past-sort") {
       return filterRoundsByRule(annotateRoundsWithRule(timelineSortRounds, profile), profile && profile.grammar_rule_id, !!(profile && profile.strictSingleRule));
