@@ -470,7 +470,14 @@
     ob.observe(overlay, { attributes: true, attributeFilter: ['class'] });
   }
 
+  function preloadProductSystem(){
+    try {
+      import('/core/product-system.js').catch(function(){});
+    } catch (_err) {}
+  }
+
   window.addEventListener('DOMContentLoaded', function(){
+    preloadProductSystem();
     getActiveStudent();
     flushCloudQueue();
     track('page_view', { title: document.title });

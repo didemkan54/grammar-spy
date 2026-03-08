@@ -1,29 +1,18 @@
 import { getClassSummary, getLeaderboard } from "/core/progressStore.js";
 import { getActiveClassId, setActiveContext } from "/student/identity-store.js";
 import { getAvatarById, renderAvatarSvg } from "/student/data/avatars.js";
-
-const CLASS_CODE_KEY = "gs_teacher_class_codes_v1";
-
-function readCodes() {
-  try {
-    return JSON.parse(localStorage.getItem(CLASS_CODE_KEY) || "{}");
-  } catch (_err) {
-    return {};
-  }
-}
-
-function writeCodes(next) {
-  localStorage.setItem(CLASS_CODE_KEY, JSON.stringify(next || {}));
-}
-
-function randomCode() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let out = "";
-  for (let i = 0; i < 6; i += 1) {
-    out += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return out;
-}
+import {
+  assignQuizToClass,
+  assignToClass,
+  ensureDashboardClassroom,
+  generateQuiz,
+  generateWorksheet,
+  getClassAssignments,
+  getClassProgress,
+  rotateClassJoinCode,
+  saveQuiz,
+  saveWorksheet
+} from "/core/product-system.js";
 
 function copyText(text) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -40,9 +29,10 @@ function copyText(text) {
   return Promise.resolve();
 }
 
-function renderOverview(summary) {
+function renderOverview(summary, classProgress) {
   const wrap = document.getElementById("classOverview");
   if (!wrap) return;
+  const progress = classProgress || { assignmentCount: 0, averageCompletion: 0 };
   wrap.innerHTML = `
     <div class="chip-row">
       <span class="chip">Class ${summary.class_id}</span>
@@ -50,6 +40,8 @@ function renderOverview(summary) {
       <span class="chip">Active Students ${summary.totals.active_students}</span>
       <span class="chip">Avg Accuracy ${summary.totals.average_accuracy}%</span>
       <span class="chip">Avg Time ${summary.totals.average_time_spent_seconds}s</span>
+      <span class="chip">Assignments ${progress.assignmentCount}</span>
+      <span class="chip">Avg Completion ${progress.averageCompletion}%</span>
     </div>
     <div class="progress-group" style="margin-top:10px;">
       ${(summary.by_category || [])
@@ -126,10 +118,24 @@ function renderLeaderboard(summary) {
   `;
 }
 
-function renderStudentTable(summary) {
+function renderStudentTable(summary, classProgress) {
   const tableWrap = document.getElementById("studentTableWrap");
   if (!tableWrap) return;
-  const rows = [...(summary.students || [])];
+  const progressRows = (classProgress?.students || []).map((row) => ({
+    student_id: row.id,
+    student_name: row.name,
+    avatar_id: "spy_hacker",
+    accent_color: "#1f8f8f",
+    progress_pct: row.completionPercent,
+    accuracy_pct: row.accuracy,
+    weakest_rule: "n/a",
+    streak_days: row.streak,
+    xp: row.xpEarned,
+    violations: row.tabLeaveCount || 0
+  }));
+  const summaryRows = [...(summary.students || [])].map((row) => ({ ...row, violations: 0 }));
+  const summaryIdSet = new Set(summaryRows.map((row) => row.student_id));
+  const rows = [...summaryRows, ...progressRows.filter((row) => !summaryIdSet.has(row.student_id))];
   if (!rows.length) {
     tableWrap.innerHTML = '<div class="empty-note">No student attempts yet for this class.</div>';
     return;
@@ -164,6 +170,7 @@ function renderStudentTable(summary) {
             <td>${row.weakest_rule}</td>
             <td>${row.streak_days}</td>
             <td>${row.xp}</td>
+            <td>${row.violations || 0}</td>
             <td><a href="/dashboard/teacher/student.html?student_id=${encodeURIComponent(
               row.student_id
             )}&class_id=${encodeURIComponent(summary.class_id)}">View</a></td>
@@ -183,6 +190,7 @@ function renderStudentTable(summary) {
           <th><button class="btn-soft" data-sort="weakest_rule">Weakest Rule</button></th>
           <th><button class="btn-soft" data-sort="streak_days">Streak</button></th>
           <th><button class="btn-soft" data-sort="xp">XP</button></th>
+          <th><button class="btn-soft" data-sort="violations">Violations</button></th>
           <th>Detail</th>
         </tr>
       </thead>
@@ -204,27 +212,18 @@ function renderStudentTable(summary) {
   });
 }
 
-function setupClassTools(classId) {
+function setupClassTools(classroom) {
   const codeField = document.getElementById("classJoinCode");
   const generateBtn = document.getElementById("generateCodeBtn");
   const copyBtn = document.getElementById("copyCodeBtn");
   const status = document.getElementById("classToolStatus");
   const leaderboardToggle = document.getElementById("leaderboardToggle");
   if (!codeField || !generateBtn || !copyBtn || !status || !leaderboardToggle) return;
-
-  const store = readCodes();
-  if (!store[classId]) {
-    store[classId] = randomCode();
-    writeCodes(store);
-  }
-  codeField.value = store[classId];
+  codeField.value = classroom.joinCode;
 
   generateBtn.addEventListener("click", () => {
-    const next = randomCode();
-    const copy = readCodes();
-    copy[classId] = next;
-    writeCodes(copy);
-    codeField.value = next;
+    const updated = rotateClassJoinCode(classroom.id, { role: "teacher" });
+    codeField.value = updated.joinCode;
     status.textContent = "New join code generated.";
   });
 
@@ -234,20 +233,155 @@ function setupClassTools(classId) {
     });
   });
 
-  leaderboardToggle.href = `/leaderboard/?class_id=${encodeURIComponent(classId)}`;
+  leaderboardToggle.href = `/leaderboard/?class_id=${encodeURIComponent(classroom.joinCode)}`;
+}
+
+function renderAssignmentList(classroomId) {
+  const target = document.getElementById("classAssignmentsList");
+  if (!target) return;
+  const rows = getClassAssignments(classroomId);
+  if (!rows.length) {
+    target.innerHTML = '<div class="empty-note">No assignments yet. Create one below.</div>';
+    return;
+  }
+  target.innerHTML = rows
+    .slice(0, 8)
+    .map(
+      (row) => `
+      <li class="suggestion-card">
+        <strong>${row.title}</strong>
+        <p class="panel-sub">${row.type} · ${row.targetId || "n/a"} · ${new Date(row.assignedAt).toLocaleString()}</p>
+      </li>
+    `
+    )
+    .join("");
+}
+
+function setupAssignmentTools(classroom, classCode) {
+  const typeEl = document.getElementById("assignmentType");
+  const targetEl = document.getElementById("assignmentTarget");
+  const titleEl = document.getElementById("assignmentTitle");
+  const dueAtEl = document.getElementById("assignmentDueAt");
+  const assignBtn = document.getElementById("assignContentBtn");
+  const quizTopicEl = document.getElementById("quizTopic");
+  const quizDifficultyEl = document.getElementById("quizDifficulty");
+  const quizCountEl = document.getElementById("quizCount");
+  const quizBtn = document.getElementById("generateQuizAssignBtn");
+  const worksheetBtn = document.getElementById("generateWorksheetAssignBtn");
+  const statusEl = document.getElementById("assignmentStatus");
+  if (!statusEl) return;
+
+  function refresh() {
+    renderAssignmentList(classroom.id);
+  }
+
+  if (assignBtn && typeEl && targetEl && titleEl) {
+    assignBtn.addEventListener("click", () => {
+      const type = typeEl.value || "mission";
+      const targetId = String(targetEl.value || "").trim();
+      if (!targetId) {
+        statusEl.textContent = "Target ID is required.";
+        return;
+      }
+      assignToClass(
+        {
+          classId: classroom.id,
+          type,
+          targetId,
+          title: String(titleEl.value || "").trim() || `${type} assignment`,
+          dueAt: dueAtEl?.value || ""
+        },
+        { role: "teacher" }
+      );
+      statusEl.textContent = `Assigned ${type} (${targetId}) to class ${classCode}.`;
+      refresh();
+    });
+  }
+
+  if (quizBtn && quizTopicEl && quizDifficultyEl && quizCountEl) {
+    quizBtn.addEventListener("click", async () => {
+      quizBtn.disabled = true;
+      try {
+        const quiz = await generateQuiz(
+          {
+            topic: quizTopicEl.value || "past tense",
+            difficulty: quizDifficultyEl.value || "intermediate",
+            count: Number(quizCountEl.value || 10),
+            types: ["multiple_choice", "error_correction", "fill_blank"]
+          },
+          { role: "teacher" }
+        );
+        const saved = saveQuiz(quiz, { role: "teacher" });
+        assignQuizToClass(
+          {
+            classId: classroom.id,
+            quizId: saved.id,
+            title: saved.title,
+            dueAt: dueAtEl?.value || ""
+          },
+          { role: "teacher" }
+        );
+        statusEl.textContent = `Generated + assigned quiz "${saved.title}" (${saved.questions.length} questions).`;
+        refresh();
+      } catch (err) {
+        statusEl.textContent = err?.message || "Could not generate quiz.";
+      } finally {
+        quizBtn.disabled = false;
+      }
+    });
+  }
+
+  if (worksheetBtn && quizTopicEl && quizDifficultyEl && quizCountEl) {
+    worksheetBtn.addEventListener("click", async () => {
+      worksheetBtn.disabled = true;
+      try {
+        const worksheet = await generateWorksheet(
+          {
+            topic: quizTopicEl.value || "present tense",
+            difficulty: quizDifficultyEl.value || "intermediate",
+            count: Number(quizCountEl.value || 8),
+            type: "practice_worksheet"
+          },
+          { role: "teacher" }
+        );
+        const saved = saveWorksheet(worksheet, { role: "teacher" });
+        assignToClass(
+          {
+            classId: classroom.id,
+            type: "worksheet",
+            targetId: saved.id,
+            title: saved.title,
+            dueAt: dueAtEl?.value || ""
+          },
+          { role: "teacher" }
+        );
+        statusEl.textContent = `Generated + assigned worksheet "${saved.title}".`;
+        refresh();
+      } catch (err) {
+        statusEl.textContent = err?.message || "Could not generate worksheet.";
+      } finally {
+        worksheetBtn.disabled = false;
+      }
+    });
+  }
+
+  refresh();
 }
 
 function init() {
   const params = new URLSearchParams(window.location.search);
-  const classId = String(params.get("class_id") || "").trim().toUpperCase() || getActiveClassId();
-  setActiveContext("", classId);
-  const summary = getClassSummary(classId);
+  const classCode = String(params.get("class_id") || "").trim().toUpperCase() || getActiveClassId();
+  const classroom = ensureDashboardClassroom(classCode, { role: "teacher" });
+  setActiveContext("", classroom.joinCode);
+  const summary = getClassSummary(classroom.joinCode);
+  const classProgress = getClassProgress(classroom.id);
   renderBattleStrip(summary);
-  renderOverview(summary);
+  renderOverview(summary, classProgress);
   renderSuggestions(summary);
-  renderStudentTable(summary);
+  renderStudentTable(summary, classProgress);
   renderLeaderboard(summary);
-  setupClassTools(classId);
+  setupClassTools(classroom);
+  setupAssignmentTools(classroom, classroom.joinCode);
 }
 
 if (document.readyState === "loading") {

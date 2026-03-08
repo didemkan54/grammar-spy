@@ -1,5 +1,6 @@
 import { getRecommendations, getStudentAttempts, getStudentSummary } from "/core/progressStore.js";
 import { getAvatarById, renderAvatarSvg } from "/student/data/avatars.js";
+import { listTestAttempts } from "/core/product-system.js";
 
 function renderHeader(summary) {
   const target = document.getElementById("studentHeader");
@@ -44,13 +45,12 @@ function renderAttempts(studentId) {
   const target = document.getElementById("attemptTimeline");
   if (!target) return;
   const rows = getStudentAttempts(studentId);
-  if (!rows.length) {
+  const testRows = listTestAttempts({ studentId }).filter((row) => row.submittedAt);
+  if (!rows.length && !testRows.length) {
     target.innerHTML = '<div class="empty-note">No attempts recorded yet.</div>';
     return;
   }
-  target.innerHTML = rows
-    .slice(0, 20)
-    .map((row) => {
+  const missionAttemptCards = rows.slice(0, 14).map((row) => {
       const when = new Date(row.created_at).toLocaleString();
       return `
       <li class="activity-card">
@@ -58,8 +58,17 @@ function renderAttempts(studentId) {
         <p class="panel-sub">${row.grammar_rule_id} · ${when} · ${row.time_spent_seconds}s</p>
       </li>
     `;
-    })
-    .join("");
+    });
+  const testAttemptCards = testRows.slice(0, 10).map((row) => {
+    const when = new Date(row.submittedAt).toLocaleString();
+    return `
+      <li class="activity-card">
+        <strong>Test Mode Quiz</strong> · ${row.quizId} · score ${row.score}%
+        <p class="panel-sub">${when} · violations ${row.tabLeaveCount} · events ${(row.violationLog || []).length}</p>
+      </li>
+    `;
+  });
+  target.innerHTML = [...missionAttemptCards, ...testAttemptCards].join("");
 }
 
 function renderRecommendations(studentId) {
