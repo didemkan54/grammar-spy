@@ -2078,6 +2078,32 @@ Technical safety:
     })();
 
     (function(){
+      function parseSession(raw){
+        if (!raw) return null;
+        try {
+          var parsed = JSON.parse(raw);
+          return parsed && typeof parsed === 'object' ? parsed : null;
+        } catch (_err) {
+          return null;
+        }
+      }
+
+      function isSignedIn(){
+        var session = parseSession(localStorage.getItem('gs_auth_session'));
+        if (session) return true;
+        // Some sessions only persist account data; treat this as signed-in as well.
+        return Boolean(parseSession(localStorage.getItem('gs_account_v1')));
+      }
+
+      if (!isSignedIn()) return;
+
+      var createAccountButtons = document.querySelectorAll('[data-track-event="homepage_create_account_click"]');
+      createAccountButtons.forEach(function(btn){
+        btn.setAttribute('href', '/teacher-home.html');
+      });
+    })();
+
+    (function(){
       var demoForm = document.getElementById('liveMissionMockForm');
       var demoBtn = document.getElementById('liveMissionMockBtn');
       var demoResult = document.getElementById('liveMissionMockResult');
