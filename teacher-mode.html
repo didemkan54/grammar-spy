@@ -163,7 +163,7 @@
         const missionName = `${pack.name} · ${selectedOption ? selectedOption.textContent : 'Mission'}`;
         const missionId = `${packId}:${String(gameSel.value || '').split('?')[0] || 'mission'}`;
         const missionUrlObj = new URL(document.getElementById('continueBtn').href, location.origin);
-        missionUrlObj.searchParams.set('play_format', 'individuals');
+        missionUrlObj.searchParams.set('play_format', document.getElementById('playFormat').value || 'individuals');
         const missionUrl = `${missionUrlObj.pathname}${missionUrlObj.search}`;
         const session = api.createSession(missionId, {
           teacherId: teacher.accountId || teacher.email || 'teacher_local',

@@ -46,6 +46,13 @@
     .student-row .name{font-weight:600;font-size:14px}
     .student-row .joined{font-size:12px;color:#7a8698}
     .empty-students{padding:16px;text-align:center;color:#7a8698;font-size:14px;font-style:italic;background:#f8fafc;border-radius:10px}
+    .assignment-wrap{margin-top:14px;padding-top:14px;border-top:1px solid #e4e8ef;display:grid;gap:10px}
+    .assignment-list{display:grid;gap:6px}
+    .assignment-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e4e8ef;border-radius:10px}
+    .assignment-meta{font-size:12px;color:#7a8698}
+    .assignment-controls{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;gap:8px;align-items:center}
+    .assignment-controls select,.assignment-controls input{border:1px solid #d9dee6;border-radius:8px;padding:8px 10px;font-size:13px;color:#16223a;background:#fff}
+    .assignment-empty{padding:12px;background:#f8fafc;border:1px solid #e4e8ef;border-radius:10px;color:#7a8698;font-size:13px;font-style:italic}
 
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
     @media(max-width:100%){.grid-2{grid-template-columns:1fr}}
@@ -69,6 +76,7 @@
         </label>
         <button class="btn btn-primary" id="createBtn" type="button">+ Create Classroom</button>
       </div>
+      <p id="assignmentStatus" style="display:none;margin-top:10px;padding:8px 10px;border-radius:10px;border:1px solid #d9dee6;background:#f8fafc;color:#234766;font-size:13px;font-weight:600"></p>
     </section>
 
     <div id="classroomList" class="grid-2"></div>
@@ -92,6 +100,23 @@
     var createBtn = document.getElementById("createBtn");
     var classroomList = document.getElementById("classroomList");
     var emptyState = document.getElementById("emptyState");
+    var assignmentStatus = document.getElementById("assignmentStatus");
+    var MISSION_OPTIONS = [
+      { id: "speak_in_the_moment", label: "Mission 01 - Speak In The Moment" },
+      { id: "time_traveler", label: "Mission 02 - Retell What Happened" },
+      { id: "time_travelers", label: "Mission 03 - Future Time Travelers" }
+    ];
+
+    function missionLabelById(missionId) {
+      var match = MISSION_OPTIONS.find(function(row){ return row.id === missionId; });
+      return match ? match.label : String(missionId || "Mission");
+    }
+
+    function setAssignmentStatus(message) {
+      if (!assignmentStatus) return;
+      assignmentStatus.textContent = message || "";
+      assignmentStatus.style.display = message ? "block" : "none";
+    }
 
     function formatDate(iso) {
       try {
@@ -110,6 +135,26 @@
       emptyState.style.display = "none";
 
       classroomList.innerHTML = classrooms.map(function(c) {
+        var assignments = (window.GSClassroom.getClassAssignments(c.id) || []).filter(function(row){
+          return row.type === "mission" && row.status !== "archived";
+        });
+        var assignmentRows = assignments.length
+          ? '<div class="assignment-list">' + assignments.slice(0, 6).map(function(row){
+              var assignedAt = formatDate(row.assignedAt);
+              var dueAt = row.dueAt ? formatDate(row.dueAt) : "No due date";
+              return '<div class="assignment-row">' +
+                '<div>' +
+                  '<div style="font-weight:700;font-size:13px;color:#16223a">' + (row.title || missionLabelById(row.targetId)) + '</div>' +
+                  '<div class="assignment-meta">Mission ID: ' + row.targetId + ' · Assigned ' + assignedAt + ' · Due ' + dueAt + '</div>' +
+                '</div>' +
+                '<a class="btn btn-sm" href="missions/hub.html?mission=' + encodeURIComponent(row.targetId || "") + '">Open</a>' +
+              '</div>';
+            }).join("") + '</div>'
+          : '<div class="assignment-empty">No missions assigned yet.</div>';
+        var missionOptions = MISSION_OPTIONS.map(function(row){
+          return '<option value="' + row.id + '">' + row.label + '</option>';
+        }).join("");
+
         var students = (c.students || []).map(function(s) {
           return '<div class="student-row">' +
             '<span class="name">' + s.name + '</span>' +
@@ -136,6 +181,15 @@
           '</div>' +
           '<h3>Students (' + (c.students ? c.students.length : 0) + ')</h3>' +
           studentSection +
+          '<div class="assignment-wrap">' +
+            '<h3>Assigned Missions</h3>' +
+            assignmentRows +
+            '<div class="assignment-controls">' +
+              '<select data-assign-target-for="' + c.id + '">' + missionOptions + '</select>' +
+              '<input type="datetime-local" data-assign-due-for="' + c.id + '" />' +
+              '<button class="btn btn-primary btn-sm" data-assign-mission="' + c.id + '">Assign Mission</button>' +
+            '</div>' +
+          '</div>' +
         '</div>';
       }).join("");
     }
@@ -156,6 +210,7 @@
     classroomList.addEventListener("click", function(e) {
       var deleteBtn = e.target.closest("[data-delete]");
       var removeBtn = e.target.closest("[data-remove]");
+      var assignBtn = e.target.closest("[data-assign-mission]");
       if (deleteBtn) {
         if (confirm("Delete this classroom? Students will no longer see it.")) {
           window.GSClassroom.deleteClassroom(deleteBtn.dataset.delete);
@@ -164,6 +219,26 @@
       }
       if (removeBtn) {
         window.GSClassroom.removeStudent(removeBtn.dataset.remove, removeBtn.dataset.student);
+        render();
+      }
+      if (assignBtn) {
+        var classId = assignBtn.dataset.assignMission;
+        var missionSelect = classroomList.querySelector('[data-assign-target-for="' + classId + '"]');
+        var dueInput = classroomList.querySelector('[data-assign-due-for="' + classId + '"]');
+        var targetId = missionSelect && missionSelect.value;
+        if (!targetId) {
+          setAssignmentStatus("Select a mission before assigning.");
+          return;
+        }
+        var title = missionLabelById(targetId);
+        window.GSClassroom.assignToClass({
+          classId: classId,
+          type: "mission",
+          targetId: targetId,
+          title: title,
+          dueAt: dueInput && dueInput.value ? dueInput.value : ""
+        });
+        setAssignmentStatus('Assigned "' + title + '" to class.');
         render();
       }
     });

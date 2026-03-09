@@ -259,6 +259,7 @@ function renderAssignmentList(classroomId) {
 
 function setupAssignmentTools(classroom, classCode) {
   const typeEl = document.getElementById("assignmentType");
+  const missionPresetEl = document.getElementById("assignmentMissionPreset");
   const targetEl = document.getElementById("assignmentTarget");
   const titleEl = document.getElementById("assignmentTitle");
   const dueAtEl = document.getElementById("assignmentDueAt");
@@ -271,6 +272,25 @@ function setupAssignmentTools(classroom, classCode) {
   const statusEl = document.getElementById("assignmentStatus");
   if (!statusEl) return;
 
+  const missionLabels = {
+    speak_in_the_moment: "Mission 01 - Speak In The Moment",
+    time_traveler: "Mission 02 - Retell What Happened",
+    time_travelers: "Mission 03 - Future Time Travelers"
+  };
+
+  function applyMissionPreset() {
+    if (!missionPresetEl || !typeEl || !targetEl || !titleEl) return;
+    const isMission = typeEl.value === "mission";
+    missionPresetEl.disabled = !isMission;
+    if (!isMission) return;
+    const missionId = missionPresetEl.value || "";
+    if (!missionId) return;
+    targetEl.value = missionId;
+    if (!String(titleEl.value || "").trim()) {
+      titleEl.value = missionLabels[missionId] || "Mission assignment";
+    }
+  }
+
   function refresh() {
     renderAssignmentList(classroom.id);
   }
@@ -278,17 +298,19 @@ function setupAssignmentTools(classroom, classCode) {
   if (assignBtn && typeEl && targetEl && titleEl) {
     assignBtn.addEventListener("click", () => {
       const type = typeEl.value || "mission";
-      const targetId = String(targetEl.value || "").trim();
+      const selectedMissionId = missionPresetEl && type === "mission" ? String(missionPresetEl.value || "").trim() : "";
+      const targetId = String(targetEl.value || selectedMissionId).trim();
       if (!targetId) {
         statusEl.textContent = "Target ID is required.";
         return;
       }
+      const defaultTitle = type === "mission" && missionLabels[targetId] ? missionLabels[targetId] : `${type} assignment`;
       assignToClass(
         {
           classId: classroom.id,
           type,
           targetId,
-          title: String(titleEl.value || "").trim() || `${type} assignment`,
+          title: String(titleEl.value || "").trim() || defaultTitle,
           dueAt: dueAtEl?.value || ""
         },
         { role: "teacher" }
@@ -296,6 +318,13 @@ function setupAssignmentTools(classroom, classCode) {
       statusEl.textContent = `Assigned ${type} (${targetId}) to class ${classCode}.`;
       refresh();
     });
+  }
+
+  if (typeEl) {
+    typeEl.addEventListener("change", applyMissionPreset);
+  }
+  if (missionPresetEl) {
+    missionPresetEl.addEventListener("change", applyMissionPreset);
   }
 
   if (quizBtn && quizTopicEl && quizDifficultyEl && quizCountEl) {
@@ -365,6 +394,7 @@ function setupAssignmentTools(classroom, classCode) {
     });
   }
 
+  applyMissionPreset();
   refresh();
 }
 
