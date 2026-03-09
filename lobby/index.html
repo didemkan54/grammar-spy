@@ -3,9 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Grammar Spy | Mission Lobby</title>
-  <meta name="description" content="Grammar Spy classroom waiting room with join code, player list, and live scoreboard." />
-  <link rel="stylesheet" href="/student/student-lobby.css" />
+  <meta name="description" content="Enter the Grammar Spy mission lobby to view live classroom rankings and wait for your teacher to start the game." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://grammarspy.net/lobby//" />
+  <meta property="og:title" content="Grammar Spy | Mission Lobby" />
+  <meta property="og:description" content="Enter the Grammar Spy mission lobby to view live classroom rankings and wait for your teacher to start the game." />
+  <meta property="og:url" content="https://grammarspy.net/lobby//" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://grammarspy.net/assets/brand/icon-512.png" />
+<link rel="stylesheet" href="/student/student-lobby.css" />
 </head>
 <body class="student-shell">
   <div data-include="header"></div>
@@ -40,7 +48,7 @@
 
       <div class="demo-tools">
         <button id="startMissionBtn" class="btn-primary-join" hidden>Start Mission</button>
-        <a id="launchMissionBtn" class="btn-secondary-join" href="#" hidden>Open Mission View</a>
+        <a id="launchMissionBtn" class="btn-secondary-join" href="/missions/" hidden>Open Mission View</a>
         <button id="demoRoundBtn" class="btn-secondary-join" hidden>Run Demo Round</button>
         <span id="demoModeHint" class="demo-hint" hidden>Demo mode enabled via <code>?demo=1</code>.</span>
         <a id="winnerPageBtn" class="btn-secondary-join" href="/winner/">Show Winner</a>
