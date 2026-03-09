@@ -204,7 +204,7 @@
           }
           var assigned = classId
             ? (window.GSClassroom.getClassAssignments(classId) || []).filter(function(row){
-                return row.type === "mission" && row.status !== "archived";
+                return row.status !== "archived";
               })
             : [];
           var assignmentHtml = assigned.length
@@ -212,10 +212,18 @@
                 '<h3 style="margin:0 0 10px;font-size:16px;color:#0b1020">Assigned by your teacher</h3>' +
                 '<div style="display:grid;gap:8px">' +
                   assigned.slice(0, 6).map(function(row){
-                    return '<a href="missions/hub.html?mission=' + encodeURIComponent(row.targetId || "") + '" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#fff;border:1px solid #d9dee6;border-radius:10px;text-decoration:none;color:#16223a">' +
-                      '<span><strong>' + missionLabelById(row.targetId) + '</strong><br><small style="color:#7a8698">Due: ' + formatDue(row.dueAt) + '</small></span>' +
-                      '<span style="font:700 11px Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#1f5f63">Start →</span>' +
-                    '</a>';
+                    var typeLabel = String(row.type || "assignment").replace(/_/g, " ");
+                    var isMission = row.type === "mission";
+                    var href = isMission ? ('missions/hub.html?mission=' + encodeURIComponent(row.targetId || "")) : '';
+                    var title = isMission ? missionLabelById(row.targetId) : (row.title || ("Assigned " + typeLabel));
+                    var wrapperStart = isMission
+                      ? '<a href="' + href + '" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#fff;border:1px solid #d9dee6;border-radius:10px;text-decoration:none;color:#16223a">'
+                      : '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#fff;border:1px solid #d9dee6;border-radius:10px;color:#16223a">';
+                    var wrapperEnd = isMission ? '</a>' : '</div>';
+                    return wrapperStart +
+                      '<span><strong>' + title + '</strong><br><small style="color:#7a8698">Type: ' + typeLabel + ' · Due: ' + formatDue(row.dueAt) + '</small></span>' +
+                      '<span style="font:700 11px Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#1f5f63">' + (isMission ? 'Start →' : 'Assigned') + '</span>' +
+                    wrapperEnd;
                   }).join('') +
                 '</div>' +
               '</div>'
