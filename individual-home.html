@@ -96,6 +96,24 @@
   <script>
     (function(){
       try { localStorage.setItem('gs_use_context_v3', 'individual'); } catch(e) {}
+      var MISSION_LABELS = {
+        speak_in_the_moment: "Mission 01: Speak In The Moment",
+        time_traveler: "Mission 02: Retell What Happened",
+        time_travelers: "Mission 03: Future Time Travelers"
+      };
+
+      function missionLabelById(missionId) {
+        return MISSION_LABELS[missionId] || ("Mission: " + String(missionId || "").replace(/_/g, " "));
+      }
+
+      function formatDue(value) {
+        if (!value) return "No due date";
+        try {
+          return new Date(value).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+        } catch(_err) {
+          return "No due date";
+        }
+      }
 
       function renderJoinSection() {
         var el = document.getElementById("joinState");
@@ -107,6 +125,30 @@
           var displayName = (current && current.classroomName) || (studentData && studentData.code) || 'your classroom';
           var studentName = (current && current.studentName) || (studentData && studentData.studentName) || 'Student';
           var teacherName = (current && current.teacherName) || '';
+          var classId = (current && current.classroomId) || "";
+          if (!classId) {
+            var joinedCode = (current && current.code) || (studentData && studentData.code) || "";
+            var classroom = joinedCode ? window.GSClassroom.getClassroomByCode(joinedCode) : null;
+            classId = classroom && classroom.id ? classroom.id : "";
+          }
+          var assigned = classId
+            ? (window.GSClassroom.getClassAssignments(classId) || []).filter(function(row){
+                return row.type === "mission" && row.status !== "archived";
+              })
+            : [];
+          var assignmentHtml = assigned.length
+            ? '<div style="margin-top:16px;padding-top:14px;border-top:1px solid #d9dee6">' +
+                '<h3 style="margin:0 0 10px;font-size:16px;color:#0b1020">Assigned by your teacher</h3>' +
+                '<div style="display:grid;gap:8px">' +
+                  assigned.slice(0, 6).map(function(row){
+                    return '<a href="missions/hub.html?mission=' + encodeURIComponent(row.targetId || "") + '" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#fff;border:1px solid #d9dee6;border-radius:10px;text-decoration:none;color:#16223a">' +
+                      '<span><strong>' + missionLabelById(row.targetId) + '</strong><br><small style="color:#7a8698">Due: ' + formatDue(row.dueAt) + '</small></span>' +
+                      '<span style="font:700 11px Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#1f5f63">Start →</span>' +
+                    '</a>';
+                  }).join('') +
+                '</div>' +
+              '</div>'
+            : '<div style="margin-top:16px;padding-top:14px;border-top:1px solid #d9dee6;color:#7a8698;font-size:13px;font-style:italic">No teacher assignments yet. You can still practice from All Missions.</div>';
           el.innerHTML = '<div style="background:#e6f2f2;border:2px solid #1f5f63;border-radius:16px;padding:24px">' +
             '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">' +
             '<div><h2 style="margin:0;font-size:22px;color:#1f5f63">Welcome, ' + studentName + '!</h2>' +
@@ -121,7 +163,7 @@
             '<a href="pack.html?pack=pack03" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🎯</span><span>Mission 03: Be-Verbs</span></a>' +
             '<a href="clues.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📖</span><span>CLUES Archive</span></a>' +
             '<a href="progression.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📈</span><span>Training Path</span></a>' +
-            '</div></div>';
+            '</div>' + assignmentHtml + '</div>';
           var leaveBtn = document.getElementById("leaveClassBtn");
           if (leaveBtn) leaveBtn.addEventListener("click", function() {
             window.GSClassroom.leaveClassroom();
