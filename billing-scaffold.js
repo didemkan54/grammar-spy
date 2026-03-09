@@ -1,8 +1,11 @@
 (function(){
   var ACCOUNT_KEY = 'gs_account_v1';
+  var SESSION_KEY = 'gs_auth_session';
+  var NEXT_KEY = 'gs_auth_next_v1';
   var CHECKOUT_KEY = 'gs_checkout_events_v1';
   var CONFIG_KEY = 'gs_billing_config_v1';
   var DEFAULT_TRIAL_DAYS = 14;
+  var AUTH_DEBUG = true;
   var DEFAULT_STRIPE_LINKS = {
     single_teacher: 'https://buy.stripe.com/9B63cv9Vn7zgePJ8iR3gk01',
     single_teacher_monthly: 'https://buy.stripe.com/9B63cv9Vn7zgePJ8iR3gk01',
@@ -22,6 +25,62 @@
     }
   }
 
+  function logAuth(message, payload){
+    if (!AUTH_DEBUG || typeof console === 'undefined' || typeof console.info !== 'function') return;
+    if (typeof payload === 'undefined') {
+      console.info('[GSAuth]', message);
+      return;
+    }
+    console.info('[GSAuth]', message, payload);
+  }
+
+  function storageSet(key, value){
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  function storageGet(key){
+    try {
+      return localStorage.getItem(key);
+    } catch (_err) {
+      return '';
+    }
+  }
+
+  function storageRemove(key){
+    try {
+      localStorage.removeItem(key);
+    } catch (_err) {}
+  }
+
+  function normalizeInternalTarget(target){
+    var raw = String(target || '').trim();
+    if (!raw) return '';
+    var lower = raw.toLowerCase();
+    if (lower.indexOf('http://') === 0 || lower.indexOf('https://') === 0 || lower.indexOf('//') === 0 || lower.indexOf('javascript:') === 0) return '';
+    if (raw.charAt(0) !== '/') {
+      raw = '/' + raw.replace(/^\.?\//, '');
+    }
+    return raw;
+  }
+
+  function storePostAuthDestination(target){
+    var normalized = normalizeInternalTarget(target);
+    if (!normalized) return '';
+    storageSet(NEXT_KEY, normalized);
+    return normalized;
+  }
+
+  function consumePostAuthDestination(){
+    var next = normalizeInternalTarget(storageGet(NEXT_KEY));
+    storageRemove(NEXT_KEY);
+    return next;
+  }
+
   function nowIso(){
     return new Date().toISOString();
   }
@@ -33,35 +92,13 @@
   }
 
   function loadAccount(){
-    var a = parse(localStorage.getItem(ACCOUNT_KEY), null);
+    var a = parse(storageGet(ACCOUNT_KEY), null);
     if (!a) {
-      // Backfill legacy sessions so "signed in" users are not treated as signed out.
-      var session = parse(localStorage.getItem('gs_auth_session'), null);
-      if (session && typeof session === 'object') {
-        var stamp = session.createdAt || nowIso();
-        var sessionMode = String(session.mode || 'account').toLowerCase();
-        a = {
-          id: session.accountId || (sessionMode === 'guest' ? ('guest_' + Math.random().toString(36).slice(2, 10)) : ('acct_' + Math.random().toString(36).slice(2, 10))),
-          mode: sessionMode === 'guest' ? 'guest' : 'account',
-          role: 'teacher',
-          name: String(session.name || 'Teacher').trim() || 'Teacher',
-          email: String(session.email || '').trim(),
-          createdAt: stamp,
-          updatedAt: nowIso(),
-          plan: sessionMode === 'guest' ? 'guest' : (session.plan || 'trial'),
-          entitlements: ['pack01'],
-          trial: {
-            startedAt: stamp,
-            endsAt: addDays(stamp, sessionMode === 'guest' ? 2 : 365),
-            status: 'active'
-          },
-          billing: {
-            status: sessionMode === 'guest' ? 'guest' : 'trialing',
-            stripeCustomerId: '',
-            lastCheckoutAt: ''
-          }
-        };
-        saveAccount(a);
+      // Backfill legacy session-only state so signed-in users stay authenticated.
+      var session = loadSession();
+      var rebuilt = buildAccountFromSession(session);
+      if (rebuilt) {
+        a = saveAccount(rebuilt);
       }
     }
     if (!a) return null;
@@ -73,12 +110,58 @@
   }
 
   function saveAccount(account){
-    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
+    storageSet(ACCOUNT_KEY, JSON.stringify(account));
     return account;
   }
 
   function clearAccount(){
-    localStorage.removeItem(ACCOUNT_KEY);
+    storageRemove(ACCOUNT_KEY);
+  }
+
+  function loadSession(){
+    return parse(storageGet(SESSION_KEY), null);
+  }
+
+  function buildAccountFromSession(session){
+    if (!session || typeof session !== 'object') return null;
+    var stamp = nowIso();
+    var role = String(session.role || '').trim().toLowerCase() === 'student' ? 'student' : 'teacher';
+    var plan = String(session.plan || '').trim().toLowerCase();
+    if (!plan) plan = 'trial';
+    return {
+      id: session.accountId || ('acct_' + Math.random().toString(36).slice(2, 10)),
+      mode: session.mode || 'account',
+      role: role,
+      name: String(session.name || (role === 'student' ? 'Student' : 'Teacher')).trim() || (role === 'student' ? 'Student' : 'Teacher'),
+      email: String(session.email || '').trim(),
+      createdAt: session.createdAt || stamp,
+      updatedAt: stamp,
+      plan: plan,
+      entitlements: plan === 'paid' || plan === 'school'
+        ? ['pack01', 'pack02', 'pack03', 'pack04', 'pack05', 'pack06']
+        : ['pack01'],
+      trial: {
+        startedAt: session.createdAt || stamp,
+        endsAt: addDays(session.createdAt || stamp, 365),
+        status: 'active'
+      },
+      billing: {
+        status: plan === 'paid' || plan === 'school' ? 'active' : 'trialing',
+        stripeCustomerId: '',
+        lastCheckoutAt: ''
+      }
+    };
+  }
+
+  function restoreAccountFromSession(){
+    var account = loadAccount();
+    if (account) return account;
+    var session = loadSession();
+    if (!session) return null;
+    var rebuilt = buildAccountFromSession(session);
+    if (!rebuilt) return null;
+    logAuth('Restoring account from session fallback', { accountId: rebuilt.id, role: rebuilt.role, plan: rebuilt.plan });
+    return saveAccount(rebuilt);
   }
 
   function loadConfig(){
@@ -114,7 +197,7 @@
   }
 
   function ensureAccount(){
-    var account = loadAccount();
+    var account = loadAccount() || restoreAccountFromSession();
     if (!account) return null;
     if (!account.id) account.id = 'acct_' + Math.random().toString(36).slice(2, 10);
     if (!account.createdAt) account.createdAt = nowIso();
@@ -143,6 +226,7 @@
     if (!account) return null;
     return {
       mode: account.mode || 'account',
+      role: account.role || 'teacher',
       name: account.name || 'Teacher',
       email: account.email || '',
       createdAt: account.createdAt,
@@ -153,10 +237,10 @@
 
   function syncSessionFromAccount(account){
     if (!account) {
-      localStorage.removeItem('gs_auth_session');
+      storageRemove(SESSION_KEY);
       return;
     }
-    localStorage.setItem('gs_auth_session', JSON.stringify(toSession(account)));
+    storageSet(SESSION_KEY, JSON.stringify(toSession(account)));
   }
 
   function createAccount(name, email, role){
@@ -311,7 +395,7 @@
     var a = ensureAccount();
     if (!a) {
       var subscribeParam = (plan === 'single_teacher_monthly' || plan === 'single_teacher_yearly' || plan === 'student_monthly' || plan === 'student_yearly') ? '&subscribe=' + encodeURIComponent(plan) : '';
-      location.href = 'auth.html?mode=create&next=' + encodeURIComponent('pricing.html') + subscribeParam;
+      location.href = '/auth.html?mode=create&next=' + encodeURIComponent('/pricing.html') + subscribeParam;
       return;
     }
     var cfg = loadConfig();
@@ -333,10 +417,10 @@
     if (isStripePlan && window.GS_IAP && window.GS_IAP.isNative && window.GS_IAP.isNative() && window.GS_IAP.isConfigured && window.GS_IAP.isConfigured()) {
       window.GS_IAP.purchase(plan, function(){
         grantPaid('paid');
-        location.href = 'pricing.html?checkout=success&plan=' + encodeURIComponent(plan);
+        location.href = '/pricing.html?checkout=success&plan=' + encodeURIComponent(plan);
       }, function(err){
         if (err && err.indexOf('cancelled') < 0 && err.indexOf('canceled') < 0) {
-          location.href = 'pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan);
+          location.href = '/pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan);
         }
       });
       return;
@@ -354,13 +438,13 @@
           } else {
             link = cfg.stripeLinks[plan] || cfg.stripeLinks.single_teacher;
             if (link) location.href = link;
-            else { location.href = 'pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan); }
+            else { location.href = '/pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan); }
           }
         })
         .catch(function(){
           link = cfg.stripeLinks[plan] || cfg.stripeLinks.single_teacher;
           if (link) location.href = link;
-          else { location.href = 'pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan); }
+          else { location.href = '/pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan); }
         });
       return;
     }
@@ -372,12 +456,14 @@
 
     var fallbackPlan = plan === 'school_license' ? 'school' : (plan === 'student_monthly' || plan === 'student_yearly' ? 'paid' : 'paid');
     grantPaid(fallbackPlan);
-    location.href = 'pricing.html?checkout=success&plan=' + encodeURIComponent(plan);
+    location.href = '/pricing.html?checkout=success&plan=' + encodeURIComponent(plan);
   }
 
   function signOut(){
+    logAuth('Signing out and clearing persisted auth state');
     clearAccount();
-    localStorage.removeItem('gs_auth_session');
+    storageRemove(SESSION_KEY);
+    storageRemove(NEXT_KEY);
     if (window.GS_BIOMETRIC && window.GS_BIOMETRIC.deleteCredentials) {
       window.GS_BIOMETRIC.deleteCredentials();
     }
@@ -387,6 +473,77 @@
     if (!account || typeof account !== 'object') return;
     saveAccount(account);
     syncSessionFromAccount(account);
+    logAuth('Restored account from biometric credentials', { accountId: account.id || '' });
+  }
+
+  var authReady = false;
+  var authInitPromise = null;
+  var authLoadingNode = null;
+
+  function setAuthLoading(isLoading){
+    if (!pageNeedsAuth(location.pathname || '')) return;
+    if (isLoading) {
+      if (authLoadingNode) return;
+      authLoadingNode = document.createElement('div');
+      authLoadingNode.id = 'gsAuthLoadingGate';
+      authLoadingNode.setAttribute('role', 'status');
+      authLoadingNode.setAttribute('aria-live', 'polite');
+      authLoadingNode.textContent = 'Checking session...';
+      authLoadingNode.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#f2f4f7;color:#16223a;font:700 14px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase';
+      document.documentElement.setAttribute('data-gs-auth-loading', '1');
+      if (document.body) {
+        document.body.appendChild(authLoadingNode);
+      } else {
+        document.addEventListener('DOMContentLoaded', function(){
+          if (authLoadingNode && !authLoadingNode.parentNode) document.body.appendChild(authLoadingNode);
+        }, { once: true });
+      }
+      return;
+    }
+    document.documentElement.setAttribute('data-gs-auth-loading', '0');
+    if (authLoadingNode && authLoadingNode.parentNode) authLoadingNode.parentNode.removeChild(authLoadingNode);
+    authLoadingNode = null;
+  }
+
+  function initializeAuth(){
+    if (authInitPromise) return authInitPromise;
+    setAuthLoading(true);
+    authInitPromise = Promise.resolve().then(function(){
+      var account = ensureAccount();
+      if (account) syncSessionFromAccount(account);
+      authReady = true;
+      logAuth('Auth initialization completed', { signedIn: Boolean(account), accountId: account && account.id ? account.id : '' });
+      try {
+        window.dispatchEvent(new CustomEvent('gs:auth-ready', {
+          detail: {
+            signedIn: Boolean(account),
+            accountId: account && account.id ? account.id : '',
+            role: account && account.role ? account.role : ''
+          }
+        }));
+      } catch (_err) {}
+      return account;
+    }).catch(function(err){
+      authReady = true;
+      logAuth('Auth initialization failed', { message: err && err.message ? err.message : 'unknown_error' });
+      return null;
+    }).finally(function(){
+      setAuthLoading(false);
+    });
+    return authInitPromise;
+  }
+
+  function buildAuthRedirect(path, search){
+    var target = normalizeInternalTarget((path || '') + (search || ''));
+    if (!target) target = '/';
+    storePostAuthDestination(target);
+    return '/auth.html?next=' + encodeURIComponent(target);
+  }
+
+  function redirectToAuth(path, search, reason){
+    var href = buildAuthRedirect(path, search);
+    logAuth('Redirecting to auth', { reason: reason || 'guard', target: href });
+    location.href = href;
   }
 
   function pageNeedsAuth(pathname){
@@ -394,7 +551,12 @@
     return (
       p.indexOf('teacher-home') >= 0 ||
       p.indexOf('teacher-mode') >= 0 ||
-      p.indexOf('teacher-student-progress') >= 0
+      p.indexOf('teacher-student-progress') >= 0 ||
+      p.indexOf('dashboard/teacher') >= 0 ||
+      p.indexOf('classrooms') >= 0 ||
+      p.indexOf('teacher-dashboard') >= 0 ||
+      p.indexOf('/play/') >= 0 ||
+      p.indexOf('missions/hub') >= 0
     );
   }
 
@@ -439,19 +601,19 @@
     return 'Your current trial/account does not include ' + label + '. Upgrade to unlock this mission set.';
   }
 
-  function guardCurrentPage(){
+  function guardCurrentPageSync(){
     var path = location.pathname || '';
     var search = location.search || '';
     var pack = detectPackFromPath(path, search);
-    var account = loadAccount();
+    var account = ensureAccount();
 
     if (!account) {
       if (pageNeedsAuth(path)) {
-        location.href = 'auth.html?next=' + encodeURIComponent(path + search);
+        redirectToAuth(path, search, 'protected_page');
         return;
       }
       if (pack && pack !== 'pack01') {
-        location.href = 'auth.html?next=' + encodeURIComponent(path + search);
+        redirectToAuth(path, search, 'locked_pack_requires_auth');
         return;
       }
       return;
@@ -461,14 +623,21 @@
       if (!hasEntitlement(pack)) {
         localStorage.setItem('gs_last_denied_pack', pack);
         alert(blockMessage(pack));
-        location.href = 'pricing.html?locked=' + encodeURIComponent(pack);
+        location.href = '/pricing.html?locked=' + encodeURIComponent(pack);
       }
     }
   }
 
+  function guardCurrentPage(){
+    return initializeAuth().then(function(){
+      guardCurrentPageSync();
+      return true;
+    });
+  }
+
   function applyEntitlementToLinks(){
     var nodes = document.querySelectorAll('a[href]');
-    var account = loadAccount();
+    var account = ensureAccount();
     nodes.forEach(function(a){
       var href = a.getAttribute('href') || '';
       if (!href || href.indexOf('http') === 0 || href.indexOf('#') === 0) return;
@@ -477,7 +646,8 @@
       var query = hrefParts[1] || '';
       if (!account && pageNeedsAuth(path)) {
         a.dataset.originalHref = href;
-        a.setAttribute('href', 'auth.html?next=' + encodeURIComponent(path + (query ? '?' + query : '')));
+        var nextAuthTarget = normalizeInternalTarget(path + (query ? '?' + query : '')) || '/';
+        a.setAttribute('href', '/auth.html?next=' + encodeURIComponent(nextAuthTarget));
         a.title = 'Sign up or sign in to access this page';
         return;
       }
@@ -485,13 +655,14 @@
       if (!pack) return;
       if (!account && pack !== 'pack01') {
         a.dataset.originalHref = href;
-        a.setAttribute('href', 'auth.html?next=' + encodeURIComponent(path + (query ? '?' + query : '')));
+        var nextPackTarget = normalizeInternalTarget(path + (query ? '?' + query : '')) || '/';
+        a.setAttribute('href', '/auth.html?next=' + encodeURIComponent(nextPackTarget));
         a.title = 'Sign up or sign in to access this mission set';
         return;
       }
       if (hasEntitlement(pack)) return;
       a.dataset.originalHref = href;
-      a.setAttribute('href', 'pricing.html?locked=' + encodeURIComponent(pack));
+      a.setAttribute('href', '/pricing.html?locked=' + encodeURIComponent(pack));
       a.title = blockMessage(pack);
     });
   }
@@ -518,7 +689,7 @@
       selectors.forEach(function(sel){
         var el = document.querySelector(sel);
         if (!el) return;
-        if (el.tagName === 'A') el.setAttribute('href', 'pricing.html');
+        if (el.tagName === 'A') el.setAttribute('href', '/pricing.html');
         el.style.opacity = '0.65';
         el.title = 'Available in paid plan';
       });
@@ -528,15 +699,16 @@
       active: active,
       setActive: setActive,
       applyLocks: applyLocks,
-      pricingUrl: 'pricing.html'
+      pricingUrl: '/pricing.html'
     };
   }
 
   function getStatus(){
     var a = ensureAccount();
-    if (!a) return { signedIn: false, plan: 'none', entitlements: [], trial: getTrialState(null) };
+    if (!a) return { signedIn: false, authReady: authReady, plan: 'none', entitlements: [], trial: getTrialState(null) };
     return {
       signedIn: true,
+      authReady: authReady,
       account: a,
       plan: a.plan,
       entitlements: a.entitlements || [],
@@ -562,6 +734,11 @@
     hasEntitlement: hasEntitlement,
     grantPaid: grantPaid,
     beginCheckout: beginCheckout,
+    initializeAuth: initializeAuth,
+    isAuthReady: function(){ return authReady; },
+    normalizeInternalTarget: normalizeInternalTarget,
+    storePostAuthDestination: storePostAuthDestination,
+    consumePostAuthDestination: consumePostAuthDestination,
     guardCurrentPage: guardCurrentPage,
     applyEntitlementToLinks: applyEntitlementToLinks,
     setConfig: setConfig,
@@ -571,13 +748,15 @@
 
   window.GS_TRIAL = trialCompat();
 
-  // Run guard immediately so locked packs never render
+  // Run guard after auth restoration to avoid false redirects.
   guardCurrentPage();
   function onReady(){
-    maybeHandleCheckoutSuccess();
-    applyEntitlementToLinks();
+    initializeAuth().then(function(){
+      maybeHandleCheckoutSuccess();
+      applyEntitlementToLinks();
+    });
     if (window.GS_IAP && window.GS_IAP.isNative && window.GS_IAP.isNative()) {
-      var a = loadAccount();
+      var a = ensureAccount();
       window.GS_IAP.init(a ? (a.id || a.email || '') : '').then(function(ok){
         if (ok && window.GS_IAP.syncEntitlementToAccount) {
           window.GS_IAP.syncEntitlementToAccount(loadAccount, grantPaid);

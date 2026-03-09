@@ -2056,7 +2056,7 @@ Technical safety:
         <p class="section-intro">Start free and see how quickly students engage with structured grammar practice.</p>
         <div class="hero-ctas">
           <a href="/missions/" class="btn btn-primary" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
-          <a href="teacher-home.html" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
+          <a href="/auth.html?mode=create" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
         </div>
         <p class="final-subtext">No prep. No grading stacks. Just progress.</p>
       </div>
@@ -2075,6 +2075,32 @@ Technical safety:
         }
       }
       window.GS_TRACK_HOME = track;
+    })();
+
+    (function(){
+      function parseSession(raw){
+        if (!raw) return null;
+        try {
+          var parsed = JSON.parse(raw);
+          return parsed && typeof parsed === 'object' ? parsed : null;
+        } catch (_err) {
+          return null;
+        }
+      }
+
+      function isSignedIn(){
+        var session = parseSession(localStorage.getItem('gs_auth_session'));
+        if (session) return true;
+        // Some sessions only persist account data; treat this as signed-in as well.
+        return Boolean(parseSession(localStorage.getItem('gs_account_v1')));
+      }
+
+      if (!isSignedIn()) return;
+
+      var createAccountButtons = document.querySelectorAll('[data-track-event="homepage_create_account_click"]');
+      createAccountButtons.forEach(function(btn){
+        btn.setAttribute('href', '/teacher-home.html');
+      });
     })();
 
     (function(){

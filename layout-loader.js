@@ -169,15 +169,56 @@
 
   function updateAuthButtons() {
     var session = null;
+    var authApi = window.GS_AUTH;
+    var authReady = false;
     try {
-      session = JSON.parse(localStorage.getItem('gs_auth_session'));
-    } catch (e) {}
+      if (authApi) {
+        authReady = (typeof authApi.isReady === 'function' && authApi.isReady()) ||
+          (typeof authApi.authReady === 'function' && authApi.authReady());
+        if (typeof authApi.getSession === 'function') {
+          session = authApi.getSession();
+        }
+      }
+    } catch (_err) {}
+
+    if (!session) {
+      try {
+        session = JSON.parse(localStorage.getItem('gs_auth_session'));
+      } catch (e) {}
+    }
+    if (!session) {
+      try {
+        var account = JSON.parse(localStorage.getItem('gs_account_v1'));
+        if (account && typeof account === 'object') {
+          session = {
+            mode: account.mode || 'account',
+            role: account.role || 'teacher',
+            name: account.name || 'Teacher',
+            email: account.email || '',
+            createdAt: account.createdAt || new Date().toISOString(),
+            accountId: account.id || '',
+            plan: account.plan || 'trial'
+          };
+          localStorage.setItem('gs_auth_session', JSON.stringify(session));
+        }
+      } catch (_err2) {}
+    }
 
     var navs = document.querySelectorAll('nav[aria-label="Primary navigation"]');
     navs.forEach(function(nav) {
       var label = nav.querySelector('#gsAccountLabel');
       var panel = nav.querySelector('#gsAccountPanel');
       if (!label || !panel) return;
+
+      if (authApi && !authReady) {
+        label.textContent = 'Loading…';
+        panel.innerHTML =
+          '<span style="' + dropdownLinkStyle + ';opacity:.7;cursor:default">Restoring session…</span>';
+        if (typeof authApi.restoreSession === 'function') {
+          authApi.restoreSession().then(function(){ updateAuthButtons(); });
+        }
+        return;
+      }
 
       if (!session || !session.name) {
         label.textContent = 'Account ▼';
@@ -193,7 +234,7 @@
       label.textContent = shortName + ' ▼';
       panel.innerHTML =
         '<a href="/profile.html" style="' + dropdownLinkStyle + '">Profile</a>' +
-        '<a href="#" data-i18n="nav_signOut" onclick="localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');localStorage.removeItem(\'gs_student_classroom\');localStorage.removeItem(\'gs_use_context_v3\');localStorage.removeItem(\'gs_active_student_v1\');localStorage.removeItem(\'gs_credentials\');location.href=\'/index.html\';return false;" style="' + dropdownLinkStyle + '">Sign Out</a>';
+        '<a href="#" data-i18n="nav_signOut" onclick="if(window.GS_AUTH&&typeof window.GS_AUTH.signOut===\'function\'){window.GS_AUTH.signOut();}else{localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');localStorage.removeItem(\'gs_auth_next_v1\');localStorage.removeItem(\'gs_student_classroom\');localStorage.removeItem(\'gs_use_context_v3\');localStorage.removeItem(\'gs_active_student_v1\');localStorage.removeItem(\'gs_credentials\');}location.href=\'/index.html\';return false;" style="' + dropdownLinkStyle + '">Sign Out</a>';
     });
     try {
       if (window.GS_I18N && typeof window.GS_I18N.apply === 'function') window.GS_I18N.apply();
@@ -230,4 +271,6 @@
   }
   document.addEventListener('layout:ready', updateAuthButtons);
   document.addEventListener('layout:ready', applyRoleVisibility);
+  window.addEventListener('gs:auth-state-changed', updateAuthButtons);
+  window.addEventListener('gs:auth-ready', updateAuthButtons);
 })();
