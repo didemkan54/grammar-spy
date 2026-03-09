@@ -39,6 +39,7 @@
     '<a class="gs-pill" href="/missions/" data-i18n="nav_missions" style="' + navLinkStyle + '">Missions</a>' +
     '<a class="gs-pill" href="/teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
     '<a class="gs-pill" href="/pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
+    '<a class="gs-pill" href="/grammar-teaching-ideas/" style="' + navLinkStyle + '">Teaching Ideas</a>' +
     '<details id="gsMoreMenu" style="position:relative">' +
     '<summary class="gs-pill" style="' + menuSummaryStyle + '">More &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
