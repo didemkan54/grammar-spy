@@ -93,6 +93,14 @@
 
   function loadAccount(){
     var a = parse(storageGet(ACCOUNT_KEY), null);
+    if (!a) {
+      // Backfill legacy session-only state so signed-in users stay authenticated.
+      var session = loadSession();
+      var rebuilt = buildAccountFromSession(session);
+      if (rebuilt) {
+        a = saveAccount(rebuilt);
+      }
+    }
     if (!a) return null;
     if ((a.plan === 'trial' || a.plan === 'guest') && Array.isArray(a.entitlements) && a.entitlements.length > 1) {
       a.entitlements = ['pack01'];

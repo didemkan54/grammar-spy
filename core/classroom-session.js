@@ -209,7 +209,7 @@ export function getSessionByCode(code) {
 
 export function joinSession(code, agentName, options = {}) {
   const joinCode = normalizeJoinCode(code);
-  if (!joinCode) throw new Error("Enter a valid 6-character join code.");
+  if (!joinCode) throw new Error("Enter a valid 6-digit join code.");
   const cleanAgentName = cleanName(agentName, "");
   if (cleanAgentName.length < 2) throw new Error("Agent name must be at least 2 characters.");
 
