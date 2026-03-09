@@ -4,12 +4,35 @@
  */
 (function () {
   var STORAGE_KEY = 'gs_lang';
-  var SUPPORTED = ['en', 'es', 'fr', 'am', 'tr', 'ar', 'hi', 'ur', 'ps', 'vi', 'zh', 'ko', 'so', 'ti', 'pt'];
+  var SUPPORTED = ['en', 'es', 'fr', 'am', 'tr', 'ar', 'hi', 'ur', 'ps', 'vi', 'zh', 'ko', 'so', 'ti', 'pt', 'bn', 'ru', 'ja', 'tl', 'fa'];
+  var LANGUAGE_LABELS = {
+    en: 'English',
+    es: 'Español',
+    fr: 'Français',
+    am: 'አማርኛ',
+    tr: 'Türkçe',
+    ar: 'العربية',
+    hi: 'हिन्दी',
+    ur: 'اردو',
+    ps: 'پښتو',
+    vi: 'Tiếng Việt',
+    zh: '中文',
+    ko: '한국어',
+    so: 'Soomaali',
+    ti: 'ትግርኛ',
+    pt: 'Português',
+    bn: 'বাংলা',
+    ru: 'Русский',
+    ja: '日本語',
+    tl: 'Filipino',
+    fa: 'فارسی'
+  };
 
   var t = {
     en: {
       nav_home: 'Home',
       nav_missions: 'Missions',
+      nav_teacher: 'Teacher',
       nav_blog: 'Blog',
       nav_pricing: 'Pricing',
       nav_createAccount: 'Create account',
@@ -89,6 +112,7 @@
     es: {
       nav_home: 'Inicio',
       nav_missions: 'Misiones',
+      nav_teacher: 'Profesor',
       nav_blog: 'Blog',
       nav_pricing: 'Precios',
       nav_createAccount: 'Crear cuenta',
@@ -168,6 +192,7 @@
     fr: {
       nav_home: 'Accueil',
       nav_missions: 'Missions',
+      nav_teacher: 'Enseignant',
       nav_blog: 'Blog',
       nav_pricing: 'Tarifs',
       nav_createAccount: 'Créer un compte',
@@ -361,7 +386,7 @@
     },
     pt: {
       nav_home: 'Início', nav_missions: 'Missões', nav_blog: 'Blog', nav_pricing: 'Preços',
-      nav_createAccount: 'Criar conta', nav_signIn: 'Entrar', nav_signOut: 'Sair',
+      nav_teacher: 'Professor', nav_createAccount: 'Criar conta', nav_signIn: 'Entrar', nav_signOut: 'Sair',
       hero_tagline: 'Gramática estruturada. Resultados claros. Zero caos.',
       hero_subcopy: 'Criado por um professor de ELD para salas de aula reais.',
       hero_startHere: 'Comece aqui', hero_teacher: 'Professor', hero_student: 'Aluno',
@@ -369,8 +394,133 @@
       hero_passive: 'Caminho do professor requer login. Missão 01 grátis; atualize para desbloquear tudo.',
       home_howItWorks: 'Como funciona', home_whatHappens: 'O que acontece em uma missão',
       packs_openMission: 'Abrir missão', pricing_title: 'Preços', pricing_signUpFree: 'Cadastre-se grátis'
+    },
+    bn: {
+      nav_home: 'হোম', nav_missions: 'মিশন', nav_teacher: 'শিক্ষক', nav_blog: 'ব্লগ', nav_pricing: 'মূল্য',
+      nav_createAccount: 'অ্যাকাউন্ট তৈরি করুন', nav_signIn: 'সাইন ইন', nav_signOut: 'সাইন আউট',
+      packs_missionLibrary: 'মিশন লাইব্রেরি',
+      packs_chooseMission: 'আপনার গতি খুঁজে পেতে একটি মিশন বেছে নিন।',
+      packs_selectContent: 'প্রথমে বিষয়বস্তু বেছে নিন। পরের ধাপে কঠিনতা নির্বাচন করুন।',
+      packs_openMission: 'মিশন খুলুন',
+      pricing_title: 'মূল্য',
+      pricing_intro: 'কম প্রস্তুতি, পরিষ্কার কাঠামো, নির্ভরযোগ্য ব্যাকরণ অনুশীলন। মিশন 01 বিনামূল্যে; সব মিশন আনলক করতে আপগ্রেড করুন।',
+      pricing_freeLabel: 'ফ্রি — এক প্যাক',
+      pricing_freeDesc: 'ফ্রি অ্যাকাউন্ট খুলুন। সময়সীমা ছাড়া মিশন 01 পান।',
+      pricing_signUpFree: 'ফ্রি সাইন আপ',
+      pricing_studentLabel: 'শিক্ষার্থী',
+      pricing_studentDesc: '$69/বছর — বার্ষিক পেমেন্টে সাশ্রয়। সব মিশন, একজন শিক্ষার্থীর জন্য।',
+      pricing_student_feature1: 'সব মিশন',
+      pricing_student_feature2: 'নিজস্ব গতিতে অনুশীলন',
+      pricing_student_feature3: 'অগ্রগতি ও রিপোর্ট',
+      pricing_student_included: 'সব মিশন অন্তর্ভুক্ত',
+      pricing_schoolLicense: 'স্কুল লাইসেন্স'
+    },
+    ru: {
+      nav_home: 'Главная', nav_missions: 'Миссии', nav_teacher: 'Учитель', nav_blog: 'Блог', nav_pricing: 'Цены',
+      nav_createAccount: 'Создать аккаунт', nav_signIn: 'Войти', nav_signOut: 'Выйти',
+      packs_missionLibrary: 'Библиотека миссий',
+      packs_chooseMission: 'Выберите миссию и найдите свой ритм.',
+      packs_selectContent: 'Сначала выберите контент. Сложность — на следующем шаге.',
+      packs_openMission: 'Открыть миссию',
+      pricing_title: 'Цены',
+      pricing_intro: 'Меньше подготовки. Понятная структура. Надежные миссии по грамматике. Миссия 01 бесплатна; обновитесь, чтобы открыть все.',
+      pricing_freeLabel: 'Бесплатно — Один пакет',
+      pricing_freeDesc: 'Создайте бесплатный аккаунт и получите Миссию 01 без ограничений по времени.',
+      pricing_signUpFree: 'Зарегистрироваться бесплатно',
+      pricing_studentLabel: 'Ученик',
+      pricing_studentDesc: '$69/год — выгоднее при годовой оплате. Все миссии для одного ученика.',
+      pricing_student_feature1: 'Все миссии',
+      pricing_student_feature2: 'Практика в своем темпе',
+      pricing_student_feature3: 'Прогресс и отчеты',
+      pricing_student_included: 'Все миссии включены',
+      pricing_schoolLicense: 'Школьная лицензия'
+    },
+    ja: {
+      nav_home: 'ホーム', nav_missions: 'ミッション', nav_teacher: '教師', nav_blog: 'ブログ', nav_pricing: '料金',
+      nav_createAccount: 'アカウント作成', nav_signIn: 'サインイン', nav_signOut: 'サインアウト',
+      packs_missionLibrary: 'ミッションライブラリ',
+      packs_chooseMission: 'ミッションを選んで学習の流れを見つけましょう。',
+      packs_selectContent: '最初にコンテンツを選択し、次のステップで難易度を選びます。',
+      packs_openMission: 'ミッションを開く',
+      pricing_title: '料金',
+      pricing_intro: '準備を減らし、構造を明確に。再利用できる文法ミッション。ミッション01は無料、全ミッションはアップグレードで解放。',
+      pricing_freeLabel: '無料 — 1パック',
+      pricing_freeDesc: '無料アカウントでミッション01を時間制限なしで利用できます。',
+      pricing_signUpFree: '無料で登録',
+      pricing_studentLabel: '学習者',
+      pricing_studentDesc: '年額69ドル（年払いでお得）。1人の学習者で全ミッションにアクセス。',
+      pricing_student_feature1: '全ミッション',
+      pricing_student_feature2: '自分のペースで練習',
+      pricing_student_feature3: '進捗とレポート',
+      pricing_student_included: '全ミッションが含まれます',
+      pricing_schoolLicense: '学校ライセンス'
+    },
+    tl: {
+      nav_home: 'Home', nav_missions: 'Mga Misyon', nav_teacher: 'Guro', nav_blog: 'Blog', nav_pricing: 'Presyo',
+      nav_createAccount: 'Gumawa ng account', nav_signIn: 'Mag-sign in', nav_signOut: 'Mag-sign out',
+      packs_missionLibrary: 'Library ng Misyon',
+      packs_chooseMission: 'Pumili ng misyon para sa tamang daloy ng pagkatuto.',
+      packs_selectContent: 'Piliin muna ang nilalaman. Piliin ang hirap sa susunod na hakbang.',
+      packs_openMission: 'Buksan ang misyon',
+      pricing_title: 'Presyo',
+      pricing_intro: 'Mas kaunting prep, mas malinaw na istruktura. Mission 01 ay libre; mag-upgrade para ma-unlock ang lahat.',
+      pricing_freeLabel: 'Libre — Isang Pack',
+      pricing_freeDesc: 'Mag-sign up nang libre at makuha ang Mission 01 nang walang time limit.',
+      pricing_signUpFree: 'Mag-sign up nang libre',
+      pricing_studentLabel: 'Mag-aaral',
+      pricing_studentDesc: '$69/taon — tipid sa annual billing. Lahat ng misyon para sa isang learner.',
+      pricing_student_feature1: 'Lahat ng misyon',
+      pricing_student_feature2: 'Self-paced na practice',
+      pricing_student_feature3: 'Progress at reports',
+      pricing_student_included: 'Kasama ang lahat ng misyon',
+      pricing_schoolLicense: 'Lisensya ng Paaralan'
+    },
+    fa: {
+      nav_home: 'خانه', nav_missions: 'ماموریت‌ها', nav_teacher: 'معلم', nav_blog: 'وبلاگ', nav_pricing: 'قیمت‌گذاری',
+      nav_createAccount: 'ایجاد حساب', nav_signIn: 'ورود', nav_signOut: 'خروج',
+      packs_missionLibrary: 'کتابخانه ماموریت',
+      packs_chooseMission: 'یک ماموریت انتخاب کنید و جریان یادگیری خود را پیدا کنید.',
+      packs_selectContent: 'ابتدا محتوا را انتخاب کنید. سطح دشواری در مرحله بعد انتخاب می‌شود.',
+      packs_openMission: 'باز کردن ماموریت',
+      pricing_title: 'قیمت‌گذاری',
+      pricing_intro: 'آماده‌سازی کمتر، ساختار روشن، تمرین قابل‌اعتماد. ماموریت 01 رایگان است؛ برای باز شدن همه ماموریت‌ها ارتقا دهید.',
+      pricing_freeLabel: 'رایگان — یک بسته',
+      pricing_freeDesc: 'حساب رایگان بسازید و ماموریت 01 را بدون محدودیت زمانی دریافت کنید.',
+      pricing_signUpFree: 'ثبت‌نام رایگان',
+      pricing_studentLabel: 'دانش‌آموز',
+      pricing_studentDesc: '69 دلار در سال — با پرداخت سالانه مقرون‌به‌صرفه‌تر. همه ماموریت‌ها برای یک یادگیرنده.',
+      pricing_student_feature1: 'همه ماموریت‌ها',
+      pricing_student_feature2: 'تمرین با سرعت شخصی',
+      pricing_student_feature3: 'پیشرفت و گزارش‌ها',
+      pricing_student_included: 'همه ماموریت‌ها شامل می‌شود',
+      pricing_schoolLicense: 'مجوز مدرسه'
     }
   };
+
+  var LOCALE_PATCHES = {
+    am: { nav_teacher: 'መምህር' },
+    tr: { nav_teacher: 'Öğretmen' },
+    ar: { nav_teacher: 'معلم' },
+    hi: { nav_teacher: 'शिक्षक' },
+    ur: { nav_teacher: 'استاد' },
+    ps: { nav_teacher: 'ښوونکی' },
+    vi: { nav_teacher: 'Giáo viên' },
+    zh: { nav_teacher: '教师' },
+    ko: { nav_teacher: '교사' },
+    so: { nav_teacher: 'Macallin' },
+    ti: { nav_teacher: 'መምህር' },
+    pt: { nav_teacher: 'Professor' }
+  };
+
+  Object.keys(LOCALE_PATCHES).forEach(function (code) {
+    if (!t[code]) t[code] = {};
+    t[code] = Object.assign({}, LOCALE_PATCHES[code], t[code]);
+  });
+
+  Object.keys(t).forEach(function (code) {
+    if (code === 'en') return;
+    t[code] = Object.assign({}, t.en, t[code] || {});
+  });
 
   function getLang() {
     var fromUrl = typeof URLSearchParams !== 'undefined' && location.search ? new URLSearchParams(location.search).get('lang') : null;
@@ -415,18 +565,31 @@
     getLang: getLang,
     setLang: setLang,
     apply: apply,
-    supported: SUPPORTED
+    supported: SUPPORTED,
+    labels: LANGUAGE_LABELS
   };
+
+  function populateSelectOptions(sel) {
+    if (!sel) return;
+    var current = getLang();
+    sel.innerHTML = SUPPORTED.map(function (code) {
+      var label = LANGUAGE_LABELS[code] || code.toUpperCase();
+      return '<option value="' + code + '">' + label + '</option>';
+    }).join('');
+    sel.value = SUPPORTED.indexOf(current) >= 0 ? current : 'en';
+  }
 
   function syncSelect() {
     var lang = getLang();
     document.querySelectorAll('#gsLangSelect').forEach(function (sel) {
+      populateSelectOptions(sel);
       sel.value = lang;
     });
   }
 
   function bindToSelect(sel) {
     if (sel._i18nBound) return;
+    populateSelectOptions(sel);
     sel._i18nBound = true;
     sel.value = getLang();
     sel.addEventListener('change', function () {
