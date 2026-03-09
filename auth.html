@@ -197,12 +197,35 @@
       if (storedCode) sessionStorage.removeItem('gs_promo_code');
     }
 
+    function normalizeInternalTarget(value){
+      var raw = String(value || '').trim();
+      if (!raw) return '';
+      var lower = raw.toLowerCase();
+      if (lower.indexOf('http://') === 0 || lower.indexOf('https://') === 0 || lower.indexOf('//') === 0 || lower.indexOf('javascript:') === 0) return '';
+      if (raw.charAt(0) !== '/') raw = '/' + raw.replace(/^\.?\//, '');
+      return raw;
+    }
+
+    function consumeStoredTarget(){
+      if (window.GS_BILLING && typeof window.GS_BILLING.consumePostAuthDestination === 'function') {
+        return window.GS_BILLING.consumePostAuthDestination();
+      }
+      try {
+        const stored = normalizeInternalTarget(localStorage.getItem('gs_auth_next_v1'));
+        localStorage.removeItem('gs_auth_next_v1');
+        return stored;
+      } catch (_err) {
+        return '';
+      }
+    }
+
     function nextHref(defaultHref){
       const params = new URLSearchParams(location.search);
-      const next = params.get('next');
       const subscribe = params.get('subscribe');
-      if (!next) return defaultHref;
-      if (next.startsWith('http')) return defaultHref;
+      const fromQuery = normalizeInternalTarget(params.get('next') || '');
+      const fallbackDefault = normalizeInternalTarget(defaultHref) || '/index.html';
+      const next = fromQuery || consumeStoredTarget();
+      if (!next) return fallbackDefault;
       const sep = next.indexOf('?') >= 0 ? '&' : '?';
       return subscribe ? next + sep + 'subscribe=' + encodeURIComponent(subscribe) : next;
     }
@@ -258,7 +281,7 @@
         if (account) await window.GS_BIOMETRIC.saveCredentials(account);
       }
       localStorage.setItem('gs_use_context_v3', isCreateStudent ? 'individual' : 'class');
-      location.href = nextHref(isCreateStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
+      location.href = nextHref(isCreateStudent ? '/individual-home.html?join=1#joinClassSection' : '/teacher-home.html');
     });
 
     document.getElementById('btnSignIn').addEventListener('click', async () => {
@@ -282,7 +305,7 @@
         if (account) await window.GS_BIOMETRIC.saveCredentials(account);
       }
       localStorage.setItem('gs_use_context_v3', isSigninStudent ? 'individual' : 'class');
-      location.href = nextHref(isSigninStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
+      location.href = nextHref(isSigninStudent ? '/individual-home.html?join=1#joinClassSection' : '/teacher-home.html');
     });
 
     document.getElementById('btnBiometricSignIn').addEventListener('click', async () => {
@@ -290,17 +313,21 @@
       const account = await window.GS_BIOMETRIC.signInWithBiometric();
       if (account) {
         window.GS_BILLING.restoreFromBiometric(account);
-        location.href = nextHref('teacher-home.html');
+        location.href = nextHref('/teacher-home.html');
       }
     });
 
     document.getElementById('btnGuest').addEventListener('click', () => {
       window.GS_AUTH.setGuest();
       tryRedeemPromoCode();
-      location.href = nextHref('teacher-home.html');
+      location.href = nextHref('/teacher-home.html');
     });
 
     const params = new URLSearchParams(location.search);
+    const queryNext = normalizeInternalTarget(params.get('next') || '');
+    if (queryNext && window.GS_BILLING && typeof window.GS_BILLING.storePostAuthDestination === 'function') {
+      window.GS_BILLING.storePostAuthDestination(queryNext);
+    }
     const m = params.get('mode');
     if (m === 'signin') openTab('signin');
     if (m === 'guest') openTab('guest');
