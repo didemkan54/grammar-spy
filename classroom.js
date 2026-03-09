@@ -50,6 +50,8 @@
     var row = entry || {};
     var joinCode = toCode(row.joinCode || row.code || "");
     if (!joinCode) joinCode = generateJoinCode();
+    var fallbackIdSeed = joinCode || safeName(row.name, "classroom").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+    var fallbackId = "class_" + fallbackIdSeed;
     var students = Array.isArray(row.students) ? row.students : [];
     var studentIds = Array.isArray(row.studentIds) ? row.studentIds : [];
     if (students.length && !studentIds.length) {
@@ -58,7 +60,8 @@
       });
     }
     return {
-      id: String(row.id || randomId("class")),
+      // Keep IDs stable for legacy rows that may not have an id field.
+      id: String(row.id || row.classId || fallbackId),
       teacherId: String(row.teacherId || ""),
       teacherName: String(row.teacherName || ""),
       name: safeName(row.name, "Classroom"),
@@ -94,9 +97,12 @@
 
   function removeLegacyClassroom(classroomId) {
     var id = String(classroomId || "").trim();
+    var classroom = getClassroomById(id);
+    var classCode = classroom ? toCode(classroom.joinCode || classroom.code || "") : "";
     saveClassrooms(getClassrooms().filter(function (row) { return row.id !== id; }));
     writeJson(ASSIGNMENTS_KEY, readJson(ASSIGNMENTS_KEY, []).filter(function (row) {
-      return String(row.classId || "") !== id;
+      var rowCode = toCode(row.classCode || row.code || "");
+      return String(row.classId || "") !== id && (!classCode || rowCode !== classCode);
     }));
   }
 
@@ -178,9 +184,21 @@
   function joinClassByCode(payload) {
     var code = payload && (payload.code || payload.joinCode);
     var name = payload && (payload.studentName || payload.name);
+    function persistJoinedClassroom(classroomRow, studentRow) {
+      if (!classroomRow || !studentRow) return;
+      writeJson(STUDENT_KEY, {
+        classroomId: classroomRow.id,
+        classroomName: classroomRow.name,
+        teacherName: classroomRow.teacherName || "",
+        code: classroomRow.joinCode,
+        studentId: String(studentRow.id || ""),
+        studentName: String(studentRow.name || ""),
+        joinedAt: nowIso()
+      });
+    }
     if (window.GSProductSystem && typeof window.GSProductSystem.joinClassByCode === "function") {
       try {
-        return window.GSProductSystem.joinClassByCode(
+        var joined = window.GSProductSystem.joinClassByCode(
           {
             code: code,
             studentId: payload && payload.studentId,
@@ -189,6 +207,21 @@
           },
           { role: "student" }
         );
+        var rawJoinedClassroom = (joined && joined.classroom) || getClassroomByCode(code);
+        if (!rawJoinedClassroom) return joined || null;
+        var joinedClassroom = asClassroom(rawJoinedClassroom);
+        var joinedStudent = (joined && joined.student) || {
+          id: String(payload && payload.studentId || ("name_" + safeName(name, "student").toLowerCase().replace(/[^a-z0-9]+/g, "_"))),
+          name: safeName(name, "Student")
+        };
+        persistJoinedClassroom(joinedClassroom, joinedStudent);
+        return {
+          classroom: joinedClassroom,
+          student: {
+            id: String(joinedStudent.id || ""),
+            name: String(joinedStudent.name || safeName(name, "Student"))
+          }
+        };
       } catch (_err) {}
     }
 
@@ -235,22 +268,13 @@
       classroom = classrooms[classIdx];
     }
 
-    writeJson(STUDENT_KEY, {
-      classroomId: classroom.id,
-      classroomName: classroom.name,
-      teacherName: classroom.teacherName || "",
-      code: classroom.joinCode,
-      studentId: studentId,
-      studentName: studentName,
-      joinedAt: nowIso()
-    });
+    persistJoinedClassroom(classroom, { id: studentId, name: studentName });
 
     return { classroom: classroom, student: { id: studentId, name: studentName } };
   }
 
   function addStudentToClassroom(code, studentName) {
-    var result = joinClassByCode({ code: code, studentName: studentName });
-    return result ? result.classroom : null;
+    return joinClassByCode({ code: code, studentName: studentName });
   }
 
   function removeStudent(classroomId, studentName) {
@@ -306,9 +330,12 @@
     if (window.GSProductSystem && typeof window.GSProductSystem.assignToClass === "function") {
       return window.GSProductSystem.assignToClass(payload, { role: "teacher" });
     }
+    var classId = String(payload && payload.classId || "");
+    var classroom = getClassroomById(classId);
     var assignment = {
       id: randomId("assign"),
-      classId: String(payload && payload.classId || ""),
+      classId: classId,
+      classCode: classroom ? classroom.joinCode : "",
       type: String(payload && payload.type || "mission"),
       targetId: String(payload && payload.targetId || ""),
       title: safeName(payload && payload.title, "Class Assignment"),
@@ -324,7 +351,26 @@
 
   function getClassAssignments(classId) {
     var id = String(classId || "").trim();
-    return readJson(ASSIGNMENTS_KEY, []).filter(function (row) { return String(row.classId || "") === id; });
+    if (window.GSProductSystem && typeof window.GSProductSystem.getClassAssignments === "function") {
+      try {
+        return window.GSProductSystem.getClassAssignments(id) || [];
+      } catch (_err) {}
+    }
+    var classroom = getClassroomById(id);
+    var classCode = classroom ? toCode(classroom.joinCode || classroom.code || "") : "";
+    var fallbackClassId = classCode ? ("class_" + classCode.toLowerCase()) : "";
+    return readJson(ASSIGNMENTS_KEY, [])
+      .filter(function (row) {
+        var rowClassId = String(row.classId || "");
+        var rowCode = toCode(row.classCode || row.code || "");
+        if (rowClassId === id) return true;
+        if (fallbackClassId && rowClassId === fallbackClassId) return true;
+        if (classCode && rowCode === classCode) return true;
+        return false;
+      })
+      .sort(function (a, b) {
+        return String(b && b.assignedAt || "").localeCompare(String(a && a.assignedAt || ""));
+      });
   }
 
   function getClassRoster(classId) {

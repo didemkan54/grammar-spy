@@ -101,6 +101,22 @@
         time_traveler: "Mission 02: Retell What Happened",
         time_travelers: "Mission 03: Future Time Travelers"
       };
+      var AVATAR_STORAGE_KEY = "gs_student_avatar_id_v1";
+      var ACCENT_STORAGE_KEY = "gs_student_accent_color_v1";
+      var AVATAR_OPTIONS = [
+        { id: "spy_hacker", label: "Hacker" },
+        { id: "spy_analyst", label: "Analyst" },
+        { id: "spy_scout", label: "Scout" },
+        { id: "animal_fox", label: "Fox Agent" },
+        { id: "animal_raven", label: "Raven Agent" },
+        { id: "badge_cipher", label: "Cipher Badge" }
+      ];
+      var ACCENT_OPTIONS = [
+        { id: "#1f8f8f", label: "Teal" },
+        { id: "#c79a2f", label: "Gold" },
+        { id: "#2f69c7", label: "Blue" },
+        { id: "#7b43c7", label: "Purple" }
+      ];
 
       function missionLabelById(missionId) {
         return MISSION_LABELS[missionId] || ("Mission: " + String(missionId || "").replace(/_/g, " "));
@@ -113,6 +129,61 @@
         } catch(_err) {
           return "No due date";
         }
+      }
+
+      function readStoredAvatarId() {
+        try {
+          var stored = String(localStorage.getItem(AVATAR_STORAGE_KEY) || "").trim();
+          if (stored && AVATAR_OPTIONS.some(function(opt){ return opt.id === stored; })) return stored;
+        } catch(_err) {}
+        return AVATAR_OPTIONS[0].id;
+      }
+
+      function readStoredAccentColor() {
+        try {
+          var stored = String(localStorage.getItem(ACCENT_STORAGE_KEY) || "").trim();
+          if (stored && ACCENT_OPTIONS.some(function(opt){ return opt.id === stored; })) return stored;
+        } catch(_err) {}
+        return ACCENT_OPTIONS[0].id;
+      }
+
+      function persistStudentAvatarSelection(avatarId, accentColor) {
+        try {
+          localStorage.setItem(AVATAR_STORAGE_KEY, String(avatarId || AVATAR_OPTIONS[0].id));
+          localStorage.setItem(ACCENT_STORAGE_KEY, String(accentColor || ACCENT_OPTIONS[0].id));
+        } catch(_err) {}
+      }
+
+      function persistStudentIdentity(joinResult, studentName, avatarId, accentColor) {
+        var classCode = (joinResult && joinResult.classroom && joinResult.classroom.joinCode) || "";
+        var classId = (joinResult && joinResult.classroom && joinResult.classroom.id) || "";
+        var studentId = (joinResult && joinResult.student && joinResult.student.id) || "";
+        if (!classCode || !studentId) return;
+        persistStudentAvatarSelection(avatarId, accentColor);
+        try {
+          import('/student/identity-store.js').then(function(api){
+            if (!api) return;
+            if (typeof api.upsertStudentProfile === 'function') {
+              api.upsertStudentProfile(studentId, {
+                display_name: studentName,
+                avatar_id: avatarId,
+                accent_color: accentColor,
+                class_id: classCode,
+                identity_ready: true
+              });
+            }
+            if (typeof api.setActiveContext === 'function') {
+              api.setActiveContext(studentId, classCode);
+            }
+          }).catch(function(){});
+        } catch(_err) {}
+        try {
+          var existing = JSON.parse(localStorage.getItem('gs_student_classroom') || "null") || {};
+          existing.avatarId = avatarId;
+          existing.accentColor = accentColor;
+          if (!existing.classroomId && classId) existing.classroomId = classId;
+          localStorage.setItem('gs_student_classroom', JSON.stringify(existing));
+        } catch(_err2) {}
       }
 
       function renderJoinSection() {
@@ -133,7 +204,7 @@
           }
           var assigned = classId
             ? (window.GSClassroom.getClassAssignments(classId) || []).filter(function(row){
-                return row.type === "mission" && row.status !== "archived";
+                return row.status !== "archived";
               })
             : [];
           var assignmentHtml = assigned.length
@@ -141,10 +212,18 @@
                 '<h3 style="margin:0 0 10px;font-size:16px;color:#0b1020">Assigned by your teacher</h3>' +
                 '<div style="display:grid;gap:8px">' +
                   assigned.slice(0, 6).map(function(row){
-                    return '<a href="missions/hub.html?mission=' + encodeURIComponent(row.targetId || "") + '" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#fff;border:1px solid #d9dee6;border-radius:10px;text-decoration:none;color:#16223a">' +
-                      '<span><strong>' + missionLabelById(row.targetId) + '</strong><br><small style="color:#7a8698">Due: ' + formatDue(row.dueAt) + '</small></span>' +
-                      '<span style="font:700 11px Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#1f5f63">Start →</span>' +
-                    '</a>';
+                    var typeLabel = String(row.type || "assignment").replace(/_/g, " ");
+                    var isMission = row.type === "mission";
+                    var href = isMission ? ('missions/hub.html?mission=' + encodeURIComponent(row.targetId || "")) : '';
+                    var title = isMission ? missionLabelById(row.targetId) : (row.title || ("Assigned " + typeLabel));
+                    var wrapperStart = isMission
+                      ? '<a href="' + href + '" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#fff;border:1px solid #d9dee6;border-radius:10px;text-decoration:none;color:#16223a">'
+                      : '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#fff;border:1px solid #d9dee6;border-radius:10px;color:#16223a">';
+                    var wrapperEnd = isMission ? '</a>' : '</div>';
+                    return wrapperStart +
+                      '<span><strong>' + title + '</strong><br><small style="color:#7a8698">Type: ' + typeLabel + ' · Due: ' + formatDue(row.dueAt) + '</small></span>' +
+                      '<span style="font:700 11px Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#1f5f63">' + (isMission ? 'Start →' : 'Assigned') + '</span>' +
+                    wrapperEnd;
                   }).join('') +
                 '</div>' +
               '</div>'
@@ -170,11 +249,21 @@
             renderJoinSection();
           });
         } else {
+          var avatarOptionsHtml = AVATAR_OPTIONS.map(function(opt){
+            return '<option value="' + opt.id + '">' + opt.label + '</option>';
+          }).join('');
+          var accentOptionsHtml = ACCENT_OPTIONS.map(function(opt){
+            return '<option value="' + opt.id + '">' + opt.label + '</option>';
+          }).join('');
+          var defaultAvatar = readStoredAvatarId();
+          var defaultAccent = readStoredAccentColor();
           el.innerHTML = '<h2 style="margin:0 0 6px;font-size:20px">Enter your teacher\'s code</h2>' +
             '<p style="margin:0 0 14px;color:#4a5568;font-size:14px">Your teacher will show a 6-letter code on screen. Type it below to join their classroom.</p>' +
             '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">' +
               '<input type="text" id="joinCodeInput" placeholder="Enter code" maxlength="10" autocomplete="off" autocapitalize="characters" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 16px;font-size:20px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;width:200px;text-align:center;font-family:Courier New,monospace" />' +
               '<input type="text" id="joinNameInput" placeholder="Your name" maxlength="25" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 16px;font-size:15px;min-width:180px" />' +
+              '<select id="joinAvatarInput" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 14px;font-size:14px;min-width:170px"><option value="">Select avatar</option>' + avatarOptionsHtml + '</select>' +
+              '<select id="joinAccentInput" style="border:2px solid #d9dee6;border-radius:10px;padding:12px 14px;font-size:14px;min-width:140px">' + accentOptionsHtml + '</select>' +
               '<button class="btn-primary" id="joinBtn" type="button" style="display:inline-flex;align-items:center;padding:12px 20px;border:1px solid #194f53;border-radius:10px;background:#1f5f63;color:#fff;font:700 13px Inter,Segoe UI,Arial,sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.06em">Join</button>' +
             '</div>' +
             '<p id="joinError" style="display:none;color:#b04444;font-size:13px;font-weight:600;margin-top:8px"></p>';
@@ -182,23 +271,36 @@
           var joinBtn = document.getElementById("joinBtn");
           var codeInput = document.getElementById("joinCodeInput");
           var nameInput = document.getElementById("joinNameInput");
+          var avatarInput = document.getElementById("joinAvatarInput");
+          var accentInput = document.getElementById("joinAccentInput");
           var errEl = document.getElementById("joinError");
+          if (avatarInput) avatarInput.value = defaultAvatar;
+          if (accentInput) accentInput.value = defaultAccent;
           if (joinBtn) joinBtn.addEventListener("click", function() {
             var code = (codeInput.value || "").trim();
             var name = (nameInput.value || "").trim();
+            var avatarId = (avatarInput && avatarInput.value) || "";
+            var accentColor = (accentInput && accentInput.value) || ACCENT_OPTIONS[0].id;
             errEl.style.display = "none";
             if (!code || code.length < 4) { errEl.textContent = "Please enter your class code."; errEl.style.display = "block"; codeInput.focus(); return; }
             if (!name) { errEl.textContent = "Please enter your name."; errEl.style.display = "block"; nameInput.focus(); return; }
+            if (!avatarId) { errEl.textContent = "Please choose an avatar."; errEl.style.display = "block"; if (avatarInput) avatarInput.focus(); return; }
             var result = window.GSClassroom && window.GSClassroom.addStudentToClassroom(code, name);
             if (!result && window.GS_BILLING) {
               if (window.GS_AUTH) window.GS_AUTH.setAccount(name, '');
               var redeemed = window.GS_BILLING.redeemPromoCode(code);
               if (redeemed) {
-                try { localStorage.setItem('gs_student_classroom', JSON.stringify({ code: code.toUpperCase(), studentName: name, joinedAt: new Date().toISOString() })); } catch(e){}
+                try { localStorage.setItem('gs_student_classroom', JSON.stringify({ code: code.toUpperCase(), studentName: name, joinedAt: new Date().toISOString(), avatarId: avatarId, accentColor: accentColor })); } catch(e){}
+                persistStudentAvatarSelection(avatarId, accentColor);
                 result = true;
               }
             }
             if (!result) { errEl.textContent = "Code not found. Check with your teacher and try again."; errEl.style.display = "block"; return; }
+            if (result && typeof result === "object" && result.student && result.classroom) {
+              persistStudentIdentity(result, name, avatarId, accentColor);
+            } else {
+              persistStudentAvatarSelection(avatarId, accentColor);
+            }
             renderJoinSection();
           });
           if (codeInput) codeInput.addEventListener("keydown", function(e) { if (e.key === "Enter") joinBtn.click(); });
