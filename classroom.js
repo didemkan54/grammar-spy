@@ -82,6 +82,24 @@
     writeJson(CLASSROOMS_KEY, (rows || []).map(asClassroom));
   }
 
+  function upsertLegacyClassroom(row) {
+    var next = asClassroom(row || {});
+    var classrooms = getClassrooms();
+    var idx = classrooms.findIndex(function (entry) { return entry.id === next.id; });
+    if (idx >= 0) classrooms[idx] = asClassroom(Object.assign({}, classrooms[idx], next));
+    else classrooms.push(next);
+    saveClassrooms(classrooms);
+    return next;
+  }
+
+  function removeLegacyClassroom(classroomId) {
+    var id = String(classroomId || "").trim();
+    saveClassrooms(getClassrooms().filter(function (row) { return row.id !== id; }));
+    writeJson(ASSIGNMENTS_KEY, readJson(ASSIGNMENTS_KEY, []).filter(function (row) {
+      return String(row.classId || "") !== id;
+    }));
+  }
+
   function getStudents() {
     var rows = readJson(STUDENTS_KEY, []);
     return Array.isArray(rows) ? rows : [];
@@ -110,7 +128,7 @@
   function createClass(input) {
     if (window.GSProductSystem && typeof window.GSProductSystem.createClass === "function") {
       try {
-        return window.GSProductSystem.createClass(
+        var created = window.GSProductSystem.createClass(
           {
             name: input && input.name,
             teacherName: input && input.teacherName,
@@ -119,6 +137,11 @@
           },
           { role: "teacher" }
         );
+        if (created) {
+          // Keep legacy classroom list in sync with product-system storage.
+          upsertLegacyClassroom(created);
+          return asClassroom(created);
+        }
       } catch (_err) {}
     }
     var classrooms = getClassrooms();
@@ -248,14 +271,9 @@
     if (window.GSProductSystem && typeof window.GSProductSystem.deleteClass === "function") {
       try {
         window.GSProductSystem.deleteClass(classroomId, { role: "teacher" });
-        return;
       } catch (_err) {}
     }
-    var id = String(classroomId || "").trim();
-    saveClassrooms(getClassrooms().filter(function (row) { return row.id !== id; }));
-    writeJson(ASSIGNMENTS_KEY, readJson(ASSIGNMENTS_KEY, []).filter(function (row) {
-      return String(row.classId || "") !== id;
-    }));
+    removeLegacyClassroom(classroomId);
   }
 
   function renameClassroom(classroomId, nextName) {

@@ -57,6 +57,8 @@
     '<option value="hi">हिन्दी</option><option value="ur">اردو</option><option value="ps">پښتو</option>' +
     '<option value="vi">Tiếng Việt</option><option value="zh">中文</option><option value="ko">한국어</option>' +
     '<option value="so">Soomaali</option><option value="ti">ትግርኛ</option><option value="pt">Português</option>' +
+    '<option value="bn">বাংলা</option><option value="ru">Русский</option><option value="ja">日本語</option>' +
+    '<option value="tl">Filipino</option><option value="fa">فارسی</option>' +
     '</select></span>' +
     '<details id="gsAccountMenu" style="position:relative">' +
     '<summary class="gs-pill" id="gsAccountLabel" style="' + menuSummaryStyle + '">Account &#9662;</summary>' +
