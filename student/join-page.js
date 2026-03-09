@@ -4,6 +4,9 @@ import { createJoinForm } from "./components/JoinForm.js";
 import { addPlayerToLobby, normalizePin } from "./lobby-store.js";
 import { applyDailyLoginBonus, setActiveContext, upsertStudentProfile } from "./identity-store.js";
 
+const AVATAR_STORAGE_KEY = "gs_student_avatar_id_v1";
+const ACCENT_STORAGE_KEY = "gs_student_accent_color_v1";
+
 function playSound(type) {
   if (window.GSSound && typeof window.GSSound.play === "function") {
     window.GSSound.play(type);
@@ -48,6 +51,34 @@ function resolveInitialPin() {
   return queryPin || "";
 }
 
+function resolveInitialAvatarId() {
+  try {
+    const stored = String(localStorage.getItem(AVATAR_STORAGE_KEY) || "").trim();
+    if (stored && AVATARS.some((avatar) => avatar.id === stored)) return stored;
+    const legacy = JSON.parse(localStorage.getItem("gs_student_classroom") || "null");
+    const legacyAvatar = String((legacy && legacy.avatarId) || "").trim();
+    if (legacyAvatar && AVATARS.some((avatar) => avatar.id === legacyAvatar)) return legacyAvatar;
+  } catch (_err) {}
+  return AVATARS[0].id;
+}
+
+function resolveInitialAccentId() {
+  try {
+    const storedColor = String(localStorage.getItem(ACCENT_STORAGE_KEY) || "").trim();
+    if (storedColor) {
+      const match = AVATAR_ACCENTS.find((row) => row.color === storedColor || row.id === storedColor);
+      if (match) return match.id;
+    }
+    const legacy = JSON.parse(localStorage.getItem("gs_student_classroom") || "null");
+    const legacyColor = String((legacy && legacy.accentColor) || "").trim();
+    if (legacyColor) {
+      const legacyMatch = AVATAR_ACCENTS.find((row) => row.color === legacyColor || row.id === legacyColor);
+      if (legacyMatch) return legacyMatch.id;
+    }
+  } catch (_err) {}
+  return AVATAR_ACCENTS[0].id;
+}
+
 function init() {
   const form = document.getElementById("joinForm");
   const pinInput = document.getElementById("joinPin");
@@ -66,10 +97,10 @@ function init() {
   const initialPin = resolveInitialPin();
   if (initialPin) pinInput.value = initialPin;
 
-  let selectedAccentId = AVATAR_ACCENTS[0].id;
+  let selectedAccentId = resolveInitialAccentId();
   const avatarPicker = createAvatarPicker({
     mountEl: avatarMount,
-    initialAvatarId: AVATARS[0].id,
+    initialAvatarId: resolveInitialAvatarId(),
     onChange: (avatarId) => {
       renderMascot(mascotEl, avatarId, selectedAccentId);
       playSound("hover");
@@ -121,6 +152,10 @@ function init() {
     getAccentColor: () => getAccentById(selectedAccentId).color,
     onValidSubmit: async ({ pin, nickname, avatarId, accentColor }) => {
       const { player } = addPlayerToLobby(pin, { nickname, avatarId, accentColor });
+      try {
+        localStorage.setItem(AVATAR_STORAGE_KEY, avatarId);
+        localStorage.setItem(ACCENT_STORAGE_KEY, accentColor);
+      } catch (_err) {}
       upsertStudentProfile(player.id, {
         display_name: nickname,
         avatar_id: avatarId,

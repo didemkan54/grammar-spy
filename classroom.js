@@ -249,8 +249,7 @@
   }
 
   function addStudentToClassroom(code, studentName) {
-    var result = joinClassByCode({ code: code, studentName: studentName });
-    return result ? result.classroom : null;
+    return joinClassByCode({ code: code, studentName: studentName });
   }
 
   function removeStudent(classroomId, studentName) {
