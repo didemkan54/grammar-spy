@@ -3,8 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Grammar Spy™ — Teacher Mode</title>
-  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
+
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WMZVCJN0KB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = window.gtag || gtag;
+    if (!window.__GS_GA4_CONFIGURED) {
+      gtag('js', new Date());
+      gtag('config', 'G-WMZVCJN0KB');
+      window.__GS_GA4_CONFIGURED = true;
+    }
+  </script>
+<title>Grammar Spy™ — Teacher Mode</title>
+  <meta name="description" content="Launch a Grammar Spy teacher session, choose mission settings, and start interactive grammar games for ESL and ELL classrooms." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://grammarspy.net/teacher-mode.html" />
+  <meta property="og:title" content="Grammar Spy™ — Teacher Mode" />
+  <meta property="og:description" content="Launch a Grammar Spy teacher session, choose mission settings, and start interactive grammar games for ESL and ELL classrooms." />
+  <meta property="og:url" content="https://grammarspy.net/teacher-mode.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://grammarspy.net/assets/brand/icon-512.png" />
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <style>
     :root{--navy:#0b1020;--mid:#16223a;--teal:#1f5f63;--light:#f2f4f7;--cool:#d9dee6;--slate:#4a5568;--shadow:0 10px 20px rgba(11,16,32,.08)}
     *{box-sizing:border-box}
@@ -43,7 +65,7 @@
           <h1 id="title">Teacher Mission Flow</h1>
           <p id="sub" class="sub">Choose one game, then continue.</p>
         </div>
-        <img src="assets/illustrations/mission-setup.svg" alt="" style="width:180px;height:auto;opacity:.85" aria-hidden="true" />
+        <img src="assets/illustrations/mission-setup.svg" alt="Teacher mission setup illustration" style="width:180px;height:auto;opacity:.85"  />
       </div>
       <div class="form">
         <div>
@@ -69,9 +91,9 @@
           </div>
         </div>
         <div class="action-row">
-          <a id="continueBtn" class="secondary" href="#">Open Mission Directly</a>
+          <a id="continueBtn" class="secondary" href="/missions/">Open Mission Directly</a>
           <button id="startMissionBtn" class="primary" type="button">Start Mission</button>
-          <a id="openWaitingRoomBtn" class="primary" href="#" hidden>Open Waiting Room</a>
+          <a id="openWaitingRoomBtn" class="primary" href="/lobby/" hidden>Open Waiting Room</a>
         </div>
         <p id="sessionStatus" class="status-text" aria-live="polite"></p>
         <details>

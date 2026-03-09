@@ -14,13 +14,19 @@
 
   function initGoogleAnalytics(){
     if (!GA_MEASUREMENT_ID || typeof document === 'undefined') return;
+    // If GA4 is already configured from a head snippet, skip.
+    if (window.__GS_GA4_CONFIGURED) return;
+    if (document.querySelector('script[src*=\"googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID + '\"]')) return;
     if (document.querySelector('script[data-gs-ga=\"1\"]')) return;
 
     window.dataLayer = window.dataLayer || [];
     function gtag(){ window.dataLayer.push(arguments); }
     window.gtag = window.gtag || gtag;
-    window.gtag('js', new Date());
-    window.gtag('config', GA_MEASUREMENT_ID);
+    if (!window.__GS_GA4_CONFIGURED) {
+      window.gtag('js', new Date());
+      window.gtag('config', GA_MEASUREMENT_ID);
+      window.__GS_GA4_CONFIGURED = true;
+    }
 
     var s = document.createElement('script');
     s.async = true;
