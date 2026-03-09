@@ -564,6 +564,19 @@
     var p = String(pathname || '').toLowerCase();
     var s = String(search || '').toLowerCase();
     var combined = p + (s ? '?' + s : '');
+    var missionMatch = combined.match(/[?&]mission=([^&]+)/);
+    if (missionMatch && missionMatch[1]) {
+      var missionRaw = '';
+      try {
+        missionRaw = decodeURIComponent(missionMatch[1]);
+      } catch (_err) {
+        missionRaw = missionMatch[1];
+      }
+      var missionId = String(missionRaw || '').trim().toLowerCase().replace(/-/g, '_');
+      // Mission 01 remains free; all other mission-catalog entries are paid.
+      if (missionId === 'speak_in_the_moment') return 'pack01';
+      if (missionId) return 'pack02';
+    }
     var qMatch = combined.match(/[?&]pack=(pack0[1-6])/);
     if (qMatch && qMatch[1]) return qMatch[1];
     if (p.indexOf('pack06') >= 0) return 'pack06';
