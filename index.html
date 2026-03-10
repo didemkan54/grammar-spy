@@ -171,6 +171,18 @@ Technical safety:
       border:0;
       background:transparent;
     }
+    .nav-menu a.nav-menu-primary{
+      background:var(--teal);
+      border:1px solid #17484b;
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.05em;
+      margin-bottom:6px;
+    }
+    .nav-menu a.nav-menu-primary:hover{
+      background:#1a6e73;
+      color:#fff;
+    }
     .nav-menu a:hover{
       background:#eef5fb;
       color:#0f5c5c;
@@ -1637,14 +1649,23 @@ Technical safety:
           <span class="nav-menu">
             <a href="/missions/">Missions</a>
             <a href="/clues.html">CLUES</a>
-            <a href="/teacher-mode.html">Run a Mission</a>
+            <a data-start-mission-link href="/teacher-mode.html?pack=pack01">&#128640; Start Mission Now</a>
+            <a href="/teacher-mode.html?pack=pack01">Run a Mission</a>
             <a href="/teacher-mode.html?play_format=whole_class">Whole Class</a>
             <a href="/teacher-mode.html?play_format=teams">Teams Mode</a>
             <a href="/leaderboard/">Leaderboard</a>
           </span>
         </details>
         <a class="nav-pill" href="/games/launch.html">Games</a>
-        <a class="nav-pill" href="/dashboard/teacher/">Teacher Dashboard</a>
+        <details>
+          <summary class="nav-pill">Teacher &#9662;</summary>
+          <span class="nav-menu">
+            <a data-start-mission-link class="nav-menu-primary" href="/teacher-mode.html?pack=pack01">&#128640; Start Mission Now</a>
+            <a href="/teacher-home.html">Teacher Dashboard</a>
+            <a href="/classrooms.html">Classrooms</a>
+            <a href="/teacher-student-progress.html">Student Progress</a>
+          </span>
+        </details>
         <a class="nav-pill" href="/grammar-teaching-ideas/">Teaching Ideas</a>
         <a class="nav-pill" href="/free/">Free Resources</a>
         <details>

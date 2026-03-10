@@ -37,7 +37,15 @@
     '<span class="gs-link-row" style="display:flex;flex:1 1 420px;min-width:240px;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
     '<a class="gs-pill" href="/index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
     '<a class="gs-pill" href="/missions/" data-i18n="nav_missions" style="' + navLinkStyle + '">Missions</a>' +
-    '<a class="gs-pill" href="/teacher-home.html" data-i18n="nav_teacher" style="' + navLinkStyle + '">Teacher</a>' +
+    '<details id="gsTeacherMenu" style="position:relative">' +
+    '<summary class="gs-pill" style="cursor:pointer;border:1px solid transparent;border-radius:999px;padding:7px 11px;background:transparent;color:#324357;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none">Teacher &#9662;</summary>' +
+    '<span style="position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:220px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30">' +
+    '<a data-start-mission-link href="/teacher-mode.html?pack=pack01" style="display:block;padding:10px 10px;border-radius:8px;text-decoration:none;color:#ffffff;background:#1f5f63;border:1px solid #17484b;font:800 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap">&#128640; Start Mission Now</a>' +
+    '<a href="/teacher-home.html" data-i18n="nav_teacher" style="' + dropdownLinkStyle + ';margin-top:6px">Teacher Dashboard</a>' +
+    '<a href="/classrooms.html" style="' + dropdownLinkStyle + '">Classrooms</a>' +
+    '<a href="/teacher-student-progress.html" style="' + dropdownLinkStyle + '">Student Progress</a>' +
+    '</span>' +
+    '</details>' +
     '<a class="gs-pill" href="/pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
     '<a class="gs-pill" href="/grammar-teaching-ideas/" style="' + navLinkStyle + '">Teaching Ideas</a>' +
     '<details id="gsMoreMenu" style="position:relative">' +
@@ -169,10 +177,7 @@
   }
 
   function updateAuthButtons() {
-    var session = null;
-    try {
-      session = JSON.parse(localStorage.getItem('gs_auth_session'));
-    } catch (e) {}
+    var session = getSessionLike();
 
     var navs = document.querySelectorAll('nav[aria-label="Primary navigation"]');
     navs.forEach(function(nav) {
@@ -201,6 +206,40 @@
     } catch (e2) {}
   }
 
+  function getSessionLike(){
+    var session = null;
+    try {
+      session = JSON.parse(localStorage.getItem('gs_auth_session'));
+    } catch (e) {}
+    if (session && typeof session === 'object') return session;
+    try {
+      var account = JSON.parse(localStorage.getItem('gs_account_v1'));
+      if (account && typeof account === 'object') {
+        return {
+          name: account.name || 'Teacher',
+          email: account.email || '',
+          accountId: account.id || ''
+        };
+      }
+    } catch (_err) {}
+    return null;
+  }
+
+  function resolveMissionLaunchHref(session){
+    var launchTarget = '/teacher-mode.html?pack=pack01';
+    if (session && typeof session === 'object' && session.name) return launchTarget;
+    return '/auth.html?next=' + encodeURIComponent(launchTarget);
+  }
+
+  function updateMissionLaunchLinks(){
+    var session = getSessionLike();
+    var href = resolveMissionLaunchHref(session);
+    var nodes = document.querySelectorAll('[data-start-mission-link]');
+    nodes.forEach(function(node){
+      if (node && node.setAttribute) node.setAttribute('href', href);
+    });
+  }
+
   function applyRoleVisibility() {
     // Keep teacher links visible even after a student-mode session.
   }
@@ -218,6 +257,7 @@
       ensureProgressStoreLoaded();
       run();
       loadAnimations();
+      updateMissionLaunchLinks();
       updateAuthButtons();
       mountSoundToggleWhenReady();
     });
@@ -226,9 +266,11 @@
     ensureProgressStoreLoaded();
     run();
     loadAnimations();
+    updateMissionLaunchLinks();
     updateAuthButtons();
     mountSoundToggleWhenReady();
   }
+  document.addEventListener('layout:ready', updateMissionLaunchLinks);
   document.addEventListener('layout:ready', updateAuthButtons);
   document.addEventListener('layout:ready', applyRoleVisibility);
 })();
