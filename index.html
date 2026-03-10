@@ -179,6 +179,16 @@ Technical safety:
       letter-spacing:.05em;
       margin-bottom:6px;
     }
+    .nav-menu a.nav-menu-format{
+      background:#eef5fb;
+      border:1px solid #d4e0ec;
+      color:#204256;
+      margin-bottom:6px;
+    }
+    .nav-menu a.nav-menu-format:hover{
+      background:#e4effa;
+      color:#163f55;
+    }
     .nav-menu a.nav-menu-primary:hover{
       background:#1a6e73;
       color:#fff;
@@ -1661,6 +1671,9 @@ Technical safety:
           <summary class="nav-pill">Teacher &#9662;</summary>
           <span class="nav-menu">
             <a data-start-mission-link class="nav-menu-primary" href="/teacher-mode.html?pack=pack01">&#128640; Start Mission Now</a>
+            <a data-start-mission-link data-start-mission-format="whole_class" class="nav-menu-format" href="/teacher-mode.html?pack=pack01&play_format=whole_class">Whole Class Mode</a>
+            <a data-start-mission-link data-start-mission-format="teams" class="nav-menu-format" href="/teacher-mode.html?pack=pack01&play_format=teams">Teams Mode</a>
+            <a data-start-mission-link data-start-mission-format="individuals" class="nav-menu-format" href="/teacher-mode.html?pack=pack01&play_format=individuals">Individuals Mode</a>
             <a href="/teacher-home.html">Teacher Dashboard</a>
             <a href="/classrooms.html">Classrooms</a>
             <a href="/teacher-student-progress.html">Student Progress</a>
@@ -2323,7 +2336,6 @@ Technical safety:
 
     (function(){
       var startBtn = document.getElementById('homepageStartTrainingBtn');
-      if (!startBtn) return;
       var session = null;
       if (window.GS_AUTH && typeof window.GS_AUTH.getSession === 'function') {
         session = window.GS_AUTH.getSession();
@@ -2342,11 +2354,33 @@ Technical safety:
           if (parsedAccount && typeof parsedAccount === 'object') session = { name: parsedAccount.name || 'Teacher' };
         } catch (_err) {}
       }
-      if (session) {
-        startBtn.setAttribute('href', '/teacher-home.html');
-      } else {
-        startBtn.setAttribute('href', '/auth.html?mode=create');
+      if (startBtn) {
+        if (session) {
+          startBtn.setAttribute('href', '/teacher-home.html');
+        } else {
+          startBtn.setAttribute('href', '/auth.html?mode=create');
+        }
       }
+
+      function missionLaunchTargetForFormat(format){
+        var normalized = String(format || '').toLowerCase();
+        var launchTarget = '/teacher-mode.html?pack=pack01';
+        if (normalized === 'teams' || normalized === 'whole_class' || normalized === 'individuals') {
+          launchTarget += '&play_format=' + encodeURIComponent(normalized);
+        }
+        return launchTarget;
+      }
+
+      var missionLinks = document.querySelectorAll('[data-start-mission-link]');
+      missionLinks.forEach(function(link){
+        if (!link || !link.setAttribute) return;
+        var format = link.getAttribute('data-start-mission-format') || '';
+        var launchTarget = missionLaunchTargetForFormat(format);
+        var href = session && typeof session === 'object'
+          ? launchTarget
+          : '/auth.html?next=' + encodeURIComponent(launchTarget);
+        link.setAttribute('href', href);
+      });
     })();
 
     (function(){
