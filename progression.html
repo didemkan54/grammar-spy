@@ -114,7 +114,7 @@
 
         const missionLinks = levelMissions.length
           ? levelMissions.map(m =>
-              `<a class="mission-link" href="missions.html?missionId=${encodeURIComponent(m.missionId)}">
+              `<a class="mission-link" href="/missions?missionId=${encodeURIComponent(m.missionId)}">
                 <span>${m.missionName.replace("Mission: ", "")}</span>
                 <span class="arrow">\u2192</span>
               </a>`
@@ -154,7 +154,7 @@
               </div>
 
               <div class="step-cta">
-                <a href="missions.html">Browse all missions \u2192</a>
+                <a href="/missions">Browse all missions \u2192</a>
               </div>
             </div>
             ${connector}

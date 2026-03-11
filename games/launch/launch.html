@@ -55,7 +55,7 @@
 
       <div class="gs-button-row">
         <button id="nextBtn" class="gs-btn gs-btn-primary" type="button" disabled>Next</button>
-        <a class="gs-btn" href="../../missions.html">Back to mission library</a>
+        <a class="gs-btn" href="../../missions">Back to mission library</a>
       </div>
     </main>
 
@@ -413,7 +413,7 @@
               .map(
                 (rec) => `
                 <li>
-                  <a href="../../missions.html?missionId=${encodeURIComponent(rec.missionId)}">${rec.missionName}</a>
+                  <a href="../../missions?missionId=${encodeURIComponent(rec.missionId)}">${rec.missionName}</a>
                   <span class="gs-subtitle"> — ${rec.reason}</span>
                 </li>
               `
@@ -452,9 +452,9 @@
             </article>
           </div>
           <div class="gs-button-row" style="margin-top: 14px;">
-            <a class="gs-btn gs-btn-primary" href="../../missions.html">Back to Mission Library</a>
+            <a class="gs-btn gs-btn-primary" href="../../missions">Back to Mission Library</a>
             <button id="replayBtn" class="gs-btn" type="button">Replay Mission</button>
-            <a class="gs-btn" href="../../profile.html">Open Profile</a>
+            <a class="gs-btn" href="../../profile">Open Profile</a>
           </div>
         `;
 
@@ -553,7 +553,7 @@
       async function boot() {
         if (!missionId) {
           missionTitle.textContent = "Mission not selected";
-          missionBrief.innerHTML = `Open the <a href="../../missions.html">Mission Library</a> and launch a mission.`;
+          missionBrief.innerHTML = `Open the <a href="../../missions">Mission Library</a> and launch a mission.`;
           return;
         }
 

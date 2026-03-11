@@ -3942,7 +3942,7 @@ export const MISSIONS_DATA = {
     {
       id: "time_traveler",
       slug: "time-traveler",
-      hubPath: "/missions/hub.html?mission=time_traveler",
+      hubPath: "/missions/hub?mission=time_traveler",
       title: "Time Traveler",
       subtitle: "Past Tenses",
       description: "Talk about finished actions and tell stories.",
@@ -4163,7 +4163,7 @@ export const MISSIONS_DATA = {
     {
       id: "time_travelers",
       slug: "time-travelers",
-      hubPath: "/missions/hub.html?mission=time_travelers",
+      hubPath: "/missions/hub?mission=time_travelers",
       title: "Time Travelers",
       subtitle: "Future Tenses",
       description:

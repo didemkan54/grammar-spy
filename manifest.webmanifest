@@ -2,7 +2,7 @@
   "name": "Grammar Spy™",
   "short_name": "Grammar Spy",
   "description": "Mission-based grammar training for structured classroom practice.",
-  "start_url": "/index.html",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",

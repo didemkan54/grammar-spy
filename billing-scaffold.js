@@ -311,7 +311,7 @@
     var a = ensureAccount();
     if (!a) {
       var subscribeParam = (plan === 'single_teacher_monthly' || plan === 'single_teacher_yearly' || plan === 'student_monthly' || plan === 'student_yearly') ? '&subscribe=' + encodeURIComponent(plan) : '';
-      location.href = 'auth.html?mode=create&next=' + encodeURIComponent('pricing.html') + subscribeParam;
+      location.href = '/auth?mode=create&next=' + encodeURIComponent('/pricing') + subscribeParam;
       return;
     }
     var cfg = loadConfig();
@@ -333,10 +333,10 @@
     if (isStripePlan && window.GS_IAP && window.GS_IAP.isNative && window.GS_IAP.isNative() && window.GS_IAP.isConfigured && window.GS_IAP.isConfigured()) {
       window.GS_IAP.purchase(plan, function(){
         grantPaid('paid');
-        location.href = 'pricing.html?checkout=success&plan=' + encodeURIComponent(plan);
+        location.href = '/pricing?checkout=success&plan=' + encodeURIComponent(plan);
       }, function(err){
         if (err && err.indexOf('cancelled') < 0 && err.indexOf('canceled') < 0) {
-          location.href = 'pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan);
+          location.href = '/pricing?checkout=unavailable&plan=' + encodeURIComponent(plan);
         }
       });
       return;
@@ -354,13 +354,13 @@
           } else {
             link = cfg.stripeLinks[plan] || cfg.stripeLinks.single_teacher;
             if (link) location.href = link;
-            else { location.href = 'pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan); }
+            else { location.href = '/pricing?checkout=unavailable&plan=' + encodeURIComponent(plan); }
           }
         })
         .catch(function(){
           link = cfg.stripeLinks[plan] || cfg.stripeLinks.single_teacher;
           if (link) location.href = link;
-          else { location.href = 'pricing.html?checkout=unavailable&plan=' + encodeURIComponent(plan); }
+          else { location.href = '/pricing?checkout=unavailable&plan=' + encodeURIComponent(plan); }
         });
       return;
     }
@@ -372,7 +372,7 @@
 
     var fallbackPlan = plan === 'school_license' ? 'school' : (plan === 'student_monthly' || plan === 'student_yearly' ? 'paid' : 'paid');
     grantPaid(fallbackPlan);
-    location.href = 'pricing.html?checkout=success&plan=' + encodeURIComponent(plan);
+    location.href = '/pricing?checkout=success&plan=' + encodeURIComponent(plan);
   }
 
   function signOut(){
@@ -447,11 +447,11 @@
 
     if (!account) {
       if (pageNeedsAuth(path)) {
-        location.href = 'auth.html?next=' + encodeURIComponent(path + search);
+        location.href = '/auth?next=' + encodeURIComponent(path + search);
         return;
       }
       if (pack && pack !== 'pack01') {
-        location.href = 'auth.html?next=' + encodeURIComponent(path + search);
+        location.href = '/auth?next=' + encodeURIComponent(path + search);
         return;
       }
       return;
@@ -461,7 +461,7 @@
       if (!hasEntitlement(pack)) {
         localStorage.setItem('gs_last_denied_pack', pack);
         alert(blockMessage(pack));
-        location.href = 'pricing.html?locked=' + encodeURIComponent(pack);
+        location.href = '/pricing?locked=' + encodeURIComponent(pack);
       }
     }
   }
@@ -477,7 +477,7 @@
       var query = hrefParts[1] || '';
       if (!account && pageNeedsAuth(path)) {
         a.dataset.originalHref = href;
-        a.setAttribute('href', 'auth.html?next=' + encodeURIComponent(path + (query ? '?' + query : '')));
+        a.setAttribute('href', '/auth?next=' + encodeURIComponent(path + (query ? '?' + query : '')));
         a.title = 'Sign up or sign in to access this page';
         return;
       }
@@ -485,13 +485,13 @@
       if (!pack) return;
       if (!account && pack !== 'pack01') {
         a.dataset.originalHref = href;
-        a.setAttribute('href', 'auth.html?next=' + encodeURIComponent(path + (query ? '?' + query : '')));
+        a.setAttribute('href', '/auth?next=' + encodeURIComponent(path + (query ? '?' + query : '')));
         a.title = 'Sign up or sign in to access this mission set';
         return;
       }
       if (hasEntitlement(pack)) return;
       a.dataset.originalHref = href;
-      a.setAttribute('href', 'pricing.html?locked=' + encodeURIComponent(pack));
+      a.setAttribute('href', '/pricing?locked=' + encodeURIComponent(pack));
       a.title = blockMessage(pack);
     });
   }
@@ -518,7 +518,7 @@
       selectors.forEach(function(sel){
         var el = document.querySelector(sel);
         if (!el) return;
-        if (el.tagName === 'A') el.setAttribute('href', 'pricing.html');
+        if (el.tagName === 'A') el.setAttribute('href', '/pricing');
         el.style.opacity = '0.65';
         el.title = 'Available in paid plan';
       });
@@ -528,7 +528,7 @@
       active: active,
       setActive: setActive,
       applyLocks: applyLocks,
-      pricingUrl: 'pricing.html'
+      pricingUrl: '/pricing'
     };
   }
 

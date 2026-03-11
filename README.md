@@ -66,8 +66,8 @@ The mission library and progression pages read from this manifest.
 
 Open:
 
-- `/missions.html` to confirm filters + launch card
-- `/progression.html` to confirm cognitive map placement
+- `/missions` to confirm filters + launch card
+- `/progression` to confirm cognitive map placement
 
 ---
 
@@ -75,11 +75,11 @@ Open:
 
 The launch entry is:
 
-- `/games/launch.html`
+- `/games/launch`
 
 Runtime launcher shell:
 
-- `/games/launch/launch.html`
+- `/games/launch/launch`
 
 Current placeholder module:
 
@@ -91,7 +91,7 @@ Current placeholder module:
 2. Export a constructor/function that can:
    - render an item
    - emit answer events `{ correct, selectedValue, item }`
-3. In `launch.html`, route selected `gameType` to the module.
+3. In `/games/launch`, route selected `gameType` to the module.
 4. Keep launcher integrations intact:
    - mission content from `missionLoader`
    - XP and mastery from `xpEngine`
@@ -149,8 +149,8 @@ All profile, mastery, settings, and mission history are stored in localStorage v
 - XP + rank + recommendations: `/core/xpEngine.js`
 - Profile storage: `/core/storage.js`
 - Local analytics: `/core/analytics.js`
-- Mission Library UI: `/missions.html`
-- Progression UI: `/progression.html`
-- Profile UI: `/profile.html`
-- Launcher entry: `/games/launch.html`
-- Launcher shell: `/games/launch/launch.html`
+- Mission Library UI: `/missions`
+- Progression UI: `/progression`
+- Profile UI: `/profile`
+- Launcher entry: `/games/launch`
+- Launcher shell: `/games/launch/launch`

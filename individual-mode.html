@@ -49,7 +49,7 @@
           <select id="timer"><option value="on" selected>On</option><option value="off">Off</option></select>
         </div>
         <a id="continueBtn" class="primary" href="#">Continue</a>
-        <p class="hint">Need orientation first? <a href="student-welcome.html">Watch the student welcome video</a>.</p>
+        <p class="hint">Need orientation first? <a href="/student-welcome">Watch the student welcome video</a>.</p>
       </div>
     </section>
   </main>
@@ -62,12 +62,12 @@
     (function(){
       try { localStorage.setItem('gs_use_context_v3', 'individual'); } catch(e) {}
       const packs = {
-        pack01:{name:'Retell What Happened',grammar:'Simple Past + Past Continuous',games:[['Error Smash','error-smash.html'],['Drag & Sort','past-sort.html'],['Narrative Builder','narrative-builder.html'],['Dialogue Builder','dialogue-repair.html?pack=pack01'],['Rewrite Studio','rewrite-studio.html?pack=pack01'],['Skill Booster: Timeline Clash','games/timeline-clash.html']]},
-        pack02:{name:'Speak In The Moment',grammar:'Present Simple + Present Continuous',games:[['Rule Sprint','rule-sprint-present.html'],['Signal Decoder','signal-decoder-present.html'],['Case Interview','present-case-interview.html'],['Dialogue Builder','dialogue-repair.html?pack=pack02'],['Rewrite Studio','rewrite-studio.html?pack=pack02']]},
-        pack03:{name:'Sentence Confidence Missions',grammar:'am/is/are + Agreement',games:[['Rule Sprint','be-verb-rule-sprint.html'],['Agreement Sweep','be-verb-agreement-sweep.html'],['Case Interview','be-verb-case-interview.html'],['Dialogue Builder','dialogue-repair.html?pack=pack03'],['Rewrite Studio','rewrite-studio.html?pack=pack03'],['Skill Booster: Subject Spotter','games/subject-spotter.html']]},
-        pack04:{name:'Link Ideas Clearly',grammar:'Connectors',games:[['Sequence Lab','mission-sequence-lab.html?pack=pack04'],['Evidence Sort','evidence-sort-board.html?pack=pack04'],['Dialogue Builder','dialogue-repair.html?pack=pack04'],['Rewrite Studio','rewrite-studio.html?pack=pack04'],['Clue Trail','clue-trail.html?pack=pack04'],['Skill Booster: Clause Linker','games/clause-linker.html']]},
-        pack05:{name:'Reference Smartly',grammar:'Pronouns + Reference',games:[['Dialogue Builder','dialogue-repair.html?pack=pack05'],['Evidence Sort','evidence-sort-board.html?pack=pack05'],['Rewrite Studio','rewrite-studio.html?pack=pack05'],['Sequence Lab','mission-sequence-lab.html?pack=pack05'],['Clue Trail','clue-trail.html?pack=pack05'],['Skill Booster: Article Scanner','games/article-scanner.html']]},
-        pack06:{name:'Question Flow Missions',grammar:'Yes/No + Wh Questions',games:[['Evidence Sort','evidence-sort-board.html?pack=pack06'],['Clue Trail','clue-trail.html?pack=pack06'],['Dialogue Builder','dialogue-repair.html?pack=pack06'],['Sequence Lab','mission-sequence-lab.html?pack=pack06'],['Rewrite Studio','rewrite-studio.html?pack=pack06']]}
+        pack01:{name:'Retell What Happened',grammar:'Simple Past + Past Continuous',games:[['Error Smash','/error-smash'],['Drag & Sort','/past-sort'],['Narrative Builder','/narrative-builder'],['Dialogue Builder','/dialogue-repair?pack=pack01'],['Rewrite Studio','/rewrite-studio?pack=pack01'],['Skill Booster: Timeline Clash','/games/timeline-clash']]},
+        pack02:{name:'Speak In The Moment',grammar:'Present Simple + Present Continuous',games:[['Rule Sprint','/rule-sprint-present'],['Signal Decoder','/signal-decoder-present'],['Case Interview','/present-case-interview'],['Dialogue Builder','/dialogue-repair?pack=pack02'],['Rewrite Studio','/rewrite-studio?pack=pack02']]},
+        pack03:{name:'Sentence Confidence Missions',grammar:'am/is/are + Agreement',games:[['Rule Sprint','/be-verb-rule-sprint'],['Agreement Sweep','/be-verb-agreement-sweep'],['Case Interview','/be-verb-case-interview'],['Dialogue Builder','/dialogue-repair?pack=pack03'],['Rewrite Studio','/rewrite-studio?pack=pack03'],['Skill Booster: Subject Spotter','/games/subject-spotter']]},
+        pack04:{name:'Link Ideas Clearly',grammar:'Connectors',games:[['Sequence Lab','/mission-sequence-lab?pack=pack04'],['Evidence Sort','/evidence-sort-board?pack=pack04'],['Dialogue Builder','/dialogue-repair?pack=pack04'],['Rewrite Studio','/rewrite-studio?pack=pack04'],['Clue Trail','/clue-trail?pack=pack04'],['Skill Booster: Clause Linker','/games/clause-linker']]},
+        pack05:{name:'Reference Smartly',grammar:'Pronouns + Reference',games:[['Dialogue Builder','/dialogue-repair?pack=pack05'],['Evidence Sort','/evidence-sort-board?pack=pack05'],['Rewrite Studio','/rewrite-studio?pack=pack05'],['Sequence Lab','/mission-sequence-lab?pack=pack05'],['Clue Trail','/clue-trail?pack=pack05'],['Skill Booster: Article Scanner','/games/article-scanner']]},
+        pack06:{name:'Question Flow Missions',grammar:'Yes/No + Wh Questions',games:[['Evidence Sort','/evidence-sort-board?pack=pack06'],['Clue Trail','/clue-trail?pack=pack06'],['Dialogue Builder','/dialogue-repair?pack=pack06'],['Sequence Lab','/mission-sequence-lab?pack=pack06'],['Rewrite Studio','/rewrite-studio?pack=pack06']]}
       };
 
       const qp = new URLSearchParams(location.search);

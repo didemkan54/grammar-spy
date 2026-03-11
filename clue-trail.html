@@ -16,7 +16,7 @@
     <div class="hud"><div class="chip"><b>Case</b><span id="hudCase">1/1</span></div><div class="chip"><b>Accuracy</b><span id="hudAcc">0%</span></div><div class="chip"><b>Streak</b><span id="hudStreak">0</span></div><div class="chip"><b>Timer</b><span id="hudTimer">Off</span></div></div>
     <div class="q"><div class="scene" id="scene"></div><div class="prompt" id="prompt"></div></div>
     <div class="opts" id="opts"></div><p class="feedback" id="fb"></p>
-    <div class="row"><button class="btn" id="endBtn" type="button">End Mission</button><button class="btn" id="btnSound" type="button">Sound: ON</button><a class="btn" href="index.html">Home</a></div>
+    <div class="row"><button class="btn" id="endBtn" type="button">End Mission</button><button class="btn" id="btnSound" type="button">Sound: ON</button><a class="btn" href="/">Home</a></div>
   </section>
 </main>
 <div id="onboardOverlay" class="overlay" role="dialog" aria-modal="true">
@@ -46,7 +46,7 @@
   </section>
 </div>
 <div id="teamsWrap" class="teamsSplit" style="display:none" aria-label="Teams mode"></div>
-<div class="overlay" id="ov"><section class="modal"><h2 style="margin:0">Mission Report</h2><p id="r1"></p><p id="r2"></p><p id="r3"></p><div class="box" id="finalTeamsScoresWrap" style="margin-top:10px;display:none"><div id="finalTeamAScore"></div><div id="finalTeamBScore"></div><div id="winnerLine"></div></div><div class="box" id="endTeamsWrap" style="margin-top:10px;display:none"><div class="label" style="font-size:11px;text-transform:uppercase;color:var(--slate)">Teams (share scores with)</div><div id="endTeamsList" style="margin-top:6px;font-size:13px;line-height:1.5"></div></div><div class="row"><button class="btn primary" id="again">Play Again</button><a class="btn" id="teacherLink" href="teacher-home.html">Close</a></div></section></div>
+<div class="overlay" id="ov"><section class="modal"><h2 style="margin:0">Mission Report</h2><p id="r1"></p><p id="r2"></p><p id="r3"></p><div class="box" id="finalTeamsScoresWrap" style="margin-top:10px;display:none"><div id="finalTeamAScore"></div><div id="finalTeamBScore"></div><div id="winnerLine"></div></div><div class="box" id="endTeamsWrap" style="margin-top:10px;display:none"><div class="label" style="font-size:11px;text-transform:uppercase;color:var(--slate)">Teams (share scores with)</div><div id="endTeamsList" style="margin-top:6px;font-size:13px;line-height:1.5"></div></div><div class="row"><button class="btn primary" id="again">Play Again</button><a class="btn" id="teacherLink" href="/teacher-home">Close</a></div></section></div>
 <div data-include="footer"></div>
 <script src="billing-scaffold.js"></script>
   <script src="auth-scaffold.js"></script><script src="layout-loader.js"></script><script src="app-shell.js"></script><script src="game-sound.js"></script><script src="grammar-context-bank.js"></script>
@@ -70,7 +70,7 @@ const style=document.createElement('style');
 style.textContent='.k,.scene{color:'+profile.accent+' !important;}.btn.primary{background:'+profile.accent+' !important;border-color:'+profile.accent+' !important;}';
 document.head.appendChild(style);
 const subEl=document.querySelector('.sub');if(subEl)subEl.textContent=profile.sub;
-const teacherLink=document.getElementById('teacherLink');teacherLink.href=(teacherLink.getAttribute('href')||'teacher-home.html').split('?')[0]+'?pack='+pack;
+const teacherLink=document.getElementById('teacherLink');teacherLink.href=(teacherLink.getAttribute('href')||'/teacher-home').split('?')[0]+'?pack='+pack;
 const scene=document.getElementById('scene'),prompt=document.getElementById('prompt'),opts=document.getElementById('opts'),fb=document.getElementById('fb');
 const hudCase=document.getElementById('hudCase'),hudAcc=document.getElementById('hudAcc'),hudStreak=document.getElementById('hudStreak'),hudTimer=document.getElementById('hudTimer');
 let rounds=[],i=0,ok=0,streak=0,locked=false,sec=timerOn?count*secondsPerRound:null,timer=null;
@@ -157,7 +157,7 @@ function endGameTeams(){
 }
 function initTeamsMode(){
   const wrap=document.getElementById('teamsWrap');
-  wrap.innerHTML='<div class="teamsTopbar" style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span style="font-weight:800;font-size:14px;">Clue Trail — Teams</span><div style="display:flex;gap:8px;"><a href="teacher-home.html?pack='+pack+'" class="btn">Home</a><button type="button" class="btn primary" id="teamsEndBtn">End Mission</button></div></div>'+
+  wrap.innerHTML='<div class="teamsTopbar" style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span style="font-weight:800;font-size:14px;">Clue Trail — Teams</span><div style="display:flex;gap:8px;"><a href="/teacher-home?pack='+pack+'" class="btn">Home</a><button type="button" class="btn primary" id="teamsEndBtn">End Mission</button></div></div>'+
     '<div id="teamColA" class="teamColumn" data-side="A"><h3>'+(teamNames[0]||'Team A')+'</h3><div class="teamHud"><div class="teamChip"><b>Case</b><span class="teamCase">0/'+roundsA.length+'</span></div><div class="teamChip"><b>Accuracy</b><span class="teamAcc">0%</span></div><div class="teamChip"><b>Streak</b><span class="teamStr">0</span></div></div><div class="teamQ"><div class="scene teamScene"></div><div class="prompt teamPrompt"></div></div><div class="teamOpts"></div><p class="teamFeedback"></p></div>'+
     '<div id="teamColB" class="teamColumn" data-side="B"><h3>'+(teamNames[1]||'Team B')+'</h3><div class="teamHud"><div class="teamChip"><b>Case</b><span class="teamCase">0/'+roundsB.length+'</span></div><div class="teamChip"><b>Accuracy</b><span class="teamAcc">0%</span></div><div class="teamChip"><b>Streak</b><span class="teamStr">0</span></div></div><div class="teamQ"><div class="scene teamScene"></div><div class="prompt teamPrompt"></div></div><div class="teamOpts"></div><p class="teamFeedback"></p></div>';
   const endBtn=wrap.querySelector('#teamsEndBtn');if(endBtn)endBtn.addEventListener('click',endGameTeams);

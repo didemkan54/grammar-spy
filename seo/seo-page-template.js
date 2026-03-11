@@ -191,7 +191,7 @@ function renderSeoPage(slug, options = {}) {
       <section class="seo-hero">
         <p class="seo-eyebrow">Teacher Resource Intel</p>
         <h1>${esc(page.h1)}</h1>
-        <p class="seo-breadcrumb"><a href="/index.html">Grammar Spy Home</a> / ${esc(page.slug)}</p>
+        <p class="seo-breadcrumb"><a href="/">Grammar Spy Home</a> / ${esc(page.slug)}</p>
       </section>
 
       <section class="seo-section">
@@ -217,7 +217,7 @@ function renderSeoPage(slug, options = {}) {
         <h2>Ready to make grammar practice more engaging?</h2>
         <p>Bring your class into mission-based grammar practice with fast setup and clear progress feedback.</p>
         <p style="margin:12px 0 0">
-          <a class="seo-btn seo-btn-primary" href="/index.html">Launch Grammar Spy</a>
+          <a class="seo-btn seo-btn-primary" href="/">Launch Grammar Spy</a>
         </p>
       </section>
     </main>

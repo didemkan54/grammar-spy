@@ -105,10 +105,10 @@ Worked examples → fading: Rookie mode shows the clause connection with arrows 
 ```
 /workspace/
   games/
-    timeline-clash.html      (Game A)
-    subject-spotter.html     (Game B)
-    article-scanner.html     (Game C)
-    clause-linker.html       (Game D)
+    timeline-clash           (Game A)
+    subject-spotter          (Game B)
+    article-scanner          (Game C)
+    clause-linker            (Game D)
   game-ui.css                (shared styles - already exists)
   game-sound.js              (shared sounds - already exists)
   gs-animations.js           (shared animations - already exists)

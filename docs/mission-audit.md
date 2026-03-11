@@ -6,27 +6,27 @@ Scope: Existing mission routes and mission runtimes, with priority on `mission-g
 ## 1) Mission Inventory
 
 ### A. Mission shell routes (`mission-game-shell.js`)
-- `error-smash.html`
-- `past-sort.html`
-- `narrative-builder.html`
-- `dialogue-repair.html`
-- `rewrite-studio.html`
-- `rule-sprint-present.html`
-- `signal-decoder-present.html`
-- `present-case-interview.html`
-- `be-verb-rule-sprint.html`
-- `be-verb-agreement-sweep.html`
-- `be-verb-case-interview.html`
-- `mission-sequence-lab.html`
-- `evidence-sort-board.html`
+- `/error-smash`
+- `/past-sort`
+- `/narrative-builder`
+- `/dialogue-repair`
+- `/rewrite-studio`
+- `/rule-sprint-present`
+- `/signal-decoder-present`
+- `/present-case-interview`
+- `/be-verb-rule-sprint`
+- `/be-verb-agreement-sweep`
+- `/be-verb-case-interview`
+- `/mission-sequence-lab`
+- `/evidence-sort-board`
 
 ### B. Other playable mission routes (independent runtimes)
-- `clue-trail.html` (uses `grammar-context-bank.js`)
-- `games/timeline-clash.html`
-- `games/subject-spotter.html`
-- `games/clause-linker.html`
-- `games/article-scanner.html`
-- `games/launch/launch.html` (manifest-driven path)
+- `/clue-trail` (uses `grammar-context-bank.js`)
+- `games/timeline-clash`
+- `games/subject-spotter`
+- `games/clause-linker`
+- `games/article-scanner`
+- `games/launch/launch` (manifest-driven path)
 
 ## 2) Findings by Audit Criteria
 

@@ -42,8 +42,8 @@
         <h1>Your mission start dashboard</h1>
         <p>Pick a mission, play, and review your progress one step at a time.</p>
         <div class="segmented" role="tablist" aria-label="Mode selection">
-          <a class="seg" aria-selected="false" href="teacher-home.html">Teacher</a>
-          <a class="seg active" aria-selected="true" href="individual-home.html">Student</a>
+          <a class="seg" aria-selected="false" href="/teacher-home">Teacher</a>
+          <a class="seg active" aria-selected="true" href="/individual-home">Student</a>
         </div>
       </div>
       <img src="assets/illustrations/student-dashboard.svg" alt="" style="width:220px;height:auto;opacity:.85" aria-hidden="true" />
@@ -58,7 +58,7 @@
       <p class="k">Welcome Video</p>
       <h2>Start with the student tour</h2>
       <p>This quick video shows students where to click, how to launch a mission, and how to read feedback.</p>
-      <a class="btn-primary" href="student-welcome.html">Watch student welcome video</a>
+      <a class="btn-primary" href="/student-welcome">Watch student welcome video</a>
     </section>
 
     <section class="section" aria-label="Primary student actions">
@@ -66,17 +66,17 @@
         <article class="card">
           <h2>Continue Last Mission</h2>
           <p>Jump back into your most recent activity.</p>
-          <a class="btn-primary" href="individual-mode.html?pack=pack01">Continue</a>
+          <a class="btn-primary" href="/individual-mode?pack=pack01">Continue</a>
         </article>
         <article class="card">
           <h2>Start New Mission</h2>
           <p>Choose a pack and begin a fresh round.</p>
-          <a class="btn-secondary" href="packs.html">Choose mission</a>
+          <a class="btn-secondary" href="/packs">Choose mission</a>
         </article>
         <article class="card">
           <h2>Try Sample Mission</h2>
           <p>Quick practice with no setup required.</p>
-          <a class="link-action" href="clue-trail.html?pack=pack01&mode=individual&difficulty=rookie&count=15&timer=off">Open sample</a>
+          <a class="link-action" href="/clue-trail?pack=pack01&mode=individual&difficulty=rookie&count=15&timer=off">Open sample</a>
         </article>
       </div>
     </section>
@@ -115,12 +115,12 @@
             '</div>' +
             '<p style="margin:0 0 14px;color:#16223a;font-weight:600">Your missions are ready. Pick one to start practicing:</p>' +
             '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">' +
-            '<a href="packs.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📋</span><span>All Missions</span></a>' +
-            '<a href="pack.html?pack=pack01" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🕵️</span><span>Mission 01: Past Tense</span></a>' +
-            '<a href="pack.html?pack=pack02" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🔍</span><span>Mission 02: Present</span></a>' +
-            '<a href="pack.html?pack=pack03" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🎯</span><span>Mission 03: Be-Verbs</span></a>' +
-            '<a href="clues.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📖</span><span>CLUES Archive</span></a>' +
-            '<a href="progression.html" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📈</span><span>Training Path</span></a>' +
+            '<a href="/packs" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📋</span><span>All Missions</span></a>' +
+            '<a href="/pack?pack=pack01" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🕵️</span><span>Mission 01: Past Tense</span></a>' +
+            '<a href="/pack?pack=pack02" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🔍</span><span>Mission 02: Present</span></a>' +
+            '<a href="/pack?pack=pack03" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">🎯</span><span>Mission 03: Be-Verbs</span></a>' +
+            '<a href="/clues" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📖</span><span>CLUES Archive</span></a>' +
+            '<a href="/progression" style="display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1px solid #d9dee6;border-radius:12px;text-decoration:none;color:#16223a;font-weight:600;transition:border-color .15s"><span style="font-size:24px">📈</span><span>Training Path</span></a>' +
             '</div></div>';
           var leaveBtn = document.getElementById("leaveClassBtn");
           if (leaveBtn) leaveBtn.addEventListener("click", function() {
@@ -186,7 +186,7 @@
       if (!el) return;
       FEATURED.forEach(function(p){
         var a = document.createElement('a');
-        a.href = 'pack.html?pack=' + p.id;
+        a.href = '/pack?pack=' + p.id;
         a.className = 'pack-tile';
         a.innerHTML = '<img src="' + p.cover + '" alt="Pack ' + p.num + ' ' + p.name + ' cover">' +
           '<div class="pack-card-caption">Pack ' + p.num + ' · ' + p.name + '</div>';

@@ -215,7 +215,7 @@ function renderMissionMap() {
           <p class="panel-sub">${mission.subtitle}</p>
           <span class="status-pill ${state}">${state.replace("-", " ")}</span>
           <div class="panel-sub" style="margin-top:8px">${completed}/${totalGames} games complete</div>
-          <a href="/missions/hub.html?mission=${mission.id}" class="btn-soft" style="margin-top:8px;">Open</a>
+          <a href="/missions/hub?mission=${mission.id}" class="btn-soft" style="margin-top:8px;">Open</a>
         </article>
       `;
     })

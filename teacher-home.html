@@ -51,8 +51,8 @@
       <p>Continue, start, or report.</p>
       <p id="authEmailNotice" class="auth-notice" role="status" aria-live="polite"></p>
       <div class="segmented" role="tablist" aria-label="Mode selection">
-        <a class="seg active" aria-selected="true" href="teacher-home.html">Teacher</a>
-        <a class="seg" aria-selected="false" href="individual-home.html">Student</a>
+        <a class="seg active" aria-selected="true" href="/teacher-home">Teacher</a>
+        <a class="seg" aria-selected="false" href="/individual-home">Student</a>
       </div>
       </div>
       <img src="assets/illustrations/teacher-dashboard.svg" alt="" style="width:220px;height:auto;opacity:.85" aria-hidden="true" />
@@ -65,25 +65,25 @@
           <div style="font-size:28px;margin-bottom:8px">📋</div>
           <h2 style="font-size:16px;margin:0 0 4px">Launch Mission</h2>
           <p style="font-size:13px;margin:0 0 10px">Start a new class mission</p>
-          <a class="btn-primary" href="teacher-mode.html?pack=pack01" style="font-size:12px;padding:8px 14px">Launch</a>
+          <a class="btn-primary" href="/teacher-mode?pack=pack01" style="font-size:12px;padding:8px 14px">Launch</a>
         </article>
         <article class="card" style="text-align:center;padding:20px">
           <div style="font-size:28px;margin-bottom:8px">👥</div>
           <h2 style="font-size:16px;margin:0 0 4px">My Classrooms</h2>
           <p style="font-size:13px;margin:0 0 10px">Manage students & codes</p>
-          <a class="btn-primary" href="classrooms.html" style="font-size:12px;padding:8px 14px">Open</a>
+          <a class="btn-primary" href="/classrooms" style="font-size:12px;padding:8px 14px">Open</a>
         </article>
         <article class="card" style="text-align:center;padding:20px">
           <div style="font-size:28px;margin-bottom:8px">📊</div>
           <h2 style="font-size:16px;margin:0 0 4px">Reports</h2>
           <p style="font-size:13px;margin:0 0 10px">View student progress</p>
-          <a class="btn-primary" href="teacher-student-progress.html" style="font-size:12px;padding:8px 14px">View</a>
+          <a class="btn-primary" href="/teacher-student-progress" style="font-size:12px;padding:8px 14px">View</a>
         </article>
         <article class="card" style="text-align:center;padding:20px">
           <div style="font-size:28px;margin-bottom:8px">📚</div>
           <h2 style="font-size:16px;margin:0 0 4px">Mission Library</h2>
           <p style="font-size:13px;margin:0 0 10px">Browse all missions</p>
-          <a class="btn-primary" href="packs.html" style="font-size:12px;padding:8px 14px">Browse</a>
+          <a class="btn-primary" href="/packs" style="font-size:12px;padding:8px 14px">Browse</a>
         </article>
       </div>
     </section>
@@ -95,7 +95,7 @@
           <p class="k">My Students</p>
           <h2 style="margin:0">Student Overview</h2>
         </div>
-        <a class="btn-primary" href="classrooms.html" style="font-size:12px;padding:8px 16px">+ Add Classroom</a>
+        <a class="btn-primary" href="/classrooms" style="font-size:12px;padding:8px 16px">+ Add Classroom</a>
       </div>
       <div id="studentOverview"></div>
     </section>
@@ -106,7 +106,7 @@
       <h2>Quick launch a mission</h2>
       <p>Open one mission set, then choose difficulty.</p>
       <div class="pack-grid" style="margin-top:14px" id="featuredPacks"></div>
-      <p class="pack-section-footer"><a href="packs.html" class="link-action">View all missions →</a></p>
+      <p class="pack-section-footer"><a href="/packs" class="link-action">View all missions →</a></p>
     </section>
 
     <!-- Resources -->
@@ -116,12 +116,12 @@
         <article class="card">
           <h2>Teacher Welcome Video</h2>
           <p>3-minute tour of the full teacher flow.</p>
-          <a class="btn-primary" href="teacher-welcome.html" style="margin-top:8px;display:inline-flex">Watch Video</a>
+          <a class="btn-primary" href="/teacher-welcome" style="margin-top:8px;display:inline-flex">Watch Video</a>
         </article>
         <article class="card">
           <h2>ELD Teaching Tips</h2>
           <p>Short reads with actionable next steps.</p>
-          <a class="link-action" href="insights.html">Read Insights →</a>
+          <a class="link-action" href="/blog">Read Insights →</a>
         </article>
       </div>
     </section>
@@ -153,7 +153,7 @@
             '<div style="font-size:36px;margin-bottom:10px">👥</div>' +
             '<h3 style="margin:0 0 6px;font-size:18px;color:#16223a">No classrooms yet</h3>' +
             '<p style="margin:0 0 14px;color:#7a8698;font-size:14px">Create a classroom and share the join code with your students.</p>' +
-            '<a href="classrooms.html" style="display:inline-flex;align-items:center;padding:10px 18px;border:1px solid #194f53;border-radius:10px;background:#1f5f63;color:#fff;font:700 13px Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none">Create Classroom</a>' +
+            '<a href="/classrooms" style="display:inline-flex;align-items:center;padding:10px 18px;border:1px solid #194f53;border-radius:10px;background:#1f5f63;color:#fff;font:700 13px Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none">Create Classroom</a>' +
             '</div>';
           return;
         }
@@ -171,7 +171,7 @@
                   '<div><div style="font-weight:600;font-size:14px;color:#16223a">' + s.name + '</div>' +
                   '<div style="font-size:11px;color:#7a8698">Joined ' + d + '</div></div>' +
                 '</div>' +
-                '<a href="teacher-student-progress.html" style="font-size:12px;color:#1f5f63;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em">View Report →</a>' +
+                '<a href="/teacher-student-progress" style="font-size:12px;color:#1f5f63;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em">View Report →</a>' +
               '</div>';
             }).join('');
           } else {
@@ -181,7 +181,7 @@
             '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
               '<div><h3 style="margin:0;font-size:18px;color:#0b1020">' + c.name + '</h3>' +
               '<span style="font-size:12px;color:#7a8698">' + studentCount + ' student' + (studentCount !== 1 ? 's' : '') + ' · Code: <strong style="color:#1f5f63;letter-spacing:.1em">' + c.code + '</strong></span></div>' +
-              '<a href="classrooms.html" style="font-size:11px;color:#1f5f63;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;border:1px solid #d9dee6;border-radius:8px;padding:6px 12px">Manage</a>' +
+              '<a href="/classrooms" style="font-size:11px;color:#1f5f63;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;border:1px solid #d9dee6;border-radius:8px;padding:6px 12px">Manage</a>' +
             '</div>' +
             '<div style="display:grid;gap:6px">' + studentRows + '</div>' +
           '</div>';
@@ -199,7 +199,7 @@
       if (!el) return;
       FEATURED.forEach(function(p){
         var a = document.createElement('a');
-        a.href = 'pack.html?pack=' + p.id;
+        a.href = '/pack?pack=' + p.id;
         a.className = 'pack-tile';
         a.innerHTML = '<img src="' + p.cover + '" alt="Pack ' + p.num + ' ' + p.name + ' cover">' +
           '<div class="pack-card-caption">Pack ' + p.num + ' · ' + p.name + '</div>';

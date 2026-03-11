@@ -165,7 +165,7 @@
         const mission = allMissions.find(m => m.missionId === missionId);
         if (!mission) return;
         const gameTypes = previewCache.get(missionId)?.gameTypes || ["clue-trail"];
-        const url = new URL("games/launch.html", window.location.href);
+        const url = new URL("/games/launch", window.location.href);
         url.searchParams.set("missionId", missionId);
         url.searchParams.set("gameType", gameTypes[0]);
         url.searchParams.set("tier", difficultySelect.value);

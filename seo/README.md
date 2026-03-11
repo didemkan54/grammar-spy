@@ -15,8 +15,8 @@ Grammar Spy SEO landing pages are powered by two reusable files:
 ## Add a new SEO page
 
 1. Add a new entry to `SEO_PAGE_DATA` in `seo/seo-page-data.js`.
-2. Create a route folder with `index.html`, for example:
-   - `/present-tense-games/index.html`
+2. Create a route folder with `/`, for example:
+   - `/present-tense-games/`
 3. Set `data-seo-page="<slug>"` on `<body>`.
 4. Include:
    - `/seo/seo-pages.css`

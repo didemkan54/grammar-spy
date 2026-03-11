@@ -5,6 +5,40 @@
       "*": false
     }
   },
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/packs.html",
+      "destination": "/packs",
+      "permanent": true
+    },
+    {
+      "source": "/pricing.html",
+      "destination": "/pricing",
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/insights.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/insights",
+      "destination": "/blog",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/blog",
+      "destination": "/insights"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

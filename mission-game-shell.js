@@ -6381,8 +6381,8 @@
   var homeBtn = document.getElementById("btnHome");
   var reportNavBtn = document.getElementById("closeToTeacher");
   var gameplayEngine = window.GSGameplayEngine || null;
-  if (teacherBtn) teacherBtn.setAttribute("href", "teacher-mode.html?pack=" + encodeURIComponent(pack));
-  if (homeBtn) homeBtn.setAttribute("href", "index.html");
+  if (teacherBtn) teacherBtn.setAttribute("href", "/teacher-mode?pack=" + encodeURIComponent(pack));
+  if (homeBtn) homeBtn.setAttribute("href", "/");
   if (activeMode === "detective" && reportNavBtn) {
     reportNavBtn.textContent = "Back to Missions";
     reportNavBtn.setAttribute("href", "/missions/");

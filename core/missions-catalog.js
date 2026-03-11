@@ -56,7 +56,7 @@ export function buildPlayUrl(params) {
 
 export function buildHubUrl(mission) {
   if (!mission) return "/missions/";
-  return mission.hubPath || `/missions/hub.html?mission=${encodeURIComponent(mission.id)}`;
+  return mission.hubPath || `/missions/hub?mission=${encodeURIComponent(mission.id)}`;
 }
 
 export function resolveMissionForHub(searchParams = new URLSearchParams(window.location.search), pathname = window.location.pathname) {
@@ -69,7 +69,7 @@ export function resolveMissionForHub(searchParams = new URLSearchParams(window.l
     .split("/")
     .filter(Boolean);
   const maybeSlug = parts.length >= 2 && parts[0] === "missions" ? parts[1] : "";
-  if (maybeSlug && maybeSlug !== "hub.html") {
+  if (maybeSlug && maybeSlug !== "hub") {
     return getMissionBySlug(maybeSlug);
   }
 

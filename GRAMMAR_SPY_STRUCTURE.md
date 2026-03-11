@@ -22,11 +22,11 @@
 
 ## App Pages
 
-- `/missions.html` — Mission Library + filters + launch modal + teacher controls
-- `/progression.html` — Mission Training Path visualization linked to manifest data
-- `/profile.html` — rank, XP, mastery grid, history, recommendations
-- `/games/launch.html` — launcher entry page for mission runtime shell
-- `/games/launch/launch.html` — launcher shell, mission runtime, intelligence report modal
+- `/missions` — Mission Library + filters + launch modal + teacher controls
+- `/progression` — Mission Training Path visualization linked to manifest data
+- `/profile` — rank, XP, mastery grid, history, recommendations
+- `/games/launch` — launcher entry page for mission runtime shell
+- `/games/launch/launch` — launcher shell, mission runtime, intelligence report modal
 - `/games/launch/placeholder-game.js` — placeholder game module loaded by launcher
 
 ## Notes

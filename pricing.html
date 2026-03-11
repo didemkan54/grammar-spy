@@ -60,7 +60,7 @@
           <img src="assets/branding-images/packs/pack01-retell-what-happened.png" alt="Pack 01 preview">
           <span class="small">Mission 01 included</span>
         </div>
-        <a class="btn" href="auth.html?next=teacher-home.html" id="startTrialBtn" data-i18n="pricing_signUpFree">Sign Up Free</a>
+        <a class="btn" href="/auth?next=/teacher-home" id="startTrialBtn" data-i18n="pricing_signUpFree">Sign Up Free</a>
       </article>
 
       <article class="card" style="border-color:#1f5f63;box-shadow:0 0 0 2px rgba(31,95,99,.18)">
@@ -138,7 +138,7 @@
     // After sign-up from Subscribe: send straight to Stripe
     const subscribePlan = params.get('subscribe');
     if (subscribePlan && account && window.GS_BILLING && ['single_teacher_monthly','single_teacher_yearly','student_monthly','student_yearly'].indexOf(subscribePlan) >= 0) {
-      history.replaceState(null, '', 'pricing.html');
+      history.replaceState(null, '', '/pricing');
       window.GS_BILLING.beginCheckout(subscribePlan);
     } else {
     const sessionId = params.get('session_id');

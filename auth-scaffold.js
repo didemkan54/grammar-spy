@@ -116,7 +116,7 @@
       label.textContent = statusLabel(session);
       signOutBtn.onclick = function(){
         signOut();
-        location.href = 'index.html?choose=1';
+        location.href = '/?choose=1';
       };
     } else {
       signedOut.style.display = 'inline-flex';

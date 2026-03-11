@@ -33,31 +33,31 @@
   var menuPanelStyle = 'position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:190px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30';
 
   var headerFallback = '<nav aria-label="Primary navigation" style="margin:0 0 14px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">' +
-    '<a href="/index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img class="gs-logo" src="/assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none"></a>' +
+    '<a href="/" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent"><img class="gs-logo" src="/assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none"></a>' +
     '<span class="gs-link-row" style="display:flex;flex:1 1 420px;min-width:240px;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-start">' +
-    '<a class="gs-pill" href="/index.html" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
+    '<a class="gs-pill" href="/" data-i18n="nav_home" style="' + navLinkStyle + '">Home</a>' +
     '<a class="gs-pill" href="/missions/" data-i18n="nav_missions" style="' + navLinkStyle + '">Missions</a>' +
     '<details id="gsTeacherMenu" style="position:relative">' +
     '<summary class="gs-pill" style="cursor:pointer;border:1px solid transparent;border-radius:999px;padding:7px 11px;background:transparent;color:#324357;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none">Teacher &#9662;</summary>' +
     '<span style="position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:220px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30">' +
-    '<a data-start-mission-link href="/teacher-mode.html?pack=pack01" style="display:block;padding:10px 10px;border-radius:8px;text-decoration:none;color:#ffffff;background:#1f5f63;border:1px solid #17484b;font:800 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap">&#128640; Start Mission Now</a>' +
-    '<a data-start-mission-link data-start-mission-format="whole_class" href="/teacher-mode.html?pack=pack01&play_format=whole_class" style="display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#204256;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;margin-top:6px;background:#eef5fb;border:1px solid #d4e0ec">Whole Class Mode</a>' +
-    '<a data-start-mission-link data-start-mission-format="teams" href="/teacher-mode.html?pack=pack01&play_format=teams" style="display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#204256;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;margin-top:6px;background:#eef5fb;border:1px solid #d4e0ec">Teams Mode</a>' +
-    '<a data-start-mission-link data-start-mission-format="individuals" href="/teacher-mode.html?pack=pack01&play_format=individuals" style="display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#204256;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;margin-top:6px;background:#eef5fb;border:1px solid #d4e0ec">Individuals Mode</a>' +
-    '<a href="/teacher-home.html" data-i18n="nav_teacher" style="' + dropdownLinkStyle + ';margin-top:6px">Teacher Dashboard</a>' +
-    '<a href="/classrooms.html" style="' + dropdownLinkStyle + '">Classrooms</a>' +
-    '<a href="/teacher-student-progress.html" style="' + dropdownLinkStyle + '">Student Progress</a>' +
+    '<a data-start-mission-link href="/teacher-mode?pack=pack01" style="display:block;padding:10px 10px;border-radius:8px;text-decoration:none;color:#ffffff;background:#1f5f63;border:1px solid #17484b;font:800 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap">&#128640; Start Mission Now</a>' +
+    '<a data-start-mission-link data-start-mission-format="whole_class" href="/teacher-mode?pack=pack01&play_format=whole_class" style="display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#204256;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;margin-top:6px;background:#eef5fb;border:1px solid #d4e0ec">Whole Class Mode</a>' +
+    '<a data-start-mission-link data-start-mission-format="teams" href="/teacher-mode?pack=pack01&play_format=teams" style="display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#204256;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;margin-top:6px;background:#eef5fb;border:1px solid #d4e0ec">Teams Mode</a>' +
+    '<a data-start-mission-link data-start-mission-format="individuals" href="/teacher-mode?pack=pack01&play_format=individuals" style="display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#204256;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;margin-top:6px;background:#eef5fb;border:1px solid #d4e0ec">Individuals Mode</a>' +
+    '<a href="/teacher-home" data-i18n="nav_teacher" style="' + dropdownLinkStyle + ';margin-top:6px">Teacher Dashboard</a>' +
+    '<a href="/classrooms" style="' + dropdownLinkStyle + '">Classrooms</a>' +
+    '<a href="/teacher-student-progress" style="' + dropdownLinkStyle + '">Student Progress</a>' +
     '</span>' +
     '</details>' +
-    '<a class="gs-pill" href="/pricing.html" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
+    '<a class="gs-pill" href="/pricing" data-i18n="nav_pricing" style="' + navLinkStyle + '">Pricing</a>' +
     '<a class="gs-pill" href="/grammar-teaching-ideas/" style="' + navLinkStyle + '">Teaching Ideas</a>' +
     '<details id="gsMoreMenu" style="position:relative">' +
     '<summary class="gs-pill" style="' + menuSummaryStyle + '">More &#9662;</summary>' +
     '<span style="' + menuPanelStyle + '">' +
-    '<a href="/progression.html" style="' + dropdownLinkStyle + '">Training Path</a>' +
-    '<a href="/teacher-dashboard.html" style="' + dropdownLinkStyle + '">Admin</a>' +
-    '<a href="/community.html" style="' + dropdownLinkStyle + '">Community</a>' +
-    '<a href="/insights.html" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
+    '<a href="/progression" style="' + dropdownLinkStyle + '">Training Path</a>' +
+    '<a href="/teacher-dashboard" style="' + dropdownLinkStyle + '">Admin</a>' +
+    '<a href="/community" style="' + dropdownLinkStyle + '">Community</a>' +
+    '<a href="/blog" data-i18n="nav_blog" style="' + dropdownLinkStyle + '">Blog</a>' +
     '</span>' +
     '</details>' +
     '</span>' +
@@ -73,8 +73,8 @@
     '<details id="gsAccountMenu" style="position:relative">' +
     '<summary class="gs-pill" id="gsAccountLabel" style="' + menuSummaryStyle + '">Account &#9662;</summary>' +
     '<span id="gsAccountPanel" style="' + menuPanelStyle + '">' +
-    '<a href="/auth.html?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
-    '<a href="/auth.html?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>' +
+    '<a href="/auth?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
+    '<a href="/auth?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>' +
     '</span>' +
     '</details>' +
     '</span>' +
@@ -82,15 +82,15 @@
 
   var footerFallback = '<footer class="site-footer" style="margin:24px 0 0;padding:24px 40px;border-top:1px solid #d9dee6;background:#f8fafc;color:#4a5568;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:13px;">' +
     '<div style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;"><div>' +
-    '<a href="/index.html" style="color:#16223a;text-decoration:none;font-weight:700;font-size:14px;">Grammar Spy™</a>' +
+    '<a href="/" style="color:#16223a;text-decoration:none;font-weight:700;font-size:14px;">Grammar Spy™</a>' +
     '<p style="margin:6px 0 0;color:#5c6677;font-size:12px;line-height:1.4;max-width:32ch;">Mission-based grammar training for ELD and ELA classrooms.</p></div>' +
     '<nav aria-label="Footer links" style="display:flex;flex-wrap:wrap;gap:16px 24px;">' +
-    '<a href="/about.html" style="color:#1f5f63;text-decoration:none;font-weight:600;">About Us</a>' +
-    '<a href="/support.html" style="color:#1f5f63;text-decoration:none;font-weight:600;">Support</a>' +
-    '<a href="/refund.html" style="color:#1f5f63;text-decoration:none;font-weight:600;">Refund Policy</a>' +
-    '<a href="/pricing.html" style="color:#1f5f63;text-decoration:none;font-weight:600;">Pricing</a>' +
-    '<a href="/privacy.html" style="color:#1f5f63;text-decoration:none;font-weight:600;">Privacy</a>' +
-    '<a href="/terms.html" style="color:#1f5f63;text-decoration:none;font-weight:600;">Terms</a></nav></div>' +
+    '<a href="/about" style="color:#1f5f63;text-decoration:none;font-weight:600;">About Us</a>' +
+    '<a href="/support" style="color:#1f5f63;text-decoration:none;font-weight:600;">Support</a>' +
+    '<a href="/refund" style="color:#1f5f63;text-decoration:none;font-weight:600;">Refund Policy</a>' +
+    '<a href="/pricing" style="color:#1f5f63;text-decoration:none;font-weight:600;">Pricing</a>' +
+    '<a href="/privacy" style="color:#1f5f63;text-decoration:none;font-weight:600;">Privacy</a>' +
+    '<a href="/terms" style="color:#1f5f63;text-decoration:none;font-weight:600;">Terms</a></nav></div>' +
     '<p style="margin:14px 0 0;padding-top:12px;border-top:1px solid #e4e8ef;font-size:11px;color:#7a8698;">© Grammar Spy™. All rights reserved.</p></footer>';
 
   function includeOne(el){
@@ -191,8 +191,8 @@
       if (!session || !session.name) {
         label.textContent = 'Account ▼';
         panel.innerHTML =
-          '<a href="/auth.html?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
-          '<a href="/auth.html?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>';
+          '<a href="/auth?mode=signin" data-i18n="nav_signIn" style="' + dropdownLinkStyle + '">Sign In</a>' +
+          '<a href="/auth?mode=create" data-i18n="nav_createAccount" style="' + dropdownLinkStyle + '">Create account</a>';
         return;
       }
 
@@ -201,8 +201,8 @@
       var shortName = safeName.length > 14 ? safeName.slice(0, 14) + '…' : safeName;
       label.textContent = shortName + ' ▼';
       panel.innerHTML =
-        '<a href="/profile.html" style="' + dropdownLinkStyle + '">Profile</a>' +
-        '<a href="#" data-i18n="nav_signOut" onclick="localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');localStorage.removeItem(\'gs_student_classroom\');localStorage.removeItem(\'gs_use_context_v3\');localStorage.removeItem(\'gs_active_student_v1\');localStorage.removeItem(\'gs_credentials\');location.href=\'/index.html\';return false;" style="' + dropdownLinkStyle + '">Sign Out</a>';
+        '<a href="/profile" style="' + dropdownLinkStyle + '">Profile</a>' +
+        '<a href="#" data-i18n="nav_signOut" onclick="localStorage.removeItem(\'gs_auth_session\');localStorage.removeItem(\'gs_account_v1\');localStorage.removeItem(\'gs_student_classroom\');localStorage.removeItem(\'gs_use_context_v3\');localStorage.removeItem(\'gs_active_student_v1\');localStorage.removeItem(\'gs_credentials\');location.href=\'/\';return false;" style="' + dropdownLinkStyle + '">Sign Out</a>';
     });
     try {
       if (window.GS_I18N && typeof window.GS_I18N.apply === 'function') window.GS_I18N.apply();
@@ -230,7 +230,7 @@
 
   function missionLaunchTargetForFormat(format){
     var normalized = String(format || '').toLowerCase();
-    var launchTarget = '/teacher-mode.html?pack=pack01';
+    var launchTarget = '/teacher-mode?pack=pack01';
     if (normalized === 'teams' || normalized === 'whole_class' || normalized === 'individuals') {
       launchTarget += '&play_format=' + encodeURIComponent(normalized);
     }
@@ -240,7 +240,7 @@
   function resolveMissionLaunchHref(session, format){
     var launchTarget = missionLaunchTargetForFormat(format);
     if (session && typeof session === 'object' && session.name) return launchTarget;
-    return '/auth.html?next=' + encodeURIComponent(launchTarget);
+    return '/auth?next=' + encodeURIComponent(launchTarget);
   }
 
   function updateMissionLaunchLinks(){

@@ -1,21 +1,28 @@
 export const ROUTES = [
-  { id: "home", label: "Home", href: "/index.html" },
+  { id: "home", label: "Home", href: "/" },
   { id: "studentJoin", label: "Student Join", href: "/join/" },
   { id: "leaderboard", label: "Leaderboard", href: "/leaderboard/" },
   { id: "studentDashboard", label: "Student Dashboard", href: "/dashboard/student/" },
   { id: "teacherDashboard", label: "Teacher Dashboard", href: "/dashboard/teacher/" },
   { id: "missions", label: "Missions", href: "/missions/" },
   { id: "freeResources", label: "Free Resources", href: "/free/" },
-  { id: "missionLaunch", label: "Mission Launch", href: "/missions.html" },
-  { id: "progression", label: "Training Path", href: "/progression.html" },
-  { id: "clues", label: "CLUES", href: "/clues.html" },
-  { id: "profile", label: "Profile", href: "/profile.html" },
-  { id: "launch", label: "Launch", href: "/games/launch.html" }
+  { id: "missionLaunch", label: "Mission Launch", href: "/missions" },
+  { id: "progression", label: "Training Path", href: "/progression" },
+  { id: "clues", label: "CLUES", href: "/clues" },
+  { id: "profile", label: "Profile", href: "/profile" },
+  { id: "launch", label: "Launch", href: "/games/launch" }
 ];
 
+function normalizePath(pathname) {
+  const raw = String(pathname || "/").split("?")[0].split("#")[0];
+  if (raw === "/") return "/";
+  const withLead = raw.startsWith("/") ? raw : `/${raw}`;
+  return withLead.replace(/\/+$/, "").toLowerCase();
+}
+
 export function resolveRouteIdFromPath(pathname = window.location.pathname) {
-  const page = pathname.split("/").filter(Boolean).pop() || "index.html";
-  const route = ROUTES.find((r) => r.href.endsWith(page));
+  const path = normalizePath(pathname);
+  const route = ROUTES.find((r) => normalizePath(r.href) === path);
   return route ? route.id : "home";
 }
 
@@ -43,51 +50,51 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
   };
   ensureTopNavStyles();
 
-  const currentPage = (window.location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
+  const currentPage = normalizePath(window.location.pathname);
   const navLinkStyle = "text-decoration:none;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;padding:7px 12px;border:1px solid #d9dee6;border-radius:999px;background:#f8fafc";
   const dropdownLinkStyle = "display:block;padding:8px 10px;border-radius:8px;text-decoration:none;color:#24303f;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap";
   const menuSummaryStyle = "cursor:pointer;border:1px solid #d9dee6;border-radius:999px;padding:7px 12px;background:#f8fafc;color:#4a5568;font:700 12px Inter,Segoe UI,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;list-style:none";
   const menuPanelStyle = "position:absolute;right:0;top:calc(100% + 8px);display:block;min-width:180px;background:#fff;border:1px solid #d9dee6;border-radius:12px;padding:8px;box-shadow:0 10px 26px rgba(11,16,32,.14);z-index:30";
 
   const primaryLinks = [
-    { label: "Home", href: "index.html" },
+    { label: "Home", href: "/" },
     { label: "Student Join", href: "/join/" },
     { label: "Leaderboard", href: "/leaderboard/" },
-    { label: "Teacher", href: "teacher-home.html" },
-    { label: "Pricing", href: "pricing.html" },
+    { label: "Teacher", href: "/teacher-home" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Free Resources", href: "/free/" }
   ];
   const missionMenuLinks = [
-    { label: "Run a Mission", href: "teacher-mode.html" },
-    { label: "Whole Class", href: "teacher-mode.html?play_format=whole_class" },
-    { label: "Teams Mode", href: "teacher-mode.html?play_format=teams" },
+    { label: "Run a Mission", href: "/teacher-mode" },
+    { label: "Whole Class", href: "/teacher-mode?play_format=whole_class" },
+    { label: "Teams Mode", href: "/teacher-mode?play_format=teams" },
     { label: "Missions", href: "/missions/" },
-    { label: "Training Path", href: "progression.html" },
-    { label: "CLUES", href: "clues.html" }
+    { label: "Training Path", href: "/progression" },
+    { label: "CLUES", href: "/clues" }
   ];
   const resourceLinks = [
-    { label: "Community", href: "community.html" },
-    { label: "Blog", href: "insights.html" },
+    { label: "Community", href: "/community" },
+    { label: "Blog", href: "/blog" },
   ];
 
   const buildPrimaryLink = (link) => {
-    const isActive = currentPage === link.href.toLowerCase();
+    const isActive = currentPage === normalizePath(link.href);
     const tone = isActive
       ? "color:#0f5c5c;border-color:#1f5f63;background:#e8f4f5;"
       : "color:#4a5568;border-color:#d9dee6;background:#f8fafc;";
     return `<a class="gs-pill" href="${link.href}" style="${navLinkStyle};${tone}">${link.label}</a>`;
   };
-  const missionMenuIsActive = missionMenuLinks.some((l) => currentPage === l.href.toLowerCase());
+  const missionMenuIsActive = missionMenuLinks.some((l) => currentPage === normalizePath(l.href));
   const missionMenuSummaryStyle = `${menuSummaryStyle};color:${missionMenuIsActive ? "#0f5c5c" : "#4a5568"};border-color:${missionMenuIsActive ? "#1f5f63" : "#d9dee6"};background:${missionMenuIsActive ? "#e8f4f5" : "#f8fafc"}`;
   const missionMenuLinksHtml = missionMenuLinks.map((l) => {
-    const isActive = currentPage === l.href.toLowerCase();
+    const isActive = currentPage === normalizePath(l.href);
     const activeStyle = isActive ? "background:#e8f4f5;color:#0f5c5c;" : "";
     return `<a href="${l.href}" style="${dropdownLinkStyle};${activeStyle}">${l.label}</a>`;
   }).join("");
-  const resourcesMenuIsActive = resourceLinks.some((l) => currentPage === l.href.toLowerCase());
+  const resourcesMenuIsActive = resourceLinks.some((l) => currentPage === normalizePath(l.href));
   const resourcesMenuSummaryStyle = `${menuSummaryStyle};color:${resourcesMenuIsActive ? "#0f5c5c" : "#4a5568"};border-color:${resourcesMenuIsActive ? "#1f5f63" : "#d9dee6"};background:${resourcesMenuIsActive ? "#e8f4f5" : "#f8fafc"}`;
   const resourceLinksHtml = resourceLinks.map((l) => {
-    const isActive = currentPage === l.href.toLowerCase();
+    const isActive = currentPage === normalizePath(l.href);
     const activeStyle = isActive ? "background:#e8f4f5;color:#0f5c5c;" : "";
     return `<a href="${l.href}" style="${dropdownLinkStyle};${activeStyle}">${l.label}</a>`;
   }).join("");
@@ -105,7 +112,7 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
 
   targetEl.innerHTML = `
     <nav aria-label="Primary navigation" style="margin:0 0 16px;padding:10px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #d9dee6;background:#ffffff">
-      <a href="index.html" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent">
+      <a href="/" style="text-decoration:none;color:#16223a;display:inline-flex;align-items:center;background:transparent">
         <img class="gs-logo" src="assets/brand/logo-primary.svg" alt="Grammar Spy™" style="height:56px;width:auto;display:block;background:transparent;border:none">
       </a>
       <span style="display:flex;flex:1 1 420px;min-width:240px;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-start">
@@ -118,8 +125,8 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
         <details id="gsAccountMenu" style="position:relative">
           <summary class="gs-pill" id="gsAccountLabel" style="${menuSummaryStyle}">Account &#9662;</summary>
           <span id="gsAccountPanel" style="${menuPanelStyle}">
-            <a href="auth.html?mode=signin" style="${dropdownLinkStyle}">Sign In</a>
-            <a href="auth.html?mode=create" style="${dropdownLinkStyle}">Create account</a>
+            <a href="/auth?mode=signin" style="${dropdownLinkStyle}">Sign In</a>
+            <a href="/auth?mode=create" style="${dropdownLinkStyle}">Create account</a>
           </span>
         </details>
       </span>
@@ -136,8 +143,8 @@ export function renderTopNav(targetEl, activeRouteId = resolveRouteIdFromPath())
       const name = safeName.length > 14 ? safeName.slice(0, 14) + '…' : safeName;
       authLabel.textContent = `${name} ▼`;
       authPanel.innerHTML = `
-        <a href="profile.html" style="${dropdownLinkStyle}">Profile</a>
-        <a href="#" style="${dropdownLinkStyle}" onclick="localStorage.removeItem('gs_auth_session');localStorage.removeItem('gs_account_v1');localStorage.removeItem('gs_student_classroom');localStorage.removeItem('gs_use_context_v3');localStorage.removeItem('gs_active_student_v1');localStorage.removeItem('gs_credentials');location.href='index.html';return false;">Sign Out</a>
+        <a href="/profile" style="${dropdownLinkStyle}">Profile</a>
+        <a href="#" style="${dropdownLinkStyle}" onclick="localStorage.removeItem('gs_auth_session');localStorage.removeItem('gs_account_v1');localStorage.removeItem('gs_student_classroom');localStorage.removeItem('gs_use_context_v3');localStorage.removeItem('gs_active_student_v1');localStorage.removeItem('gs_credentials');location.href='/';return false;">Sign Out</a>
       `;
     }
   } catch(e) {}

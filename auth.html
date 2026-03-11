@@ -92,7 +92,7 @@
         </div>
         <div class="row">
           <button class="btn primary" id="btnCreate" type="button">Create Free Account</button>
-          <a class="btn" href="teacher-home.html">Back</a>
+          <a class="btn" href="/teacher-home">Back</a>
         </div>
       </section>
 
@@ -119,7 +119,7 @@
         </div>
         <div class="row">
           <button class="btn primary" id="btnSignIn" type="button">Sign In</button>
-          <a class="btn" href="teacher-home.html">Back</a>
+          <a class="btn" href="/teacher-home">Back</a>
         </div>
       </section>
 
@@ -127,7 +127,7 @@
         <p class="hint">Guest mode: Mission 01 only, no saved account. Sign up later to save progress and upgrade.</p>
         <div class="row">
           <button class="btn primary" id="btnGuest" type="button">Continue as Guest</button>
-          <a class="btn" href="index.html?choose=1">Back</a>
+          <a class="btn" href="/?choose=1">Back</a>
         </div>
       </section>
       </div>
@@ -270,7 +270,7 @@
             app: 'grammar_spy',
             email: cleanEmail,
             name: cleanName,
-            confirmUrl: location.origin + '/auth.html?mode=signin'
+            confirmUrl: location.origin + '/auth?mode=signin'
           })
         });
         if (!res.ok) throw new Error('confirmation webhook failed');
@@ -363,7 +363,7 @@
       }
       const isCreateStudent = document.getElementById('createRoleStudent')?.classList.contains('active');
       localStorage.setItem('gs_use_context_v3', isCreateStudent ? 'individual' : 'class');
-      location.href = nextHref(isCreateStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
+      location.href = nextHref(isCreateStudent ? '/individual-home?join=1#joinClassSection' : '/teacher-home');
     });
 
     document.getElementById('btnSignIn').addEventListener('click', async () => {
@@ -386,7 +386,7 @@
       }
       const isSigninStudent = document.getElementById('signinRoleStudent')?.classList.contains('active');
       localStorage.setItem('gs_use_context_v3', isSigninStudent ? 'individual' : 'class');
-      location.href = nextHref(isSigninStudent ? 'individual-home.html?join=1#joinClassSection' : 'teacher-home.html');
+      location.href = nextHref(isSigninStudent ? '/individual-home?join=1#joinClassSection' : '/teacher-home');
     });
 
     document.getElementById('btnBiometricSignIn').addEventListener('click', async () => {
@@ -394,14 +394,14 @@
       const account = await window.GS_BIOMETRIC.signInWithBiometric();
       if (account) {
         window.GS_BILLING.restoreFromBiometric(account);
-        location.href = nextHref('teacher-home.html');
+        location.href = nextHref('/teacher-home');
       }
     });
 
     document.getElementById('btnGuest').addEventListener('click', () => {
       window.GS_AUTH.setGuest();
       tryRedeemPromoCode();
-      location.href = nextHref('teacher-home.html');
+      location.href = nextHref('/teacher-home');
     });
 
     const params = new URLSearchParams(location.search);

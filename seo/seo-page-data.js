@@ -460,7 +460,7 @@ export const SEO_PAGE_DATA = {
       title: "See interactive grammar missions in action",
       body: "Launch Grammar Spy to run mission rounds, join-code sessions, and live class engagement in one flow.",
       label: "Launch Interactive Practice",
-      href: "/teacher-mode.html"
+      href: "/teacher-mode"
     }
   },
   "grammar-teaching-ideas": {

@@ -1648,35 +1648,35 @@ Technical safety:
 <body>
   <header class="home-nav">
     <div class="container nav-inner">
-      <a href="index.html" class="brand" aria-label="Grammar Spy home">
+      <a href="/" class="brand" aria-label="Grammar Spy home">
         <img src="assets/brand/logo-primary.svg" alt="Grammar Spy logo">
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a class="nav-pill" href="index.html" aria-current="page">Home</a>
+        <a class="nav-pill" href="/" aria-current="page">Home</a>
         <a class="nav-pill" href="/join/">Student Join</a>
         <details>
           <summary class="nav-pill">Missions &#9662;</summary>
           <span class="nav-menu">
             <a href="/missions/">Missions</a>
-            <a href="/clues.html">CLUES</a>
-            <a data-start-mission-link href="/teacher-mode.html?pack=pack01">&#128640; Start Mission Now</a>
-            <a href="/teacher-mode.html?pack=pack01">Run a Mission</a>
-            <a href="/teacher-mode.html?play_format=whole_class">Whole Class</a>
-            <a href="/teacher-mode.html?play_format=teams">Teams Mode</a>
+            <a href="/clues">CLUES</a>
+            <a data-start-mission-link href="/teacher-mode?pack=pack01">&#128640; Start Mission Now</a>
+            <a href="/teacher-mode?pack=pack01">Run a Mission</a>
+            <a href="/teacher-mode?play_format=whole_class">Whole Class</a>
+            <a href="/teacher-mode?play_format=teams">Teams Mode</a>
             <a href="/leaderboard/">Leaderboard</a>
           </span>
         </details>
-        <a class="nav-pill" href="/games/launch.html">Games</a>
+        <a class="nav-pill" href="/games/launch">Games</a>
         <details>
           <summary class="nav-pill">Teacher &#9662;</summary>
           <span class="nav-menu">
-            <a data-start-mission-link class="nav-menu-primary" href="/teacher-mode.html?pack=pack01">&#128640; Start Mission Now</a>
-            <a data-start-mission-link data-start-mission-format="whole_class" class="nav-menu-format" href="/teacher-mode.html?pack=pack01&play_format=whole_class">Whole Class Mode</a>
-            <a data-start-mission-link data-start-mission-format="teams" class="nav-menu-format" href="/teacher-mode.html?pack=pack01&play_format=teams">Teams Mode</a>
-            <a data-start-mission-link data-start-mission-format="individuals" class="nav-menu-format" href="/teacher-mode.html?pack=pack01&play_format=individuals">Individuals Mode</a>
-            <a href="/teacher-home.html">Teacher Dashboard</a>
-            <a href="/classrooms.html">Classrooms</a>
-            <a href="/teacher-student-progress.html">Student Progress</a>
+            <a data-start-mission-link class="nav-menu-primary" href="/teacher-mode?pack=pack01">&#128640; Start Mission Now</a>
+            <a data-start-mission-link data-start-mission-format="whole_class" class="nav-menu-format" href="/teacher-mode?pack=pack01&play_format=whole_class">Whole Class Mode</a>
+            <a data-start-mission-link data-start-mission-format="teams" class="nav-menu-format" href="/teacher-mode?pack=pack01&play_format=teams">Teams Mode</a>
+            <a data-start-mission-link data-start-mission-format="individuals" class="nav-menu-format" href="/teacher-mode?pack=pack01&play_format=individuals">Individuals Mode</a>
+            <a href="/teacher-home">Teacher Dashboard</a>
+            <a href="/classrooms">Classrooms</a>
+            <a href="/teacher-student-progress">Student Progress</a>
           </span>
         </details>
         <a class="nav-pill" href="/grammar-teaching-ideas/">Teaching Ideas</a>
@@ -1684,13 +1684,13 @@ Technical safety:
         <details>
           <summary class="nav-pill">More &#9662;</summary>
           <span class="nav-menu">
-            <a href="pricing.html">Pricing</a>
-            <a href="/progression.html">Training Path</a>
-            <a href="/community.html">Community</a>
-            <a href="/insights.html" class="nav-community-link">Blog <span class="nav-beta-pill">Beta</span></a>
+            <a href="/pricing">Pricing</a>
+            <a href="/progression">Training Path</a>
+            <a href="/community">Community</a>
+            <a href="/blog" class="nav-community-link">Blog <span class="nav-beta-pill">Beta</span></a>
           </span>
         </details>
-        <a class="nav-pill" href="auth.html?mode=signin">Login</a>
+        <a class="nav-pill" href="/auth?mode=signin">Login</a>
       </nav>
     </div>
   </header>
@@ -1715,7 +1715,7 @@ Technical safety:
           </ul>
           <div class="hero-ctas">
             <a href="/join/" class="btn btn-primary" data-track-event="homepage_join_class_click">Join as Student</a>
-            <a id="homepageStartTrainingBtn" href="/auth.html?mode=create" class="btn btn-secondary" data-track-event="homepage_start_training_click">Start Training</a>
+            <a id="homepageStartTrainingBtn" href="/auth?mode=create" class="btn btn-secondary" data-track-event="homepage_start_training_click">Start Training</a>
           </div>
           <p class="hero-note">No prep. No grading stacks. Just progress.</p>
           <div class="hero-live-badges" aria-label="Live game indicators">
@@ -1782,7 +1782,7 @@ Technical safety:
               <li>see student progress instantly</li>
               <li>no grading required</li>
             </ul>
-            <a class="btn btn-primary who-btn" href="/teacher-home.html">Start Teacher Setup</a>
+            <a class="btn btn-primary who-btn" href="/teacher-home">Start Teacher Setup</a>
           </article>
           <article class="who-card" data-animate-in>
             <span class="who-icon" aria-hidden="true">🕵️</span>
@@ -2042,7 +2042,7 @@ Technical safety:
               <input type="text" id="diagnosticLeadHp" name="company" class="diagnostic-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
               <button type="submit" class="btn btn-primary" id="diagnosticLeadBtn">Email me diagnostic</button>
             </div>
-            <p class="diagnostic-consent">We'll email you the diagnostic + occasional updates. Unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
+            <p class="diagnostic-consent">We'll email you the diagnostic + occasional updates. Unsubscribe anytime. <a href="/privacy">Privacy</a></p>
             <p class="diagnostic-trust">No spam. One quiet email when new missions drop.</p>
           </form>
           <p class="diagnostic-msg" id="diagnosticLeadMsg">Check your email for your diagnostic.</p>
@@ -2091,7 +2091,7 @@ Technical safety:
         <p class="section-intro">Start free and see how quickly students engage with structured grammar practice.</p>
         <div class="hero-ctas">
           <a href="/missions/" class="btn btn-primary" data-track-event="homepage_try_free_mission_click">Start a Free Mission</a>
-          <a href="teacher-home.html" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
+          <a href="/teacher-home" class="btn btn-secondary" data-track-event="homepage_create_account_click">Create Teacher Account</a>
         </div>
         <p class="final-subtext">No prep. No grading stacks. Just progress.</p>
       </div>
@@ -2356,15 +2356,15 @@ Technical safety:
       }
       if (startBtn) {
         if (session) {
-          startBtn.setAttribute('href', '/teacher-home.html');
+          startBtn.setAttribute('href', '/teacher-home');
         } else {
-          startBtn.setAttribute('href', '/auth.html?mode=create');
+          startBtn.setAttribute('href', '/auth?mode=create');
         }
       }
 
       function missionLaunchTargetForFormat(format){
         var normalized = String(format || '').toLowerCase();
-        var launchTarget = '/teacher-mode.html?pack=pack01';
+        var launchTarget = '/teacher-mode?pack=pack01';
         if (normalized === 'teams' || normalized === 'whole_class' || normalized === 'individuals') {
           launchTarget += '&play_format=' + encodeURIComponent(normalized);
         }
@@ -2378,7 +2378,7 @@ Technical safety:
         var launchTarget = missionLaunchTargetForFormat(format);
         var href = session && typeof session === 'object'
           ? launchTarget
-          : '/auth.html?next=' + encodeURIComponent(launchTarget);
+          : '/auth?next=' + encodeURIComponent(launchTarget);
         link.setAttribute('href', href);
       });
     })();
@@ -2490,9 +2490,9 @@ Technical safety:
 
       function shareLink(){
         try {
-          if (location.origin && location.origin !== 'null') return location.origin + '/index.html#free-diagnostic-pdf';
+          if (location.origin && location.origin !== 'null') return location.origin + '/#free-diagnostic-pdf';
         } catch (_err) {}
-        return 'index.html#free-diagnostic-pdf';
+        return '/#free-diagnostic-pdf';
       }
 
       function fallbackCopy(text){

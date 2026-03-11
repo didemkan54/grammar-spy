@@ -171,7 +171,7 @@ function renderStudentTable(summary, classProgress) {
             <td>${row.streak_days}</td>
             <td>${row.xp}</td>
             <td>${row.violations || 0}</td>
-            <td><a href="/dashboard/teacher/student.html?student_id=${encodeURIComponent(
+            <td><a href="/dashboard/teacher/student?student_id=${encodeURIComponent(
               row.student_id
             )}&class_id=${encodeURIComponent(summary.class_id)}">View</a></td>
           </tr>
